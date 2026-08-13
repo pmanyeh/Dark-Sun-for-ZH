@@ -17,6 +17,7 @@ extract or replace the chunk in a copied RESOURCE.GFF.
 from __future__ import annotations
 
 import argparse
+import json
 import struct
 import zlib
 from dataclasses import dataclass
@@ -125,6 +126,44 @@ def bitmap_with_shadow(rows: tuple[str, ...], height: int) -> tuple[int, bytes]:
         if shadow not in foreground and shadow[0] < width and shadow[1] < height:
             pixels[shadow[1] * width + shadow[0]] = 0x14
     return width, bytes(pixels)
+
+
+def rasterize_character(
+    character: str,
+    font_path: Path,
+    font_size: int,
+    pixel_width: int,
+    glyph_height: int,
+    advance: int,
+    threshold: int,
+) -> tuple[int, bytes]:
+    """Rasterize one Unicode character into a FONT-100 palette record."""
+    try:
+        from PIL import Image, ImageDraw, ImageFont
+    except ImportError as exc:
+        raise RuntimeError("replace-text requires Pillow (`python -m pip install Pillow`)") from exc
+
+    if len(character) != 1:
+        raise ValueError("each mapping entry must contain exactly one Unicode character")
+    if advance < pixel_width:
+        raise ValueError("advance must be at least pixel-width")
+    font = ImageFont.truetype(str(font_path), font_size)
+    left, top, right, bottom = font.getbbox(character)
+    source_width = max(1, right - left)
+    source_height = max(1, bottom - top)
+    source = Image.new("L", (source_width, source_height), 0)
+    ImageDraw.Draw(source).text((-left, -top), character, font=font, fill=255)
+    content_box = source.getbbox()
+    if content_box is None:
+        raise ValueError(f"font produced an empty glyph for U+{ord(character):04X}")
+    source = source.crop(content_box)
+    resized = source.resize((pixel_width, glyph_height), Image.Resampling.LANCZOS)
+    pixels = bytearray(advance * glyph_height)
+    for y in range(glyph_height):
+        for x in range(pixel_width):
+            if resized.getpixel((x, y)) >= threshold:
+                pixels[y * advance + x] = 0xFE
+    return advance, bytes(pixels)
 
 
 def png_chunk(kind: bytes, payload: bytes) -> bytes:
@@ -242,6 +281,59 @@ def command_replace(args: argparse.Namespace) -> None:
     print(args.output)
 
 
+def command_replace_text(args: argparse.Namespace) -> None:
+    font = load_font(args.input)
+    codes = [ord(value) for value in args.codes]
+    characters = list(args.text)
+    if len(codes) != len(characters):
+        raise ValueError(
+            f"--codes has {len(codes)} entries but --text has {len(characters)} characters"
+        )
+    if len(set(codes)) != len(codes):
+        raise ValueError("--codes must not contain duplicates")
+    if any(code >= font.count for code in codes):
+        raise ValueError(f"all mapping codes must be below {font.count}")
+
+    mapping: list[dict[str, object]] = []
+    for code, character in zip(codes, characters):
+        font.glyphs[code] = rasterize_character(
+            character,
+            args.font,
+            args.font_size,
+            args.pixel_width,
+            font.height,
+            args.advance,
+            args.threshold,
+        )
+        mapping.append(
+            {
+                "byte": code,
+                "byte_hex": f"0x{code:02X}",
+                "placeholder": chr(code),
+                "character": character,
+                "unicode": f"U+{ord(character):04X}",
+            }
+        )
+
+    payload = font.build()
+    reparsed = Font100.parse(payload)
+    for code in codes:
+        if reparsed.glyphs[code] != font.glyphs[code]:
+            raise ValueError(f"rebuilt glyph 0x{code:02X} failed round-trip validation")
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    args.output.write_bytes(payload)
+    if args.mapping_output:
+        args.mapping_output.parent.mkdir(parents=True, exist_ok=True)
+        args.mapping_output.write_text(
+            json.dumps({"text": args.text, "codes": args.codes, "mapping": mapping}, ensure_ascii=False, indent=2)
+            + "\n",
+            encoding="utf-8",
+        )
+    for item in mapping:
+        print(f"{item['byte_hex']} {item['placeholder']} -> {item['character']} {item['unicode']}")
+    print(args.output)
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -261,6 +353,21 @@ def build_parser() -> argparse.ArgumentParser:
     replace.add_argument("output", type=Path)
     replace.add_argument("--code", default="0x40", help="glyph code to replace (default: 0x40 / @)")
     replace.set_defaults(func=command_replace)
+
+    replace_text = subparsers.add_parser(
+        "replace-text", help="rasterize Unicode characters into temporary single-byte glyph slots"
+    )
+    replace_text.add_argument("input", type=Path)
+    replace_text.add_argument("output", type=Path)
+    replace_text.add_argument("--text", required=True, help="Unicode characters to rasterize")
+    replace_text.add_argument("--codes", required=True, help="one placeholder byte character per Unicode character")
+    replace_text.add_argument("--font", required=True, type=Path, help="TrueType/OpenType font used as the test source")
+    replace_text.add_argument("--font-size", type=int, default=16)
+    replace_text.add_argument("--pixel-width", type=int, default=8)
+    replace_text.add_argument("--advance", type=int, default=9)
+    replace_text.add_argument("--threshold", type=int, default=100)
+    replace_text.add_argument("--mapping-output", type=Path)
+    replace_text.set_defaults(func=command_replace_text)
     return parser
 
 
