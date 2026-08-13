@@ -166,6 +166,37 @@ def rasterize_character(
     return advance, bytes(pixels)
 
 
+def convert_font_height(font: Font100, target_height: int, align: str) -> None:
+    """Pad every existing glyph to a new global height without resampling it."""
+    if target_height < font.height:
+        raise ValueError(
+            f"target height {target_height} is smaller than source height {font.height}; "
+            "height conversion only pads existing glyphs"
+        )
+    if target_height == font.height:
+        return
+    gap = target_height - font.height
+    if align == "top":
+        y_offset = 0
+    elif align == "center":
+        y_offset = gap // 2
+    elif align == "bottom":
+        y_offset = gap
+    else:
+        raise ValueError(f"unsupported vertical alignment: {align}")
+
+    converted: list[tuple[int, bytes]] = []
+    for width, pixels in font.glyphs:
+        padded = bytearray(width * target_height)
+        for y in range(font.height):
+            source = y * width
+            destination = (y + y_offset) * width
+            padded[destination : destination + width] = pixels[source : source + width]
+        converted.append((width, bytes(padded)))
+    font.height = target_height
+    font.glyphs = converted
+
+
 def png_chunk(kind: bytes, payload: bytes) -> bytes:
     return (
         struct.pack(">I", len(payload))
@@ -283,6 +314,8 @@ def command_replace(args: argparse.Namespace) -> None:
 
 def command_replace_text(args: argparse.Namespace) -> None:
     font = load_font(args.input)
+    if args.height is not None:
+        convert_font_height(font, args.height, args.vertical_align)
     codes = [ord(value) for value in args.codes]
     characters = list(args.text)
     if len(codes) != len(characters):
@@ -363,6 +396,15 @@ def build_parser() -> argparse.ArgumentParser:
     replace_text.add_argument("--codes", required=True, help="one placeholder byte character per Unicode character")
     replace_text.add_argument("--font", required=True, type=Path, help="TrueType/OpenType font used as the test source")
     replace_text.add_argument("--font-size", type=int, default=16)
+    replace_text.add_argument(
+        "--height", type=int, help="pad the entire font to this global height before replacing glyphs"
+    )
+    replace_text.add_argument(
+        "--vertical-align",
+        choices=("top", "center", "bottom"),
+        default="center",
+        help="alignment of original glyph rows when --height adds padding",
+    )
     replace_text.add_argument("--pixel-width", type=int, default=8)
     replace_text.add_argument("--advance", type=int, default=9)
     replace_text.add_argument("--threshold", type=int, default=100)
