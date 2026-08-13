@@ -1,0 +1,365 @@
+[
+  {
+    "dialogue_tree_id": "TREE_0001",
+    "region": "RGN02.GFF",
+    "npc_position": {
+      "x": 4464,
+      "y": 0
+    },
+    "sprite_id": null,
+    "script_id": "0x00015041",
+    "dialogue_nodes": []
+  },
+  {
+    "dialogue_tree_id": "TREE_0002",
+    "region": "RGN03.GFF",
+    "npc_position": {
+      "x": 4624,
+      "y": 0
+    },
+    "sprite_id": null,
+    "script_id": "0x00015041",
+    "dialogue_nodes": []
+  },
+  {
+    "dialogue_tree_id": "TREE_0003",
+    "region": "RGN04.GFF",
+    "npc_position": {
+      "x": 3400,
+      "y": 0
+    },
+    "sprite_id": null,
+    "script_id": "0x00015041",
+    "dialogue_nodes": []
+  },
+  {
+    "dialogue_tree_id": "TREE_0004",
+    "region": "RGN05.GFF",
+    "npc_position": {
+      "x": 4264,
+      "y": 0
+    },
+    "sprite_id": null,
+    "script_id": "0x00015041",
+    "dialogue_nodes": []
+  },
+  {
+    "dialogue_tree_id": "TREE_0005",
+    "region": "RGN06.GFF",
+    "npc_position": {
+      "x": 1928,
+      "y": 0
+    },
+    "sprite_id": null,
+    "script_id": "0x00015041",
+    "dialogue_nodes": []
+  },
+  {
+    "dialogue_tree_id": "TREE_0006",
+    "region": "RGN07.GFF",
+    "npc_position": {
+      "x": 3320,
+      "y": 0
+    },
+    "sprite_id": null,
+    "script_id": "0x00015041",
+    "dialogue_nodes": []
+  },
+  {
+    "dialogue_tree_id": "TREE_0007",
+    "region": "RGN08.GFF",
+    "npc_position": {
+      "x": 4208,
+      "y": 0
+    },
+    "sprite_id": null,
+    "script_id": "0x00015041",
+    "dialogue_nodes": []
+  },
+  {
+    "dialogue_tree_id": "TREE_0008",
+    "region": "RGN09.GFF",
+    "npc_position": {
+      "x": 3072,
+      "y": 0
+    },
+    "sprite_id": null,
+    "script_id": "0x00015041",
+    "dialogue_nodes": []
+  },
+  {
+    "dialogue_tree_id": "TREE_0009",
+    "region": "RGN0A.GFF",
+    "npc_position": {
+      "x": 3616,
+      "y": 0
+    },
+    "sprite_id": null,
+    "script_id": "0x00015041",
+    "dialogue_nodes": []
+  },
+  {
+    "dialogue_tree_id": "TREE_0010",
+    "region": "RGN0B.GFF",
+    "npc_position": {
+      "x": 3128,
+      "y": 0
+    },
+    "sprite_id": null,
+    "script_id": "0x00015041",
+    "dialogue_nodes": []
+  },
+  {
+    "dialogue_tree_id": "TREE_0011",
+    "region": "RGN0D.GFF",
+    "npc_position": {
+      "x": 2968,
+      "y": 0
+    },
+    "sprite_id": null,
+    "script_id": "0x00015041",
+    "dialogue_nodes": []
+  },
+  {
+    "dialogue_tree_id": "TREE_0012",
+    "region": "RGN0E.GFF",
+    "npc_position": {
+      "x": 4528,
+      "y": 0
+    },
+    "sprite_id": null,
+    "script_id": "0x00015041",
+    "dialogue_nodes": []
+  },
+  {
+    "dialogue_tree_id": "TREE_0013",
+    "region": "RGN0F.GFF",
+    "npc_position": {
+      "x": 1864,
+      "y": 0
+    },
+    "sprite_id": null,
+    "script_id": "0x00015041",
+    "dialogue_nodes": []
+  },
+  {
+    "dialogue_tree_id": "TREE_0014",
+    "region": "RGN12.GFF",
+    "npc_position": {
+      "x": 4240,
+      "y": 0
+    },
+    "sprite_id": null,
+    "script_id": "0x00015041",
+    "dialogue_nodes": []
+  },
+  {
+    "dialogue_tree_id": "TREE_0015",
+    "region": "RGN14.GFF",
+    "npc_position": {
+      "x": 4208,
+      "y": 0
+    },
+    "sprite_id": null,
+    "script_id": "0x00015041",
+    "dialogue_nodes": []
+  },
+  {
+    "dialogue_tree_id": "TREE_0016",
+    "region": "RGN1A.GFF",
+    "npc_position": {
+      "x": 4848,
+      "y": 0
+    },
+    "sprite_id": null,
+    "script_id": "0x00015041",
+    "dialogue_nodes": []
+  },
+  {
+    "dialogue_tree_id": "TREE_0017",
+    "region": "RGN1B.GFF",
+    "npc_position": {
+      "x": 1336,
+      "y": 0
+    },
+    "sprite_id": null,
+    "script_id": "0x00015041",
+    "dialogue_nodes": []
+  },
+  {
+    "dialogue_tree_id": "TREE_0018",
+    "region": "RGN1C.GFF",
+    "npc_position": {
+      "x": 1856,
+      "y": 0
+    },
+    "sprite_id": null,
+    "script_id": "0x00015041",
+    "dialogue_nodes": []
+  },
+  {
+    "dialogue_tree_id": "TREE_0019",
+    "region": "RGN1D.GFF",
+    "npc_position": {
+      "x": 3784,
+      "y": 0
+    },
+    "sprite_id": null,
+    "script_id": "0x00015041",
+    "dialogue_nodes": []
+  },
+  {
+    "dialogue_tree_id": "TREE_0020",
+    "region": "RGN1E.GFF",
+    "npc_position": {
+      "x": 2272,
+      "y": 0
+    },
+    "sprite_id": null,
+    "script_id": "0x00015041",
+    "dialogue_nodes": []
+  },
+  {
+    "dialogue_tree_id": "TREE_0021",
+    "region": "RGN1F.GFF",
+    "npc_position": {
+      "x": 2840,
+      "y": 0
+    },
+    "sprite_id": null,
+    "script_id": "0x00015041",
+    "dialogue_nodes": []
+  },
+  {
+    "dialogue_tree_id": "TREE_0022",
+    "region": "RGN21.GFF",
+    "npc_position": {
+      "x": 2520,
+      "y": 0
+    },
+    "sprite_id": null,
+    "script_id": "0x00015041",
+    "dialogue_nodes": []
+  },
+  {
+    "dialogue_tree_id": "TREE_0023",
+    "region": "RGN22.GFF",
+    "npc_position": {
+      "x": 2000,
+      "y": 0
+    },
+    "sprite_id": null,
+    "script_id": "0x00015041",
+    "dialogue_nodes": []
+  },
+  {
+    "dialogue_tree_id": "TREE_0024",
+    "region": "RGN23.GFF",
+    "npc_position": {
+      "x": 1952,
+      "y": 0
+    },
+    "sprite_id": null,
+    "script_id": "0x00015041",
+    "dialogue_nodes": []
+  },
+  {
+    "dialogue_tree_id": "TREE_0025",
+    "region": "RGN26.GFF",
+    "npc_position": {
+      "x": 5160,
+      "y": 0
+    },
+    "sprite_id": null,
+    "script_id": "0x00015041",
+    "dialogue_nodes": []
+  },
+  {
+    "dialogue_tree_id": "TREE_0026",
+    "region": "RGN27.GFF",
+    "npc_position": {
+      "x": 3712,
+      "y": 0
+    },
+    "sprite_id": null,
+    "script_id": "0x00015041",
+    "dialogue_nodes": []
+  },
+  {
+    "dialogue_tree_id": "TREE_0027",
+    "region": "RGN28.GFF",
+    "npc_position": {
+      "x": 2872,
+      "y": 0
+    },
+    "sprite_id": null,
+    "script_id": "0x00015041",
+    "dialogue_nodes": []
+  },
+  {
+    "dialogue_tree_id": "TREE_0028",
+    "region": "RGN29.GFF",
+    "npc_position": {
+      "x": 3280,
+      "y": 0
+    },
+    "sprite_id": null,
+    "script_id": "0x00015041",
+    "dialogue_nodes": []
+  },
+  {
+    "dialogue_tree_id": "TREE_0029",
+    "region": "RGN2A.GFF",
+    "npc_position": {
+      "x": 824,
+      "y": 0
+    },
+    "sprite_id": null,
+    "script_id": "0x00015041",
+    "dialogue_nodes": []
+  },
+  {
+    "dialogue_tree_id": "TREE_0030",
+    "region": "RGN2B.GFF",
+    "npc_position": {
+      "x": 2112,
+      "y": 0
+    },
+    "sprite_id": null,
+    "script_id": "0x00015041",
+    "dialogue_nodes": []
+  },
+  {
+    "dialogue_tree_id": "TREE_0031",
+    "region": "RGN2C.GFF",
+    "npc_position": {
+      "x": 448,
+      "y": 0
+    },
+    "sprite_id": null,
+    "script_id": "0x00015041",
+    "dialogue_nodes": []
+  },
+  {
+    "dialogue_tree_id": "TREE_0032",
+    "region": "RGN2D.GFF",
+    "npc_position": {
+      "x": 4992,
+      "y": 0
+    },
+    "sprite_id": null,
+    "script_id": "0x00015041",
+    "dialogue_nodes": []
+  },
+  {
+    "dialogue_tree_id": "TREE_0033",
+    "region": "RGNFF.GFF",
+    "npc_position": {
+      "x": 3584,
+      "y": 0
+    },
+    "sprite_id": null,
+    "script_id": "0x00015041",
+    "dialogue_nodes": []
+  }
+]

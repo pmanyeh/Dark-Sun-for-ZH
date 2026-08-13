@@ -1,0 +1,11 @@
+* text=auto
+*.md text eol=lf
+*.py text eol=lf
+*.json text eol=lf
+*.code-workspace text eol=lf
+
+# Translation payloads and extracted binary resources must not be normalized.
+localization/spin_zh_big5/** binary
+*.GFF binary
+*.EXE binary
+*.bin binary

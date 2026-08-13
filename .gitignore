@@ -1,0 +1,30 @@
+# Original commercial game installation and launcher files.
+from Steam/
+
+# Machine-local Claude permissions.
+.claude/settings.local.json
+
+# Python caches and local virtual environments.
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Test, build, and temporary output.
+scratch_test/
+target/
+build/
+dist/
+*.tmp
+*.log
+
+# DOSBox-X runtime artifacts.
+MEMDUMP.BIN
+captures/
+
+# Editor and OS metadata.
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+

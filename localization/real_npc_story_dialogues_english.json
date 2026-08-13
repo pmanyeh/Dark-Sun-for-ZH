@@ -1,0 +1,674 @@
+[
+  {
+    "id": "NPC_DLG_00001",
+    "source_file": "CINE.GFF",
+    "offset": "0x2D447B",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "Roland MT-32 or compatible with Roland MPU MIDI Interface",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00002",
+    "source_file": "CINE.GFF",
+    "offset": "0x2E7BA9",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "$IBM Speaker Sound Driver - Copyright (c) 1991, THE Audio Solution:v2.1\r\n$The Sound Driver is already resident.\r\n$The Sound Driver is resident, through MIDPAK.\r\n$A Sound Driver cannot be loaded on top of MIDPAK.  Unload MIDPAK first.\r\n$Unable to install Sound Driver interupt vector\r\n$Invalid command line\r\n$Sound Driver isn't in memory\r\n$Sound Driver unloaded\r\n$Sound Driver can't be unloaded, unload MIDPAK first.\r\n$",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00003",
+    "source_file": "CINE.GFF",
+    "offset": "0x2F167D",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "No Error\r\nAIL Version Conflict\r\nUnused...\r\nUnused...\r\nTimbre Not in GTL File\r\nGTL File Not Found\r\nUnused...\r\nCan't Allocate Timbre Memory\r\nCan't Allocate Sequence State Tables\r\nUnused...\r\nDriver File Not Found\r\nSample File Not Found\r\nCan't Allocate Sample Buffer\r\nSound.cfg is Corrupt, Run sound.exe Again...\r\nSequence File Not Found\r\nCan't Allocate Driver Buffer\r\nSound.cfg File Not Found\r\nUnused...\r\nGFF File Not Found\r\nUnable to Close GFF\r\nUnable to Get GFF Chunk Size\r\nLoadVocBlock, must be in swap mode to use this function\r\nSample Block File File Not Found\r\nFile Not Found\r\nDsp Driver File Not Found\r\nMIDI Detect Fail\r\nDSP Detect Fail\r\nFailure to Allocate Clock Buffer.\r\nThere is insufficient memory... \r\nEliminate any non-essential memory resident programs.\r\n\r\nFile I-O Error, A Disc Error Has Occurred.\r\n\r\nUnable to Initialize the CD rom driver MSCDEX.EXE...\r\nCheck the Installation of Your CD ROM drive and the Installation of \r\nthe Driver mscdex.exe.\r\n\r\nClock File Not Found...\r\nRe-Installation of the game should Correct this.",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00004",
+    "source_file": "CINE.GFF",
+    "offset": "0x006A80",
+    "extraction_method": "bitstream_6bit",
+    "english_dialogue": "fe eD dfe eE dfe eF dfe eG dfe eH dfe eI dfe eJ dfe eK dfe eL dfe eM fe eN fe eO dfe eP dfe eQ dfe aR fe aS fe aT fe aU fe eV pdfe aW fe aX bepheaGp a",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00005",
+    "source_file": "DARKRUN.GFF",
+    "offset": "0x00001C",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": ";-----------------------------------------------------------------------\r\n; DARKSUN.GFS - DARKSUN IMPORT SCRIPT (GFF BUILDER)\r\n; Copyright (C) 1992 Strategic Simulations, Inc.\r\n; All rights reserved.\r\n;\r\n; NOTICE:\r\n;\r\n; This material contains the valuable proprietary and trade secret\r\n; information of Strategic Simulations, Inc. (\"SSI\") of Sunnyvale,\r\n; California, U.S.A..; No part of such information may be disclosed,\r\n; used, reproduced, or transmitted in any form or by any means --\r\n; electronic, mechanical, or otherwise -- including; photocopying and\r\n; recording in connection with any information storage or retrieval\r\n; system, without permission in writing from SSI.\r\n;\r\n; $Logfile: $\r\n; $Revision: $\r\n; $Date: $\r\n; $Author: $\r\n; $Log: $\r\n;\r\n;-----------------------------------------------------------------------\r\n;\r\n; this is a dummy chunk type and a dummy entry\r\n\r\n#import",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00006",
+    "source_file": "DARKSUN.BAT",
+    "offset": "0x000000",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "@echo off\r\n\r\nrem ------------------------------------------------------------------------\r\nrem Darksun, The Shattered Lands\r\nrem\r\nrem This is the batch file shell for the game...\r\nrem\r\nrem This shell will detect a sound card that requires a TSR and load the\r\nrem correct TSR prior to running the game.\r\nrem\r\nrem If no TSR is necessary the game will be run with the given args...\r\nrem\r\nrem Author:     Ralph Thomas\r\nrem\r\nrem Revisions:  08/16/93 Added the un-installation of the TSR's at end run\r\nrem             08/17/93 Changed the game name, minor revisions...\r\nrem ------------------------------------------------------------------------\r\n\r\nrem ------------------------------------------------------------------------\r\nrem Detect card\r\nrem ------------------------------------------------------------------------\r\n\r\n@echo off\r\n\r\nGRAVIS\r\nIF ERRORLEVEL 1 GOTO RUN_GAME\r\nIF \"%ULTRADIR%\"==\"\" goto CHECK_ARIA\r\nrem Gravis Found...\r\nIF NOT EXIST SSI1.INI GOTO NO_INSTALL\r\ngoto GRAVIS\r\n\r\n:CHECK_ARIA\r\nIF \"%ARIA%\"==\"\" goto RUN_GAME\r\nrem Aria Found...\r\ngoto ARIA\r\n\r\nrem ------------------------------------------------------------------------\r\nrem Install the Aria TSR\r\nrem ------------------------------------------------------------------------\r\n\r\n:ARIA\r\nrem Running Aria TSR with gm2.bnk\r\necho.\r\nlh miditsr gm2.bnk /I\r\nif errorlevel 1 goto INS_GM1:\r\ngoto RUN_ARIA\r\n\r\n:INS_GM1\r\nrem Installation of the GM2 bank failed because of insufficient memory\r\nrem on the card, now try the small bank...\r\nlh miditsr gm1.bnk /I\r\ngoto RUN_ARIA\r\n\r\nrem ------------------------------------------------------------------------\r\nrem Install the Gravis TSR\r\nrem ------------------------------------------------------------------------\r\n\r\n:GRAVIS\r\nrem Run Gravis TSR\r\nlh ultramid -nssi1.ini -q\r\ngoto RUN_GRAVIS\r\n\r\nrem ------------------------------------------------------------------------\r\nrem Run the Game\r\nrem ------------------------------------------------------------------------\r\n\r\n:RUN_ARIA\r\ncls\r\nrem Run the Game\r\ndsun %1 %2 %3 %4 %5 %6 %7 %8 %9\r\nrem Uninstall the TSR\r\nmiditsr /U /I\r\nrem Bye...\r\ngoto END_RUN\r\n\r\n:NO_INSTALL\r\ncls\r\necho",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00007",
+    "source_file": "DSUN.EXE",
+    "offset": "0x048D4B",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "NOT AVAILABLE FOR CASTING",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00008",
+    "source_file": "DSUN.EXE",
+    "offset": "0x048D65",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "No Spells in Queue",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00009",
+    "source_file": "DSUN.EXE",
+    "offset": "0x048D78",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "CAN'T START THAT PSIONIC",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00010",
+    "source_file": "DSUN.EXE",
+    "offset": "0x048D91",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "YOU NEED TO REST",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00011",
+    "source_file": "DSUN.EXE",
+    "offset": "0x048E84",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "could not awaken game",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00012",
+    "source_file": "DSUN.EXE",
+    "offset": "0x048FE2",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "This product requires DOS 3.0 or greater.",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00013",
+    "source_file": "DSUN.EXE",
+    "offset": "0x04942E",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "You need to have %Fs more conventional memory bytes to run Darksun.",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00014",
+    "source_file": "DSUN.EXE",
+    "offset": "0x049473",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "Check the data card for more information.",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00015",
+    "source_file": "DSUN.EXE",
+    "offset": "0x049539",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "NO PATH FROM HERE",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00016",
+    "source_file": "DSUN.EXE",
+    "offset": "0x049558",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "NO LINE OF SIGHT",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00017",
+    "source_file": "DSUN.EXE",
+    "offset": "0x049D55",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "gpldisk out of memory",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00018",
+    "source_file": "DSUN.EXE",
+    "offset": "0x049D6D",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "Not enough memory in Loadgamefromdisk",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00019",
+    "source_file": "DSUN.EXE",
+    "offset": "0x049E92",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "Error : Can't load Game data in load teleport",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00020",
+    "source_file": "DSUN.EXE",
+    "offset": "0x049EC1",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "Error : Can't Create PC Entry in load teleport",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00021",
+    "source_file": "DSUN.EXE",
+    "offset": "0x049F60",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "Answer Yes or No",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00022",
+    "source_file": "DSUN.EXE",
+    "offset": "0x04A1F9",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "CAN'T USE ITEM W/ITEM IN A %Fs",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00023",
+    "source_file": "DSUN.EXE",
+    "offset": "0x04A235",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "Thrikreen can't use",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00024",
+    "source_file": "DSUN.EXE",
+    "offset": "0x04A249",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "Cannot use this item",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00025",
+    "source_file": "DSUN.EXE",
+    "offset": "0x04A27D",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "I can't hear you",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00026",
+    "source_file": "DSUN.EXE",
+    "offset": "0x04A28E",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "I've got a banana in my ear",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00027",
+    "source_file": "DSUN.EXE",
+    "offset": "0x04A2AA",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "This item cannot be readied",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00028",
+    "source_file": "DSUN.EXE",
+    "offset": "0x04A342",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "Two handed weapon in use",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00029",
+    "source_file": "DSUN.EXE",
+    "offset": "0x04A35B",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "Cannot use two heavy weapons",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00030",
+    "source_file": "DSUN.EXE",
+    "offset": "0x04A38C",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "Cannot use two shields",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00031",
+    "source_file": "DSUN.EXE",
+    "offset": "0x04A455",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "CAN'T CHANGE LEADER IN COMBAT",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00032",
+    "source_file": "DSUN.EXE",
+    "offset": "0x04A4BD",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "CAN'T ADD CHARS IN COMBAT",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00033",
+    "source_file": "DSUN.EXE",
+    "offset": "0x04A520",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "LAST ONE: CAN'T DROP",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00034",
+    "source_file": "DSUN.EXE",
+    "offset": "0x04A753",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "Failed to save the game!",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00035",
+    "source_file": "DSUN.EXE",
+    "offset": "0x04A7E9",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "Failed, weapon in hand",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00036",
+    "source_file": "DSUN.EXE",
+    "offset": "0x04A8C1",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "answer yes or no",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00037",
+    "source_file": "DSUN.EXE",
+    "offset": "0x04A8E6",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "Out of memory in OEOpenGraph.",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00038",
+    "source_file": "DSUN.EXE",
+    "offset": "0x04B00F",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "TOWER OF IRON WILL",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00039",
+    "source_file": "DSUN.EXE",
+    "offset": "0x04B87A",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "I'll give you %u$",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00040",
+    "source_file": "DSUN.EXE",
+    "offset": "0x04B8D7",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "Could not allocate memory for pRegionTiles.",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00041",
+    "source_file": "DSUN.EXE",
+    "offset": "0x04B9D5",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "NO OTHER CLASSES AVAILABLE",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00042",
+    "source_file": "DSUN.EXE",
+    "offset": "0x04BAF5",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "ONLY ACTIVE CHAR CAN CAST",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00043",
+    "source_file": "DSUN.EXE",
+    "offset": "0x04BCF8",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "NO WEAPON IN HAND",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00044",
+    "source_file": "DSUN.EXE",
+    "offset": "0x04BD0A",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "NO MISSILE WEAPON",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00045",
+    "source_file": "DSUN.EXE",
+    "offset": "0x04BD51",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "YOU LEARN THE SPELL",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00046",
+    "source_file": "DSUN.EXE",
+    "offset": "0x04BD65",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "YOU ALREADY KNOW THIS SPELL",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00047",
+    "source_file": "DSUN.EXE",
+    "offset": "0x04BDA0",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "CANNOT LEARN FROM THIS ITEM",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00048",
+    "source_file": "DSUN.EXE",
+    "offset": "0x04C2C2",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "Parameter out of range",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00049",
+    "source_file": "DSUN.EXE",
+    "offset": "0x04C376",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "Command out of order",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00050",
+    "source_file": "DSUN.EXE",
+    "offset": "0x04C471",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "Command must be used before any resources",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00051",
+    "source_file": "MIDITSR.EXE",
+    "offset": "0x005C20",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "/U will uninstall the TSR",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00052",
+    "source_file": "MIDITSR.EXE",
+    "offset": "0x005C43",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "/A will switch to Aria mode (default)",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00053",
+    "source_file": "MIDITSR.EXE",
+    "offset": "0x005C72",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "/S will switch to Sound Blaster mode",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00054",
+    "source_file": "MIDITSR.EXE",
+    "offset": "0x005CA0",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "/I will use the TSR without banner and on-screen message",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00055",
+    "source_file": "MIDITSR.EXE",
+    "offset": "0x005D06",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "deactivated but not removed",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00056",
+    "source_file": "MIDITSR.EXE",
+    "offset": "0x005E2D",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "ERROR: patch bank file is not compatible with ROM",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00057",
+    "source_file": "MIDITSR.EXE",
+    "offset": "0x005EB9",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "ERROR - Operator count must be between 20 and 32.",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00058",
+    "source_file": "MIDITSR.EXE",
+    "offset": "0x005F0A",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "ERROR - Patch bank is too large, must be less than 64K.",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00059",
+    "source_file": "MIDITSR.EXE",
+    "offset": "0x005F42",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "ERROR - Could not allocate memory for patch bank.",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00060",
+    "source_file": "MIDITSR.EXE",
+    "offset": "0x00625F",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "R6009\r\n- not enough space for environment",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00061",
+    "source_file": "RESOURCE.GFF",
+    "offset": "0x1E8218",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "hjvpj[\\on^[qu_h|kf}kUu|`n}szzq~to",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00062",
+    "source_file": "RESOURCE.GFF",
+    "offset": "0x27510A",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "No Error\r\nAIL Version Conflict\r\nUnused...\r\nUnused...\r\nTimbre Not in GTL File\r\nGTL File Not Found\r\nUnused...\r\nCan't Allocate Timbre Memory\r\nCan't Allocate Sequence State Tables\r\nUnused...\r\nDriver File Not Found\r\nSample File Not Found\r\nCan't Allocate Sample Buffer\r\nSound.cfg is Corrupt, Run sound.exe Again...\r\nSequence File Not Found\r\nCan't Allocate Driver Buffer\r\nSound.cfg File Not Found\r\nUnused...\r\nGFF File Not Found\r\nUnable to Close GFF\r\nUnable to Get GFF Chunk Size\r\nLoadVocBlock, must be in swap mode to use this function\r\nSample Block File File Not Found\r\nFile Not Found\r\nDsp Driver File Not Found\r\nMIDI Detect Fail\r\nDSP Detect Fail\r\nFailure to Allocate Clock Buffer.\r\nThere is insufficient memory... \r\nEliminate any non-essential memory resident programs.\r\n\r\nFile I-O Error, A Disc Error Has Occurred.\r\n\r\nUnable to Initialize the CD rom driver MSCDEX.EXE...\r\nCheck the Installation of Your CD ROM drive and the Installation of \r\nthe Driver mscdex.exe.\r\n\r\nClock File Not Found...\r\nRe-Installation of the game should Correct this.\r\nARMOR: Creates a magical shield of force equivalent to AC6. May be used on any class character adjacent to spell caster. \r\nBURNING HANDS: Inflicts 1 to 3 hit points of fire damage plus 2 per level of caster.\r\nCHARM PERSON:  Changes the target's allegiance in combat. Affects only character types (human, dwarf, etc.). \r\nCHILL TOUCH: Attacks life force of any living creature for 1 to 4 pts of damage and 1 pt of Strength per successful attack. Undead suffer no damage but may flee.\r\nCOLOR SPRAY:  May stun up to 6 creatures with this overwhelming wedge-shaped cascade of colored light. Higher level creatures may be unaffected.\r\nENLARGE:  Makes the recipient larger & stronger, allowing it to do more damage in melee combat. Higher-level casters produce greater effect.\r\nGAZE REFLECTION:  Creates a mirror-like area around the caster. Any gaze attack will be reflected back at the attacker.\r\nGREASE:  Covers the ground with a slippery layer. Any creature entering the area slips and cannot move for the round.\r\nMAGIC MISSILE:  Preserver throws 1 missile for every 2 levels. Each missile inflicts 2-5 pts of damage on target unless protected by magic or shield.\r\nSHIELD:  Negates enemy magic missiles, improves AC, and improves saving throw for the caster versus missiles.\r\nSHOCKING GRASP:  Does 1 to 8 pts of electrical damage, plus 1 per level of caster. \r\nWALL OF FOG:  Creates a wall of vapors that blocks everyone's line of sight through the wall.\r\nBLUR:  Causes the caster's form to become blurred, making the caster more difficult to hit and granting a +1 bonus on saving throws versus magical attacks.\r\nDETECT INVISIBILITY:  Allows caster to spot invisible creatures and objects in combat.\r\nFLAMING SPHERE:  Creates a burning globe. Creatures must save versus the spell or suffer 2 to 8 pts of damage.\r\nFOG CLOUD:  This spell creates a large cloud which blocks everyone's line of sight.\r\nGLITTERDUST:  Creates area of glittering particles. Creatures failing save are blinded. Also, invisible creatures become visible.\r\nINVISIBILITY:  Makes target invisible in combat, which improves THAC0 by 4 making them more difficult to hit. Dispelled when recipient attacks or casts spell.\r\nMELF'S ACID ARROW:  Magical arrow which does 2 to 8 pts of acid damage.\r\nMIRROR IMAGE:  Creates 1 to 4 illusionary duplicates of the caster to draw off attacks.\r\nPROTECTION FROM PARALYSIS:  Gives adjacent recipient immunity from all forms of paralysis.\r\nSCARE:  Causes creatures with less than 6 Hit Dice or levels of experience to sometimes flee or be unable to attack. No effect on undead creatures.\r\nSTINKING CLOUD:  Renders those in its area unable to attack for 2 to 5 rounds unless the creature saves.\r\nSTRENGTH:  Raises the target's strength by 1 to 8 pts. Maximum strength is 24.\r\nWEB:  Creates a mass of strong sticky webs. Webs prevent movement and can only be removed by fire.\r\nBLINK:  Allows caster to \"blink\" out after acting each round. Caster can be attacked before acting in a round, but not after. \r\nDISPEL MAGIC:  Removes effects of spells that do not have specific counterspells. This cures characters that have been held or slowed.\r\nFIREBALL:  Magical explosion does 1 to 6 pts of damage per level of caster to all targets within the area of effect. If target makes save damage is halved.\r\nFLAME ARROW:  Each \"arrow\" inflicts 1 to 6 pts of damage, plus an additional 4 to 24 pts of fire damage on the taget.\r\nHASTE:  Doubles the recipient's movement and number of melee attacks per round. \r\nHOLD PERSON:  May paralyze targets of character types (human, dwarf, etc.). You can aim at up to 4 targets.\r\nHOLD UNDEAD:  Paralyzes up to 3 undead creatures whose Hit Dice are less than or equal to the caster.\r\nLIGHTNING BOLT:  Magical electrical attack does 1 to 6 pts of damage per level of caster to each target in its path.\r\nMELF'S MINUTE METEORS:  Five small globes of fire inflict 1 to 4 pts of damage on 1 target, with a +2 bonus to hit.\r\nMINOR MALISON:  Causes the caster's opponents to make all saving throws at a -1 penalty.\r\nMONSTER SUMMONING I:  Allows caster to magically conjure first-level monsters who fight on caster's side in combat.\r\nPROTECTION FROM NORMAL MISSILES:  Makes target impervious to non-magical missiles.\r\nSLOW:  Halves the movement and number of attacks of all foes within the area of effect.\r\nSPIRIT ARMOR:  Surrounds caster with a magical aura which acts as splint mail of AC 4 and grants a +3 bonus to saves versus magical attacks.\r\nVAMPIRIC TOUCH:  Temporarily allows caster to raise hit points by draining opponents.  Opponent loses (caster gains) 1-6 pts for every 2 levels of the caster.\r\nCHARM MONSTER:  Changes target's allegiance in combat. \r\nCONFUSION: Creatures in the area of effect must save or stand in confusion, go berserk, or flee in terror.\r\nEVARD'S BLACK TENTACLES:  Black tentacles are created which inflict 3 to 12 pts of damage per turn until destroyed.\r\nFEAR:  All targets within the spell's area of effect who fail their saves flee in terror.\r\nFIRE SHIELD:  Opponents who hit caster in melee take the same amount of damage in return.\r\nICE STORM:  Inflicts 3 to 30 pts of damage to all targets within its area of effect.\r\nIMPROVED INVISIBILITY:  Similar to invisibility, but recipient is able to attack and still remain unseen.\r\nMINOR GLOBE OF INVULNERABILITY:  Creates a small sphere which protects those within from 1st, 2nd, or 3rd level spells.\r\nMINOR SPELL TURNING:  Causes effects of 1st, 2nd, and 3rd level spells directed at the caster to reflect back and affect the casting opponent.\r\nMONSTER SUMMONING II:  Allows caster to magically conjure second-level monsters who fight on the caster's side in combat.\r\nRAINBOW PATTERN:  Creates rainbow-colored lights which absorb the full attention of the affected creatures. Direct attacks on creatures break the spell.\r\nSOLID FOG:  Similar to wall of fog spell. Movement is slowed to 1/10 of normal. May be dispelled with fire-based spells such as fireball.\r\nSTONESKIN:  Recipient gains virtual immunity to any attack by cut, blow, projectile, or other physical attack. Spell blocks 1 to 4 attacks plus 1 per 2 levels.\r\nTURN PEBBLE TO BOULDER:  Causes a hurled pebble to grow into a boulder which inflicts 11 to 26 pts of damage if it strikes the target.\r\nWALL OF FIRE:  Creates an immobile curtain of magical fire. Creatures passing through the wall take damage.\r\nWALL OF ICE:  Creates a thick sheet of ice that blocks movement and line of sight.\r\nCHAOS:  Affects 1 to 4 creatures plus 1 per caster level unless they make their save. Affected creatures may stand confused, go berserk, or flee.\r\nCLOUDKILL:  Kills weaker creatures within its area of effect. More powerful monsters may take damage.\r\nCONE OF COLD:  Produces a cone-shaped blast of cold. The spell's range and damage increases with the caster's level.\r\nCONJURE ELEMENTAL:  Allows caster to conjure an air, earth, fire, or water elemental to fight on caster's side in combat. Elemental disappears after combat.\r\nDISMISSAL:  Creatures from another plane of existence must save or be forcefully expelled from the current plane.\r\nDOMINATION:  Targeted creature must save at a -2 penalty or be dominated. Dominated creature will fight on caster's side.\r\nFEEBLEMIND:  Causes a dramatic drop in target's Intelligence and Wisdom. Target loses ability to cast spells or use psionics. Heal spell counters feeblemind.\r\nHOLD MONSTER:  Similar to hold person, except it affects a wider variety of creatures.\r\nLOWER RESISTANCE:  Causes the magical resistance of the recipient to drop 30@ plus 1@ per level of caster.\r\nMONSTER SUMMONING III:  Allows caster to conjure third-level monsters who fight on caster's side in combat.\r\nSUMMON SHADOW:  Creates 1 shadow who fights for the caster until slain or dispelled.\r\nWALL OF FORCE:  Creates an invisible barrier. The barrier blocks all attacks, and can only be dispelled with disintegrate.\r\nWALL OF STONE:  Creates a wall of granite which lasts for a variable amount of time & blocks movement. It can be destroyed by a dispel magic or disintegrate spell.\r\nBLESS:  Improves THAC0 of friendly characters by 1. Spell is not cumulative. Good to cast before going into combat.\r\nCURSE:  Weakens the THAC0 of targets by 1. Target cannot be adjacent to a party character. Spell is not cumulative.\r\nCURE LIGHT WOUNDS:  Heals 1 to 8 pts, up to recipient's normal maximum hit points.\r\nCAUSE LIGHT WOUNDS:  Inflicts 1 to 8 pts of damage on a target.\r\nENTANGLE:  Causes large area of plants to sprout up. Victims who fail their save move very slowly.\r\nINVISIBILITY TO UNDEAD:  Causes undead to lose track of and ignore the warded creature for the duration of the spell (6 rounds).\r\nMAGICAL STONE:  Three magical stones may be hurled at an opponent causing 1 to 4 pts of damage per stone, or 2 to 8 pts if target is undead.\r\nPROTECTION FROM EVIL:  Improves AC and saving throws of recipient by 2 against attackers of evil alignment.\r\nREMOVE FEAR:  Removes the effects of a cause fear spell.\r\nCAUSE FEAR:  Creatures must save or flee in panic for 1 to 4 rounds.\r\nSHILLELAGH:  Enables caster to temporarily create a magical club which appears in his/her hand.\r\nAID:  Much like bless, except recipient gains 1 to 8 hit points for duration of spell. These pts are subtracted before the character's own if injured.\r\nBARKSKIN:  Recipient receives an improvement to his/her AC. One for every four levels of the caster. Also gets +1 to all saving throws.\r\nCHARM PERSON OR MAMMAL:  Changes target's allegiance in combat.\r\nDUST DEVIL:  Enables caster to conjure a dust devil who fights on the side of the caster in combat.\r\nFIND TRAPS:  If sucessful, this spell reveals the location of all traps within the general area.\r\nFLAME BLADE:  This blade of flame attacks like a normal sword in melee combat and does 7 to 10 pts of damage.\r\nHOLD PERSON:  This spell can affect human, demi-human, or humanoid creatures. Affected creatures are unable to move. Duration increases with level of caster.\r\nRESIST FIRE:  Halves damage from fire attacks and improves saving throws versus fire by 3.\r\nRESIST COLD:  Halves damage from cold attacks and improves saving throws versus cold by 3.\r\nSPIRITUAL HAMMER:  Creates temporary magic hammer that can hit monsters which may only be struck by +1 weapons.\r\nCONJURE LESSER AIR ELEMENTAL:  Summon a lesser air elemental to fight on the caster's side in combat. Disappears when spell wears off or after combat.\r\nCONJURE LESSER FIRE ELEMENTAL:  Summons a lesser fire elemental to fight on the caster's side in combat. Disappears when spell wears off or after combat.CONJURE LESSER EARTH ELEMENTAL:  Summons a lesser earth elemental to fight on the caster's side in combat. Disappears when spell wears off or after combat.\r\nCONJURE LESSER WATER ELEMENTAL:  Summons a lesser water elemental to fight on the caster's side in combat. Disappears when spell wears off or after combat.\r\nCURE BLINDNESS OR DEAFNESS:  Counters the effects of cause blindness or deafness.\r\nCAUSE BLINDNESS OR DEAFNESS:  Blinds or deafens one target. Cured by cure blindness or deafness spell.\r\nCURE DISEASE:  Removes the effects of disease caused by some monsters or cause disease spells.\r\nCAUSE DISEASE:  Infects the target with a debilitating ailment that saps strength and hit points.\r\nDISPEL MAGIC:  Removes effects of spells that do not have specific counterspells. This cures characters that have been held or slowed.\r\nMAGICAL VESTMENT:  Gives protection to caster equivalent to AC 5. Spell gains a +1 for every 3 levels above 5th level. Spell not cumulative.\r\nNEGATIVE PLANE PROTECTION:  Recipient is protected from one draining attack from undead monsters.\r\nPRAYER:  Improves THAC0 & saving throws of friendly characters by 1. Weakens the THAC0 & saves of monsters by 1. Not cumulative. Good to cast before combat.\r\nPROTECTION FROM FIRE:  Gives limited protection against fire. The recipient gets a +3 bonus to saves and takes half-damage from fire.\r\nREMOVE CURSE:  Removes the effects of a bestow curse spell.\r\nBESTOW CURSE:  Bestows a -4 penalty to attacks & saves for affected creature. Effect can be reversed with dispel magic or remove curse.\r\nREMOVE PARALYSIS:  This spell negates paralysis-type spells such as hold or slow.\r\nSUMMON INSECTS:  Attracts cloud of insects. Anyone in the cloud takes 4 pts of damage per round, has a +2 AC penalty, and receives a -2 penalty to hit.\r\nABJURE:  Dispels extraplanar creatures back to their own plane. Tanar'ri, elementals, & slaads fall into this category.\r\nBLOOD FLOW:  Heals 2 to 12 pts of damage. If used to injure, the target is stunned for up to 4 rounds.\r\nCLOAK OF BRAVERY:  Recipient gains a +4 bonus to saves versus fear.\r\nCLOAK OF FEAR:  Recipient receives an aura of fear. The first opponent who strikes the affected character must save versus fear or flee.\r\nCONDENSE:  Turns a small pebble into dense matter which may be hurled at a target for 3 to 18 pts of damage.\r\nCURE SERIOUS WOUNDS:  Heals 3 to 17 hit points, up to the recipient's normal maximum.\r\nCAUSE SERIOUS WOUNDS:  Inflicts 3 to 17 pts of damage on a target.\r\nDEHYDRATE:  Target takes 2 to 12 pts of damage plus 1 per level of the caster. Only affects creatures with a circulatory system.\r\nDUST CLOUD:  Obscures enemies' vision and prevents missile weapons from passing through.\r\nFOCUS HEAT:  Inflicts 2 to 12 pts of damage plus 1 per level of the caster.\r\nFREE ACTION:  Allows recipient to negate the effects of spells such as slow, hold person, and web.\r\nNEUTRALIZE POISON:  Detoxifies any sort of poison or venom.\r\nPOISON:  Causes the target to save versus poison or die.\r\nPRODUCE FIRE:  Inflicts 2 to 5 pts of damage on creatures within its area of effect.\r\nPROTECTION FROM EVIL, 10' RADIUS:  Improves AC & saves of target and adjacent friendly characters by 2 against evil attackers. Not cumulative.\r\nPROTECTION FROM LIGHTNING:  Recipient gains a +4 bonus to saves and only takes half-damage from lighting.\r\nCONJURE AIR ELEMENTAL:  Summons an air elemental to fight on the caster's side in combat. Disappears when spell wears off or after combat.\r\nCONJURE FIRE ELEMENTAL:  Summons a fire elemental to fight on the caster's side in combat. Disappears when spell wears off or after combat.CONJURE EARTH ELEMENTAL:  Summons an earth elemental to fight on the caster's side in combat. Disappears when spell wears off or after combat.\r\nCONJURE WATER ELEMENTAL:  Summons a water elemental to fight on the caster's side in combat. Disappears when spell wears off or after combat.\r\nCURE CRITICAL WOUNDS:  Heals 6 to 27 pts of damage up to the target's maximum hit points.\r\nCAUSE CRITICAL WOUNDS:  Inflicts 6 to 27 pts of damage on a target.\r\nDEFLECTION:  Deflects small projectiles; large projectiles remain unaffected by the spell.\r\nDISPEL EVIL:  Improves target's AC by 7 against summoned creatures for the duration of the spell, or until target hits a summoned creature.\r\nFLAME STRIKE:  Creatures failing their saves sustain 6 to 48 pts of damage; otherwise the damage is halved.\r\nINSECT PLAGUE:  Summons a swarm of insects which obscures vision, prevents spellcasting, and inflicts 1 pt of damage per round to creatures within the cloud.\r\nIRONSKIN:  Gives recipient immunity to physical attacks by weapons, fangs, claws, and hurled projectiles. Magic attacks have normal effects. \r\nQUICKSAND:  Anyone passing through the affected area sinks into the quicksand and is held there.\r\nRAISE DEAD:  Can bring one non-elf character back to life. The raised character loses 1 pt of Constitution permanently.\r\nSLAY LIVING:  Kills one target. If the target makes its save it suffers 3 to 17 pts of damage.\r\nWALL OF FIRE:  Creates an immobile curtain of magical fire. Creatures passing through the wall take damage.\r\nDETONATE:  This focused explosion inflicts 1 to 10 pts of damage to any creature within its area of effect.\r\nDISINTEGRATE:  Reduces a creature to microscopic pieces. Target must save versus death magic or be turned to ash.\r\nPROJECT FORCE:  This ranged psychokinetic \"punch\" does 1 to 6 pts of damage, plus the AC of the targeted creature.\r\nBALLISTIC ATTACK:  Allows a character to hurl a small object at high speed which inflicts 1 to 6 pts of damage.\r\nCONTROL BODY:  Allows control of another person's body in combat. The controlled character fights with a -6 penalty on all attack rolls.\r\nINERTIAL BARRIER:  This barrier of \"elastic\" air halves damage from breath weapons, missiles, acid, gas, and ice storms.\r\nANIMAL AFFINITY:  Allows the psionicist to briefly grow claws that inflict 1 to 10 pts of damage. \r\nENERGY CONTAINMENT:  Energy attacks such as electricity, cold, fire, and heat have no effect when psionicist is protected by this spell.\r\nLIFE DRAINING:  Drains up to 6 hit points from another creature and temporarily adds them to the psionicist's total.\r\nABSORB DISEASE:  Allows psionicist to transfer a disease (not curse) from one creature to the psionicist, who can then cure it.\r\nADRENALIN CONTROL: Provides a temporary strength boost of 1 to 6 pts.  \r\nBIOFEEDBACK:  Improves the psionicist's AC by 1 and reduces damage from attacks by 2.\r\nBODY WEAPONRY:  Allows one arm of psionicist to temporarily become a weapon. The weapon is equivalent to a broadsword.\r\nCELL ADJUSTMENT:  Heals wounds and cures diseases.\r\nDISPLACEMENT:  Mimics the power of a displacer beast. This improves the psionicist's AC by 2.\r\nENHANCED STRENGTH:  Allows psionicist to temporarily increase his or her strength to 24.\r\nFLESH ARMOR:  Transforms psionicist's own skin into a random type of armor dependent upon level of psionicist.\r\nGRAFT WEAPON:  Allows psionicist to take the weapon in his or her hand and make it part of the body. Gives a +1 bonus to hit.\r\nLEND HEALTH:  Allows psionicist to transfer hit points to another character. May transfer as long as own minimum level is not exceeded.\r\nSHARE STRENGTH:  Psionicist transfers two strength points to another character for every one received.\r\nDOMINATION:  Allows psionicist to take control of another's mind in combat.\r\nMASS DOMINATION:  Same as domination except up to 5 creatures may be controlled at once.\r\nPSYCHIC CRUSH:  This attack on another's mind causes up to 6 pts of damage.\r\nSUPERIOR INVISIBILITY:  Makes the psionicist nearly undetectable in combat. It is dispelled if the psionicist attacks.\r\nTOWER OF IRON WILL:  Wards the psionicist against unwanted contact by other psionicists. May inititate one other psionic power while thus warded.\r\nEGO WHIP:  Attacks the target's ego, leaving it with feelings of inferiority. Target is stunned for 1 to 4 rounds.\r\nID INSINUATION:  Paralyzes the target for 1 to 4 rounds.\r\nINTELLECT FORTRESS:  All minds within the area of effect are protected against psionic attacks.\r\nMENTAL BARRIER:  Protects the psionicist against other psionic attacks. Psionicist may use other powers while thus protected.\r\nMIND BAR:  Gives Psionicist 75@ magic resistance to mind-affecting spells such as charm and feeblemind.\r\nMIND BLANK:  Protects the psionicist against psionic attacks. Unlike other defensive modes, mind blank costs nothing to maintain.\r\nPSIONIC BLAST:  Tricks an opponent into thinking it has lost 80@ of its hit points. When it loses 20@ it falls unconscious.\r\nSYNAPTIC STATIC:  Interferes with psionic abilities, preventing all (including the one who initiated power) from using psionics until effect ends.\r\nTHOUGHT SHIELD:  Protects psionicist's mind from psionic attacks. May initiate other psionics while thus protected.\r\nRESTORE PSIONIC STRENGTH POINTS\r\nINCREASE STRENGTH\r\nINCREASE DEXTERITY\r\nINCREASE CONSTITUTION\r\nINCREASE INTELLIGENCE\r\nINCREASE WISDOM\r\nINCREASE CHARISMA\r\nTURN UNDEAD:  Allows a priest to turn or destroy undead creatures. May be used once per creature. The higher the priest's level, the greater the effect.",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00063",
+    "source_file": "RESOURCE.GFF",
+    "offset": "0x330CDF",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "Deestan\r\nGarn\r\nDag\r\nHalton\r\nMagramar\r\nHamonde\r\nKhamarr\r\nZertus\r\nAticus\r\nT'Sharr\r\nT'Jun\r\nBorzak\r\nElstar\r\nBalthbeorn\r\nTezral\r\nLanthazar\r\nCromwell\r\nMorbad th'Worst \r\nFinster\r\nUlf\r\nJaardoon\r\nCelos\r\nPethius\r\nShaggy\r\nKiller\r\nRick th'Untamed\r\nCyrus the Great\r\nSwat\r\nJohnBoy\r\nSeanBoy\r\nHookBoldt\r\nMadDog McClure   \r\nKornec\r\nSarthana\r\nShandra\r\nMeggyn\r\nYilballa\r\nRoxpar\r\nRailune\r\nZulak\r\nY'Lar\r\nZontorra\r\nLanthazla\r\nAnathea\r\nSeneca\r\nMistra\r\nAlura\r\nEster\r\nCenna\r\nJenna\r\nBerry\r\nCaron the Sure\r\nT'kir'taap\r\nC'lex'at\r\nFrin'kal'kan\r\nMyk'tyl'gan\r\nMt'z'pk'tlk\r\nClk'whrr\r\nBzz'klkd'ng\r\nDiz'zg'l'spi",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00064",
+    "source_file": "RESOURCE.GFF",
+    "offset": "0x330980",
+    "extraction_method": "bitstream_6bit",
+    "english_dialogue": "cB MF G j iVbH dh MV 2 bhadV t it j bO aN OF r iF cFbN cB MF G j iVbH dh MV 2 bhadV z it j bO aN OF r iF cFbN cB MF G j iVbH dh MV 2 bhadV H it j bM a",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00065",
+    "source_file": "RGN0B.GFF",
+    "offset": "0x017400",
+    "extraction_method": "bitstream_6bit",
+    "english_dialogue": "hV wVd hpJ at p 1bt ela QiV w d hBN an p 0rJ ela NjV Apd itR as p 5bZ fxa ankV y d khV aI p esh eRa aVlV opd jZZ aB p bsx cha 6mV x d iR3 aM p IN fBa ",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00066",
+    "source_file": "RGN0F.GFF",
+    "offset": "0x01C780",
+    "extraction_method": "bitstream_6bit",
+    "english_dialogue": "Up spd m19 x p 8A7 hl a3V zVd noa aN p r7l fVa b2W Apd bsf aQ p I7B fZa c7X A d fIj aR p 0lR fJa 8Yp A d jMn ah p 7B7 b7a FZp zFd hQr aP p 8ml dVa a 0",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00067",
+    "source_file": "RGN14.GFF",
+    "offset": "0x017C00",
+    "extraction_method": "bitstream_6bit",
+    "english_dialogue": "yV zpd ciO aP p MfN eFa cZzV o d caS aA p H13 eha cCAV Apd dOW aR p SMh f7a KC A d ie0 an p 22x ela XD w d h44 X p VgN eVa BE spd fK8 am p SM3 ela iF ",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00068",
+    "source_file": "RGN26.GFF",
+    "offset": "0x01B380",
+    "extraction_method": "bitstream_6bit",
+    "english_dialogue": "YF w d iAo aA p 7C fBa axZF uFd j6s aS p f8t f3a bi0F wFd nEw aT p uCJ f7a cd1F rpd 2B at p xCZ fRa cl2F A d cIF aU p O9d dpa cQ3F x d dUJ ap p L9t fx",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00069",
+    "source_file": "RGNFF.GFF",
+    "offset": "0x01D780",
+    "extraction_method": "bitstream_6bit",
+    "english_dialogue": "y d mDG aO p pjl f7a bUO zFd aLL aI p EjB fVa cNP yVd d9P aN p S5R eNa qQp Apd g5T aR p 5P7 fJa asRp Apd lbX aK p iAp f7a btSp Apd f2 aT p A6F fZa cBT",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00070",
+    "source_file": "SEGOBJEX.GFF",
+    "offset": "0x4CFC80",
+    "extraction_method": "bitstream_6bit",
+    "english_dialogue": "F aVho cNh aF F tpNo bda aG F FFRo jN aH F o Vo b3c aI F DF7o mVb aJ F PWxo bBT aK F WZto mV aL F RZxo ohe aM F StVo fBc aN F ke o kNF aO F J2do bZg a",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00071",
+    "source_file": "SOUND.BAT",
+    "offset": "0x000000",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "@echo off\r\n\r\nrem Darksun, The Shattered Lands...\r\nrem\r\nrem This is the audio installer batch file shell to install the TSR's for\r\nrem the General Midi sound cards that require TSR's\r\n\r\nrem Detect card\r\n\r\n@echo off\r\n\r\nIF \"%ULTRADIR%\"==\"\" goto CHECK_ARIA\r\nGOTO GRAVIS\r\n\r\n:CHECK_ARIA\r\nIF \"%ARIA%\"==\"\" goto NO_TSR\r\ngoto ARIA\r\n\r\nrem Detect the Gravis Software Revision and Install the Gravis TSR\r\n\r\n:GRAVIS\r\n\r\nIF NOT EXIST %ULTRADIR%\\midi\\ACPIANO.PAT GOTO OLD_REVISION\r\n\r\nIF EXIST %ULTRADIR%\\midi\\HONKY.PAT GOTO V206A\r\n\r\ncopy UM200.ini ssi1.ini  > NUL\r\nif not exist ssi1.ini goto G_BADCOPY\r\n\r\nGOTO G_INS_TSR\r\n\r\n:V206A\r\nIF NOT EXIST %ULTRADIR%\\midi\\TREMSTR.PAT GOTO V206\r\nIF NOT EXIST %ULTRADIR%\\midi\\CHARANG.PAT GOTO V206\r\nIF NOT EXIST %ULTRADIR%\\midi\\ECHOVOX.PAT GOTO V206\r\n\r\ncopy UM206A.INI ssi1.ini  > NUL\r\nif not exist ssi1.ini goto G_BADCOPY\r\ngoto G_INS_TSR\r\n\r\n:V206\r\n\r\ncopy UM206.INI ssi1.ini > NUL\r\nif not exist ssi1.ini goto G_BADCOPY\r\ngoto G_INS_TSR\r\n\r\n:G_BADCOPY\r\ncls\r\necho",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00072",
+    "source_file": "SOUND.BAT",
+    "offset": "0x000762",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "ERROR: UltraMID TSR is not Supported by Revisions",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00073",
+    "source_file": "SOUND.BAT",
+    "offset": "0x0007A0",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "of the Gravis Software Less Then 2.00",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00074",
+    "source_file": "SOUND.BAT",
+    "offset": "0x00081C",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "Contact Gravis to Obtain an Update of",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00075",
+    "source_file": "SSI1.INI",
+    "offset": "0x000000",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "#Purpose: Different size patch libraries for different memory sizes.\r\n#         The libraries are built in such a way as to leave 8K+32bytes\r\n#         after the patches are loaded for digital audio.\r\n#\r\n#Revision History: 06/22/93 - Fixed problem with 512K patch library\r\n#\r\n#\r\n#Explanation of Columns: Patch #  256K  512K  768K  1024K  Patch Name\r\n#\r\n0, 2, 1, 1, 1, acpiano\r\n1, 2, 1, 1, 1, britepno\r\n2, 2, 1, 1, 1, synpiano\r\n3, 2, 1, 1, 1, honky\r\n4, 2, 1, 1, 4, epiano1\r\n5, 2, 1, 1, 4, epiano2\r\n6, 2, 1, 1, 1, hrpschrd\r\n7, 2, 1, 1, 1, clavinet\r\n8, 12, 12, 12, 12, celeste\r\n9, 12, 12, 12, 12, glocken\r\n10, 12, 12, 12, 12, musicbox\r\n11, 12, 12, 12, 12, vibes\r\n12, 12, 12, 12, 12, marimba\r\n13, 12, 12, 8, 8, xylophon\r\n14, 12, 12, 8, 8, tubebell\r\n15, 12, 12, 8, 8, santur\r\n16, 2, 16, 16, 16, homeorg\r\n17, 2, 16, 16, 16, percorg\r\n18, 2, 16, 16, 16, rockorg\r\n19, 2, 16, 16, 16, church\r\n20, 2, 16, 16, 16, reedorg\r\n21, 2, 16, 16, 16, accordn\r\n22, 2, 16, 16, 16, harmonca\r\n23, 2, 16, 16, 16, concrtna\r\n24, 24, 24, 24, 24, nyguitar\r\n25, 24, 24, 24, 24, acguitar\r\n26, 24, 24, 24, 24, jazzgtr\r\n27, 24, 24, 24, 27, cleangtr\r\n28, 24, 24, 24, 24, mutegtr\r\n29, 29, 29, 29, 29, odguitar\r\n30, 29, 30, 30, 30, distgtr\r\n31, 29, 30, 30, 31, gtrharm\r\n32, 39, 32, 32, 32, acbass\r\n33, 39, 32, 32, 32, fngrbass\r\n34, 39, 32, 32, 34, pickbass\r\n35, 39, 32, 32, 32, fretless\r\n36, 39, 36, 36, 36, slapbas1\r\n37, 39, 36, 36, 36, slapbas2\r\n38, 39, 36, 36, 32, synbass1\r\n39, 39, 36, 36, 32, synbass2\r\n40, 40, 40, 40, 40, violin\r\n41, 40, 40, 40, 40, viola\r\n42, 40, 42, 42, 42, cello\r\n43, 40, 40, 40, 40, contraba\r\n44, 40, 40, 40, 40, marcato\r\n45, 40, 40, 40, 45, pizzcato\r\n46, 24, 24, 46, 46, harp\r\n47, 47, 47, 47, 47, timpani\r\n48, 51, 51, 48, 48, marcato\r\n49, 51, 51, 49, 48, slowstr\r\n50, 51, 51, 48, 48, synstr1\r\n51, 51, 51, 48, 48, synstr2\r\n52, 52, 52, 52, 52, choir\r\n53, 52, 52, 52, 52, doo\r\n54, 52, 52, 52, 54, voices\r\n55, 128, 128, 55, 55, orchhit\r\n56, 56, 56, 56, 56, trumpet\r\n57, 56, 56, 56, 56, trombone\r\n58, 56, 56, 56, 58, tuba\r\n59, 56, 56, 56, 56, mutetrum\r\n60, 56, 56, 56, 56, frenchrn\r\n61, 56, 56, 56, 56, hitbrass\r\n62, 56, 56, 56, 56, synbras1\r\n63, 56, 56, 56, 56, synbras2\r\n64, 66, 66, 64, 65, sprnosax\r\n65, 66, 66, 66, 66, altosax\r\n66, 66, 66, 66, 66, tenorsax\r\n67, 66, 66, 66, 66, barisax\r\n68, 68, 69, 69, 69, oboe\r\n69, 68, 69, 69, 69, englhorn\r\n70, 68, 69, 69, 70, bassoon\r\n71, 68, 69, 69, 71, clarinet\r\n72, 73, 73, 73, 73, piccolo\r\n73, 73, 73, 73, 73, flute\r\n74, 73, 73, 73, 73, recorder\r\n75, 73, 73, 73, 75, woodflut\r\n76, 73, 73, 73, 75, bottle\r\n77, 73, 77, 77, 77, shakazul\r\n78, 73, 73, 73, 73, whistle\r\n79, 73, 73, 73, 73, ocarina\r\n80, 29, 29, 29, 29, sqrwave\r\n81, 29, 29, 29, 29, sawwave\r\n82, 79, 79, 29, 82, calliope\r\n83, 79, 79, 29, 29, chiflead\r\n84, 79, 79, 29, 29, charang\r\n85, 52, 52, 29, 85, voxlead\r\n86, 52, 52, 29, 86, lead5th\r\n87, 52, 52, 29, 34, basslead\r\n88, 52, 52, 88, 88, fantasia\r\n89, 52, 52, 29, 89, warmpad\r\n90, 52, 52, 29, 89, polysyn\r\n91, 52, 52, 29, 89, ghostie\r\n92, 52, 52, 29, 89, bowglass\r\n93, 52, 52, 29, 89, metalpad\r\n94, 52, 52, 29, 89, halopad\r\n95, 52, 52, 29, 89, sweeper\r\n96, 52, 52, 96, 89, aurora\r\n97, 52, 52, 52, 89, soundtrk\r\n98, 52, 52, 52, 89, crystal\r\n99, 52, 52, 52, 89, atmosphr\r\n100, 52, 52, 52, 89, freshair\r\n101, 52, 52, 52, 89, unicorn\r\n102, 86, 102, 102, 89, ghostie\r\n103, 86, 102, 102, 89, startrak\r\n104, 86, 102, 102, 104, sitar\r\n105, 24, 105, 105, 105, banjo\r\n106, 24, 105, 105, 105, shamisen\r\n107, 24, 105, 105, 105, koto\r\n108, 115, 115, 115, 115, kalimba\r\n109, 24, 69, 105, 109, bagpipes\r\n110, 24, 42, 42, 42, fiddle\r\n111, 24, 105, 105, 105, shannai\r\n112, 114, 114, 112, 112, carillon\r\n113, 114, 114, 112, 112, agogo\r\n114, 114, 114, 114, 114, steeldrm\r\n115, 115, 115, 115, 115, woodblk\r\n116, 117, 117, 117, 117, taiko\r\n117, 115, 117, 117, 117, toms\r\n118, 117, 117, 117, 117, syntom\r\n119, 128, 128, 128, 128, revcym\r\n120, 128, 128, 128, 128, fx-fret\r\n121, 128, 128, 128, 128, fx-blow\r\n122, 128, 128, 128, 122, seashore\r\n123, 128, 128, 128, 128, jungle\r\n124, 128, 128, 128, 128, telephon\r\n125, 128, 128, 128, 128, helicptr\r\n126, 128, 128, 126, 126, applause\r\n127, 128, 128, 128, 128, ringwhsl\r\n128, 128, 128, 128, 128, blank\r\n155, 128, 128, 128, 128, highq\r\n156, 128, 128, 128, 128, slap\r\n157, 128, 128, 128, 157, scratch1\r\n158, 128, 128, 128, 158, scratch2\r\n159, 159, 159, 159, 159, sticks\r\n160, 128, 128, 128, 160, sqrclick\r\n161, 128, 128, 128, 160, metclick\r\n162, 128, 128, 128, 128, metbell\r\n163, 163, 163, 163, 163, kick1\r\n164, 164, 164, 164, 164, kick2\r\n165, 165, 165, 165, 165, stickrim\r\n166, 166, 166, 166, 166, snare1\r\n167, 167, 167, 167, 167, claps\r\n168, 168, 168, 168, 168, snare2\r\n169, 171, 169, 169, 169, tomlo2\r\n170, 170, 170, 170, 170, hihatcl\r\n171, 171, 171, 171, 171, tomlo1\r\n172, 172, 172, 172, 172, hihatpd\r\n173, 175, 173, 173, 173, tommid2\r\n174, 174, 174, 174, 174, hihatop\r\n175, 175, 175, 175, 175, tommid1\r\n176, 178, 176, 176, 176, tomhi2\r\n177, 181, 177, 177, 177, cymcrsh1\r\n178, 178, 178, 178, 178, tomhi1\r\n179, 181, 177, 177, 177, cymride1\r\n180, 181, 177, 177, 177, cymchina\r\n181, 181, 177, 177, 177, cymbell\r\n182, 182, 182, 182, 182, tamborin\r\n183, 181, 177, 177, 177, cymsplsh\r\n184, 128, 128, 128, 128, cowbell\r\n185, 181, 177, 177, 177, cymcrsh2\r\n186, 128, 128, 128, 128, vibslap\r\n187, 181, 177, 177, 177, cymride2\r\n188, 178, 188, 188, 188, bongohi\r\n189, 175, 189, 189, 189, bongolo\r\n190, 175, 190, 190, 190, congahi1\r\n191, 175, 191, 191, 191, congahi2\r\n192, 171, 191, 191, 191, congalo\r\n193, 128, 128, 128, 128, timbaleh\r\n194, 128, 128, 128, 128, timbalel\r\n195, 128, 128, 128, 128, agogohi\r\n196, 128, 128, 128, 128, agogolo\r\n197, 128, 128, 128, 128, cabasa\r\n198, 128, 198, 198, 198, maracas\r\n199, 128, 128, 128, 128, whistle1\r\n200, 128, 128, 128, 128, whistle2\r\n201, 128, 128, 128, 128, guiro1\r\n202, 128, 128, 128, 128, guiro2\r\n203, 128, 128, 128, 128, clave\r\n204, 128, 204, 204, 204, woodblk1\r\n205, 128, 205, 205, 205, woodblk2\r\n206, 128, 128, 128, 128, cuica1\r\n207, 128, 128, 128, 128, cuica2\r\n208, 128, 128, 128, 128, triangl1\r\n209, 128, 128, 128, 128, triangl2\r\n210, 128, 128, 128, 128, shaker\r\n211, 128, 128, 128, 128, jingles\r\n212, 128, 128, 128, 128, belltree\r\n213, 128, 128, 128, 128, castinet\r\n214, 128, 128, 128, 128, surdo1\r\n215, 128, 128, 128, 128, surdo2",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00076",
+    "source_file": "ULTRAMID.EXE",
+    "offset": "0x00778F",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "configuration file not in $(ULTRADIR)/midi directory",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00077",
+    "source_file": "ULTRAMID.EXE",
+    "offset": "0x0077C6",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "out of ultramid dynamic memory",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00078",
+    "source_file": "ULTRAMID.EXE",
+    "offset": "0x007B84",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "Can't unload OS.  Not loaded",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00079",
+    "source_file": "ULTRAMID.EXE",
+    "offset": "0x007BA1",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "No more memory available on UltraSound card",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00080",
+    "source_file": "ULTRAMID.EXE",
+    "offset": "0x007BFA",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "No response from DMA channel",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00081",
+    "source_file": "ULTRAMID.EXE",
+    "offset": "0x007C7F",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "Timer value must be 1 or 2",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00082",
+    "source_file": "UM200.INI",
+    "offset": "0x000000",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "#Purpose: Different size patch libraries for different memory sizes.\r\n#         The libraries are built in such a way as to leave 8K+32bytes\r\n#         after the patches are loaded for digital audio.\r\n#\r\n#Revision History: 06/22/93 - Fixed problem with 512K patch library\r\n#                  07/26/93 - patch names changed in various releases\r\n#\r\n#\r\n#Explanation of Columns: Patch #  256K  512K  768K  1024K  Patch Name\r\n#\r\n0, 2, 1, 1, 1, acpiano\r\n1, 2, 1, 1, 1, britepno\r\n2, 2, 1, 1, 1, synpiano\r\n3, 2, 1, 1, 1, honktonk\r\n4, 2, 1, 1, 4, epiano1\r\n5, 2, 1, 1, 4, epiano2\r\n6, 2, 1, 1, 1, hrpschrd\r\n7, 2, 1, 1, 1, clavinet\r\n8, 12, 12, 12, 12, celeste\r\n9, 12, 12, 12, 12, glocken\r\n10, 12, 12, 12, 12, musicbox\r\n11, 12, 12, 12, 12, vibes\r\n12, 12, 12, 12, 12, marimba\r\n13, 12, 12, 12, 12, xylophon\r\n14, 12, 12, 12, 12, tubebell\r\n15, 12, 12, 12, 12, santur\r\n16, 2, 16, 16, 19, homeorg\r\n17, 2, 16, 16, 19, percorg\r\n18, 2, 16, 16, 19, rockorg\r\n19, 2, 16, 16, 19, church\r\n20, 2, 16, 16, 19, reedorg\r\n21, 2, 16, 16, 19, accordn\r\n22, 2, 16, 16, 19, harmonca\r\n23, 2, 16, 16, 19, concrtna\r\n24, 24, 24, 24, 24, nyguitar\r\n25, 24, 24, 24, 24, acguitar\r\n26, 24, 24, 24, 24, jazzgtr\r\n27, 24, 24, 24, 27, cleangtr\r\n28, 24, 24, 24, 24, mutegtr\r\n29, 29, 29, 29, 29, odguitar\r\n30, 29, 30, 30, 30, distgtr\r\n31, 29, 30, 30, 31, gtrharm\r\n32, 39, 32, 32, 32, acbass\r\n33, 39, 32, 32, 32, fngrbass\r\n34, 39, 32, 32, 34, pickbass\r\n35, 39, 32, 32, 32, fretless\r\n36, 39, 36, 36, 36, slapbas1\r\n37, 39, 36, 36, 36, slapbas2\r\n38, 39, 36, 36, 32, synbass1\r\n39, 39, 36, 36, 32, synbass2\r\n40, 40, 40, 40, 40, violin\r\n41, 40, 40, 40, 40, viola\r\n42, 40, 42, 42, 42, cello\r\n43, 40, 40, 40, 40, contraba\r\n44, 40, 40, 40, 40, marcato\r\n45, 40, 40, 40, 45, pizzcato\r\n46, 24, 24, 46, 46, harp\r\n47, 47, 47, 47, 47, timpani\r\n48, 51, 51, 48, 48, marcato\r\n49, 51, 51, 49, 48, slowstr\r\n50, 51, 51, 48, 48, synstr1\r\n51, 51, 51, 48, 48, synstr2\r\n52, 52, 52, 52, 52, choir\r\n53, 52, 52, 52, 52, doo\r\n54, 52, 52, 52, 54, voices\r\n55, 128, 128, 55, 55, orchhit\r\n56, 56, 56, 56, 56, trumpet\r\n57, 56, 56, 56, 56, trombone\r\n58, 56, 56, 56, 58, tuba\r\n59, 56, 56, 56, 56, mutetrum\r\n60, 56, 56, 56, 56, frenchrn\r\n61, 56, 56, 56, 56, hitbrass\r\n62, 56, 56, 56, 56, synbras1\r\n63, 56, 56, 56, 56, synbras2\r\n64, 66, 66, 64, 64, sprnosax\r\n65, 66, 66, 66, 66, altosax\r\n66, 66, 66, 66, 66, tenorsax\r\n67, 66, 66, 66, 66, barisax\r\n68, 68, 69, 69, 69, oboe\r\n69, 68, 69, 69, 69, englhorn\r\n70, 68, 69, 69, 70, bassoon\r\n71, 68, 69, 69, 71, clarinet\r\n72, 73, 73, 73, 73, piccolo\r\n73, 73, 73, 73, 73, flute\r\n74, 73, 73, 73, 73, recorder\r\n75, 73, 73, 73, 75, woodflut\r\n76, 73, 73, 73, 75, bottle\r\n77, 73, 77, 77, 77, shakazul\r\n78, 73, 73, 73, 73, whistle\r\n79, 73, 73, 73, 73, ocarina\r\n80, 29, 29, 29, 29, sqrwave\r\n81, 29, 29, 29, 29, sawwave\r\n82, 73, 73, 29, 82, calliope\r\n83, 73, 73, 29, 29, chiflead\r\n84, 29, 29, 29, 29, voxlead\r\n85, 52, 52, 29, 85, voxlead\r\n86, 52, 52, 29, 86, lead5th\r\n87, 52, 52, 29, 34, basslead\r\n88, 52, 52, 88, 88, fantasia\r\n89, 52, 52, 29, 89, warmpad\r\n90, 52, 52, 29, 89, polysyn\r\n91, 52, 52, 29, 89, ghostie\r\n92, 52, 52, 29, 89, bowglass\r\n93, 52, 52, 29, 89, metalpad\r\n94, 52, 52, 29, 89, halopad\r\n95, 52, 52, 29, 89, sweeper\r\n96, 52, 52, 96, 89, aurora\r\n97, 52, 52, 52, 89, soundtrk\r\n98, 52, 52, 52, 89, crystal\r\n99, 52, 52, 52, 89, atmosphr\r\n100, 52, 52, 52, 89, freshair\r\n101, 52, 52, 52, 89, unicorn\r\n102, 52, 102, 102, 89, ghostie\r\n103, 52, 102, 102, 89, startrak\r\n104, 24, 102, 102, 104, sitar\r\n105, 24, 105, 105, 105, banjo\r\n106, 24, 105, 105, 105, shamisen\r\n107, 24, 105, 105, 105, koto\r\n108, 115, 115, 115, 115, kalimba\r\n109, 24, 69, 105, 109, bagpipes\r\n110, 24, 42, 42, 42, fiddle\r\n111, 24, 105, 105, 105, shannai\r\n112, 114, 114, 112, 112, carillon\r\n113, 114, 114, 112, 112, agogo\r\n114, 114, 114, 114, 114, steeldrm\r\n115, 115, 115, 115, 115, woodblk\r\n116, 115, 117, 117, 117, taiko\r\n117, 115, 117, 117, 117, toms\r\n118, 115, 117, 117, 117, syntom\r\n119, 128, 128, 128, 128, revcym\r\n120, 128, 128, 128, 128, fx-fret\r\n121, 128, 128, 128, 128, fx-blow\r\n122, 128, 128, 128, 122, seashore\r\n123, 128, 128, 128, 128, jungle\r\n124, 128, 128, 128, 128, telephon\r\n125, 128, 128, 128, 128, helicptr\r\n126, 128, 128, 126, 126, applause\r\n127, 128, 128, 128, 128, ringwhsl\r\n128, 128, 128, 128, 128, blank\r\n155, 128, 128, 128, 128, highq\r\n156, 128, 128, 128, 128, slap\r\n157, 128, 128, 128, 157, scratch1\r\n158, 128, 128, 128, 158, scratch2\r\n159, 159, 159, 159, 159, sticks\r\n160, 128, 128, 128, 160, sqrclick\r\n161, 128, 128, 128, 160, metclick\r\n162, 128, 128, 128, 128, metbell\r\n163, 163, 163, 163, 163, kick1\r\n164, 164, 164, 164, 164, kick2\r\n165, 165, 165, 165, 165, stickrim\r\n166, 166, 166, 166, 166, snare1\r\n167, 167, 167, 167, 167, claps\r\n168, 168, 168, 168, 168, snare2\r\n169, 171, 169, 169, 169, tomlo2\r\n170, 170, 170, 170, 170, hihatcl\r\n171, 171, 171, 171, 171, tomlo1\r\n172, 172, 172, 172, 172, hihatpd\r\n173, 175, 173, 173, 173, tommid2\r\n174, 174, 174, 174, 174, hihatop\r\n175, 175, 175, 175, 175, tommid1\r\n176, 178, 176, 176, 176, tomhi2\r\n177, 181, 177, 177, 177, cymcrsh1\r\n178, 178, 178, 178, 178, tomhi1\r\n179, 181, 177, 177, 177, cymride1\r\n180, 181, 177, 177, 180, cymchina\r\n181, 181, 177, 177, 181, cymbell\r\n182, 182, 182, 182, 182, tamborin\r\n183, 181, 177, 177, 177, cymsplsh\r\n184, 128, 128, 128, 128, cowbell\r\n185, 181, 177, 177, 177, cymcrsh2\r\n186, 128, 128, 128, 128, vibslap\r\n187, 181, 177, 177, 177, cymride2\r\n188, 178, 188, 188, 188, bongohi\r\n189, 175, 189, 189, 189, bongolo\r\n190, 175, 190, 190, 190, congahi1\r\n191, 175, 191, 191, 191, congahi2\r\n192, 171, 191, 191, 192, congalo\r\n193, 128, 128, 128, 193, timbaleh\r\n194, 128, 128, 128, 194, timbalel\r\n195, 128, 128, 128, 195, agogohi\r\n196, 128, 128, 128, 196, agogolo\r\n197, 128, 128, 128, 128, cabasa\r\n198, 128, 198, 198, 198, maracas\r\n199, 128, 128, 128, 128, whistle1\r\n200, 128, 128, 128, 128, whistle2\r\n201, 128, 128, 128, 128, guiro1\r\n202, 128, 128, 128, 128, guiro2\r\n203, 128, 128, 128, 128, clave\r\n204, 128, 204, 204, 204, woodblk1\r\n205, 128, 205, 205, 205, woodblk2\r\n206, 128, 128, 128, 206, cuica1\r\n207, 128, 128, 128, 207, cuica2\r\n208, 128, 128, 128, 208, triangl1\r\n209, 128, 128, 128, 209, triangl2\r\n210, 128, 128, 128, 128, shaker\r\n211, 128, 128, 128, 128, jingles\r\n212, 128, 128, 128, 128, belltree\r\n213, 128, 128, 128, 128, castinet\r\n214, 128, 128, 128, 128, surdo1\r\n215, 128, 128, 128, 128, surdo2",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00083",
+    "source_file": "UM206.INI",
+    "offset": "0x000000",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "#Purpose: Different size patch libraries for different memory sizes.\r\n#         The libraries are built in such a way as to leave 8K+32bytes\r\n#         after the patches are loaded for digital audio.\r\n#\r\n#Revision History: 06/22/93 - Fixed problem with 512K patch library\r\n#                  07/26/93 - patch names changed in various releases\r\n#\r\n#\r\n#Explanation of Columns: Patch #  256K  512K  768K  1024K  Patch Name\r\n#\r\n0, 2, 1, 1, 1, acpiano\r\n1, 2, 1, 1, 1, britepno\r\n2, 2, 1, 1, 1, synpiano\r\n3, 2, 1, 1, 1, honky\r\n4, 2, 1, 1, 4, epiano1\r\n5, 2, 1, 1, 4, epiano2\r\n6, 2, 1, 1, 1, hrpschrd\r\n7, 2, 1, 1, 1, clavinet\r\n8, 12, 12, 12, 12, celeste\r\n9, 12, 12, 12, 12, glocken\r\n10, 12, 12, 12, 12, musicbox\r\n11, 12, 12, 12, 12, vibes\r\n12, 12, 12, 12, 12, marimba\r\n13, 12, 12, 12, 12, xylophon\r\n14, 12, 12, 12, 12, tubebell\r\n15, 12, 12, 12, 12, santur\r\n16, 2, 16, 16, 19, homeorg\r\n17, 2, 16, 16, 19, percorg\r\n18, 2, 16, 16, 19, rockorg\r\n19, 2, 16, 16, 19, church\r\n20, 2, 16, 16, 19, reedorg\r\n21, 2, 16, 16, 19, accordn\r\n22, 2, 16, 16, 19, harmonca\r\n23, 2, 16, 16, 19, concrtna\r\n24, 24, 24, 24, 24, nyguitar\r\n25, 24, 24, 24, 24, acguitar\r\n26, 24, 24, 24, 24, jazzgtr\r\n27, 24, 24, 24, 27, cleangtr\r\n28, 24, 24, 24, 24, mutegtr\r\n29, 29, 29, 29, 29, odguitar\r\n30, 29, 30, 30, 30, distgtr\r\n31, 29, 30, 30, 31, gtrharm\r\n32, 39, 32, 32, 32, acbass\r\n33, 39, 32, 32, 32, fngrbass\r\n34, 39, 32, 32, 34, pickbass\r\n35, 39, 32, 32, 32, fretless\r\n36, 39, 36, 36, 36, slapbas1\r\n37, 39, 36, 36, 36, slapbas2\r\n38, 39, 36, 36, 32, synbass1\r\n39, 39, 36, 36, 32, synbass2\r\n40, 40, 40, 40, 40, violin\r\n41, 40, 40, 40, 40, viola\r\n42, 40, 42, 42, 42, cello\r\n43, 40, 40, 40, 40, contraba\r\n44, 40, 40, 40, 40, marcato\r\n45, 40, 40, 40, 45, pizzcato\r\n46, 24, 24, 46, 46, harp\r\n47, 47, 47, 47, 47, timpani\r\n48, 51, 51, 48, 48, marcato\r\n49, 51, 51, 49, 48, slowstr\r\n50, 51, 51, 48, 48, synstr1\r\n51, 51, 51, 48, 48, synstr2\r\n52, 52, 52, 52, 52, choir\r\n53, 52, 52, 52, 52, doo\r\n54, 52, 52, 52, 54, voices\r\n55, 128, 128, 55, 55, orchhit\r\n56, 56, 56, 56, 56, trumpet\r\n57, 56, 56, 56, 56, trombone\r\n58, 56, 56, 56, 58, tuba\r\n59, 56, 56, 56, 56, mutetrum\r\n60, 56, 56, 56, 56, frenchrn\r\n61, 56, 56, 56, 56, hitbrass\r\n62, 56, 56, 56, 56, synbras1\r\n63, 56, 56, 56, 56, synbras2\r\n64, 66, 66, 64, 64, sprnosax\r\n65, 66, 66, 66, 66, altosax\r\n66, 66, 66, 66, 66, tenorsax\r\n67, 66, 66, 66, 66, barisax\r\n68, 68, 69, 69, 69, oboe\r\n69, 68, 69, 69, 69, englhorn\r\n70, 68, 69, 69, 70, bassoon\r\n71, 68, 69, 69, 71, clarinet\r\n72, 73, 73, 73, 73, piccolo\r\n73, 73, 73, 73, 73, flute\r\n74, 73, 73, 73, 73, recorder\r\n75, 73, 73, 73, 75, woodflut\r\n76, 73, 73, 73, 75, bottle\r\n77, 73, 77, 77, 77, shakazul\r\n78, 73, 73, 73, 73, whistle\r\n79, 73, 73, 73, 73, ocarina\r\n80, 29, 29, 29, 29, sqrwave\r\n81, 29, 29, 29, 29, sawwave\r\n82, 73, 73, 29, 82, calliope\r\n83, 73, 73, 29, 29, chiflead\r\n84, 29, 29, 29, 29, voxlead\r\n85, 52, 52, 29, 85, voxlead\r\n86, 52, 52, 29, 86, lead5th\r\n87, 52, 52, 29, 34, basslead\r\n88, 52, 52, 88, 88, fantasia\r\n89, 52, 52, 29, 89, warmpad\r\n90, 52, 52, 29, 89, polysyn\r\n91, 52, 52, 29, 89, ghostie\r\n92, 52, 52, 29, 89, bowglass\r\n93, 52, 52, 29, 89, metalpad\r\n94, 52, 52, 29, 89, halopad\r\n95, 52, 52, 29, 89, sweeper\r\n96, 52, 52, 96, 89, aurora\r\n97, 52, 52, 52, 89, soundtrk\r\n98, 52, 52, 52, 89, crystal\r\n99, 52, 52, 52, 89, atmosphr\r\n100, 52, 52, 52, 89, freshair\r\n101, 52, 52, 52, 89, unicorn\r\n102, 52, 102, 102, 89, ghostie\r\n103, 52, 102, 102, 89, startrak\r\n104, 24, 102, 102, 104, sitar\r\n105, 24, 105, 105, 105, banjo\r\n106, 24, 105, 105, 105, shamisen\r\n107, 24, 105, 105, 105, koto\r\n108, 115, 115, 115, 115, kalimba\r\n109, 24, 69, 105, 109, bagpipes\r\n110, 24, 42, 42, 42, fiddle\r\n111, 24, 105, 105, 105, shannai\r\n112, 114, 114, 112, 112, carillon\r\n113, 114, 114, 112, 112, agogo\r\n114, 114, 114, 114, 114, steeldrm\r\n115, 115, 115, 115, 115, woodblk\r\n116, 115, 117, 117, 117, taiko\r\n117, 115, 117, 117, 117, toms\r\n118, 115, 117, 117, 117, syntom\r\n119, 128, 128, 128, 128, revcym\r\n120, 128, 128, 128, 128, fx-fret\r\n121, 128, 128, 128, 128, fx-blow\r\n122, 128, 128, 128, 122, seashore\r\n123, 128, 128, 128, 128, jungle\r\n124, 128, 128, 128, 128, telephon\r\n125, 128, 128, 128, 128, helicptr\r\n126, 128, 128, 126, 126, applause\r\n127, 128, 128, 128, 128, ringwhsl\r\n128, 128, 128, 128, 128, blank\r\n155, 128, 128, 128, 128, highq\r\n156, 128, 128, 128, 128, slap\r\n157, 128, 128, 128, 157, scratch1\r\n158, 128, 128, 128, 158, scratch2\r\n159, 159, 159, 159, 159, sticks\r\n160, 128, 128, 128, 160, sqrclick\r\n161, 128, 128, 128, 160, metclick\r\n162, 128, 128, 128, 128, metbell\r\n163, 163, 163, 163, 163, kick1\r\n164, 164, 164, 164, 164, kick2\r\n165, 165, 165, 165, 165, stickrim\r\n166, 166, 166, 166, 166, snare1\r\n167, 167, 167, 167, 167, claps\r\n168, 168, 168, 168, 168, snare2\r\n169, 171, 169, 169, 169, tomlo2\r\n170, 170, 170, 170, 170, hihatcl\r\n171, 171, 171, 171, 171, tomlo1\r\n172, 172, 172, 172, 172, hihatpd\r\n173, 175, 173, 173, 173, tommid2\r\n174, 174, 174, 174, 174, hihatop\r\n175, 175, 175, 175, 175, tommid1\r\n176, 178, 176, 176, 176, tomhi2\r\n177, 181, 177, 177, 177, cymcrsh1\r\n178, 178, 178, 178, 178, tomhi1\r\n179, 181, 177, 177, 177, cymride1\r\n180, 181, 177, 177, 180, cymchina\r\n181, 181, 177, 177, 181, cymbell\r\n182, 182, 182, 182, 182, tamborin\r\n183, 181, 177, 177, 177, cymsplsh\r\n184, 128, 128, 128, 128, cowbell\r\n185, 181, 177, 177, 177, cymcrsh2\r\n186, 128, 128, 128, 128, vibslap\r\n187, 181, 177, 177, 177, cymride2\r\n188, 178, 188, 188, 188, bongohi\r\n189, 175, 189, 189, 189, bongolo\r\n190, 175, 190, 190, 190, congahi1\r\n191, 175, 191, 191, 191, congahi2\r\n192, 171, 191, 191, 192, congalo\r\n193, 128, 128, 128, 193, timbaleh\r\n194, 128, 128, 128, 194, timbalel\r\n195, 128, 128, 128, 195, agogohi\r\n196, 128, 128, 128, 196, agogolo\r\n197, 128, 128, 128, 128, cabasa\r\n198, 128, 198, 198, 198, maracas\r\n199, 128, 128, 128, 128, whistle1\r\n200, 128, 128, 128, 128, whistle2\r\n201, 128, 128, 128, 128, guiro1\r\n202, 128, 128, 128, 128, guiro2\r\n203, 128, 128, 128, 128, clave\r\n204, 128, 204, 204, 204, woodblk1\r\n205, 128, 205, 205, 205, woodblk2\r\n206, 128, 128, 128, 206, cuica1\r\n207, 128, 128, 128, 207, cuica2\r\n208, 128, 128, 128, 208, triangl1\r\n209, 128, 128, 128, 209, triangl2\r\n210, 128, 128, 128, 128, shaker\r\n211, 128, 128, 128, 128, jingles\r\n212, 128, 128, 128, 128, belltree\r\n213, 128, 128, 128, 128, castinet\r\n214, 128, 128, 128, 128, surdo1\r\n215, 128, 128, 128, 128, surdo2",
+    "traditional_chinese": ""
+  },
+  {
+    "id": "NPC_DLG_00084",
+    "source_file": "UM206A.INI",
+    "offset": "0x000000",
+    "extraction_method": "direct_ascii",
+    "english_dialogue": "#Purpose: Different size patch libraries for different memory sizes.\r\n#         The libraries are built in such a way as to leave 8K+32bytes\r\n#         after the patches are loaded for digital audio.\r\n#\r\n#Revision History: 06/22/93 - Fixed problem with 512K patch library\r\n#                  07/26/93 - patch names changed in various releases\r\n#\r\n#\r\n#Explanation of Columns: Patch #  256K  512K  768K  1024K  Patch Name\r\n#\r\n0, 2, 1, 1, 1, acpiano\r\n1, 2, 1, 1, 1, britepno\r\n2, 2, 1, 1, 1, synpiano\r\n3, 2, 1, 1, 1, honky\r\n4, 2, 1, 1, 4, epiano1\r\n5, 2, 1, 1, 4, epiano2\r\n6, 2, 1, 1, 1, hrpschrd\r\n7, 2, 1, 1, 1, clavinet\r\n8, 12, 12, 12, 12, celeste\r\n9, 12, 12, 12, 12, glocken\r\n10, 12, 12, 12, 12, musicbox\r\n11, 12, 12, 12, 12, vibes\r\n12, 12, 12, 12, 12, marimba\r\n13, 12, 12, 12, 12, xylophon\r\n14, 12, 12, 12, 12, tubebell\r\n15, 12, 12, 12, 12, santur\r\n16, 2, 16, 16, 19, homeorg\r\n17, 2, 16, 16, 19, percorg\r\n18, 2, 16, 16, 19, rockorg\r\n19, 2, 16, 16, 19, church\r\n20, 2, 16, 16, 19, reedorg\r\n21, 2, 16, 16, 19, accordn\r\n22, 2, 16, 16, 19, harmonca\r\n23, 2, 16, 16, 19, concrtna\r\n24, 24, 24, 24, 24, nyguitar\r\n25, 24, 24, 24, 24, acguitar\r\n26, 24, 24, 24, 24, jazzgtr\r\n27, 24, 24, 24, 27, cleangtr\r\n28, 24, 24, 24, 24, mutegtr\r\n29, 29, 29, 29, 29, odguitar\r\n30, 29, 30, 30, 30, distgtr\r\n31, 29, 30, 30, 31, gtrharm\r\n32, 39, 32, 32, 32, acbass\r\n33, 39, 32, 32, 32, fngrbass\r\n34, 39, 32, 32, 34, pickbass\r\n35, 39, 32, 32, 32, fretless\r\n36, 39, 36, 36, 36, slapbas1\r\n37, 39, 36, 36, 36, slapbas2\r\n38, 39, 36, 36, 32, synbass1\r\n39, 39, 36, 36, 32, synbass2\r\n40, 40, 40, 40, 40, violin\r\n41, 40, 40, 40, 40, viola\r\n42, 40, 42, 42, 42, cello\r\n43, 40, 40, 40, 40, contraba\r\n44, 40, 40, 40, 40, tremstr\r\n45, 40, 40, 40, 45, pizzcato\r\n46, 24, 24, 46, 46, harp\r\n47, 47, 47, 47, 47, timpani\r\n48, 51, 51, 48, 48, marcato\r\n49, 51, 51, 49, 48, slowstr\r\n50, 51, 51, 48, 48, synstr1\r\n51, 51, 51, 48, 48, synstr2\r\n52, 52, 52, 52, 52, choir\r\n53, 52, 52, 52, 52, doo\r\n54, 52, 52, 52, 54, voices\r\n55, 128, 128, 55, 55, orchhit\r\n56, 56, 56, 56, 56, trumpet\r\n57, 56, 56, 56, 56, trombone\r\n58, 56, 56, 56, 58, tuba\r\n59, 56, 56, 56, 56, mutetrum\r\n60, 56, 56, 56, 56, frenchrn\r\n61, 56, 56, 56, 56, hitbrass\r\n62, 56, 56, 56, 56, synbras1\r\n63, 56, 56, 56, 56, synbras2\r\n64, 66, 66, 64, 64, sprnosax\r\n65, 66, 66, 66, 66, altosax\r\n66, 66, 66, 66, 66, tenorsax\r\n67, 66, 66, 66, 66, barisax\r\n68, 68, 69, 69, 69, oboe\r\n69, 68, 69, 69, 69, englhorn\r\n70, 68, 69, 69, 70, bassoon\r\n71, 68, 69, 69, 71, clarinet\r\n72, 73, 73, 73, 73, piccolo\r\n73, 73, 73, 73, 73, flute\r\n74, 73, 73, 73, 73, recorder\r\n75, 73, 73, 73, 75, woodflut\r\n76, 73, 73, 73, 75, bottle\r\n77, 73, 77, 77, 77, shakazul\r\n78, 73, 73, 73, 73, whistle\r\n79, 73, 73, 73, 73, ocarina\r\n80, 29, 29, 29, 29, sqrwave\r\n81, 29, 29, 29, 29, sawwave\r\n82, 73, 73, 29, 82, calliope\r\n83, 73, 73, 29, 29, chiflead\r\n84, 29, 29, 29, 29, charang\r\n85, 52, 52, 29, 85, voxlead\r\n86, 52, 52, 29, 86, lead5th\r\n87, 52, 52, 29, 34, basslead\r\n88, 52, 52, 88, 88, fantasia\r\n89, 52, 52, 29, 89, warmpad\r\n90, 52, 52, 29, 89, polysyn\r\n91, 52, 52, 29, 89, ghostie\r\n92, 52, 52, 29, 89, bowglass\r\n93, 52, 52, 29, 89, metalpad\r\n94, 52, 52, 29, 89, halopad\r\n95, 52, 52, 29, 89, sweeper\r\n96, 52, 52, 96, 89, aurora\r\n97, 52, 52, 52, 89, soundtrk\r\n98, 52, 52, 52, 89, crystal\r\n99, 52, 52, 52, 89, atmosphr\r\n100, 52, 52, 52, 89, freshair\r\n101, 52, 52, 52, 89, unicorn\r\n102, 52, 102, 102, 89, echovox\r\n103, 52, 102, 102, 89, startrak\r\n104, 24, 102, 102, 104, sitar\r\n105, 24, 105, 105, 105, banjo\r\n106, 24, 105, 105, 105, shamisen\r\n107, 24, 105, 105, 105, koto\r\n108, 115, 115, 115, 115, kalimba\r\n109, 24, 69, 105, 109, bagpipes\r\n110, 24, 42, 42, 42, fiddle\r\n111, 24, 105, 105, 105, shannai\r\n112, 114, 114, 112, 112, carillon\r\n113, 114, 114, 112, 112, agogo\r\n114, 114, 114, 114, 114, steeldrm\r\n115, 115, 115, 115, 115, woodblk\r\n116, 115, 117, 117, 117, taiko\r\n117, 115, 117, 117, 117, toms\r\n118, 115, 117, 117, 117, syntom\r\n119, 128, 128, 128, 128, revcym\r\n120, 128, 128, 128, 128, fx-fret\r\n121, 128, 128, 128, 128, fx-blow\r\n122, 128, 128, 128, 122, seashore\r\n123, 128, 128, 128, 128, jungle\r\n124, 128, 128, 128, 128, telephon\r\n125, 128, 128, 128, 128, helicptr\r\n126, 128, 128, 126, 126, applause\r\n127, 128, 128, 128, 128, ringwhsl\r\n128, 128, 128, 128, 128, blank\r\n155, 128, 128, 128, 128, highq\r\n156, 128, 128, 128, 128, slap\r\n157, 128, 128, 128, 157, scratch1\r\n158, 128, 128, 128, 158, scratch2\r\n159, 159, 159, 159, 159, sticks\r\n160, 128, 128, 128, 160, sqrclick\r\n161, 128, 128, 128, 160, metclick\r\n162, 128, 128, 128, 128, metbell\r\n163, 163, 163, 163, 163, kick1\r\n164, 164, 164, 164, 164, kick2\r\n165, 165, 165, 165, 165, stickrim\r\n166, 166, 166, 166, 166, snare1\r\n167, 167, 167, 167, 167, claps\r\n168, 168, 168, 168, 168, snare2\r\n169, 171, 169, 169, 169, tomlo2\r\n170, 170, 170, 170, 170, hihatcl\r\n171, 171, 171, 171, 171, tomlo1\r\n172, 172, 172, 172, 172, hihatpd\r\n173, 175, 173, 173, 173, tommid2\r\n174, 174, 174, 174, 174, hihatop\r\n175, 175, 175, 175, 175, tommid1\r\n176, 178, 176, 176, 176, tomhi2\r\n177, 181, 177, 177, 177, cymcrsh1\r\n178, 178, 178, 178, 178, tomhi1\r\n179, 181, 177, 177, 177, cymride1\r\n180, 181, 177, 177, 180, cymchina\r\n181, 181, 177, 177, 181, cymbell\r\n182, 182, 182, 182, 182, tamborin\r\n183, 181, 177, 177, 177, cymsplsh\r\n184, 128, 128, 128, 128, cowbell\r\n185, 181, 177, 177, 177, cymcrsh2\r\n186, 128, 128, 128, 128, vibslap\r\n187, 181, 177, 177, 177, cymride2\r\n188, 178, 188, 188, 188, bongohi\r\n189, 175, 189, 189, 189, bongolo\r\n190, 175, 190, 190, 190, congahi1\r\n191, 175, 191, 191, 191, congahi2\r\n192, 171, 191, 191, 192, congalo\r\n193, 128, 128, 128, 193, timbaleh\r\n194, 128, 128, 128, 194, timbalel\r\n195, 128, 128, 128, 195, agogohi\r\n196, 128, 128, 128, 196, agogolo\r\n197, 128, 128, 128, 128, cabasa\r\n198, 128, 198, 198, 198, maracas\r\n199, 128, 128, 128, 128, whistle1\r\n200, 128, 128, 128, 128, whistle2\r\n201, 128, 128, 128, 128, guiro1\r\n202, 128, 128, 128, 128, guiro2\r\n203, 128, 128, 128, 128, clave\r\n204, 128, 204, 204, 204, woodblk1\r\n205, 128, 205, 205, 205, woodblk2\r\n206, 128, 128, 128, 206, cuica1\r\n207, 128, 128, 128, 207, cuica2\r\n208, 128, 128, 128, 208, triangl1\r\n209, 128, 128, 128, 209, triangl2\r\n210, 128, 128, 128, 128, shaker\r\n211, 128, 128, 128, 128, jingles\r\n212, 128, 128, 128, 128, belltree\r\n213, 128, 128, 128, 128, castinet\r\n214, 128, 128, 128, 128, surdo1\r\n215, 128, 128, 128, 128, surdo2",
+    "traditional_chinese": ""
+  }
+]

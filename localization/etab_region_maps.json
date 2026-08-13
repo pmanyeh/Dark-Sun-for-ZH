@@ -1,0 +1,563 @@
+{
+  "RGN02.GFF": {
+    "region_file": "RGN02.GFF",
+    "etab_offset": "0x01DF6A",
+    "entity_count": 2,
+    "stride": 116200,
+    "entities": [
+      {
+        "index": 0,
+        "x": 4464,
+        "y": 0,
+        "type": 19783,
+        "script_id": "0x00015041",
+        "flags": "0x00020000",
+        "raw_hex": "70 11 00 00 47 4D 41 50 01 00 00 00 02 00 00 00"
+      }
+    ]
+  },
+  "RGN03.GFF": {
+    "region_file": "RGN03.GFF",
+    "etab_offset": "0x01B141",
+    "entity_count": 3,
+    "stride": 104471,
+    "entities": [
+      {
+        "index": 0,
+        "x": 4624,
+        "y": 0,
+        "type": 19783,
+        "script_id": "0x00015041",
+        "flags": "0x00030000",
+        "raw_hex": "10 12 00 00 47 4D 41 50 01 00 00 00 03 00 00 00"
+      }
+    ]
+  },
+  "RGN04.GFF": {
+    "region_file": "RGN04.GFF",
+    "etab_offset": "0x017FB5",
+    "entity_count": 4,
+    "stride": 93275,
+    "entities": [
+      {
+        "index": 0,
+        "x": 3400,
+        "y": 0,
+        "type": 19783,
+        "script_id": "0x00015041",
+        "flags": "0x00040000",
+        "raw_hex": "48 0D 00 00 47 4D 41 50 01 00 00 00 04 00 00 00"
+      }
+    ]
+  },
+  "RGN05.GFF": {
+    "region_file": "RGN05.GFF",
+    "etab_offset": "0x01AE56",
+    "entity_count": 5,
+    "stride": 104116,
+    "entities": [
+      {
+        "index": 0,
+        "x": 4264,
+        "y": 0,
+        "type": 19783,
+        "script_id": "0x00015041",
+        "flags": "0x00050000",
+        "raw_hex": "A8 10 00 00 47 4D 41 50 01 00 00 00 05 00 00 00"
+      }
+    ]
+  },
+  "RGN06.GFF": {
+    "region_file": "RGN06.GFF",
+    "etab_offset": "0x01AE12",
+    "entity_count": 6,
+    "stride": 106352,
+    "entities": [
+      {
+        "index": 0,
+        "x": 1928,
+        "y": 0,
+        "type": 19783,
+        "script_id": "0x00015041",
+        "flags": "0x00060000",
+        "raw_hex": "88 07 00 00 47 4D 41 50 01 00 00 00 06 00 00 00"
+      }
+    ]
+  },
+  "RGN07.GFF": {
+    "region_file": "RGN07.GFF",
+    "etab_offset": "0x017387",
+    "entity_count": 7,
+    "stride": 90309,
+    "entities": [
+      {
+        "index": 0,
+        "x": 3320,
+        "y": 0,
+        "type": 19783,
+        "script_id": "0x00015041",
+        "flags": "0x00070000",
+        "raw_hex": "F8 0C 00 00 47 4D 41 50 01 00 00 00 07 00 00 00"
+      }
+    ]
+  },
+  "RGN08.GFF": {
+    "region_file": "RGN08.GFF",
+    "etab_offset": "0x01647D",
+    "entity_count": 8,
+    "stride": 85675,
+    "entities": [
+      {
+        "index": 0,
+        "x": 4208,
+        "y": 0,
+        "type": 19783,
+        "script_id": "0x00015041",
+        "flags": "0x00080000",
+        "raw_hex": "70 10 00 00 47 4D 41 50 01 00 00 00 08 00 00 00"
+      }
+    ]
+  },
+  "RGN09.GFF": {
+    "region_file": "RGN09.GFF",
+    "etab_offset": "0x0174AC",
+    "entity_count": 9,
+    "stride": 90786,
+    "entities": [
+      {
+        "index": 0,
+        "x": 3072,
+        "y": 0,
+        "type": 19783,
+        "script_id": "0x00015041",
+        "flags": "0x00090000",
+        "raw_hex": "00 0C 00 00 47 4D 41 50 01 00 00 00 09 00 00 00"
+      }
+    ]
+  },
+  "RGN0A.GFF": {
+    "region_file": "RGN0A.GFF",
+    "etab_offset": "0x015945",
+    "entity_count": 10,
+    "stride": 83395,
+    "entities": [
+      {
+        "index": 0,
+        "x": 3616,
+        "y": 0,
+        "type": 19783,
+        "script_id": "0x00015041",
+        "flags": "0x000A0000",
+        "raw_hex": "20 0E 00 00 47 4D 41 50 01 00 00 00 0A 00 00 00"
+      }
+    ]
+  },
+  "RGN0B.GFF": {
+    "region_file": "RGN0B.GFF",
+    "etab_offset": "0x017955",
+    "entity_count": 11,
+    "stride": 91883,
+    "entities": [
+      {
+        "index": 0,
+        "x": 3128,
+        "y": 0,
+        "type": 19783,
+        "script_id": "0x00015041",
+        "flags": "0x000B0000",
+        "raw_hex": "38 0C 00 00 47 4D 41 50 01 00 00 00 0B 00 00 00"
+      }
+    ]
+  },
+  "RGN0D.GFF": {
+    "region_file": "RGN0D.GFF",
+    "etab_offset": "0x01393C",
+    "entity_count": 13,
+    "stride": 75874,
+    "entities": [
+      {
+        "index": 0,
+        "x": 2968,
+        "y": 0,
+        "type": 19783,
+        "script_id": "0x00015041",
+        "flags": "0x000D0000",
+        "raw_hex": "98 0B 00 00 47 4D 41 50 01 00 00 00 0D 00 00 00"
+      }
+    ]
+  },
+  "RGN0E.GFF": {
+    "region_file": "RGN0E.GFF",
+    "etab_offset": "0x016BC6",
+    "entity_count": 14,
+    "stride": 87116,
+    "entities": [
+      {
+        "index": 0,
+        "x": 4528,
+        "y": 0,
+        "type": 19783,
+        "script_id": "0x00015041",
+        "flags": "0x000E0000",
+        "raw_hex": "B0 11 00 00 47 4D 41 50 01 00 00 00 0E 00 00 00"
+      }
+    ]
+  },
+  "RGN0F.GFF": {
+    "region_file": "RGN0F.GFF",
+    "etab_offset": "0x01CB35",
+    "entity_count": 15,
+    "stride": 113635,
+    "entities": [
+      {
+        "index": 0,
+        "x": 1864,
+        "y": 0,
+        "type": 19783,
+        "script_id": "0x00015041",
+        "flags": "0x000F0000",
+        "raw_hex": "48 07 00 00 47 4D 41 50 01 00 00 00 0F 00 00 00"
+      }
+    ]
+  },
+  "RGN12.GFF": {
+    "region_file": "RGN12.GFF",
+    "etab_offset": "0x018AF1",
+    "entity_count": 18,
+    "stride": 95263,
+    "entities": [
+      {
+        "index": 0,
+        "x": 4240,
+        "y": 0,
+        "type": 19783,
+        "script_id": "0x00015041",
+        "flags": "0x00120000",
+        "raw_hex": "90 10 00 00 47 4D 41 50 01 00 00 00 12 00 00 00"
+      }
+    ]
+  },
+  "RGN14.GFF": {
+    "region_file": "RGN14.GFF",
+    "etab_offset": "0x017FD5",
+    "entity_count": 20,
+    "stride": 92475,
+    "entities": [
+      {
+        "index": 0,
+        "x": 4208,
+        "y": 0,
+        "type": 19783,
+        "script_id": "0x00015041",
+        "flags": "0x00140000",
+        "raw_hex": "70 10 00 00 47 4D 41 50 01 00 00 00 14 00 00 00"
+      }
+    ]
+  },
+  "RGN1A.GFF": {
+    "region_file": "RGN1A.GFF",
+    "etab_offset": "0x0178D1",
+    "entity_count": 26,
+    "stride": 89839,
+    "entities": [
+      {
+        "index": 0,
+        "x": 4848,
+        "y": 0,
+        "type": 19783,
+        "script_id": "0x00015041",
+        "flags": "0x001A0000",
+        "raw_hex": "F0 12 00 00 47 4D 41 50 01 00 00 00 1A 00 00 00"
+      }
+    ]
+  },
+  "RGN1B.GFF": {
+    "region_file": "RGN1B.GFF",
+    "etab_offset": "0x0182B2",
+    "entity_count": 27,
+    "stride": 96040,
+    "entities": [
+      {
+        "index": 0,
+        "x": 1336,
+        "y": 0,
+        "type": 19783,
+        "script_id": "0x00015041",
+        "flags": "0x001B0000",
+        "raw_hex": "38 05 00 00 47 4D 41 50 01 00 00 00 1B 00 00 00"
+      }
+    ]
+  },
+  "RGN1C.GFF": {
+    "region_file": "RGN1C.GFF",
+    "etab_offset": "0x00B934",
+    "entity_count": 28,
+    "stride": 45034,
+    "entities": [
+      {
+        "index": 0,
+        "x": 1856,
+        "y": 0,
+        "type": 19783,
+        "script_id": "0x00015041",
+        "flags": "0x001C0000",
+        "raw_hex": "40 07 00 00 47 4D 41 50 01 00 00 00 1C 00 00 00"
+      }
+    ]
+  },
+  "RGN1D.GFF": {
+    "region_file": "RGN1D.GFF",
+    "etab_offset": "0x0140F4",
+    "entity_count": 29,
+    "stride": 77114,
+    "entities": [
+      {
+        "index": 0,
+        "x": 3784,
+        "y": 0,
+        "type": 19783,
+        "script_id": "0x00015041",
+        "flags": "0x001D0000",
+        "raw_hex": "C8 0E 00 00 47 4D 41 50 01 00 00 00 1D 00 00 00"
+      }
+    ]
+  },
+  "RGN1E.GFF": {
+    "region_file": "RGN1E.GFF",
+    "etab_offset": "0x00F58E",
+    "entity_count": 30,
+    "stride": 59780,
+    "entities": [
+      {
+        "index": 0,
+        "x": 2272,
+        "y": 0,
+        "type": 19783,
+        "script_id": "0x00015041",
+        "flags": "0x001E0000",
+        "raw_hex": "E0 08 00 00 47 4D 41 50 01 00 00 00 1E 00 00 00"
+      }
+    ]
+  },
+  "RGN1F.GFF": {
+    "region_file": "RGN1F.GFF",
+    "etab_offset": "0x015562",
+    "entity_count": 31,
+    "stride": 83168,
+    "entities": [
+      {
+        "index": 0,
+        "x": 2840,
+        "y": 0,
+        "type": 19783,
+        "script_id": "0x00015041",
+        "flags": "0x001F0000",
+        "raw_hex": "18 0B 00 00 47 4D 41 50 01 00 00 00 1F 00 00 00"
+      }
+    ]
+  },
+  "RGN21.GFF": {
+    "region_file": "RGN21.GFF",
+    "etab_offset": "0x01B249",
+    "entity_count": 33,
+    "stride": 106823,
+    "entities": [
+      {
+        "index": 0,
+        "x": 2520,
+        "y": 0,
+        "type": 19783,
+        "script_id": "0x00015041",
+        "flags": "0x00210000",
+        "raw_hex": "D8 09 00 00 47 4D 41 50 01 00 00 00 21 00 00 00"
+      }
+    ]
+  },
+  "RGN22.GFF": {
+    "region_file": "RGN22.GFF",
+    "etab_offset": "0x01B2A9",
+    "entity_count": 34,
+    "stride": 107415,
+    "entities": [
+      {
+        "index": 0,
+        "x": 2000,
+        "y": 0,
+        "type": 19783,
+        "script_id": "0x00015041",
+        "flags": "0x00220000",
+        "raw_hex": "D0 07 00 00 47 4D 41 50 01 00 00 00 22 00 00 00"
+      }
+    ]
+  },
+  "RGN23.GFF": {
+    "region_file": "RGN23.GFF",
+    "etab_offset": "0x017845",
+    "entity_count": 35,
+    "stride": 92763,
+    "entities": [
+      {
+        "index": 0,
+        "x": 1952,
+        "y": 0,
+        "type": 19783,
+        "script_id": "0x00015041",
+        "flags": "0x00230000",
+        "raw_hex": "A0 07 00 00 47 4D 41 50 01 00 00 00 23 00 00 00"
+      }
+    ]
+  },
+  "RGN26.GFF": {
+    "region_file": "RGN26.GFF",
+    "etab_offset": "0x01B60D",
+    "entity_count": 38,
+    "stride": 105123,
+    "entities": [
+      {
+        "index": 0,
+        "x": 5160,
+        "y": 0,
+        "type": 19783,
+        "script_id": "0x00015041",
+        "flags": "0x00260000",
+        "raw_hex": "28 14 00 00 47 4D 41 50 01 00 00 00 26 00 00 00"
+      }
+    ]
+  },
+  "RGN27.GFF": {
+    "region_file": "RGN27.GFF",
+    "etab_offset": "0x0164BB",
+    "entity_count": 39,
+    "stride": 86153,
+    "entities": [
+      {
+        "index": 0,
+        "x": 3712,
+        "y": 0,
+        "type": 19783,
+        "script_id": "0x00015041",
+        "flags": "0x00270000",
+        "raw_hex": "80 0E 00 00 47 4D 41 50 01 00 00 00 27 00 00 00"
+      }
+    ]
+  },
+  "RGN28.GFF": {
+    "region_file": "RGN28.GFF",
+    "etab_offset": "0x017B61",
+    "entity_count": 40,
+    "stride": 92543,
+    "entities": [
+      {
+        "index": 0,
+        "x": 2872,
+        "y": 0,
+        "type": 19783,
+        "script_id": "0x00015041",
+        "flags": "0x00280000",
+        "raw_hex": "38 0B 00 00 47 4D 41 50 01 00 00 00 28 00 00 00"
+      }
+    ]
+  },
+  "RGN29.GFF": {
+    "region_file": "RGN29.GFF",
+    "etab_offset": "0x018C48",
+    "entity_count": 41,
+    "stride": 96502,
+    "entities": [
+      {
+        "index": 0,
+        "x": 3280,
+        "y": 0,
+        "type": 19783,
+        "script_id": "0x00015041",
+        "flags": "0x00290000",
+        "raw_hex": "D0 0C 00 00 47 4D 41 50 01 00 00 00 29 00 00 00"
+      }
+    ]
+  },
+  "RGN2A.GFF": {
+    "region_file": "RGN2A.GFF",
+    "etab_offset": "0x0197EE",
+    "entity_count": 42,
+    "stride": 101732,
+    "entities": [
+      {
+        "index": 0,
+        "x": 824,
+        "y": 0,
+        "type": 19783,
+        "script_id": "0x00015041",
+        "flags": "0x002A0000",
+        "raw_hex": "38 03 00 00 47 4D 41 50 01 00 00 00 2A 00 00 00"
+      }
+    ]
+  },
+  "RGN2B.GFF": {
+    "region_file": "RGN2B.GFF",
+    "etab_offset": "0x015493",
+    "entity_count": 43,
+    "stride": 83641,
+    "entities": [
+      {
+        "index": 0,
+        "x": 2112,
+        "y": 0,
+        "type": 19783,
+        "script_id": "0x00015041",
+        "flags": "0x002B0000",
+        "raw_hex": "40 08 00 00 47 4D 41 50 01 00 00 00 2B 00 00 00"
+      }
+    ]
+  },
+  "RGN2C.GFF": {
+    "region_file": "RGN2C.GFF",
+    "etab_offset": "0x01615B",
+    "entity_count": 44,
+    "stride": 88401,
+    "entities": [
+      {
+        "index": 0,
+        "x": 448,
+        "y": 0,
+        "type": 19783,
+        "script_id": "0x00015041",
+        "flags": "0x002C0000",
+        "raw_hex": "C0 01 00 00 47 4D 41 50 01 00 00 00 2C 00 00 00"
+      }
+    ]
+  },
+  "RGN2D.GFF": {
+    "region_file": "RGN2D.GFF",
+    "etab_offset": "0x014283",
+    "entity_count": 45,
+    "stride": 76321,
+    "entities": [
+      {
+        "index": 0,
+        "x": 4992,
+        "y": 0,
+        "type": 19783,
+        "script_id": "0x00015041",
+        "flags": "0x002D0000",
+        "raw_hex": "80 13 00 00 47 4D 41 50 01 00 00 00 2D 00 00 00"
+      }
+    ]
+  },
+  "RGNFF.GFF": {
+    "region_file": "RGNFF.GFF",
+    "etab_offset": "0x01DBFA",
+    "entity_count": 255,
+    "stride": 116200,
+    "entities": [
+      {
+        "index": 0,
+        "x": 3584,
+        "y": 0,
+        "type": 19783,
+        "script_id": "0x00015041",
+        "flags": "0x00FF0000",
+        "raw_hex": "00 0E 00 00 47 4D 41 50 01 00 00 00 FF 00 00 00"
+      }
+    ]
+  }
+}

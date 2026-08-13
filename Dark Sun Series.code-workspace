@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../dsun_extracted"
+		}
+	],
+	"settings": {}
+}

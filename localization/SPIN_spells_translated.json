@@ -1,0 +1,1224 @@
+{
+  "source_gff": "RESOURCE.GFF",
+  "source_tag": "SPIN",
+  "description": "Spell and special-item description strings (AD&D 2nd edition spells, including Dark Sun psionics). Each SPIN-NNNN file is one complete, independent GFF resource entry, so (unlike NAME-1) these can be translated and repacked individually with gff-tool's --replace-with, one resource at a time, with no risk of corrupting a shared record structure.",
+  "translation_status": "First-pass Traditional Chinese translation by Claude, using standard AD&D/TRPG Chinese terminology conventions. Not yet verified in-game (game's font is single-byte ASCII only; Chinese text will not render correctly until DSUN.EXE is patched for double-byte font support -- see docs/re for that blocker). Encoding used for the ready-to-repack files: Big5.",
+  "count_total": 172,
+  "count_translated": 172,
+  "missing_source_ids": [
+    173,
+    174,
+    175,
+    176,
+    177,
+    178,
+    179,
+    180
+  ],
+  "entries": [
+    {
+      "id": 1,
+      "gff_tag": "SPIN",
+      "gff_number": 1,
+      "en": "ARMOR: Creates a magical shield of force equivalent to AC6. May be used on any class character adjacent to spell caster.",
+      "zh": "護甲術：製造相當於 AC6 的魔法防護力場，可施放在鄰近施法者的任一職業角色身上。"
+    },
+    {
+      "id": 2,
+      "gff_tag": "SPIN",
+      "gff_number": 2,
+      "en": "BURNING HANDS: Inflicts 1 to 3 hit points of fire damage plus 2 per level of caster.",
+      "zh": "燃燒之手：造成 1 到 3 點火焰傷害，另加施法者每一等級增加 2 點。"
+    },
+    {
+      "id": 3,
+      "gff_tag": "SPIN",
+      "gff_number": 3,
+      "en": "CHARM PERSON:  Changes the target's allegiance in combat. Affects only character types (human, dwarf, etc.).",
+      "zh": "魅惑人類：改變目標在戰鬥中的陣營歸屬。僅對人類型生物（人類、矮人等）有效。"
+    },
+    {
+      "id": 4,
+      "gff_tag": "SPIN",
+      "gff_number": 4,
+      "en": "CHILL TOUCH: Attacks life force of any living creature for 1 to 4 pts of damage and 1 pt of Strength per successful attack. Undead suffer no damage but may flee.",
+      "zh": "寒顫觸擊：攻擊任何活體生物的生命力，每次成功攻擊造成 1 到 4 點傷害及 1 點力量損失。不死生物不受傷害，但可能因此逃跑。"
+    },
+    {
+      "id": 5,
+      "gff_tag": "SPIN",
+      "gff_number": 5,
+      "en": "COLOR SPRAY:  May stun up to 6 creatures with this overwhelming wedge-shaped cascade of colored light. Higher level creatures may be unaffected.",
+      "zh": "彩色噴射：以扇形擴散的強光可使多達 6 個生物暈眩。等級較高的生物可能不受影響。"
+    },
+    {
+      "id": 6,
+      "gff_tag": "SPIN",
+      "gff_number": 6,
+      "en": "ENLARGE:  Makes the recipient larger & stronger, allowing it to do more damage in melee combat. Higher-level casters produce greater effect.",
+      "zh": "巨化術：使目標變大變強，在近戰中造成更多傷害。施法者等級越高效果越強。"
+    },
+    {
+      "id": 7,
+      "gff_tag": "SPIN",
+      "gff_number": 7,
+      "en": "GAZE REFLECTION:  Creates a mirror-like area around the caster. Any gaze attack will be reflected back at the attacker.",
+      "zh": "凝視反射：在施法者周圍形成如鏡面般的區域，任何凝視攻擊都會被反射回攻擊者身上。"
+    },
+    {
+      "id": 8,
+      "gff_tag": "SPIN",
+      "gff_number": 8,
+      "en": "GREASE:  Covers the ground with a slippery layer. Any creature entering the area slips and cannot move for the round.",
+      "zh": "油滑術：在地面覆上一層滑溜的油膜，任何進入該區域的生物都會滑倒，該回合無法移動。"
+    },
+    {
+      "id": 9,
+      "gff_tag": "SPIN",
+      "gff_number": 9,
+      "en": "MAGIC MISSILE:  Preserver throws 1 missile for every 2 levels. Each missile inflicts 2-5 pts of damage on target unless protected by magic or shield.",
+      "zh": "魔法飛彈：護存者每兩個等級可發射一枚飛彈，除非受魔法或護盾保護，否則每枚飛彈對目標造成 2 到 5 點傷害。"
+    },
+    {
+      "id": 10,
+      "gff_tag": "SPIN",
+      "gff_number": 10,
+      "en": "SHIELD:  Negates enemy magic missiles, improves AC, and improves saving throw for the caster versus missiles.",
+      "zh": "護盾術：抵銷敵方的魔法飛彈，提升施法者的護甲等級，並提升對飛彈攻擊的豁免檢定。"
+    },
+    {
+      "id": 11,
+      "gff_tag": "SPIN",
+      "gff_number": 11,
+      "en": "SHOCKING GRASP:  Does 1 to 8 pts of electrical damage, plus 1 per level of caster.",
+      "zh": "電擊觸：造成 1 到 8 點電擊傷害，另加施法者每一等級增加 1 點。"
+    },
+    {
+      "id": 12,
+      "gff_tag": "SPIN",
+      "gff_number": 12,
+      "en": "WALL OF FOG:  Creates a wall of vapors that blocks everyone's line of sight through the wall.",
+      "zh": "迷霧牆：製造一道霧氣之牆，阻擋牆兩側所有人的視線。"
+    },
+    {
+      "id": 13,
+      "gff_tag": "SPIN",
+      "gff_number": 13,
+      "en": "BLUR:  Causes the caster's form to become blurred, making the caster more difficult to hit and granting a +1 bonus on saving throws versus magical attacks.",
+      "zh": "模糊影像：使施法者的身形變得模糊，更難被擊中，並對魔法攻擊的豁免檢定獲得 +1 加成。"
+    },
+    {
+      "id": 14,
+      "gff_tag": "SPIN",
+      "gff_number": 14,
+      "en": "DETECT INVISIBILITY:  Allows caster to spot invisible creatures and objects in combat.",
+      "zh": "偵測隱形：使施法者能在戰鬥中發現隱形的生物與物品。"
+    },
+    {
+      "id": 15,
+      "gff_tag": "SPIN",
+      "gff_number": 15,
+      "en": "FLAMING SPHERE:  Creates a burning globe. Creatures must save versus the spell or suffer 2 to 8 pts of damage.",
+      "zh": "燃燒球：製造一顆燃燒的球體。生物必須豁免檢定，否則將承受 2 到 8 點傷害。"
+    },
+    {
+      "id": 16,
+      "gff_tag": "SPIN",
+      "gff_number": 16,
+      "en": "FOG CLOUD:  This spell creates a large cloud which blocks everyone's line of sight.",
+      "zh": "迷霧雲：製造一大片雲霧，阻擋所有人的視線。"
+    },
+    {
+      "id": 17,
+      "gff_tag": "SPIN",
+      "gff_number": 17,
+      "en": "GLITTERDUST:  Creates area of glittering particles. Creatures failing save are blinded. Also, invisible creatures become visible.",
+      "zh": "閃光塵：製造一片閃爍的微粒區域。豁免失敗的生物會失明，同時原本隱形的生物也會現形。"
+    },
+    {
+      "id": 18,
+      "gff_tag": "SPIN",
+      "gff_number": 18,
+      "en": "INVISIBILITY:  Makes target invisible in combat, which improves THAC0 by 4 making them more difficult to hit. Dispelled when recipient attacks or casts spell.",
+      "zh": "隱形術：使目標在戰鬥中隱形，THAC0 提升 4 點使其更難被擊中。目標攻擊或施放法術時效果解除。"
+    },
+    {
+      "id": 19,
+      "gff_tag": "SPIN",
+      "gff_number": 19,
+      "en": "MELF'S ACID ARROW:  Magical arrow which does 2 to 8 pts of acid damage.",
+      "zh": "梅爾夫的酸液箭：造成 2 到 8 點酸蝕傷害的魔法箭矢。"
+    },
+    {
+      "id": 20,
+      "gff_tag": "SPIN",
+      "gff_number": 20,
+      "en": "MIRROR IMAGE:  Creates 1 to 4 illusionary duplicates of the caster to draw off attacks.",
+      "zh": "幻影術：製造 1 到 4 個施法者的幻影分身以吸引攻擊。"
+    },
+    {
+      "id": 21,
+      "gff_tag": "SPIN",
+      "gff_number": 21,
+      "en": "PROTECTION FROM PARALYSIS:  Gives adjacent recipient immunity from all forms of paralysis.",
+      "zh": "抗麻痺術：使鄰近的目標對所有形式的麻痺免疫。"
+    },
+    {
+      "id": 22,
+      "gff_tag": "SPIN",
+      "gff_number": 22,
+      "en": "SCARE:  Causes creatures with less than 6 Hit Dice or levels of experience to sometimes flee or be unable to attack. No effect on undead creatures.",
+      "zh": "恐嚇術：使生命骰或等級低於 6 的生物有時逃跑或無法攻擊。對不死生物無效。"
+    },
+    {
+      "id": 23,
+      "gff_tag": "SPIN",
+      "gff_number": 23,
+      "en": "STINKING CLOUD:  Renders those in its area unable to attack for 2 to 5 rounds unless the creature saves.",
+      "zh": "惡臭雲：使區域內的生物在 2 到 5 回合內無法攻擊，除非豁免成功。"
+    },
+    {
+      "id": 24,
+      "gff_tag": "SPIN",
+      "gff_number": 24,
+      "en": "STRENGTH:  Raises the target's strength by 1 to 8 pts. Maximum strength is 24.",
+      "zh": "力量術：提升目標 1 到 8 點力量，力量上限為 24。"
+    },
+    {
+      "id": 25,
+      "gff_tag": "SPIN",
+      "gff_number": 25,
+      "en": "WEB:  Creates a mass of strong sticky webs. Webs prevent movement and can only be removed by fire.",
+      "zh": "蛛網術：製造大量堅韌黏性的蛛網。蛛網會阻止移動，只能用火燒除。"
+    },
+    {
+      "id": 26,
+      "gff_tag": "SPIN",
+      "gff_number": 26,
+      "en": "BLINK:  Allows caster to \"blink\" out after acting each round. Caster can be attacked before acting in a round, but not after.",
+      "zh": "閃現術：使施法者每回合行動後可以「閃現」離開。施法者在該回合行動前可能被攻擊，行動後則不會。"
+    },
+    {
+      "id": 27,
+      "gff_tag": "SPIN",
+      "gff_number": 27,
+      "en": "DISPEL MAGIC:  Removes effects of spells that do not have specific counterspells. This cures characters that have been held or slowed.",
+      "zh": "解除魔法：解除沒有專屬反制法術的效果。可治癒被定身或減速的角色。"
+    },
+    {
+      "id": 28,
+      "gff_tag": "SPIN",
+      "gff_number": 28,
+      "en": "FIREBALL:  Magical explosion does 1 to 6 pts of damage per level of caster to all targets within the area of effect. If target makes save damage is halved.",
+      "zh": "火球術：魔法爆炸對範圍內所有目標造成每施法者等級 1 到 6 點傷害。豁免成功則傷害減半。"
+    },
+    {
+      "id": 29,
+      "gff_tag": "SPIN",
+      "gff_number": 29,
+      "en": "FLAME ARROW:  Each \"arrow\" inflicts 1 to 6 pts of damage, plus an additional 4 to 24 pts of fire damage on the taget.",
+      "zh": "火焰箭：每支「箭矢」造成 1 到 6 點傷害，並對目標額外造成 4 到 24 點火焰傷害。"
+    },
+    {
+      "id": 30,
+      "gff_tag": "SPIN",
+      "gff_number": 30,
+      "en": "HASTE:  Doubles the recipient's movement and number of melee attacks per round.",
+      "zh": "加速術：使目標的移動速度與每回合近戰攻擊次數加倍。"
+    },
+    {
+      "id": 31,
+      "gff_tag": "SPIN",
+      "gff_number": 31,
+      "en": "HOLD PERSON:  May paralyze targets of character types (human, dwarf, etc.). You can aim at up to 4 targets.",
+      "zh": "定身人類術：可使人類型（人類、矮人等）目標麻痺。最多可鎖定 4 個目標。"
+    },
+    {
+      "id": 32,
+      "gff_tag": "SPIN",
+      "gff_number": 32,
+      "en": "HOLD UNDEAD:  Paralyzes up to 3 undead creatures whose Hit Dice are less than or equal to the caster.",
+      "zh": "定身不死術：使最多 3 個生命骰不超過施法者等級的不死生物麻痺。"
+    },
+    {
+      "id": 33,
+      "gff_tag": "SPIN",
+      "gff_number": 33,
+      "en": "LIGHTNING BOLT:  Magical electrical attack does 1 to 6 pts of damage per level of caster to each target in its path.",
+      "zh": "閃電箭：魔法電擊沿路徑對每個目標造成每施法者等級 1 到 6 點傷害。"
+    },
+    {
+      "id": 34,
+      "gff_tag": "SPIN",
+      "gff_number": 34,
+      "en": "MELF'S MINUTE METEORS:  Five small globes of fire inflict 1 to 4 pts of damage on 1 target, with a +2 bonus to hit.",
+      "zh": "梅爾夫的微型流星：五顆小型火球對 1 個目標造成 1 到 4 點傷害，命中加成 +2。"
+    },
+    {
+      "id": 35,
+      "gff_tag": "SPIN",
+      "gff_number": 35,
+      "en": "MINOR MALISON:  Causes the caster's opponents to make all saving throws at a -1 penalty.",
+      "zh": "小詛咒術：使施法者的對手所有豁免檢定受到 -1 減值。"
+    },
+    {
+      "id": 36,
+      "gff_tag": "SPIN",
+      "gff_number": 36,
+      "en": "MONSTER SUMMONING I:  Allows caster to magically conjure first-level monsters who fight on caster's side in combat.",
+      "zh": "召喚怪物 I：使施法者能以魔法召喚一等級怪物，於戰鬥中為施法者一方作戰。"
+    },
+    {
+      "id": 37,
+      "gff_tag": "SPIN",
+      "gff_number": 37,
+      "en": "PROTECTION FROM NORMAL MISSILES:  Makes target impervious to non-magical missiles.",
+      "zh": "抗一般飛彈術：使目標對非魔法飛彈免疫。"
+    },
+    {
+      "id": 38,
+      "gff_tag": "SPIN",
+      "gff_number": 38,
+      "en": "SLOW:  Halves the movement and number of attacks of all foes within the area of effect.",
+      "zh": "減速術：使效果範圍內所有敵人的移動速度與攻擊次數減半。"
+    },
+    {
+      "id": 39,
+      "gff_tag": "SPIN",
+      "gff_number": 39,
+      "en": "SPIRIT ARMOR:  Surrounds caster with a magical aura which acts as splint mail of AC 4 and grants a +3 bonus to saves versus magical attacks.",
+      "zh": "靈魂護甲：在施法者周圍形成魔法光環，效果相當於 AC4 的鑲板甲，並對魔法攻擊的豁免檢定獲得 +3 加成。"
+    },
+    {
+      "id": 40,
+      "gff_tag": "SPIN",
+      "gff_number": 40,
+      "en": "VAMPIRIC TOUCH:  Temporarily allows caster to raise hit points by draining opponents.  Opponent loses (caster gains) 1-6 pts for every 2 levels of the caster.",
+      "zh": "吸血觸：使施法者能暫時透過吸取對手生命值來提升自身生命值。每兩個施法者等級，對手損失（施法者獲得）1 到 6 點。"
+    },
+    {
+      "id": 41,
+      "gff_tag": "SPIN",
+      "gff_number": 41,
+      "en": "CHARM MONSTER:  Changes target's allegiance in combat.",
+      "zh": "魅惑怪物：改變目標在戰鬥中的陣營歸屬。"
+    },
+    {
+      "id": 42,
+      "gff_tag": "SPIN",
+      "gff_number": 42,
+      "en": "CONFUSION: Creatures in the area of effect must save or stand in confusion, go berserk, or flee in terror.",
+      "zh": "混亂術：範圍內的生物必須豁免，否則陷入混亂，可能狂暴亂打或恐懼逃跑。"
+    },
+    {
+      "id": 43,
+      "gff_tag": "SPIN",
+      "gff_number": 43,
+      "en": "EVARD'S BLACK TENTACLES:  Black tentacles are created which inflict 3 to 12 pts of damage per turn until destroyed.",
+      "zh": "伊瓦德的黑觸手：召喚黑色觸手，每回合造成 3 到 12 點傷害，直到被摧毀為止。"
+    },
+    {
+      "id": 44,
+      "gff_tag": "SPIN",
+      "gff_number": 44,
+      "en": "FEAR:  All targets within the spell's area of effect who fail their saves flee in terror.",
+      "zh": "恐懼術：法術範圍內所有豁免失敗的目標都會恐懼逃跑。"
+    },
+    {
+      "id": 45,
+      "gff_tag": "SPIN",
+      "gff_number": 45,
+      "en": "FIRE SHIELD:  Opponents who hit caster in melee take the same amount of damage in return.",
+      "zh": "火焰護盾：在近戰中擊中施法者的敵人會承受同等的反傷。"
+    },
+    {
+      "id": 46,
+      "gff_tag": "SPIN",
+      "gff_number": 46,
+      "en": "ICE STORM:  Inflicts 3 to 30 pts of damage to all targets within its area of effect.",
+      "zh": "冰風暴：對範圍內所有目標造成 3 到 30 點傷害。"
+    },
+    {
+      "id": 47,
+      "gff_tag": "SPIN",
+      "gff_number": 47,
+      "en": "IMPROVED INVISIBILITY:  Similar to invisibility, but recipient is able to attack and still remain unseen.",
+      "zh": "強化隱形術：與隱形術類似，但目標可以攻擊而不會現形。"
+    },
+    {
+      "id": 48,
+      "gff_tag": "SPIN",
+      "gff_number": 48,
+      "en": "MINOR GLOBE OF INVULNERABILITY:  Creates a small sphere which protects those within from 1st, 2nd, or 3rd level spells.",
+      "zh": "小無敵光域：製造一個小型護罩，保護內部生物免受 1、2、3 環法術傷害。"
+    },
+    {
+      "id": 49,
+      "gff_tag": "SPIN",
+      "gff_number": 49,
+      "en": "MINOR SPELL TURNING:  Causes effects of 1st, 2nd, and 3rd level spells directed at the caster to reflect back and affect the casting opponent.",
+      "zh": "小法術反射：使針對施法者的 1、2、3 環法術效果反射回施法的敵人身上。"
+    },
+    {
+      "id": 50,
+      "gff_tag": "SPIN",
+      "gff_number": 50,
+      "en": "MONSTER SUMMONING II:  Allows caster to magically conjure second-level monsters who fight on the caster's side in combat.",
+      "zh": "召喚怪物 II：使施法者能以魔法召喚二等級怪物，於戰鬥中為施法者一方作戰。"
+    },
+    {
+      "id": 51,
+      "gff_tag": "SPIN",
+      "gff_number": 51,
+      "en": "RAINBOW PATTERN:  Creates rainbow-colored lights which absorb the full attention of the affected creatures. Direct attacks on creatures break the spell.",
+      "zh": "彩虹圖紋：製造彩虹光芒，完全吸引受影響生物的注意力。直接攻擊該生物會解除法術。"
+    },
+    {
+      "id": 52,
+      "gff_tag": "SPIN",
+      "gff_number": 52,
+      "en": "SOLID FOG:  Similar to wall of fog spell. Movement is slowed to 1/10 of normal. May be dispelled with fire-based spells such as fireball.",
+      "zh": "濃霧術：類似迷霧牆法術。移動速度降至正常的 1/10。可用如火球術等火系法術解除。"
+    },
+    {
+      "id": 53,
+      "gff_tag": "SPIN",
+      "gff_number": 53,
+      "en": "STONESKIN:  Recipient gains virtual immunity to any attack by cut, blow, projectile, or other physical attack. Spell blocks 1 to 4 attacks plus 1 per 2 levels.",
+      "zh": "石膚術：使目標對砍、擊、投射或其他物理攻擊獲得近乎免疫的效果。此法術可抵擋 1 到 4 次攻擊，每 2 個等級再加 1 次。"
+    },
+    {
+      "id": 54,
+      "gff_tag": "SPIN",
+      "gff_number": 54,
+      "en": "TURN PEBBLE TO BOULDER:  Causes a hurled pebble to grow into a boulder which inflicts 11 to 26 pts of damage if it strikes the target.",
+      "zh": "卵石化巨石：使投擲出的卵石變成巨石，擊中目標時造成 11 到 26 點傷害。"
+    },
+    {
+      "id": 55,
+      "gff_tag": "SPIN",
+      "gff_number": 55,
+      "en": "WALL OF FIRE:  Creates an immobile curtain of magical fire. Creatures passing through the wall take damage.",
+      "zh": "火焰牆：製造一道不會移動的魔法火焰之牆。穿越此牆的生物會受到傷害。"
+    },
+    {
+      "id": 56,
+      "gff_tag": "SPIN",
+      "gff_number": 56,
+      "en": "WALL OF ICE:  Creates a thick sheet of ice that blocks movement and line of sight.",
+      "zh": "冰牆：製造一道厚實的冰牆，阻擋移動與視線。"
+    },
+    {
+      "id": 57,
+      "gff_tag": "SPIN",
+      "gff_number": 57,
+      "en": "CHAOS:  Affects 1 to 4 creatures plus 1 per caster level unless they make their save. Affected creatures may stand confused, go berserk, or flee.",
+      "zh": "混沌術：對 1 到 4 個生物（每施法者等級增加 1 個）生效，除非豁免成功。受影響的生物可能陷入混亂、狂暴或逃跑。"
+    },
+    {
+      "id": 58,
+      "gff_tag": "SPIN",
+      "gff_number": 58,
+      "en": "CLOUDKILL:  Kills weaker creatures within its area of effect. More powerful monsters may take damage.",
+      "zh": "死雲術：殺死範圍內較弱小的生物，較強大的怪物則可能受到傷害。"
+    },
+    {
+      "id": 59,
+      "gff_tag": "SPIN",
+      "gff_number": 59,
+      "en": "CONE OF COLD:  Produces a cone-shaped blast of cold. The spell's range and damage increases with the caster's level.",
+      "zh": "冰錐術：製造錐形的寒冷爆發。法術範圍與傷害隨施法者等級增加。"
+    },
+    {
+      "id": 60,
+      "gff_tag": "SPIN",
+      "gff_number": 60,
+      "en": "CONJURE ELEMENTAL:  Allows caster to conjure an air, earth, fire, or water elemental to fight on caster's side in combat. Elemental disappears after combat.",
+      "zh": "召喚元素：使施法者能召喚風、土、火或水元素於戰鬥中為施法者一方作戰。戰鬥結束後元素消失。"
+    },
+    {
+      "id": 61,
+      "gff_tag": "SPIN",
+      "gff_number": 61,
+      "en": "DISMISSAL:  Creatures from another plane of existence must save or be forcefully expelled from the current plane.",
+      "zh": "放逐術：來自其他位面的生物必須豁免，否則被強制驅逐出當前位面。"
+    },
+    {
+      "id": 62,
+      "gff_tag": "SPIN",
+      "gff_number": 62,
+      "en": "DOMINATION:  Targeted creature must save at a -2 penalty or be dominated. Dominated creature will fight on caster's side.",
+      "zh": "支配術：目標生物必須以 -2 減值進行豁免，否則遭到支配。被支配的生物將為施法者一方作戰。"
+    },
+    {
+      "id": 63,
+      "gff_tag": "SPIN",
+      "gff_number": 63,
+      "en": "FEEBLEMIND:  Causes a dramatic drop in target's Intelligence and Wisdom. Target loses ability to cast spells or use psionics. Heal spell counters feeblemind.",
+      "zh": "智弱術：使目標的智力與感知大幅下降。目標將失去施法或使用心靈能力的能力。治癒術可解除智弱狀態。"
+    },
+    {
+      "id": 64,
+      "gff_tag": "SPIN",
+      "gff_number": 64,
+      "en": "HOLD MONSTER:  Similar to hold person, except it affects a wider variety of creatures.",
+      "zh": "定身怪物術：與定身人類術類似，但可影響更多種類的生物。"
+    },
+    {
+      "id": 65,
+      "gff_tag": "SPIN",
+      "gff_number": 65,
+      "en": "LOWER RESISTANCE:  Causes the magical resistance of the recipient to drop 30@ plus 1@ per level of caster.",
+      "zh": "降低抗性：使目標的魔法抗性下降 30%，每施法者等級再減少 1%。"
+    },
+    {
+      "id": 66,
+      "gff_tag": "SPIN",
+      "gff_number": 66,
+      "en": "MONSTER SUMMONING III:  Allows caster to conjure third-level monsters who fight on caster's side in combat.",
+      "zh": "召喚怪物 III：使施法者能以魔法召喚三等級怪物，於戰鬥中為施法者一方作戰。"
+    },
+    {
+      "id": 67,
+      "gff_tag": "SPIN",
+      "gff_number": 67,
+      "en": "SUMMON SHADOW:  Creates 1 shadow who fights for the caster until slain or dispelled.",
+      "zh": "召喚暗影：召喚 1 個暗影為施法者作戰，直到被消滅或解除為止。"
+    },
+    {
+      "id": 68,
+      "gff_tag": "SPIN",
+      "gff_number": 68,
+      "en": "WALL OF FORCE:  Creates an invisible barrier. The barrier blocks all attacks, and can only be dispelled with disintegrate.",
+      "zh": "力場之牆：製造一道無形的屏障。此屏障可阻擋所有攻擊，只能以解離術解除。"
+    },
+    {
+      "id": 69,
+      "gff_tag": "SPIN",
+      "gff_number": 69,
+      "en": "WALL OF STONE:  Creates a wall of granite which lasts for a variable amount of time & blocks movement. It can be destroyed by a dispel magic or disintegrate spell.",
+      "zh": "石牆術：製造一道花崗岩石牆，持續時間不定，並阻擋移動。可用解除魔法或解離術摧毀。"
+    },
+    {
+      "id": 70,
+      "gff_tag": "SPIN",
+      "gff_number": 70,
+      "en": "BLESS:  Improves THAC0 of friendly characters by 1. Spell is not cumulative. Good to cast before going into combat.",
+      "zh": "祝福術：使友方角色的 THAC0 提升 1 點。效果不可疊加。適合在戰鬥前施放。"
+    },
+    {
+      "id": 71,
+      "gff_tag": "SPIN",
+      "gff_number": 71,
+      "en": "CURSE:  Weakens the THAC0 of targets by 1. Target cannot be adjacent to a party character. Spell is not cumulative.",
+      "zh": "詛咒術：使目標的 THAC0 降低 1 點。目標不能與隊伍角色相鄰。效果不可疊加。"
+    },
+    {
+      "id": 72,
+      "gff_tag": "SPIN",
+      "gff_number": 72,
+      "en": "CURE LIGHT WOUNDS:  Heals 1 to 8 pts, up to recipient's normal maximum hit points.",
+      "zh": "治療輕傷：治癒 1 到 8 點生命值，最多恢復至目標的正常生命上限。"
+    },
+    {
+      "id": 73,
+      "gff_tag": "SPIN",
+      "gff_number": 73,
+      "en": "CAUSE LIGHT WOUNDS:  Inflicts 1 to 8 pts of damage on a target.",
+      "zh": "造成輕傷：對目標造成 1 到 8 點傷害。"
+    },
+    {
+      "id": 74,
+      "gff_tag": "SPIN",
+      "gff_number": 74,
+      "en": "ENTANGLE:  Causes large area of plants to sprout up. Victims who fail their save move very slowly.",
+      "zh": "纏繞術：使大片植物突然生長纏繞。豁免失敗的受害者移動會變得非常緩慢。"
+    },
+    {
+      "id": 75,
+      "gff_tag": "SPIN",
+      "gff_number": 75,
+      "en": "INVISIBILITY TO UNDEAD:  Causes undead to lose track of and ignore the warded creature for the duration of the spell (6 rounds).",
+      "zh": "對不死隱形：使不死生物在法術持續期間（6 回合）失去對受保護生物的追蹤並忽略其存在。"
+    },
+    {
+      "id": 76,
+      "gff_tag": "SPIN",
+      "gff_number": 76,
+      "en": "MAGICAL STONE:  Three magical stones may be hurled at an opponent causing 1 to 4 pts of damage per stone, or 2 to 8 pts if target is undead.",
+      "zh": "魔法石：可投擲三顆魔法石攻擊敵人，每顆造成 1 到 4 點傷害，對不死生物則造成 2 到 8 點傷害。"
+    },
+    {
+      "id": 77,
+      "gff_tag": "SPIN",
+      "gff_number": 77,
+      "en": "PROTECTION FROM EVIL:  Improves AC and saving throws of recipient by 2 against attackers of evil alignment.",
+      "zh": "抗邪惡術：使目標對邪惡陣營攻擊者的護甲等級與豁免檢定提升 2 點。"
+    },
+    {
+      "id": 78,
+      "gff_tag": "SPIN",
+      "gff_number": 78,
+      "en": "REMOVE FEAR:  Removes the effects of a cause fear spell.",
+      "zh": "解除恐懼：解除恐懼術的效果。"
+    },
+    {
+      "id": 79,
+      "gff_tag": "SPIN",
+      "gff_number": 79,
+      "en": "CAUSE FEAR:  Creatures must save or flee in panic for 1 to 4 rounds.",
+      "zh": "造成恐懼：生物必須豁免，否則將恐慌逃跑 1 到 4 回合。"
+    },
+    {
+      "id": 80,
+      "gff_tag": "SPIN",
+      "gff_number": 80,
+      "en": "SHILLELAGH:  Enables caster to temporarily create a magical club which appears in his/her hand.",
+      "zh": "魔棒術：使施法者能暫時在手中創造一根魔法棍棒。"
+    },
+    {
+      "id": 81,
+      "gff_tag": "SPIN",
+      "gff_number": 81,
+      "en": "AID:  Much like bless, except recipient gains 1 to 8 hit points for duration of spell. These pts are subtracted before the character's own if injured.",
+      "zh": "援助術：效果類似祝福術，但目標在法術持續期間額外獲得 1 到 8 點生命值。受傷時會先扣除這些額外生命值。"
+    },
+    {
+      "id": 82,
+      "gff_tag": "SPIN",
+      "gff_number": 82,
+      "en": "BARKSKIN:  Recipient receives an improvement to his/her AC. One for every four levels of the caster. Also gets +1 to all saving throws.",
+      "zh": "樹膚術：使目標的護甲等級獲得提升，每四個施法者等級提升 1 點，並對所有豁免檢定獲得 +1 加成。"
+    },
+    {
+      "id": 83,
+      "gff_tag": "SPIN",
+      "gff_number": 83,
+      "en": "CHARM PERSON OR MAMMAL:  Changes target's allegiance in combat.",
+      "zh": "魅惑人類或哺乳類：改變目標在戰鬥中的陣營歸屬。"
+    },
+    {
+      "id": 84,
+      "gff_tag": "SPIN",
+      "gff_number": 84,
+      "en": "DUST DEVIL:  Enables caster to conjure a dust devil who fights on the side of the caster in combat.",
+      "zh": "塵旋術：使施法者能召喚一個塵旋於戰鬥中為施法者一方作戰。"
+    },
+    {
+      "id": 85,
+      "gff_tag": "SPIN",
+      "gff_number": 85,
+      "en": "FIND TRAPS:  If sucessful, this spell reveals the location of all traps within the general area.",
+      "zh": "尋找陷阱：若成功施放，此法術可揭示周圍區域內所有陷阱的位置。"
+    },
+    {
+      "id": 86,
+      "gff_tag": "SPIN",
+      "gff_number": 86,
+      "en": "FLAME BLADE:  This blade of flame attacks like a normal sword in melee combat and does 7 to 10 pts of damage.",
+      "zh": "火焰刃：這把火焰之刃在近戰中如普通劍般攻擊，造成 7 到 10 點傷害。"
+    },
+    {
+      "id": 87,
+      "gff_tag": "SPIN",
+      "gff_number": 87,
+      "en": "HOLD PERSON:  This spell can affect human, demi-human, or humanoid creatures. Affected creatures are unable to move. Duration increases with level of caster.",
+      "zh": "定身人類術：此法術可影響人類、半人類或人形生物。受影響的生物無法移動，持續時間隨施法者等級增加。"
+    },
+    {
+      "id": 88,
+      "gff_tag": "SPIN",
+      "gff_number": 88,
+      "en": "RESIST FIRE:  Halves damage from fire attacks and improves saving throws versus fire by 3.",
+      "zh": "抗火術：使火焰攻擊的傷害減半，並對抗火豁免檢定提升 3 點。"
+    },
+    {
+      "id": 89,
+      "gff_tag": "SPIN",
+      "gff_number": 89,
+      "en": "RESIST COLD:  Halves damage from cold attacks and improves saving throws versus cold by 3.",
+      "zh": "抗寒術：使寒冷攻擊的傷害減半，並對抗寒豁免檢定提升 3 點。"
+    },
+    {
+      "id": 90,
+      "gff_tag": "SPIN",
+      "gff_number": 90,
+      "en": "SPIRITUAL HAMMER:  Creates temporary magic hammer that can hit monsters which may only be struck by +1 weapons.",
+      "zh": "靈能戰鎚：製造一把暫時的魔法戰鎚，可以擊中只有 +1 武器才能傷害的怪物。"
+    },
+    {
+      "id": 91,
+      "gff_tag": "SPIN",
+      "gff_number": 91,
+      "en": "CONJURE LESSER AIR ELEMENTAL:  Summon a lesser air elemental to fight on the caster's side in combat. Disappears when spell wears off or after combat.",
+      "zh": "召喚次級風元素：召喚一個次級風元素於戰鬥中為施法者一方作戰。法術失效或戰鬥結束後消失。"
+    },
+    {
+      "id": 92,
+      "gff_tag": "SPIN",
+      "gff_number": 92,
+      "en": "CONJURE LESSER FIRE ELEMENTAL:  Summons a lesser fire elemental to fight on the caster's side in combat. Disappears when spell wears off or after combat.",
+      "zh": "召喚次級火元素：召喚一個次級火元素於戰鬥中為施法者一方作戰。法術失效或戰鬥結束後消失。"
+    },
+    {
+      "id": 93,
+      "gff_tag": "SPIN",
+      "gff_number": 93,
+      "en": "CONJURE LESSER EARTH ELEMENTAL:  Summons a lesser earth elemental to fight on the caster's side in combat. Disappears when spell wears off or after combat.",
+      "zh": "召喚次級土元素：召喚一個次級土元素於戰鬥中為施法者一方作戰。法術失效或戰鬥結束後消失。"
+    },
+    {
+      "id": 94,
+      "gff_tag": "SPIN",
+      "gff_number": 94,
+      "en": "CONJURE LESSER WATER ELEMENTAL:  Summons a lesser water elemental to fight on the caster's side in combat. Disappears when spell wears off or after combat.",
+      "zh": "召喚次級水元素：召喚一個次級水元素於戰鬥中為施法者一方作戰。法術失效或戰鬥結束後消失。"
+    },
+    {
+      "id": 95,
+      "gff_tag": "SPIN",
+      "gff_number": 95,
+      "en": "CURE BLINDNESS OR DEAFNESS:  Counters the effects of cause blindness or deafness.",
+      "zh": "治療盲聾：解除致盲術或致聾術的效果。"
+    },
+    {
+      "id": 96,
+      "gff_tag": "SPIN",
+      "gff_number": 96,
+      "en": "CAUSE BLINDNESS OR DEAFNESS:  Blinds or deafens one target. Cured by cure blindness or deafness spell.",
+      "zh": "造成盲聾：使一個目標失明或耳聾。可用治療盲聾術治癒。"
+    },
+    {
+      "id": 97,
+      "gff_tag": "SPIN",
+      "gff_number": 97,
+      "en": "CURE DISEASE:  Removes the effects of disease caused by some monsters or cause disease spells.",
+      "zh": "治療疾病：解除某些怪物或造成疾病法術所引發的疾病效果。"
+    },
+    {
+      "id": 98,
+      "gff_tag": "SPIN",
+      "gff_number": 98,
+      "en": "CAUSE DISEASE:  Infects the target with a debilitating ailment that saps strength and hit points.",
+      "zh": "造成疾病：使目標感染會削弱力量與生命值的疾病。"
+    },
+    {
+      "id": 99,
+      "gff_tag": "SPIN",
+      "gff_number": 99,
+      "en": "DISPEL MAGIC:  Removes effects of spells that do not have specific counterspells. This cures characters that have been held or slowed.",
+      "zh": "解除魔法：解除沒有專屬反制法術的效果。可治癒被定身或減速的角色。"
+    },
+    {
+      "id": 100,
+      "gff_tag": "SPIN",
+      "gff_number": 100,
+      "en": "MAGICAL VESTMENT:  Gives protection to caster equivalent to AC 5. Spell gains a +1 for every 3 levels above 5th level. Spell not cumulative.",
+      "zh": "魔法法衣：賦予施法者相當於 AC5 的防護，5 級以上每增加 3 級再提升 1 點。效果不可疊加。"
+    },
+    {
+      "id": 101,
+      "gff_tag": "SPIN",
+      "gff_number": 101,
+      "en": "NEGATIVE PLANE PROTECTION:  Recipient is protected from one draining attack from undead monsters.",
+      "zh": "負能量位面防護：使目標免受一次來自不死生物的汲取攻擊。"
+    },
+    {
+      "id": 102,
+      "gff_tag": "SPIN",
+      "gff_number": 102,
+      "en": "PRAYER:  Improves THAC0 & saving throws of friendly characters by 1. Weakens the THAC0 & saves of monsters by 1. Not cumulative. Good to cast before combat.",
+      "zh": "祈禱術：使友方角色的 THAC0 與豁免檢定提升 1 點；使敵方怪物的 THAC0 與豁免檢定降低 1 點。效果不可疊加。適合在戰鬥前施放。"
+    },
+    {
+      "id": 103,
+      "gff_tag": "SPIN",
+      "gff_number": 103,
+      "en": "PROTECTION FROM FIRE:  Gives limited protection against fire. The recipient gets a +3 bonus to saves and takes half-damage from fire.",
+      "zh": "抗火防護：對火焰提供有限的防護。目標獲得 +3 的豁免加成，並只承受一半的火焰傷害。"
+    },
+    {
+      "id": 104,
+      "gff_tag": "SPIN",
+      "gff_number": 104,
+      "en": "REMOVE CURSE:  Removes the effects of a bestow curse spell.",
+      "zh": "解除詛咒：解除授咒術的效果。"
+    },
+    {
+      "id": 105,
+      "gff_tag": "SPIN",
+      "gff_number": 105,
+      "en": "BESTOW CURSE:  Bestows a -4 penalty to attacks & saves for affected creature. Effect can be reversed with dispel magic or remove curse.",
+      "zh": "授咒術：使受影響的生物在攻擊與豁免檢定上受到 -4 減值。可用解除魔法或解除詛咒解除。"
+    },
+    {
+      "id": 106,
+      "gff_tag": "SPIN",
+      "gff_number": 106,
+      "en": "REMOVE PARALYSIS:  This spell negates paralysis-type spells such as hold or slow.",
+      "zh": "解除麻痺：解除如定身術或減速術等麻痺類法術的效果。"
+    },
+    {
+      "id": 107,
+      "gff_tag": "SPIN",
+      "gff_number": 107,
+      "en": "SUMMON INSECTS:  Attracts cloud of insects. Anyone in the cloud takes 4 pts of damage per round, has a +2 AC penalty, and receives a -2 penalty to hit.",
+      "zh": "召喚昆蟲：吸引一群昆蟲聚集。身處蟲群中的生物每回合承受 4 點傷害，並受到 +2 護甲等級減值與 -2 命中減值。"
+    },
+    {
+      "id": 108,
+      "gff_tag": "SPIN",
+      "gff_number": 108,
+      "en": "ABJURE:  Dispels extraplanar creatures back to their own plane. Tanar'ri, elementals, & slaads fall into this category.",
+      "zh": "驅逐術：將位面外的生物驅逐回其原本的位面。塔那里、元素生物及斯拉德均屬此類。"
+    },
+    {
+      "id": 109,
+      "gff_tag": "SPIN",
+      "gff_number": 109,
+      "en": "BLOOD FLOW:  Heals 2 to 12 pts of damage. If used to injure, the target is stunned for up to 4 rounds.",
+      "zh": "血流術：治癒 2 到 12 點傷害。若用於傷害目標，則使其暈眩最多 4 回合。"
+    },
+    {
+      "id": 110,
+      "gff_tag": "SPIN",
+      "gff_number": 110,
+      "en": "CLOAK OF BRAVERY:  Recipient gains a +4 bonus to saves versus fear.",
+      "zh": "勇氣斗篷：使目標對恐懼的豁免檢定獲得 +4 加成。"
+    },
+    {
+      "id": 111,
+      "gff_tag": "SPIN",
+      "gff_number": 111,
+      "en": "CLOAK OF FEAR:  Recipient receives an aura of fear. The first opponent who strikes the affected character must save versus fear or flee.",
+      "zh": "恐懼斗篷：使目標籠罩恐懼氣場。第一個攻擊該角色的敵人必須豁免，否則將恐懼逃跑。"
+    },
+    {
+      "id": 112,
+      "gff_tag": "SPIN",
+      "gff_number": 112,
+      "en": "CONDENSE:  Turns a small pebble into dense matter which may be hurled at a target for 3 to 18 pts of damage.",
+      "zh": "凝聚術：將一顆小卵石轉化為高密度物質，可投擲攻擊目標造成 3 到 18 點傷害。"
+    },
+    {
+      "id": 113,
+      "gff_tag": "SPIN",
+      "gff_number": 113,
+      "en": "CURE SERIOUS WOUNDS:  Heals 3 to 17 hit points, up to the recipient's normal maximum.",
+      "zh": "治療重傷：治癒 3 到 17 點生命值，最多恢復至目標的正常生命上限。"
+    },
+    {
+      "id": 114,
+      "gff_tag": "SPIN",
+      "gff_number": 114,
+      "en": "CAUSE SERIOUS WOUNDS:  Inflicts 3 to 17 pts of damage on a target.",
+      "zh": "造成重傷：對目標造成 3 到 17 點傷害。"
+    },
+    {
+      "id": 115,
+      "gff_tag": "SPIN",
+      "gff_number": 115,
+      "en": "DEHYDRATE:  Target takes 2 to 12 pts of damage plus 1 per level of the caster. Only affects creatures with a circulatory system.",
+      "zh": "脫水術：對目標造成 2 到 12 點傷害，另加施法者每一等級增加 1 點。僅對具有循環系統的生物有效。"
+    },
+    {
+      "id": 116,
+      "gff_tag": "SPIN",
+      "gff_number": 116,
+      "en": "DUST CLOUD:  Obscures enemies' vision and prevents missile weapons from passing through.",
+      "zh": "塵霧術：遮蔽敵人視線，並阻止投射武器穿透。"
+    },
+    {
+      "id": 117,
+      "gff_tag": "SPIN",
+      "gff_number": 117,
+      "en": "FOCUS HEAT:  Inflicts 2 to 12 pts of damage plus 1 per level of the caster.",
+      "zh": "聚熱術：造成 2 到 12 點傷害，另加施法者每一等級增加 1 點。"
+    },
+    {
+      "id": 118,
+      "gff_tag": "SPIN",
+      "gff_number": 118,
+      "en": "FREE ACTION:  Allows recipient to negate the effects of spells such as slow, hold person, and web.",
+      "zh": "自由行動：使目標能免疫如減速術、定身人類術、蛛網術等法術的效果。"
+    },
+    {
+      "id": 119,
+      "gff_tag": "SPIN",
+      "gff_number": 119,
+      "en": "NEUTRALIZE POISON:  Detoxifies any sort of poison or venom.",
+      "zh": "中和毒素：解除任何形式的毒素或蛇毒。"
+    },
+    {
+      "id": 120,
+      "gff_tag": "SPIN",
+      "gff_number": 120,
+      "en": "POISON:  Causes the target to save versus poison or die.",
+      "zh": "下毒術：使目標必須豁免對抗毒素，否則死亡。"
+    },
+    {
+      "id": 121,
+      "gff_tag": "SPIN",
+      "gff_number": 121,
+      "en": "PRODUCE FIRE:  Inflicts 2 to 5 pts of damage on creatures within its area of effect.",
+      "zh": "生火術：對範圍內的生物造成 2 到 5 點傷害。"
+    },
+    {
+      "id": 122,
+      "gff_tag": "SPIN",
+      "gff_number": 122,
+      "en": "PROTECTION FROM EVIL, 10' RADIUS:  Improves AC & saves of target and adjacent friendly characters by 2 against evil attackers. Not cumulative.",
+      "zh": "抗邪惡術（10呎半徑）：使目標及鄰近友方角色對邪惡陣營攻擊者的護甲等級與豁免檢定提升 2 點。效果不可疊加。"
+    },
+    {
+      "id": 123,
+      "gff_tag": "SPIN",
+      "gff_number": 123,
+      "en": "PROTECTION FROM LIGHTNING:  Recipient gains a +4 bonus to saves and only takes half-damage from lighting.",
+      "zh": "抗雷電術：使目標獲得 +4 的豁免加成，且只承受一半的雷電傷害。"
+    },
+    {
+      "id": 124,
+      "gff_tag": "SPIN",
+      "gff_number": 124,
+      "en": "CONJURE AIR ELEMENTAL:  Summons an air elemental to fight on the caster's side in combat. Disappears when spell wears off or after combat.",
+      "zh": "召喚風元素：召喚一個風元素於戰鬥中為施法者一方作戰。法術失效或戰鬥結束後消失。"
+    },
+    {
+      "id": 125,
+      "gff_tag": "SPIN",
+      "gff_number": 125,
+      "en": "CONJURE FIRE ELEMENTAL:  Summons a fire elemental to fight on the caster's side in combat. Disappears when spell wears off or after combat.",
+      "zh": "召喚火元素：召喚一個火元素於戰鬥中為施法者一方作戰。法術失效或戰鬥結束後消失。"
+    },
+    {
+      "id": 126,
+      "gff_tag": "SPIN",
+      "gff_number": 126,
+      "en": "CONJURE EARTH ELEMENTAL:  Summons an earth elemental to fight on the caster's side in combat. Disappears when spell wears off or after combat.",
+      "zh": "召喚土元素：召喚一個土元素於戰鬥中為施法者一方作戰。法術失效或戰鬥結束後消失。"
+    },
+    {
+      "id": 127,
+      "gff_tag": "SPIN",
+      "gff_number": 127,
+      "en": "CONJURE WATER ELEMENTAL:  Summons a water elemental to fight on the caster's side in combat. Disappears when spell wears off or after combat.",
+      "zh": "召喚水元素：召喚一個水元素於戰鬥中為施法者一方作戰。法術失效或戰鬥結束後消失。"
+    },
+    {
+      "id": 128,
+      "gff_tag": "SPIN",
+      "gff_number": 128,
+      "en": "CURE CRITICAL WOUNDS:  Heals 6 to 27 pts of damage up to the target's maximum hit points.",
+      "zh": "治療重創：治癒 6 到 27 點傷害，最多恢復至目標的生命上限。"
+    },
+    {
+      "id": 129,
+      "gff_tag": "SPIN",
+      "gff_number": 129,
+      "en": "CAUSE CRITICAL WOUNDS:  Inflicts 6 to 27 pts of damage on a target.",
+      "zh": "造成重創：對目標造成 6 到 27 點傷害。"
+    },
+    {
+      "id": 130,
+      "gff_tag": "SPIN",
+      "gff_number": 130,
+      "en": "DEFLECTION:  Deflects small projectiles; large projectiles remain unaffected by the spell.",
+      "zh": "偏斜術：偏斜小型投射物；大型投射物不受此法術影響。"
+    },
+    {
+      "id": 131,
+      "gff_tag": "SPIN",
+      "gff_number": 131,
+      "en": "DISPEL EVIL:  Improves target's AC by 7 against summoned creatures for the duration of the spell, or until target hits a summoned creature.",
+      "zh": "解除邪惡：在法術持續期間，使目標對召喚生物的護甲等級提升 7 點，直到目標攻擊召喚生物為止。"
+    },
+    {
+      "id": 132,
+      "gff_tag": "SPIN",
+      "gff_number": 132,
+      "en": "FLAME STRIKE:  Creatures failing their saves sustain 6 to 48 pts of damage; otherwise the damage is halved.",
+      "zh": "烈焰打擊：豁免失敗的生物承受 6 到 48 點傷害，否則傷害減半。"
+    },
+    {
+      "id": 133,
+      "gff_tag": "SPIN",
+      "gff_number": 133,
+      "en": "INSECT PLAGUE:  Summons a swarm of insects which obscures vision, prevents spellcasting, and inflicts 1 pt of damage per round to creatures within the cloud.",
+      "zh": "蟲群瘟疫：召喚大量昆蟲遮蔽視線、阻止施法，並對雲霧中的生物每回合造成 1 點傷害。"
+    },
+    {
+      "id": 134,
+      "gff_tag": "SPIN",
+      "gff_number": 134,
+      "en": "IRONSKIN:  Gives recipient immunity to physical attacks by weapons, fangs, claws, and hurled projectiles. Magic attacks have normal effects.",
+      "zh": "鋼膚術：使目標對武器、獠牙、爪子及投射物等物理攻擊免疫。魔法攻擊則正常生效。"
+    },
+    {
+      "id": 135,
+      "gff_tag": "SPIN",
+      "gff_number": 135,
+      "en": "QUICKSAND:  Anyone passing through the affected area sinks into the quicksand and is held there.",
+      "zh": "流沙術：任何穿越受影響區域的生物都會陷入流沙並被困在其中。"
+    },
+    {
+      "id": 136,
+      "gff_tag": "SPIN",
+      "gff_number": 136,
+      "en": "RAISE DEAD:  Can bring one non-elf character back to life. The raised character loses 1 pt of Constitution permanently.",
+      "zh": "復活術：可使一名非精靈角色死而復生。復活的角色將永久損失 1 點體質。"
+    },
+    {
+      "id": 137,
+      "gff_tag": "SPIN",
+      "gff_number": 137,
+      "en": "SLAY LIVING:  Kills one target. If the target makes its save it suffers 3 to 17 pts of damage.",
+      "zh": "殺生術：殺死一個目標。若目標豁免成功，則改為承受 3 到 17 點傷害。"
+    },
+    {
+      "id": 138,
+      "gff_tag": "SPIN",
+      "gff_number": 138,
+      "en": "WALL OF FIRE:  Creates an immobile curtain of magical fire. Creatures passing through the wall take damage.",
+      "zh": "火焰牆：製造一道不會移動的魔法火焰之牆。穿越此牆的生物會受到傷害。"
+    },
+    {
+      "id": 139,
+      "gff_tag": "SPIN",
+      "gff_number": 139,
+      "en": "DETONATE:  This focused explosion inflicts 1 to 10 pts of damage to any creature within its area of effect.",
+      "zh": "引爆術：這道聚焦爆炸對範圍內任何生物造成 1 到 10 點傷害。"
+    },
+    {
+      "id": 140,
+      "gff_tag": "SPIN",
+      "gff_number": 140,
+      "en": "DISINTEGRATE:  Reduces a creature to microscopic pieces. Target must save versus death magic or be turned to ash.",
+      "zh": "解離術：將生物化為微粒。目標必須豁免死亡魔法，否則化為灰燼。"
+    },
+    {
+      "id": 141,
+      "gff_tag": "SPIN",
+      "gff_number": 141,
+      "en": "PROJECT FORCE:  This ranged psychokinetic \"punch\" does 1 to 6 pts of damage, plus the AC of the targeted creature.",
+      "zh": "力場投射：這股遠程的心靈力量「重擊」造成 1 到 6 點傷害，並額外加上目標護甲等級的數值。"
+    },
+    {
+      "id": 142,
+      "gff_tag": "SPIN",
+      "gff_number": 142,
+      "en": "BALLISTIC ATTACK:  Allows a character to hurl a small object at high speed which inflicts 1 to 6 pts of damage.",
+      "zh": "彈道攻擊：使角色能高速投擲小型物體，造成 1 到 6 點傷害。"
+    },
+    {
+      "id": 143,
+      "gff_tag": "SPIN",
+      "gff_number": 143,
+      "en": "CONTROL BODY:  Allows control of another person's body in combat. The controlled character fights with a -6 penalty on all attack rolls.",
+      "zh": "操控身體：使角色能在戰鬥中操控另一人的身體。被操控的角色所有攻擊擲骰受到 -6 減值。"
+    },
+    {
+      "id": 144,
+      "gff_tag": "SPIN",
+      "gff_number": 144,
+      "en": "INERTIAL BARRIER:  This barrier of \"elastic\" air halves damage from breath weapons, missiles, acid, gas, and ice storms.",
+      "zh": "慣性屏障：這道「彈性」空氣屏障可將噴吐攻擊、飛彈、酸液、毒氣及冰風暴造成的傷害減半。"
+    },
+    {
+      "id": 145,
+      "gff_tag": "SPIN",
+      "gff_number": 145,
+      "en": "ANIMAL AFFINITY:  Allows the psionicist to briefly grow claws that inflict 1 to 10 pts of damage.",
+      "zh": "通靈親和：使心靈師能短暫長出利爪，造成 1 到 10 點傷害。"
+    },
+    {
+      "id": 146,
+      "gff_tag": "SPIN",
+      "gff_number": 146,
+      "en": "ENERGY CONTAINMENT:  Energy attacks such as electricity, cold, fire, and heat have no effect when psionicist is protected by this spell.",
+      "zh": "能量封存：受此法術保護時，電擊、寒冷、火焰及高溫等能量攻擊對心靈師無效。"
+    },
+    {
+      "id": 147,
+      "gff_tag": "SPIN",
+      "gff_number": 147,
+      "en": "LIFE DRAINING:  Drains up to 6 hit points from another creature and temporarily adds them to the psionicist's total.",
+      "zh": "生命汲取：從另一個生物身上汲取最多 6 點生命值，並暫時加到心靈師自身的生命值上。"
+    },
+    {
+      "id": 148,
+      "gff_tag": "SPIN",
+      "gff_number": 148,
+      "en": "ABSORB DISEASE:  Allows psionicist to transfer a disease (not curse) from one creature to the psionicist, who can then cure it.",
+      "zh": "吸收疾病：使心靈師能將疾病（非詛咒）從一個生物轉移到自己身上，之後再自行治癒。"
+    },
+    {
+      "id": 149,
+      "gff_tag": "SPIN",
+      "gff_number": 149,
+      "en": "ADRENALIN CONTROL: Provides a temporary strength boost of 1 to 6 pts.",
+      "zh": "腎上腺素控制：提供 1 到 6 點的暫時力量提升。"
+    },
+    {
+      "id": 150,
+      "gff_tag": "SPIN",
+      "gff_number": 150,
+      "en": "BIOFEEDBACK:  Improves the psionicist's AC by 1 and reduces damage from attacks by 2.",
+      "zh": "生物回饋：使心靈師的護甲等級提升 1 點，並減少 2 點受到的攻擊傷害。"
+    },
+    {
+      "id": 151,
+      "gff_tag": "SPIN",
+      "gff_number": 151,
+      "en": "BODY WEAPONRY:  Allows one arm of psionicist to temporarily become a weapon. The weapon is equivalent to a broadsword.",
+      "zh": "徒手武器：使心靈師的一隻手臂暫時化為武器，其威力相當於一把闊劍。"
+    },
+    {
+      "id": 152,
+      "gff_tag": "SPIN",
+      "gff_number": 152,
+      "en": "CELL ADJUSTMENT:  Heals wounds and cures diseases.",
+      "zh": "細胞調整：治癒傷勢並治療疾病。"
+    },
+    {
+      "id": 153,
+      "gff_tag": "SPIN",
+      "gff_number": 153,
+      "en": "DISPLACEMENT:  Mimics the power of a displacer beast. This improves the psionicist's AC by 2.",
+      "zh": "錯位術：模仿錯位獸的能力，使心靈師的護甲等級提升 2 點。"
+    },
+    {
+      "id": 154,
+      "gff_tag": "SPIN",
+      "gff_number": 154,
+      "en": "ENHANCED STRENGTH:  Allows psionicist to temporarily increase his or her strength to 24.",
+      "zh": "強化力量：使心靈師能暫時將自身力量提升至 24。"
+    },
+    {
+      "id": 155,
+      "gff_tag": "SPIN",
+      "gff_number": 155,
+      "en": "FLESH ARMOR:  Transforms psionicist's own skin into a random type of armor dependent upon level of psionicist.",
+      "zh": "血肉護甲：將心靈師自身的皮膚轉化為隨機類型的護甲，種類依心靈師等級而定。"
+    },
+    {
+      "id": 156,
+      "gff_tag": "SPIN",
+      "gff_number": 156,
+      "en": "GRAFT WEAPON:  Allows psionicist to take the weapon in his or her hand and make it part of the body. Gives a +1 bonus to hit.",
+      "zh": "移植武器：使心靈師能將手中的武器融入自己的身體，獲得 +1 命中加成。"
+    },
+    {
+      "id": 157,
+      "gff_tag": "SPIN",
+      "gff_number": 157,
+      "en": "LEND HEALTH:  Allows psionicist to transfer hit points to another character. May transfer as long as own minimum level is not exceeded.",
+      "zh": "借予生命：使心靈師能將生命值轉移給另一名角色，只要不低於自身最低等級所需生命值即可。"
+    },
+    {
+      "id": 158,
+      "gff_tag": "SPIN",
+      "gff_number": 158,
+      "en": "SHARE STRENGTH:  Psionicist transfers two strength points to another character for every one received.",
+      "zh": "分享力量：心靈師每贈與 1 點力量，會轉移 2 點力量給另一名角色。"
+    },
+    {
+      "id": 159,
+      "gff_tag": "SPIN",
+      "gff_number": 159,
+      "en": "DOMINATION:  Allows psionicist to take control of another's mind in combat.",
+      "zh": "支配術：使心靈師能在戰鬥中掌控另一人的心智。"
+    },
+    {
+      "id": 160,
+      "gff_tag": "SPIN",
+      "gff_number": 160,
+      "en": "MASS DOMINATION:  Same as domination except up to 5 creatures may be controlled at once.",
+      "zh": "大量支配術：與支配術相同，但一次最多可控制 5 個生物。"
+    },
+    {
+      "id": 161,
+      "gff_tag": "SPIN",
+      "gff_number": 161,
+      "en": "PSYCHIC CRUSH:  This attack on another's mind causes up to 6 pts of damage.",
+      "zh": "心靈粉碎：這股針對他人心智的攻擊最多造成 6 點傷害。"
+    },
+    {
+      "id": 162,
+      "gff_tag": "SPIN",
+      "gff_number": 162,
+      "en": "SUPERIOR INVISIBILITY:  Makes the psionicist nearly undetectable in combat. It is dispelled if the psionicist attacks.",
+      "zh": "高等隱形術：使心靈師在戰鬥中幾乎無法被察覺。心靈師攻擊時效果解除。"
+    },
+    {
+      "id": 163,
+      "gff_tag": "SPIN",
+      "gff_number": 163,
+      "en": "TOWER OF IRON WILL:  Wards the psionicist against unwanted contact by other psionicists. May inititate one other psionic power while thus warded.",
+      "zh": "鋼鐵意志之塔：保護心靈師免受其他心靈師不受歡迎的心靈接觸。受保護期間仍可發動一項其他心靈能力。"
+    },
+    {
+      "id": 164,
+      "gff_tag": "SPIN",
+      "gff_number": 164,
+      "en": "EGO WHIP:  Attacks the target's ego, leaving it with feelings of inferiority. Target is stunned for 1 to 4 rounds.",
+      "zh": "自我之鞭：攻擊目標的自我意識，使其產生自卑感。目標暈眩 1 到 4 回合。"
+    },
+    {
+      "id": 165,
+      "gff_tag": "SPIN",
+      "gff_number": 165,
+      "en": "ID INSINUATION:  Paralyzes the target for 1 to 4 rounds.",
+      "zh": "本我暗示：使目標麻痺 1 到 4 回合。"
+    },
+    {
+      "id": 166,
+      "gff_tag": "SPIN",
+      "gff_number": 166,
+      "en": "INTELLECT FORTRESS:  All minds within the area of effect are protected against psionic attacks.",
+      "zh": "心智堡壘：效果範圍內所有心智都受到保護，免受心靈攻擊。"
+    },
+    {
+      "id": 167,
+      "gff_tag": "SPIN",
+      "gff_number": 167,
+      "en": "MENTAL BARRIER:  Protects the psionicist against other psionic attacks. Psionicist may use other powers while thus protected.",
+      "zh": "心靈屏障：保護心靈師免受其他心靈攻擊。受保護期間心靈師仍可使用其他能力。"
+    },
+    {
+      "id": 168,
+      "gff_tag": "SPIN",
+      "gff_number": 168,
+      "en": "MIND BAR:  Gives Psionicist 75@ magic resistance to mind-affecting spells such as charm and feeblemind.",
+      "zh": "心靈之柵：賦予心靈師對如魅惑術、智弱術等影響心智的法術 75% 的魔法抗性。"
+    },
+    {
+      "id": 169,
+      "gff_tag": "SPIN",
+      "gff_number": 169,
+      "en": "MIND BLANK:  Protects the psionicist against psionic attacks. Unlike other defensive modes, mind blank costs nothing to maintain.",
+      "zh": "心靈空白：保護心靈師免受心靈攻擊。與其他防禦模式不同，維持心靈空白不需消耗額外資源。"
+    },
+    {
+      "id": 170,
+      "gff_tag": "SPIN",
+      "gff_number": 170,
+      "en": "PSIONIC BLAST:  Tricks an opponent into thinking it has lost 80@ of its hit points. When it loses 20@ it falls unconscious.",
+      "zh": "靈能爆：使敵人誤以為自己已損失 80% 的生命值。當其認為損失達 20% 時便會昏迷倒地。"
+    },
+    {
+      "id": 171,
+      "gff_tag": "SPIN",
+      "gff_number": 171,
+      "en": "SYNAPTIC STATIC:  Interferes with psionic abilities, preventing all (including the one who initiated power) from using psionics until effect ends.",
+      "zh": "神經靜電：干擾心靈能力，使所有人（包含發動者本人）在效果結束前都無法使用心靈能力。"
+    },
+    {
+      "id": 172,
+      "gff_tag": "SPIN",
+      "gff_number": 172,
+      "en": "THOUGHT SHIELD:  Protects psionicist's mind from psionic attacks. May initiate other psionics while thus protected.",
+      "zh": "思維護盾：保護心靈師的心智免受心靈攻擊。受保護期間仍可發動其他心靈能力。"
+    }
+  ]
+}

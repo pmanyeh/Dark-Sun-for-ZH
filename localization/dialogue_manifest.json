@@ -1,0 +1,563 @@
+{
+  "RGN02.GFF": {
+    "region": "RGN02.GFF",
+    "entity_count": 2,
+    "interactive_nodes": [
+      {
+        "entity_index": 0,
+        "position": {
+          "x": 4464,
+          "y": 0
+        },
+        "entity_type": 19783,
+        "script_id": "0x15041",
+        "text_ids": [],
+        "instruction_count": 0
+      }
+    ]
+  },
+  "RGN03.GFF": {
+    "region": "RGN03.GFF",
+    "entity_count": 3,
+    "interactive_nodes": [
+      {
+        "entity_index": 0,
+        "position": {
+          "x": 4624,
+          "y": 0
+        },
+        "entity_type": 19783,
+        "script_id": "0x15041",
+        "text_ids": [],
+        "instruction_count": 0
+      }
+    ]
+  },
+  "RGN04.GFF": {
+    "region": "RGN04.GFF",
+    "entity_count": 4,
+    "interactive_nodes": [
+      {
+        "entity_index": 0,
+        "position": {
+          "x": 3400,
+          "y": 0
+        },
+        "entity_type": 19783,
+        "script_id": "0x15041",
+        "text_ids": [],
+        "instruction_count": 0
+      }
+    ]
+  },
+  "RGN05.GFF": {
+    "region": "RGN05.GFF",
+    "entity_count": 5,
+    "interactive_nodes": [
+      {
+        "entity_index": 0,
+        "position": {
+          "x": 4264,
+          "y": 0
+        },
+        "entity_type": 19783,
+        "script_id": "0x15041",
+        "text_ids": [],
+        "instruction_count": 0
+      }
+    ]
+  },
+  "RGN06.GFF": {
+    "region": "RGN06.GFF",
+    "entity_count": 6,
+    "interactive_nodes": [
+      {
+        "entity_index": 0,
+        "position": {
+          "x": 1928,
+          "y": 0
+        },
+        "entity_type": 19783,
+        "script_id": "0x15041",
+        "text_ids": [],
+        "instruction_count": 0
+      }
+    ]
+  },
+  "RGN07.GFF": {
+    "region": "RGN07.GFF",
+    "entity_count": 7,
+    "interactive_nodes": [
+      {
+        "entity_index": 0,
+        "position": {
+          "x": 3320,
+          "y": 0
+        },
+        "entity_type": 19783,
+        "script_id": "0x15041",
+        "text_ids": [],
+        "instruction_count": 0
+      }
+    ]
+  },
+  "RGN08.GFF": {
+    "region": "RGN08.GFF",
+    "entity_count": 8,
+    "interactive_nodes": [
+      {
+        "entity_index": 0,
+        "position": {
+          "x": 4208,
+          "y": 0
+        },
+        "entity_type": 19783,
+        "script_id": "0x15041",
+        "text_ids": [],
+        "instruction_count": 0
+      }
+    ]
+  },
+  "RGN09.GFF": {
+    "region": "RGN09.GFF",
+    "entity_count": 9,
+    "interactive_nodes": [
+      {
+        "entity_index": 0,
+        "position": {
+          "x": 3072,
+          "y": 0
+        },
+        "entity_type": 19783,
+        "script_id": "0x15041",
+        "text_ids": [],
+        "instruction_count": 0
+      }
+    ]
+  },
+  "RGN0A.GFF": {
+    "region": "RGN0A.GFF",
+    "entity_count": 10,
+    "interactive_nodes": [
+      {
+        "entity_index": 0,
+        "position": {
+          "x": 3616,
+          "y": 0
+        },
+        "entity_type": 19783,
+        "script_id": "0x15041",
+        "text_ids": [],
+        "instruction_count": 0
+      }
+    ]
+  },
+  "RGN0B.GFF": {
+    "region": "RGN0B.GFF",
+    "entity_count": 11,
+    "interactive_nodes": [
+      {
+        "entity_index": 0,
+        "position": {
+          "x": 3128,
+          "y": 0
+        },
+        "entity_type": 19783,
+        "script_id": "0x15041",
+        "text_ids": [],
+        "instruction_count": 0
+      }
+    ]
+  },
+  "RGN0D.GFF": {
+    "region": "RGN0D.GFF",
+    "entity_count": 13,
+    "interactive_nodes": [
+      {
+        "entity_index": 0,
+        "position": {
+          "x": 2968,
+          "y": 0
+        },
+        "entity_type": 19783,
+        "script_id": "0x15041",
+        "text_ids": [],
+        "instruction_count": 0
+      }
+    ]
+  },
+  "RGN0E.GFF": {
+    "region": "RGN0E.GFF",
+    "entity_count": 14,
+    "interactive_nodes": [
+      {
+        "entity_index": 0,
+        "position": {
+          "x": 4528,
+          "y": 0
+        },
+        "entity_type": 19783,
+        "script_id": "0x15041",
+        "text_ids": [],
+        "instruction_count": 0
+      }
+    ]
+  },
+  "RGN0F.GFF": {
+    "region": "RGN0F.GFF",
+    "entity_count": 15,
+    "interactive_nodes": [
+      {
+        "entity_index": 0,
+        "position": {
+          "x": 1864,
+          "y": 0
+        },
+        "entity_type": 19783,
+        "script_id": "0x15041",
+        "text_ids": [],
+        "instruction_count": 0
+      }
+    ]
+  },
+  "RGN12.GFF": {
+    "region": "RGN12.GFF",
+    "entity_count": 18,
+    "interactive_nodes": [
+      {
+        "entity_index": 0,
+        "position": {
+          "x": 4240,
+          "y": 0
+        },
+        "entity_type": 19783,
+        "script_id": "0x15041",
+        "text_ids": [],
+        "instruction_count": 0
+      }
+    ]
+  },
+  "RGN14.GFF": {
+    "region": "RGN14.GFF",
+    "entity_count": 20,
+    "interactive_nodes": [
+      {
+        "entity_index": 0,
+        "position": {
+          "x": 4208,
+          "y": 0
+        },
+        "entity_type": 19783,
+        "script_id": "0x15041",
+        "text_ids": [],
+        "instruction_count": 0
+      }
+    ]
+  },
+  "RGN1A.GFF": {
+    "region": "RGN1A.GFF",
+    "entity_count": 26,
+    "interactive_nodes": [
+      {
+        "entity_index": 0,
+        "position": {
+          "x": 4848,
+          "y": 0
+        },
+        "entity_type": 19783,
+        "script_id": "0x15041",
+        "text_ids": [],
+        "instruction_count": 0
+      }
+    ]
+  },
+  "RGN1B.GFF": {
+    "region": "RGN1B.GFF",
+    "entity_count": 27,
+    "interactive_nodes": [
+      {
+        "entity_index": 0,
+        "position": {
+          "x": 1336,
+          "y": 0
+        },
+        "entity_type": 19783,
+        "script_id": "0x15041",
+        "text_ids": [],
+        "instruction_count": 0
+      }
+    ]
+  },
+  "RGN1C.GFF": {
+    "region": "RGN1C.GFF",
+    "entity_count": 28,
+    "interactive_nodes": [
+      {
+        "entity_index": 0,
+        "position": {
+          "x": 1856,
+          "y": 0
+        },
+        "entity_type": 19783,
+        "script_id": "0x15041",
+        "text_ids": [],
+        "instruction_count": 0
+      }
+    ]
+  },
+  "RGN1D.GFF": {
+    "region": "RGN1D.GFF",
+    "entity_count": 29,
+    "interactive_nodes": [
+      {
+        "entity_index": 0,
+        "position": {
+          "x": 3784,
+          "y": 0
+        },
+        "entity_type": 19783,
+        "script_id": "0x15041",
+        "text_ids": [],
+        "instruction_count": 0
+      }
+    ]
+  },
+  "RGN1E.GFF": {
+    "region": "RGN1E.GFF",
+    "entity_count": 30,
+    "interactive_nodes": [
+      {
+        "entity_index": 0,
+        "position": {
+          "x": 2272,
+          "y": 0
+        },
+        "entity_type": 19783,
+        "script_id": "0x15041",
+        "text_ids": [],
+        "instruction_count": 0
+      }
+    ]
+  },
+  "RGN1F.GFF": {
+    "region": "RGN1F.GFF",
+    "entity_count": 31,
+    "interactive_nodes": [
+      {
+        "entity_index": 0,
+        "position": {
+          "x": 2840,
+          "y": 0
+        },
+        "entity_type": 19783,
+        "script_id": "0x15041",
+        "text_ids": [],
+        "instruction_count": 0
+      }
+    ]
+  },
+  "RGN21.GFF": {
+    "region": "RGN21.GFF",
+    "entity_count": 33,
+    "interactive_nodes": [
+      {
+        "entity_index": 0,
+        "position": {
+          "x": 2520,
+          "y": 0
+        },
+        "entity_type": 19783,
+        "script_id": "0x15041",
+        "text_ids": [],
+        "instruction_count": 0
+      }
+    ]
+  },
+  "RGN22.GFF": {
+    "region": "RGN22.GFF",
+    "entity_count": 34,
+    "interactive_nodes": [
+      {
+        "entity_index": 0,
+        "position": {
+          "x": 2000,
+          "y": 0
+        },
+        "entity_type": 19783,
+        "script_id": "0x15041",
+        "text_ids": [],
+        "instruction_count": 0
+      }
+    ]
+  },
+  "RGN23.GFF": {
+    "region": "RGN23.GFF",
+    "entity_count": 35,
+    "interactive_nodes": [
+      {
+        "entity_index": 0,
+        "position": {
+          "x": 1952,
+          "y": 0
+        },
+        "entity_type": 19783,
+        "script_id": "0x15041",
+        "text_ids": [],
+        "instruction_count": 0
+      }
+    ]
+  },
+  "RGN26.GFF": {
+    "region": "RGN26.GFF",
+    "entity_count": 38,
+    "interactive_nodes": [
+      {
+        "entity_index": 0,
+        "position": {
+          "x": 5160,
+          "y": 0
+        },
+        "entity_type": 19783,
+        "script_id": "0x15041",
+        "text_ids": [],
+        "instruction_count": 0
+      }
+    ]
+  },
+  "RGN27.GFF": {
+    "region": "RGN27.GFF",
+    "entity_count": 39,
+    "interactive_nodes": [
+      {
+        "entity_index": 0,
+        "position": {
+          "x": 3712,
+          "y": 0
+        },
+        "entity_type": 19783,
+        "script_id": "0x15041",
+        "text_ids": [],
+        "instruction_count": 0
+      }
+    ]
+  },
+  "RGN28.GFF": {
+    "region": "RGN28.GFF",
+    "entity_count": 40,
+    "interactive_nodes": [
+      {
+        "entity_index": 0,
+        "position": {
+          "x": 2872,
+          "y": 0
+        },
+        "entity_type": 19783,
+        "script_id": "0x15041",
+        "text_ids": [],
+        "instruction_count": 0
+      }
+    ]
+  },
+  "RGN29.GFF": {
+    "region": "RGN29.GFF",
+    "entity_count": 41,
+    "interactive_nodes": [
+      {
+        "entity_index": 0,
+        "position": {
+          "x": 3280,
+          "y": 0
+        },
+        "entity_type": 19783,
+        "script_id": "0x15041",
+        "text_ids": [],
+        "instruction_count": 0
+      }
+    ]
+  },
+  "RGN2A.GFF": {
+    "region": "RGN2A.GFF",
+    "entity_count": 42,
+    "interactive_nodes": [
+      {
+        "entity_index": 0,
+        "position": {
+          "x": 824,
+          "y": 0
+        },
+        "entity_type": 19783,
+        "script_id": "0x15041",
+        "text_ids": [],
+        "instruction_count": 0
+      }
+    ]
+  },
+  "RGN2B.GFF": {
+    "region": "RGN2B.GFF",
+    "entity_count": 43,
+    "interactive_nodes": [
+      {
+        "entity_index": 0,
+        "position": {
+          "x": 2112,
+          "y": 0
+        },
+        "entity_type": 19783,
+        "script_id": "0x15041",
+        "text_ids": [],
+        "instruction_count": 0
+      }
+    ]
+  },
+  "RGN2C.GFF": {
+    "region": "RGN2C.GFF",
+    "entity_count": 44,
+    "interactive_nodes": [
+      {
+        "entity_index": 0,
+        "position": {
+          "x": 448,
+          "y": 0
+        },
+        "entity_type": 19783,
+        "script_id": "0x15041",
+        "text_ids": [],
+        "instruction_count": 0
+      }
+    ]
+  },
+  "RGN2D.GFF": {
+    "region": "RGN2D.GFF",
+    "entity_count": 45,
+    "interactive_nodes": [
+      {
+        "entity_index": 0,
+        "position": {
+          "x": 4992,
+          "y": 0
+        },
+        "entity_type": 19783,
+        "script_id": "0x15041",
+        "text_ids": [],
+        "instruction_count": 0
+      }
+    ]
+  },
+  "RGNFF.GFF": {
+    "region": "RGNFF.GFF",
+    "entity_count": 255,
+    "interactive_nodes": [
+      {
+        "entity_index": 0,
+        "position": {
+          "x": 3584,
+          "y": 0
+        },
+        "entity_type": 19783,
+        "script_id": "0x15041",
+        "text_ids": [],
+        "instruction_count": 0
+      }
+    ]
+  }
+}

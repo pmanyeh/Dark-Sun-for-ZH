@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls \"/d/git/dsun_extracted\" | head -30; echo \"---count---\"; ls \"/d/git/dsun_extracted\" | wc -l)",
+      "Read(//d/git/dsun_extracted/**)",
+      "Bash(ls \"/d/git/dsun_extracted/RESOURCE\" | grep -E \"^\\(NAME|SPIN|TEXT\\)\" | head -20 *)",
+      "Read(//d/git/dsun_extracted/RESOURCE/**)",
+      "Read(//d/git/dsun_extracted/GPLDATA/**)",
+      "Bash(cd \"/d/git/dsun_extracted\" && echo \"--- NAME-1 \\(first 800 bytes\\) ---\" && head -c 800 \"GPLDATA/NAME-1\" | cat -A | head -40 *)",
+      "Read(//d/git/**)",
+      "Bash(find \"/d\" -maxdepth 3 -iname \"dsun_music*\")",
+      "Read(//d/git/遊戲中文化/Dark Sun/**)",
+      "Read(//d/git/dsun_music/gff-tool/**)",
+      "Bash(java -jar target/gff-tool.jar --help)"
+    ]
+  }
+}

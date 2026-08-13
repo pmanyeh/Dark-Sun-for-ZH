@@ -1,0 +1,1354 @@
+[
+  {
+    "id": "DLG_00001",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14A902",
+    "english_sentence": "Staff Sling",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00002",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14A934",
+    "english_sentence": "Great Axe",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00003",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14A998",
+    "english_sentence": "Chest Armor",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00004",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14A9B1",
+    "english_sentence": "Arm Armor",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00005",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14A9CA",
+    "english_sentence": "Leg Armor",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00006",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14A9E3",
+    "english_sentence": "Ring Chest Armor",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00007",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14A9FC",
+    "english_sentence": "Ring Arm Armor",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00008",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14AA15",
+    "english_sentence": "Ring Leg Armor",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00009",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14AAF6",
+    "english_sentence": "Broken Wheel",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00010",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14AB0F",
+    "english_sentence": "Sewer Drain",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00011",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14AB28",
+    "english_sentence": "Genie Bottle",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00012",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14AB41",
+    "english_sentence": "Trail of Blood",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00013",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14ABA5",
+    "english_sentence": "Long Sword",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00014",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14ABBE",
+    "english_sentence": "Flame Blade",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00015",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14ABD7",
+    "english_sentence": "Spiritual Hammer",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00016",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14ABF0",
+    "english_sentence": "Body Weaponry",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00017",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14AC09",
+    "english_sentence": "Animal Affinity",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00018",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14AC22",
+    "english_sentence": "Parting Staff",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00019",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14AC3A",
+    "english_sentence": "=Passion Fruit",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00020",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14AD99",
+    "english_sentence": "Nagi's Talisman",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00021",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14ADB2",
+    "english_sentence": "Golden Pendant",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00022",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14ADCB",
+    "english_sentence": "Brick Circle",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00023",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14ADE3",
+    "english_sentence": "=Sacrificial Stone",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00024",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14AEAC",
+    "english_sentence": "Warning Symbol",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00025",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14AEDE",
+    "english_sentence": "Phrain's Bow",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00026",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14AEF7",
+    "english_sentence": "Dagolar's Wand",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00027",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14AF10",
+    "english_sentence": "Wand of Missiles",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00028",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14AF29",
+    "english_sentence": "Derth's Wand",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00029",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14AF42",
+    "english_sentence": "Wildwynd Wand",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00030",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14AF5B",
+    "english_sentence": "Light of Dawn",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00031",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14AF74",
+    "english_sentence": "Steadfast Ring",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00032",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14AF8D",
+    "english_sentence": "Storm Ring",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00033",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14AFA6",
+    "english_sentence": "Wind Ring",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00034",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14AFD8",
+    "english_sentence": "Drake Armor",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00035",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14AFF0",
+    "english_sentence": "=Grey's Scale",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00036",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B00A",
+    "english_sentence": "- Shimmer Armor",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00037",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B03C",
+    "english_sentence": "Drake Shield",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00038",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B055",
+    "english_sentence": "Belt of Might",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00039",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B06E",
+    "english_sentence": "Balk's Staff",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00040",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B087",
+    "english_sentence": "Dark Flame",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00041",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B0EB",
+    "english_sentence": "Brgnd.Chst Armor",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00042",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B104",
+    "english_sentence": "Brgnd. Arm Armor",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00043",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B11D",
+    "english_sentence": "Brgnd.Leg Armor",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00044",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B136",
+    "english_sentence": "Scale Chest Armor",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00045",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B14F",
+    "english_sentence": "Scale Arm Armor",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00046",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B168",
+    "english_sentence": "Scale Leg Armor",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00047",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B181",
+    "english_sentence": "Chain Chest Armor",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00048",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B19A",
+    "english_sentence": "Chain Arm Armor",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00049",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B1B3",
+    "english_sentence": "Metal Detection",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00050",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B1FE",
+    "english_sentence": "Living Sculpture",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00051",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B217",
+    "english_sentence": "Torch Sconce",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00052",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B230",
+    "english_sentence": "Jasmine's Book",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00053",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B249",
+    "english_sentence": "Rest icon",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00054",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B262",
+    "english_sentence": "Jar of Slime",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00055",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B27B",
+    "english_sentence": "Dagolar's Book",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00056",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B294",
+    "english_sentence": "Unusual Organ",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00057",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B2AD",
+    "english_sentence": "Bone Crank",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00058",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B2C6",
+    "english_sentence": "Slavepen key",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00059",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B2DF",
+    "english_sentence": "Iron Necklace",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00060",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B2F8",
+    "english_sentence": "Ring of Insight",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00061",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B343",
+    "english_sentence": "Tanelyv's Armor",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00062",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B375",
+    "english_sentence": "Lava Dome",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00063",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B38E",
+    "english_sentence": "Silk Armor",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00064",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B3C0",
+    "english_sentence": "Statue Piece",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00065",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B3F2",
+    "english_sentence": "Dagolar Powder",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00066",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B40B",
+    "english_sentence": "Steam tank",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00067",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B43D",
+    "english_sentence": "Hound Necklace",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00068",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B456",
+    "english_sentence": "Dag's Dagger",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00069",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B46F",
+    "english_sentence": "Chain Leg Armor",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00070",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B4A1",
+    "english_sentence": "Silver Necklace",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00071",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B4EC",
+    "english_sentence": "Quicksilver Glove",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00072",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B505",
+    "english_sentence": "Living Cloak",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00073",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B51E",
+    "english_sentence": "Orb of Knowledge",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00074",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B537",
+    "english_sentence": "Golden Torque",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00075",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B569",
+    "english_sentence": "Silk Talisman",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00076",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B582",
+    "english_sentence": "Wyvern Hook",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00077",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B59B",
+    "english_sentence": "Magical Devices",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00078",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B5B4",
+    "english_sentence": "The Unnamed",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00079",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B5E6",
+    "english_sentence": "Wind Potion",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00080",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B618",
+    "english_sentence": "Nagi's Journal",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00081",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B64A",
+    "english_sentence": "Ceramic Piece",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00082",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B712",
+    "english_sentence": "Dapartea's Helm",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00083",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B78F",
+    "english_sentence": "Degula's Tear",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00084",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B7C0",
+    "english_sentence": "=Koeatl's Cloak",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00085",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B7D9",
+    "english_sentence": "=Dreaming Eye",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00086",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B7F2",
+    "english_sentence": "=Serpent Ring",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00087",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B889",
+    "english_sentence": "Water pump",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00088",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B8D4",
+    "english_sentence": "Keldar's Book",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00089",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B951",
+    "english_sentence": "Serpent Tree",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00090",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14B983",
+    "english_sentence": "Mixing bowl",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00091",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14BA00",
+    "english_sentence": "sand pile",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00092",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14BAE0",
+    "english_sentence": "=Share Strength",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00093",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14BB5D",
+    "english_sentence": "=ceramic pot",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00094",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14BBDB",
+    "english_sentence": "Sand Howler Eye",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00095",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14BBF4",
+    "english_sentence": "Fire Eel Tongue",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00096",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14BC0D",
+    "english_sentence": "Butterfly Wing",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00097",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14BC26",
+    "english_sentence": "Beetle Wing",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00098",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14BC3F",
+    "english_sentence": "Mastyrial Sting",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00099",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14BC58",
+    "english_sentence": "Human sculpture",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00100",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14BC88",
+    "english_sentence": "00Ragged-looking Man",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00101",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14BD52",
+    "english_sentence": "Book of Guidance",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00102",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14BDB6",
+    "english_sentence": "Mind Bar",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00103",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14BDE8",
+    "english_sentence": "weapon rack",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00104",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14BE65",
+    "english_sentence": "Caged animal",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00105",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14BEFB",
+    "english_sentence": "Bag of Pith",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00106",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14BF14",
+    "english_sentence": "Brick Wall",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00107",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14BF2D",
+    "english_sentence": "Pith Extract",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00108",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14BF44",
+    "english_sentence": "11A'poss's Heart",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00109",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14BF78",
+    "english_sentence": "Unusual Fountain",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00110",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14BFAA",
+    "english_sentence": "Heart Crystal",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00111",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14BFF5",
+    "english_sentence": "Helm of Might",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00112",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14C00D",
+    "english_sentence": "=Life Draining",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00113",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14C027",
+    "english_sentence": "Holy Relics",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00114",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14C040",
+    "english_sentence": "Weapon Rack",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00115",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14C058",
+    "english_sentence": "=Empty Water Pot",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00116",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14C072",
+    "english_sentence": "Graft Weapon",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00117",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14C0A3",
+    "english_sentence": "=Pot of Water",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00118",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14C1E9",
+    "english_sentence": "Sick patient",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00119",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14C234",
+    "english_sentence": "Serpentine Statue",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00120",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14C266",
+    "english_sentence": "Bridge of Memory",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00121",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14C2B0",
+    "english_sentence": "=Eye stalk",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00122",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14C2FC",
+    "english_sentence": "Philtre Device",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00123",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14C32E",
+    "english_sentence": "Metal Rod",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00124",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14C35F",
+    "english_sentence": "=Talisman Venom",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00125",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14C3C4",
+    "english_sentence": "Door of Eyes",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00126",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14C459",
+    "english_sentence": "=Floor safe",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00127",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14C4A5",
+    "english_sentence": "Ancient coffin",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00128",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14C4D7",
+    "english_sentence": "Serpent Boots",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00129",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14C522",
+    "english_sentence": "Plank bridge",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00130",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14C552",
+    "english_sentence": "11Two-handed Sword",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00131",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14C56D",
+    "english_sentence": "Energy Containment",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00132",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14C586",
+    "english_sentence": "Project Force",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00133",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14C602",
+    "english_sentence": "=Llod's Rod",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00134",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14C61B",
+    "english_sentence": "=Ego Whip",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00135",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14C64E",
+    "english_sentence": "Sword Blank",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00136",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14C667",
+    "english_sentence": "Dark hole",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00137",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14C680",
+    "english_sentence": "Drainage grate",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00138",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14C699",
+    "english_sentence": "A pot of grain",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00139",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14C6B2",
+    "english_sentence": "Mirlon's Gem",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00140",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14C6FC",
+    "english_sentence": "=Water Trough",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00141",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14C748",
+    "english_sentence": "New Plant",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00142",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14C761",
+    "english_sentence": "Synaptic Static",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00143",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14C77A",
+    "english_sentence": "Intellect Fortress",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00144",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14C793",
+    "english_sentence": "Psionic Blast",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00145",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14C7C5",
+    "english_sentence": "Terror Bloom",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00146",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14C7DD",
+    "english_sentence": "=Personal Diary",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00147",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14C810",
+    "english_sentence": "Bag o'Salt",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00148",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14C829",
+    "english_sentence": "Rope-like Plant",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00149",
+    "source_container": "GPLDATA.GFF",
+    "file_offset": "0x14C842",
+    "english_sentence": "Wall of Fog",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00150",
+    "source_container": "RESOURCE.GFF",
+    "file_offset": "0x08A81D",
+    "english_sentence": "Ad Lib(R) Music Synthesizer Card",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00151",
+    "source_container": "RESOURCE.GFF",
+    "file_offset": "0x08E1D4",
+    "english_sentence": "Roland MT-32 or compatible with Roland MPU MIDI Interface",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00152",
+    "source_container": "RESOURCE.GFF",
+    "file_offset": "0x08E20E",
+    "english_sentence": "Roland LAPC-1",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00153",
+    "source_container": "RESOURCE.GFF",
+    "file_offset": "0x090B53",
+    "english_sentence": "Media Vision Pro Audio Spectrum(TM) Digital Sound",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00154",
+    "source_container": "RESOURCE.GFF",
+    "file_offset": "0x091CB0",
+    "english_sentence": "Media Vision Pro Audio Spectrum(TM) 8 FM Sound",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00155",
+    "source_container": "RESOURCE.GFF",
+    "file_offset": "0x09583A",
+    "english_sentence": "IBM PC or compatible internal speaker",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00156",
+    "source_container": "RESOURCE.GFF",
+    "file_offset": "0x0978D8",
+    "english_sentence": "Creative Labs Sound Blaster(TM) Digital Sound",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00157",
+    "source_container": "RESOURCE.GFF",
+    "file_offset": "0x097906",
+    "english_sentence": "Media Vision Thunderboard(TM) Digital Sound",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00158",
+    "source_container": "RESOURCE.GFF",
+    "file_offset": "0x098B67",
+    "english_sentence": "Creative Labs Sound Blaster(TM) FM Sound",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00159",
+    "source_container": "RESOURCE.GFF",
+    "file_offset": "0x098B90",
+    "english_sentence": "Media Vision Thunderboard(TM) FM Sound",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00160",
+    "source_container": "RESOURCE.GFF",
+    "file_offset": "0x09C4FC",
+    "english_sentence": "Creative Labs Sound Blaster Pro(TM) Digital Sound",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00161",
+    "source_container": "RESOURCE.GFF",
+    "file_offset": "0x09D8A2",
+    "english_sentence": "Creative Labs Sound Blaster Pro(TM) FM Sound",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00162",
+    "source_container": "RESOURCE.GFF",
+    "file_offset": "0x0A1350",
+    "english_sentence": "IBM Internal Speaker, Foreground",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00163",
+    "source_container": "RESOURCE.GFF",
+    "file_offset": "0x0A1373",
+    "english_sentence": "The Audio Solution, Copyright (c) 1991",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00164",
+    "source_container": "RESOURCE.GFF",
+    "file_offset": "0x0A139C",
+    "english_sentence": "Written by John W. Ratcliff",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00165",
+    "source_container": "RESOURCE.GFF",
+    "file_offset": "0x0A1902",
+    "english_sentence": "$IBM Speaker Sound Driver - Copyright (c) 1991, THE Audio Solution:v2.1\r\n$The Sound Driver is already resident.\r\n$The Sound Driver is resident, through MIDPAK.\r\n$A Sound Driver cannot be loaded on top of MIDPAK.  Unload MIDPAK first.\r\n$Unable to install Sound Driver interupt vector\r\n$Invalid command line\r\n$Sound Driver isn't in memory\r\n$Sound Driver unloaded\r\n$Sound Driver can't be unloaded, unload MIDPAK first.\r\n$",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00166",
+    "source_container": "RESOURCE.GFF",
+    "file_offset": "0x0A5EAA",
+    "english_sentence": "Ad Lib(R) Gold Music Synthesizer Card",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00167",
+    "source_container": "RESOURCE.GFF",
+    "file_offset": "0x0AB4B5",
+    "english_sentence": "Advanced Gravis UltraSound Card",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00168",
+    "source_container": "RESOURCE.GFF",
+    "file_offset": "0x0ADEA1",
+    "english_sentence": "Forte UltraSound(TM) Digital Sound",
+    "chinese_translation": "",
+    "status": "pending"
+  },
+  {
+    "id": "DLG_00169",
+    "source_container": "RESOURCE.GFF",
+    "file_offset": "0x0B1579",
+    "english_sentence": "Aria (TM) Digital Sound",
+    "chinese_translation": "",
+    "status": "pending"
+  }
+]

@@ -1,0 +1,462 @@
+{
+  "CINE.GFF": [
+    {
+      "offset": "0x1F8E93",
+      "text": "VUVZVW[VX\rVZWVWVWVWZWVWVWVWVWVWOVOW7OYYOXWXWXWXWXO WYWXWXW"
+    },
+    {
+      "offset": "0x1F8F89",
+      "text": "*XYX=Z= XWXWXW=WXWXWXWX"
+    },
+    {
+      "offset": "0x1FA69A",
+      "text": "JXYXYXYXYXYXYXPXX=XX =XWXWC=XWXWXWXWXWX"
+    },
+    {
+      "offset": "0x200312",
+      "text": "Z$YX =OZOO  77YC [OYW"
+    },
+    {
+      "offset": "0x200DF1",
+      "text": "Z,YZYZYZYZ O[ZYP TTCVOWWO"
+    },
+    {
+      "offset": "0x201838",
+      "text": "Z POZ[Z[Z[Z[Z[[PP[WOWXWXWXWTTCWXWXWXWXWXWXWXWX"
+    },
+    {
+      "offset": "0x202390",
+      "text": "ON[O[O[OCZ[ XYXYXYXYXYXYXYXYXYXYXYXYXYXYXY"
+    },
+    {
+      "offset": "0x2D09E7",
+      "text": "Copyright (C) 1991,1992 Miles Design, Inc."
+    },
+    {
+      "offset": "0x2D0AC4",
+      "text": "Ad Lib(R) Music Synthesizer Card"
+    },
+    {
+      "offset": "0x2D439E",
+      "text": "Copyright (C) 1991,1992 Miles Design, Inc."
+    },
+    {
+      "offset": "0x2D447B",
+      "text": "Roland MT-32 or compatible with Roland MPU MIDI Interface"
+    },
+    {
+      "offset": "0x2D6D71",
+      "text": "Copyright (C) 1991,1992 Miles Design, Inc."
+    },
+    {
+      "offset": "0x2D6DFA",
+      "text": "Media Vision Pro Audio Spectrum(TM) Digital Sound"
+    },
+    {
+      "offset": "0x2D7E7A",
+      "text": "Copyright (C) 1991,1992 Miles Design, Inc."
+    },
+    {
+      "offset": "0x2D7F57",
+      "text": "Media Vision Pro Audio Spectrum(TM) 8 FM Sound"
+    },
+    {
+      "offset": "0x2DBA04",
+      "text": "Copyright (C) 1991,1992 Miles Design, Inc."
+    },
+    {
+      "offset": "0x2DBAE1",
+      "text": "IBM PC or compatible internal speaker"
+    },
+    {
+      "offset": "0x2DDAF6",
+      "text": "Copyright (C) 1991,1992 Miles Design, Inc."
+    },
+    {
+      "offset": "0x2DDB7F",
+      "text": "Creative Labs Sound Blaster(TM) Digital Sound"
+    },
+    {
+      "offset": "0x2DDBAD",
+      "text": "Media Vision Thunderboard(TM) Digital Sound"
+    },
+    {
+      "offset": "0x2DED31",
+      "text": "Copyright (C) 1991,1992 Miles Design, Inc."
+    },
+    {
+      "offset": "0x2DEE0E",
+      "text": "Creative Labs Sound Blaster(TM) FM Sound"
+    },
+    {
+      "offset": "0x2DEE37",
+      "text": "Media Vision Thunderboard(TM) FM Sound"
+    },
+    {
+      "offset": "0x2E271A",
+      "text": "Copyright (C) 1991,1992 Miles Design, Inc."
+    },
+    {
+      "offset": "0x2E27A3",
+      "text": "Creative Labs Sound Blaster Pro(TM) Digital Sound"
+    },
+    {
+      "offset": "0x2E3A6C",
+      "text": "Copyright (C) 1991,1992 Miles Design, Inc."
+    },
+    {
+      "offset": "0x2E3B49",
+      "text": "Creative Labs Sound Blaster Pro(TM) FM Sound"
+    },
+    {
+      "offset": "0x2E75F7",
+      "text": "IBM Internal Speaker, Foreground"
+    },
+    {
+      "offset": "0x2E761A",
+      "text": "The Audio Solution, Copyright (c) 1991"
+    },
+    {
+      "offset": "0x2E7643",
+      "text": "Written by John W. Ratcliff"
+    },
+    {
+      "offset": "0x2E7BA9",
+      "text": "$IBM Speaker Sound Driver - Copyright (c) 1991, THE Audio Solution:v2.1\r\n$The Sound Driver is already resident.\r\n$The Sound Driver is resident, through MIDPAK.\r\n$A Sound Driver cannot be loaded on top of MIDPAK.  Unload MIDPAK first.\r\n$Unable to install Sound Driver interupt vector\r\n$Invalid command line\r\n$Sound Driver isn't in memory\r\n$Sound Driver unloaded\r\n$Sound Driver can't be unloaded, unload MIDPAK first.\r\n$"
+    },
+    {
+      "offset": "0x2E808F",
+      "text": "Copyright (C) 1991,1992 Miles Design, Inc."
+    },
+    {
+      "offset": "0x2E816C",
+      "text": "Creative Labs Sound Blaster Pro(TM) FM Sound"
+    },
+    {
+      "offset": "0x2EC074",
+      "text": "Copyright (C) 1991,1992 Miles Design, Inc."
+    },
+    {
+      "offset": "0x2EC151",
+      "text": "Ad Lib(R) Gold Music Synthesizer Card"
+    },
+    {
+      "offset": "0x2EFFF5",
+      "text": "Copyright (C) 1991,1992 Miles Design, Inc."
+    },
+    {
+      "offset": "0x2F0086",
+      "text": "Ad Lib(R) Gold Music Synthesizer Card"
+    },
+    {
+      "offset": "0x2F167D",
+      "text": "No Error\r\nAIL Version Conflict\r\nUnused...\r\nUnused...\r\nTimbre Not in GTL File\r\nGTL File Not Found\r\nUnused...\r\nCan't Allocate Timbre Memory\r\nCan't Allocate Sequence State Tables\r\nUnused...\r\nDriver File Not Found\r\nSample File Not Found\r\nCan't Allocate Sample Buffer\r\nSound.cfg is Corrupt, Run sound.exe Again...\r\nSequence File Not Found\r\nCan't Allocate Driver Buffer\r\nSound.cfg File Not Found\r\nUnused...\r\nGFF File Not Found\r\nUnable to Close GFF\r\nUnable to Get GFF Chunk Size\r\nLoadVocBlock, must be in swap mode to use this function\r\nSample Block File File Not Found\r\nFile Not Found\r\nDsp Driver File Not Found\r\nMIDI Detect Fail\r\nDSP Detect Fail\r\nFailure to Allocate Clock Buffer.\r\nThere is insufficient memory... \r\nEliminate any non-essential memory resident programs.\r\n\r\nFile I-O Error, A Disc Error Has Occurred.\r\n\r\nUnable to Initialize the CD rom driver MSCDEX.EXE...\r\nCheck the Installation of Your CD ROM drive and the Installation of \r\nthe Driver mscdex.exe.\r\n\r\nClock File Not Found...\r\nRe-Installation of the game should Correct this."
+    }
+  ],
+  "DARKRUN.GFF": [
+    {
+      "offset": "0x00001C",
+      "text": ";-----------------------------------------------------------------------\r\n; DARKSUN.GFS - DARKSUN IMPORT SCRIPT (GFF BUILDER)\r\n; Copyright (C) 1992 Strategic Simulations, Inc.\r\n; All rights reserved.\r\n;\r\n; NOTICE:\r\n;\r\n; This material contains the valuable proprietary and trade secret\r\n; information of Strategic Simulations, Inc. (\"SSI\") of Sunnyvale,\r\n; California, U.S.A..; No part of such information may be disclosed,\r\n; used, reproduced, or transmitted in any form or by any means --\r\n; electronic, mechanical, or otherwise -- including; photocopying and\r\n; recording in connection with any information storage or retrieval\r\n; system, without permission in writing from SSI.\r\n;\r\n; $Logfile: $\r\n; $Revision: $\r\n; $Date: $\r\n; $Author: $\r\n; $Log: $\r\n;\r\n;-----------------------------------------------------------------------\r\n;\r\n; this is a dummy chunk type and a dummy entry\r\n\r\n#import"
+    },
+    {
+      "offset": "0x00039E",
+      "text": "0 \"..\\res\\darksave.gfs\"\r\n\r\n#end"
+    }
+  ],
+  "DARKSAVE.GFF": [
+    {
+      "offset": "0x00001C",
+      "text": ";-----------------------------------------------------------------------\r\n; DARKSUN.GFS - DARKSUN IMPORT SCRIPT (GFF BUILDER)\r\n; Copyright (C) 1992 Strategic Simulations, Inc.\r\n; All rights reserved.\r\n;\r\n; NOTICE:\r\n;\r\n; This material contains the valuable proprietary and trade secret\r\n; information of Strategic Simulations, Inc. (\"SSI\") of Sunnyvale,\r\n; California, U.S.A..; No part of such information may be disclosed,\r\n; used, reproduced, or transmitted in any form or by any means --\r\n; electronic, mechanical, or otherwise -- including; photocopying and\r\n; recording in connection with any information storage or retrieval\r\n; system, without permission in writing from SSI.\r\n;\r\n; $Logfile: $\r\n; $Revision: $\r\n; $Date: $\r\n; $Author: $\r\n; $Log: $\r\n;\r\n;-----------------------------------------------------------------------\r\n;\r\n; this is a dummy chunk type and a dummy entry\r\n\r\n#import"
+    },
+    {
+      "offset": "0x00039E",
+      "text": "0 \"..\\res\\darksave.gfs\"\r\n\r\n#end"
+    }
+  ],
+  "RESOURCE.GFF": [
+    {
+      "offset": "0x08A740",
+      "text": "Copyright (C) 1991,1992 Miles Design, Inc."
+    },
+    {
+      "offset": "0x08A81D",
+      "text": "Ad Lib(R) Music Synthesizer Card"
+    },
+    {
+      "offset": "0x08E0F7",
+      "text": "Copyright (C) 1991,1992 Miles Design, Inc."
+    },
+    {
+      "offset": "0x08E1D4",
+      "text": "Roland MT-32 or compatible with Roland MPU MIDI Interface"
+    },
+    {
+      "offset": "0x090ACA",
+      "text": "Copyright (C) 1991,1992 Miles Design, Inc."
+    },
+    {
+      "offset": "0x090B53",
+      "text": "Media Vision Pro Audio Spectrum(TM) Digital Sound"
+    },
+    {
+      "offset": "0x091BD3",
+      "text": "Copyright (C) 1991,1992 Miles Design, Inc."
+    },
+    {
+      "offset": "0x091CB0",
+      "text": "Media Vision Pro Audio Spectrum(TM) 8 FM Sound"
+    },
+    {
+      "offset": "0x09575D",
+      "text": "Copyright (C) 1991,1992 Miles Design, Inc."
+    },
+    {
+      "offset": "0x09583A",
+      "text": "IBM PC or compatible internal speaker"
+    },
+    {
+      "offset": "0x09784F",
+      "text": "Copyright (C) 1991,1992 Miles Design, Inc."
+    },
+    {
+      "offset": "0x0978D8",
+      "text": "Creative Labs Sound Blaster(TM) Digital Sound"
+    },
+    {
+      "offset": "0x097906",
+      "text": "Media Vision Thunderboard(TM) Digital Sound"
+    },
+    {
+      "offset": "0x098A8A",
+      "text": "Copyright (C) 1991,1992 Miles Design, Inc."
+    },
+    {
+      "offset": "0x098B67",
+      "text": "Creative Labs Sound Blaster(TM) FM Sound"
+    },
+    {
+      "offset": "0x098B90",
+      "text": "Media Vision Thunderboard(TM) FM Sound"
+    },
+    {
+      "offset": "0x09C473",
+      "text": "Copyright (C) 1991,1992 Miles Design, Inc."
+    },
+    {
+      "offset": "0x09C4FC",
+      "text": "Creative Labs Sound Blaster Pro(TM) Digital Sound"
+    },
+    {
+      "offset": "0x09D7C5",
+      "text": "Copyright (C) 1991,1992 Miles Design, Inc."
+    },
+    {
+      "offset": "0x09D8A2",
+      "text": "Creative Labs Sound Blaster Pro(TM) FM Sound"
+    },
+    {
+      "offset": "0x0A1350",
+      "text": "IBM Internal Speaker, Foreground"
+    },
+    {
+      "offset": "0x0A1373",
+      "text": "The Audio Solution, Copyright (c) 1991"
+    },
+    {
+      "offset": "0x0A139C",
+      "text": "Written by John W. Ratcliff"
+    },
+    {
+      "offset": "0x0A1902",
+      "text": "$IBM Speaker Sound Driver - Copyright (c) 1991, THE Audio Solution:v2.1\r\n$The Sound Driver is already resident.\r\n$The Sound Driver is resident, through MIDPAK.\r\n$A Sound Driver cannot be loaded on top of MIDPAK.  Unload MIDPAK first.\r\n$Unable to install Sound Driver interupt vector\r\n$Invalid command line\r\n$Sound Driver isn't in memory\r\n$Sound Driver unloaded\r\n$Sound Driver can't be unloaded, unload MIDPAK first.\r\n$"
+    },
+    {
+      "offset": "0x0A1DE8",
+      "text": "Copyright (C) 1991,1992 Miles Design, Inc."
+    },
+    {
+      "offset": "0x0A1EC5",
+      "text": "Creative Labs Sound Blaster Pro(TM) FM Sound"
+    },
+    {
+      "offset": "0x0A5DCD",
+      "text": "Copyright (C) 1991,1992 Miles Design, Inc."
+    },
+    {
+      "offset": "0x0A5EAA",
+      "text": "Ad Lib(R) Gold Music Synthesizer Card"
+    },
+    {
+      "offset": "0x0A9D4E",
+      "text": "Copyright (C) 1991,1992 Miles Design, Inc."
+    },
+    {
+      "offset": "0x0A9DDF",
+      "text": "Ad Lib(R) Gold Music Synthesizer Card"
+    },
+    {
+      "offset": "0x0AB3D8",
+      "text": "Copyright (C) 1991,1992 Miles Design, Inc."
+    },
+    {
+      "offset": "0x0AB4B5",
+      "text": "Advanced Gravis UltraSound Card"
+    },
+    {
+      "offset": "0x0ADE18",
+      "text": "Copyright (C) 1991,1992 Miles Design, Inc."
+    },
+    {
+      "offset": "0x0ADEA1",
+      "text": "Forte UltraSound(TM) Digital Sound"
+    },
+    {
+      "offset": "0x0AF298",
+      "text": "Copyright (C) 1991,1992 Miles Design, Inc."
+    },
+    {
+      "offset": "0x0AF375",
+      "text": "Roland MT-32 or compatible with Roland MPU MIDI Interface"
+    },
+    {
+      "offset": "0x0B14F0",
+      "text": "Copyright (C) 1991,1992 Miles Design, Inc."
+    },
+    {
+      "offset": "0x0B1579",
+      "text": "Aria (TM) Digital Sound"
+    },
+    {
+      "offset": "0x0DDD34",
+      "text": "|z|nnojokZWckjk^HCKYdbUIOcQ\" HmqG\"-BViU14RfX@Rljgjiko|"
+    },
+    {
+      "offset": "0x0F1A6F",
+      "text": "zh[X]WA/(%\" $4JYciiiq{~vcQUca[`e`WPLLQ[kp\\JSl"
+    },
+    {
+      "offset": "0x0F2278",
+      "text": "p`WSPH</(',/+\" &-014>Pfv|zv{"
+    },
+    {
+      "offset": "0x132703",
+      "text": "~Y|gCbU?J3AjTRj@.XA6lO0cN AH;C3?VCEWPKU[JKaUH[Z@AJ@?AI_XVhUJac\\behmhjm`p"
+    },
+    {
+      "offset": "0x15F940",
+      "text": "_7 +N`O<;PotfR/%LlbSg~nP;07GVcmyoK:EZwyfhsulPNmr`PCEE4*19B`"
+    },
+    {
+      "offset": "0x15FAAC",
+      "text": "3Y^QPH- 4R`\\SKH@6=NPOVZR<.*&4MOBA@6/)%?_X@:3(4LO>:HVho\\IPcZ3&EmyrpfP@83@OLHQVZgbC)"
+    },
+    {
+      "offset": "0x160A7D",
+      "text": "!\" !+5:IgnVFIQ[_cj`KB>9?UdVECB71:A=CKA+#,("
+    },
+    {
+      "offset": "0x1C1EC3",
+      "text": "lZRT\\gnkbYURK@86;AFGB5( !%&$#',0220--3<EKPWagf\\OD==FS]``chibTF=9:@FFA=@IQW\\`fmw"
+    },
+    {
+      "offset": "0x1F168E",
+      "text": "lZ^gQLk^HX[LIVJ0AT7 )+-&#7- 85.OXQ`b]XaskT`spo"
+    },
+    {
+      "offset": "0x27510A",
+      "text": "No Error\r\nAIL Version Conflict\r\nUnused...\r\nUnused...\r\nTimbre Not in GTL File\r\nGTL File Not Found\r\nUnused...\r\nCan't Allocate Timbre Memory\r\nCan't Allocate Sequence State Tables\r\nUnused...\r\nDriver File Not Found\r\nSample File Not Found\r\nCan't Allocate Sample Buffer\r\nSound.cfg is Corrupt, Run sound.exe Again...\r\nSequence File Not Found\r\nCan't Allocate Driver Buffer\r\nSound.cfg File Not Found\r\nUnused...\r\nGFF File Not Found\r\nUnable to Close GFF\r\nUnable to Get GFF Chunk Size\r\nLoadVocBlock, must be in swap mode to use this function\r\nSample Block File File Not Found\r\nFile Not Found\r\nDsp Driver File Not Found\r\nMIDI Detect Fail\r\nDSP Detect Fail\r\nFailure to Allocate Clock Buffer.\r\nThere is insufficient memory... \r\nEliminate any non-essential memory resident programs.\r\n\r\nFile I-O Error, A Disc Error Has Occurred.\r\n\r\nUnable to Initialize the CD rom driver MSCDEX.EXE...\r\nCheck the Installation of Your CD ROM drive and the Installation of \r\nthe Driver mscdex.exe.\r\n\r\nClock File Not Found...\r\nRe-Installation of the game should Correct this.\r\nARMOR: Creates a magical shield of force equivalent to AC6. May be used on any class character adjacent to spell caster. \r\nBURNING HANDS: Inflicts 1 to 3 hit points of fire damage plus 2 per level of caster.\r\nCHARM PERSON:  Changes the target's allegiance in combat. Affects only character types (human, dwarf, etc.). \r\nCHILL TOUCH: Attacks life force of any living creature for 1 to 4 pts of damage and 1 pt of Strength per successful attack. Undead suffer no damage but may flee.\r\nCOLOR SPRAY:  May stun up to 6 creatures with this overwhelming wedge-shaped cascade of colored light. Higher level creatures may be unaffected.\r\nENLARGE:  Makes the recipient larger & stronger, allowing it to do more damage in melee combat. Higher-level casters produce greater effect.\r\nGAZE REFLECTION:  Creates a mirror-like area around the caster. Any gaze attack will be reflected back at the attacker.\r\nGREASE:  Covers the ground with a slippery layer. Any creature entering the area slips and cannot move for the round.\r\nMAGIC MISSILE:  Preserver throws 1 missile for every 2 levels. Each missile inflicts 2-5 pts of damage on target unless protected by magic or shield.\r\nSHIELD:  Negates enemy magic missiles, improves AC, and improves saving throw for the caster versus missiles.\r\nSHOCKING GRASP:  Does 1 to 8 pts of electrical damage, plus 1 per level of caster. \r\nWALL OF FOG:  Creates a wall of vapors that blocks everyone's line of sight through the wall.\r\nBLUR:  Causes the caster's form to become blurred, making the caster more difficult to hit and granting a +1 bonus on saving throws versus magical attacks.\r\nDETECT INVISIBILITY:  Allows caster to spot invisible creatures and objects in combat.\r\nFLAMING SPHERE:  Creates a burning globe. Creatures must save versus the spell or suffer 2 to 8 pts of damage.\r\nFOG CLOUD:  This spell creates a large cloud which blocks everyone's line of sight.\r\nGLITTERDUST:  Creates area of glittering particles. Creatures failing save are blinded. Also, invisible creatures become visible.\r\nINVISIBILITY:  Makes target invisible in combat, which improves THAC0 by 4 making them more difficult to hit. Dispelled when recipient attacks or casts spell.\r\nMELF'S ACID ARROW:  Magical arrow which does 2 to 8 pts of acid damage.\r\nMIRROR IMAGE:  Creates 1 to 4 illusionary duplicates of the caster to draw off attacks.\r\nPROTECTION FROM PARALYSIS:  Gives adjacent recipient immunity from all forms of paralysis.\r\nSCARE:  Causes creatures with less than 6 Hit Dice or levels of experience to sometimes flee or be unable to attack. No effect on undead creatures.\r\nSTINKING CLOUD:  Renders those in its area unable to attack for 2 to 5 rounds unless the creature saves.\r\nSTRENGTH:  Raises the target's strength by 1 to 8 pts. Maximum strength is 24.\r\nWEB:  Creates a mass of strong sticky webs. Webs prevent movement and can only be removed by fire.\r\nBLINK:  Allows caster to \"blink\" out after acting each round. Caster can be attacked before acting in a round, but not after. \r\nDISPEL MAGIC:  Removes effects of spells that do not have specific counterspells. This cures characters that have been held or slowed.\r\nFIREBALL:  Magical explosion does 1 to 6 pts of damage per level of caster to all targets within the area of effect. If target makes save damage is halved.\r\nFLAME ARROW:  Each \"arrow\" inflicts 1 to 6 pts of damage, plus an additional 4 to 24 pts of fire damage on the taget.\r\nHASTE:  Doubles the recipient's movement and number of melee attacks per round. \r\nHOLD PERSON:  May paralyze targets of character types (human, dwarf, etc.). You can aim at up to 4 targets.\r\nHOLD UNDEAD:  Paralyzes up to 3 undead creatures whose Hit Dice are less than or equal to the caster.\r\nLIGHTNING BOLT:  Magical electrical attack does 1 to 6 pts of damage per level of caster to each target in its path.\r\nMELF'S MINUTE METEORS:  Five small globes of fire inflict 1 to 4 pts of damage on 1 target, with a +2 bonus to hit.\r\nMINOR MALISON:  Causes the caster's opponents to make all saving throws at a -1 penalty.\r\nMONSTER SUMMONING I:  Allows caster to magically conjure first-level monsters who fight on caster's side in combat.\r\nPROTECTION FROM NORMAL MISSILES:  Makes target impervious to non-magical missiles.\r\nSLOW:  Halves the movement and number of attacks of all foes within the area of effect.\r\nSPIRIT ARMOR:  Surrounds caster with a magical aura which acts as splint mail of AC 4 and grants a +3 bonus to saves versus magical attacks.\r\nVAMPIRIC TOUCH:  Temporarily allows caster to raise hit points by draining opponents.  Opponent loses (caster gains) 1-6 pts for every 2 levels of the caster.\r\nCHARM MONSTER:  Changes target's allegiance in combat. \r\nCONFUSION: Creatures in the area of effect must save or stand in confusion, go berserk, or flee in terror.\r\nEVARD'S BLACK TENTACLES:  Black tentacles are created which inflict 3 to 12 pts of damage per turn until destroyed.\r\nFEAR:  All targets within the spell's area of effect who fail their saves flee in terror.\r\nFIRE SHIELD:  Opponents who hit caster in melee take the same amount of damage in return.\r\nICE STORM:  Inflicts 3 to 30 pts of damage to all targets within its area of effect.\r\nIMPROVED INVISIBILITY:  Similar to invisibility, but recipient is able to attack and still remain unseen.\r\nMINOR GLOBE OF INVULNERABILITY:  Creates a small sphere which protects those within from 1st, 2nd, or 3rd level spells.\r\nMINOR SPELL TURNING:  Causes effects of 1st, 2nd, and 3rd level spells directed at the caster to reflect back and affect the casting opponent.\r\nMONSTER SUMMONING II:  Allows caster to magically conjure second-level monsters who fight on the caster's side in combat.\r\nRAINBOW PATTERN:  Creates rainbow-colored lights which absorb the full attention of the affected creatures. Direct attacks on creatures break the spell.\r\nSOLID FOG:  Similar to wall of fog spell. Movement is slowed to 1/10 of normal. May be dispelled with fire-based spells such as fireball.\r\nSTONESKIN:  Recipient gains virtual immunity to any attack by cut, blow, projectile, or other physical attack. Spell blocks 1 to 4 attacks plus 1 per 2 levels.\r\nTURN PEBBLE TO BOULDER:  Causes a hurled pebble to grow into a boulder which inflicts 11 to 26 pts of damage if it strikes the target.\r\nWALL OF FIRE:  Creates an immobile curtain of magical fire. Creatures passing through the wall take damage.\r\nWALL OF ICE:  Creates a thick sheet of ice that blocks movement and line of sight.\r\nCHAOS:  Affects 1 to 4 creatures plus 1 per caster level unless they make their save. Affected creatures may stand confused, go berserk, or flee.\r\nCLOUDKILL:  Kills weaker creatures within its area of effect. More powerful monsters may take damage.\r\nCONE OF COLD:  Produces a cone-shaped blast of cold. The spell's range and damage increases with the caster's level.\r\nCONJURE ELEMENTAL:  Allows caster to conjure an air, earth, fire, or water elemental to fight on caster's side in combat. Elemental disappears after combat.\r\nDISMISSAL:  Creatures from another plane of existence must save or be forcefully expelled from the current plane.\r\nDOMINATION:  Targeted creature must save at a -2 penalty or be dominated. Dominated creature will fight on caster's side.\r\nFEEBLEMIND:  Causes a dramatic drop in target's Intelligence and Wisdom. Target loses ability to cast spells or use psionics. Heal spell counters feeblemind.\r\nHOLD MONSTER:  Similar to hold person, except it affects a wider variety of creatures.\r\nLOWER RESISTANCE:  Causes the magical resistance of the recipient to drop 30@ plus 1@ per level of caster.\r\nMONSTER SUMMONING III:  Allows caster to conjure third-level monsters who fight on caster's side in combat.\r\nSUMMON SHADOW:  Creates 1 shadow who fights for the caster until slain or dispelled.\r\nWALL OF FORCE:  Creates an invisible barrier. The barrier blocks all attacks, and can only be dispelled with disintegrate.\r\nWALL OF STONE:  Creates a wall of granite which lasts for a variable amount of time & blocks movement. It can be destroyed by a dispel magic or disintegrate spell.\r\nBLESS:  Improves THAC0 of friendly characters by 1. Spell is not cumulative. Good to cast before going into combat.\r\nCURSE:  Weakens the THAC0 of targets by 1. Target cannot be adjacent to a party character. Spell is not cumulative.\r\nCURE LIGHT WOUNDS:  Heals 1 to 8 pts, up to recipient's normal maximum hit points.\r\nCAUSE LIGHT WOUNDS:  Inflicts 1 to 8 pts of damage on a target.\r\nENTANGLE:  Causes large area of plants to sprout up. Victims who fail their save move very slowly.\r\nINVISIBILITY TO UNDEAD:  Causes undead to lose track of and ignore the warded creature for the duration of the spell (6 rounds).\r\nMAGICAL STONE:  Three magical stones may be hurled at an opponent causing 1 to 4 pts of damage per stone, or 2 to 8 pts if target is undead.\r\nPROTECTION FROM EVIL:  Improves AC and saving throws of recipient by 2 against attackers of evil alignment.\r\nREMOVE FEAR:  Removes the effects of a cause fear spell.\r\nCAUSE FEAR:  Creatures must save or flee in panic for 1 to 4 rounds.\r\nSHILLELAGH:  Enables caster to temporarily create a magical club which appears in his/her hand.\r\nAID:  Much like bless, except recipient gains 1 to 8 hit points for duration of spell. These pts are subtracted before the character's own if injured.\r\nBARKSKIN:  Recipient receives an improvement to his/her AC. One for every four levels of the caster. Also gets +1 to all saving throws.\r\nCHARM PERSON OR MAMMAL:  Changes target's allegiance in combat.\r\nDUST DEVIL:  Enables caster to conjure a dust devil who fights on the side of the caster in combat.\r\nFIND TRAPS:  If sucessful, this spell reveals the location of all traps within the general area.\r\nFLAME BLADE:  This blade of flame attacks like a normal sword in melee combat and does 7 to 10 pts of damage.\r\nHOLD PERSON:  This spell can affect human, demi-human, or humanoid creatures. Affected creatures are unable to move. Duration increases with level of caster.\r\nRESIST FIRE:  Halves damage from fire attacks and improves saving throws versus fire by 3.\r\nRESIST COLD:  Halves damage from cold attacks and improves saving throws versus cold by 3.\r\nSPIRITUAL HAMMER:  Creates temporary magic hammer that can hit monsters which may only be struck by +1 weapons.\r\nCONJURE LESSER AIR ELEMENTAL:  Summon a lesser air elemental to fight on the caster's side in combat. Disappears when spell wears off or after combat.\r\nCONJURE LESSER FIRE ELEMENTAL:  Summons a lesser fire elemental to fight on the caster's side in combat. Disappears when spell wears off or after combat.CONJURE LESSER EARTH ELEMENTAL:  Summons a lesser earth elemental to fight on the caster's side in combat. Disappears when spell wears off or after combat.\r\nCONJURE LESSER WATER ELEMENTAL:  Summons a lesser water elemental to fight on the caster's side in combat. Disappears when spell wears off or after combat.\r\nCURE BLINDNESS OR DEAFNESS:  Counters the effects of cause blindness or deafness.\r\nCAUSE BLINDNESS OR DEAFNESS:  Blinds or deafens one target. Cured by cure blindness or deafness spell.\r\nCURE DISEASE:  Removes the effects of disease caused by some monsters or cause disease spells.\r\nCAUSE DISEASE:  Infects the target with a debilitating ailment that saps strength and hit points.\r\nDISPEL MAGIC:  Removes effects of spells that do not have specific counterspells. This cures characters that have been held or slowed.\r\nMAGICAL VESTMENT:  Gives protection to caster equivalent to AC 5. Spell gains a +1 for every 3 levels above 5th level. Spell not cumulative.\r\nNEGATIVE PLANE PROTECTION:  Recipient is protected from one draining attack from undead monsters.\r\nPRAYER:  Improves THAC0 & saving throws of friendly characters by 1. Weakens the THAC0 & saves of monsters by 1. Not cumulative. Good to cast before combat.\r\nPROTECTION FROM FIRE:  Gives limited protection against fire. The recipient gets a +3 bonus to saves and takes half-damage from fire.\r\nREMOVE CURSE:  Removes the effects of a bestow curse spell.\r\nBESTOW CURSE:  Bestows a -4 penalty to attacks & saves for affected creature. Effect can be reversed with dispel magic or remove curse.\r\nREMOVE PARALYSIS:  This spell negates paralysis-type spells such as hold or slow.\r\nSUMMON INSECTS:  Attracts cloud of insects. Anyone in the cloud takes 4 pts of damage per round, has a +2 AC penalty, and receives a -2 penalty to hit.\r\nABJURE:  Dispels extraplanar creatures back to their own plane. Tanar'ri, elementals, & slaads fall into this category.\r\nBLOOD FLOW:  Heals 2 to 12 pts of damage. If used to injure, the target is stunned for up to 4 rounds.\r\nCLOAK OF BRAVERY:  Recipient gains a +4 bonus to saves versus fear.\r\nCLOAK OF FEAR:  Recipient receives an aura of fear. The first opponent who strikes the affected character must save versus fear or flee.\r\nCONDENSE:  Turns a small pebble into dense matter which may be hurled at a target for 3 to 18 pts of damage.\r\nCURE SERIOUS WOUNDS:  Heals 3 to 17 hit points, up to the recipient's normal maximum.\r\nCAUSE SERIOUS WOUNDS:  Inflicts 3 to 17 pts of damage on a target.\r\nDEHYDRATE:  Target takes 2 to 12 pts of damage plus 1 per level of the caster. Only affects creatures with a circulatory system.\r\nDUST CLOUD:  Obscures enemies' vision and prevents missile weapons from passing through.\r\nFOCUS HEAT:  Inflicts 2 to 12 pts of damage plus 1 per level of the caster.\r\nFREE ACTION:  Allows recipient to negate the effects of spells such as slow, hold person, and web.\r\nNEUTRALIZE POISON:  Detoxifies any sort of poison or venom.\r\nPOISON:  Causes the target to save versus poison or die.\r\nPRODUCE FIRE:  Inflicts 2 to 5 pts of damage on creatures within its area of effect.\r\nPROTECTION FROM EVIL, 10' RADIUS:  Improves AC & saves of target and adjacent friendly characters by 2 against evil attackers. Not cumulative.\r\nPROTECTION FROM LIGHTNING:  Recipient gains a +4 bonus to saves and only takes half-damage from lighting.\r\nCONJURE AIR ELEMENTAL:  Summons an air elemental to fight on the caster's side in combat. Disappears when spell wears off or after combat.\r\nCONJURE FIRE ELEMENTAL:  Summons a fire elemental to fight on the caster's side in combat. Disappears when spell wears off or after combat.CONJURE EARTH ELEMENTAL:  Summons an earth elemental to fight on the caster's side in combat. Disappears when spell wears off or after combat.\r\nCONJURE WATER ELEMENTAL:  Summons a water elemental to fight on the caster's side in combat. Disappears when spell wears off or after combat.\r\nCURE CRITICAL WOUNDS:  Heals 6 to 27 pts of damage up to the target's maximum hit points.\r\nCAUSE CRITICAL WOUNDS:  Inflicts 6 to 27 pts of damage on a target.\r\nDEFLECTION:  Deflects small projectiles; large projectiles remain unaffected by the spell.\r\nDISPEL EVIL:  Improves target's AC by 7 against summoned creatures for the duration of the spell, or until target hits a summoned creature.\r\nFLAME STRIKE:  Creatures failing their saves sustain 6 to 48 pts of damage; otherwise the damage is halved.\r\nINSECT PLAGUE:  Summons a swarm of insects which obscures vision, prevents spellcasting, and inflicts 1 pt of damage per round to creatures within the cloud.\r\nIRONSKIN:  Gives recipient immunity to physical attacks by weapons, fangs, claws, and hurled projectiles. Magic attacks have normal effects. \r\nQUICKSAND:  Anyone passing through the affected area sinks into the quicksand and is held there.\r\nRAISE DEAD:  Can bring one non-elf character back to life. The raised character loses 1 pt of Constitution permanently.\r\nSLAY LIVING:  Kills one target. If the target makes its save it suffers 3 to 17 pts of damage.\r\nWALL OF FIRE:  Creates an immobile curtain of magical fire. Creatures passing through the wall take damage.\r\nDETONATE:  This focused explosion inflicts 1 to 10 pts of damage to any creature within its area of effect.\r\nDISINTEGRATE:  Reduces a creature to microscopic pieces. Target must save versus death magic or be turned to ash.\r\nPROJECT FORCE:  This ranged psychokinetic \"punch\" does 1 to 6 pts of damage, plus the AC of the targeted creature.\r\nBALLISTIC ATTACK:  Allows a character to hurl a small object at high speed which inflicts 1 to 6 pts of damage.\r\nCONTROL BODY:  Allows control of another person's body in combat. The controlled character fights with a -6 penalty on all attack rolls.\r\nINERTIAL BARRIER:  This barrier of \"elastic\" air halves damage from breath weapons, missiles, acid, gas, and ice storms.\r\nANIMAL AFFINITY:  Allows the psionicist to briefly grow claws that inflict 1 to 10 pts of damage. \r\nENERGY CONTAINMENT:  Energy attacks such as electricity, cold, fire, and heat have no effect when psionicist is protected by this spell.\r\nLIFE DRAINING:  Drains up to 6 hit points from another creature and temporarily adds them to the psionicist's total.\r\nABSORB DISEASE:  Allows psionicist to transfer a disease (not curse) from one creature to the psionicist, who can then cure it.\r\nADRENALIN CONTROL: Provides a temporary strength boost of 1 to 6 pts.  \r\nBIOFEEDBACK:  Improves the psionicist's AC by 1 and reduces damage from attacks by 2.\r\nBODY WEAPONRY:  Allows one arm of psionicist to temporarily become a weapon. The weapon is equivalent to a broadsword.\r\nCELL ADJUSTMENT:  Heals wounds and cures diseases.\r\nDISPLACEMENT:  Mimics the power of a displacer beast. This improves the psionicist's AC by 2.\r\nENHANCED STRENGTH:  Allows psionicist to temporarily increase his or her strength to 24.\r\nFLESH ARMOR:  Transforms psionicist's own skin into a random type of armor dependent upon level of psionicist.\r\nGRAFT WEAPON:  Allows psionicist to take the weapon in his or her hand and make it part of the body. Gives a +1 bonus to hit.\r\nLEND HEALTH:  Allows psionicist to transfer hit points to another character. May transfer as long as own minimum level is not exceeded.\r\nSHARE STRENGTH:  Psionicist transfers two strength points to another character for every one received.\r\nDOMINATION:  Allows psionicist to take control of another's mind in combat.\r\nMASS DOMINATION:  Same as domination except up to 5 creatures may be controlled at once.\r\nPSYCHIC CRUSH:  This attack on another's mind causes up to 6 pts of damage.\r\nSUPERIOR INVISIBILITY:  Makes the psionicist nearly undetectable in combat. It is dispelled if the psionicist attacks.\r\nTOWER OF IRON WILL:  Wards the psionicist against unwanted contact by other psionicists. May inititate one other psionic power while thus warded.\r\nEGO WHIP:  Attacks the target's ego, leaving it with feelings of inferiority. Target is stunned for 1 to 4 rounds.\r\nID INSINUATION:  Paralyzes the target for 1 to 4 rounds.\r\nINTELLECT FORTRESS:  All minds within the area of effect are protected against psionic attacks.\r\nMENTAL BARRIER:  Protects the psionicist against other psionic attacks. Psionicist may use other powers while thus protected.\r\nMIND BAR:  Gives Psionicist 75@ magic resistance to mind-affecting spells such as charm and feeblemind.\r\nMIND BLANK:  Protects the psionicist against psionic attacks. Unlike other defensive modes, mind blank costs nothing to maintain.\r\nPSIONIC BLAST:  Tricks an opponent into thinking it has lost 80@ of its hit points. When it loses 20@ it falls unconscious.\r\nSYNAPTIC STATIC:  Interferes with psionic abilities, preventing all (including the one who initiated power) from using psionics until effect ends.\r\nTHOUGHT SHIELD:  Protects psionicist's mind from psionic attacks. May initiate other psionics while thus protected.\r\nRESTORE PSIONIC STRENGTH POINTS\r\nINCREASE STRENGTH\r\nINCREASE DEXTERITY\r\nINCREASE CONSTITUTION\r\nINCREASE INTELLIGENCE\r\nINCREASE WISDOM\r\nINCREASE CHARISMA\r\nTURN UNDEAD:  Allows a priest to turn or destroy undead creatures. May be used once per creature. The higher the priest's level, the greater the effect."
+    },
+    {
+      "offset": "0x330CDF",
+      "text": "Deestan\r\nGarn\r\nDag\r\nHalton\r\nMagramar\r\nHamonde\r\nKhamarr\r\nZertus\r\nAticus\r\nT'Sharr\r\nT'Jun\r\nBorzak\r\nElstar\r\nBalthbeorn\r\nTezral\r\nLanthazar\r\nCromwell\r\nMorbad th'Worst \r\nFinster\r\nUlf\r\nJaardoon\r\nCelos\r\nPethius\r\nShaggy\r\nKiller\r\nRick th'Untamed\r\nCyrus the Great\r\nSwat\r\nJohnBoy\r\nSeanBoy\r\nHookBoldt\r\nMadDog McClure   \r\nKornec\r\nSarthana\r\nShandra\r\nMeggyn\r\nYilballa\r\nRoxpar\r\nRailune\r\nZulak\r\nY'Lar\r\nZontorra\r\nLanthazla\r\nAnathea\r\nSeneca\r\nMistra\r\nAlura\r\nEster\r\nCenna\r\nJenna\r\nBerry\r\nCaron the Sure\r\nT'kir'taap\r\nC'lex'at\r\nFrin'kal'kan\r\nMyk'tyl'gan\r\nMt'z'pk'tlk\r\nClk'whrr\r\nBzz'klkd'ng\r\nDiz'zg'l'spi"
+    },
+    {
+      "offset": "0x3374C5",
+      "text": "UtlXU \n\nMhYM\n\n UXllhs"
+    },
+    {
+      "offset": "0x337896",
+      "text": "hUjPZ@\n\n UU \n\n@ZPjjq^h`toqX"
+    },
+    {
+      "offset": "0x33C613",
+      "text": "%\\kH/04+ ;;<IIA#Nb/KK:JE=`"
+    }
+  ],
+  "RGN09.GFF": [
+    {
+      "offset": "0x010563",
+      "text": "R ! !HI ! !HI ! ! ! \" ! ! ! ! ! ! ! ! ! !12;<NONO;<NO:"
+    },
+    {
+      "offset": "0x010764",
+      "text": "! !HIbcdefghiHI ! ! ! ! ! ! ! !HIHI ! ! !HI ! ! ! ! !12:"
+    },
+    {
+      "offset": "0x010862",
+      "text": "! ! !HItuvYwxyzXYZ[HIHI ! ! ! ! ! ! !HI !HI !HI ! ! ! ! !"
+    },
+    {
+      "offset": "0x011035",
+      "text": "WHI ! ! ! ! ! ! !HI ! !bcdefghi ! ! ! ! ! ! '"
+    },
+    {
+      "offset": "0x011136",
+      "text": "HIHI ! ! ! ! ! ! !XYZ[tuvYwxyz ! ! ! ! ! !a%"
+    },
+    {
+      "offset": "0x01173F",
+      "text": "! !HI ! ! ! ! ! ! ! ! ! ! !HI ! ! ! !HIHI ! ! ! ! ! ! ! !JK !"
+    },
+    {
+      "offset": "0x011B2A",
+      "text": "! ! ! ! ! ! ! ! ! ! !HI ! !XYZ[JK ! ! ! ! ! ! ! ! ! ! ! ! !XYZ[ ! ! ! ! ! ! ! ! ! ! ! ! !JK ! ! ! ! ! ! ! '"
+    },
+    {
+      "offset": "0x011C34",
+      "text": "! ! ! ! ! !HIHIbcdefghi !HI ! ! ! ! ! ! ! ! ! !bcdefghi ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !a%&'"
+    },
+    {
+      "offset": "0x011D37",
+      "text": "! ! ! ! ! !HItuvYwxyz ! !HI !HIHI ! ! !JKXYZ[tuvYwxyz ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !s"
+    },
+    {
+      "offset": "0x011E37",
+      "text": "R ! ! ! ! !HI ! ! ! !XYZ[ !HI ! ! ! ! !bcdefghi ! !"
+    },
+    {
+      "offset": "0x011F37",
+      "text": "W ! ! ! ! ! !HI !HIbcdefghi ! ! ! ! ! !tuvYwxyz ! !"
+    },
+    {
+      "offset": "0x01215A",
+      "text": "JK ! ! ! ! ! ! ! ! ! ! !XYZ[HI ! ! ! ! ! ! ! ! ! ! ! ! !HI ! ! !HI !12:"
+    },
+    {
+      "offset": "0x012259",
+      "text": "! !HI ! ! ! ! ! ! ! ! !bcdefghi ! ! ! ! ! ! ! ! ! ! ! ! ! ! !HIHIHIHI !12"
+    },
+    {
+      "offset": "0x01232B",
+      "text": "R ! ! ! ! ! ! ! ! !HIHI ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !tuvYwxyzHI ! ! ! ! ! ! ! ! ! ! ! ! ! ! !HI !HIHIHI"
+    },
+    {
+      "offset": "0x012A38",
+      "text": "! ! ! !JK ! ! ! !tuvYwxyz !HI ! ! ! ! ! ! ! !"
+    }
+  ],
+  "SEGOBJEX.GFF": [
+    {
+      "offset": "0x0DE854",
+      "text": "RSR/Q UK;:YVZY:YW:;VZW:\""
+    },
+    {
+      "offset": "0x16E6ED",
+      "text": "3-\nklmnkj\rk llggXXWWXWVT\\YX[X"
+    },
+    {
+      "offset": "0x24CB74",
+      "text": "N\r] NN^kknool^N]NOlmo"
+    }
+  ]
+}
