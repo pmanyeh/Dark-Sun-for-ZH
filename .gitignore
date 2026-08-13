@@ -12,6 +12,7 @@ venv/
 
 # Test, build, and temporary output.
 scratch_test/
+.tools/
 target/
 build/
 dist/
@@ -22,9 +23,12 @@ dist/
 MEMDUMP.BIN
 captures/
 
+# Reproducible OpenDS output containing extracted commercial game text.
+localization/opends/ds1-dialog.json
+localization/opends/ds1-dialog.txt
+
 # Editor and OS metadata.
 .vscode/
 .idea/
 .DS_Store
 Thumbs.db
-

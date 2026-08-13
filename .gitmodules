@@ -1,0 +1,3 @@
+[submodule "vendor/opends"]
+	path = vendor/opends
+	url = https://github.com/VirInvictus/opends.git
