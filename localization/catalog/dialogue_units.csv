@@ -6667,10 +6667,10 @@ DLG_9d653026e882,The patience of the citizens of Draj is not infinite. ,,pending
 DLG_dd4dea24b24c,"Since you will not leave, you must fight! ",,pending,True,1,GPL-2@0x1465,0,1
 DLG_4f632fddb45c,Excellent! These gladiators wish to fight again! We shall ,,pending,True,1,GPL-2@0x1495,0,1
 DLG_173ac97e255f,see how they fare! ,,pending,True,1,GPL-2@0x14CE,0,1
-DLG_f6c2fbaa84a9,This day the mage Celgor will battle a fearsome rampager. ,,pending,True,1,GPL-2@0x2536,0,1
-DLG_13ab12eaff4a,Watch and enjoy! ,,pending,True,1,GPL-2@0x256F,0,1
-DLG_6294a22b2cbb,"Do not worry, ",,pending,True,1,GPL-2@0x2586,0,1
-DLG_67aa8858af43,. Your turn will come soon. Stand back and watch the battle.,,pending,True,1,GPL-2@0x25A1,0,0
+DLG_f6c2fbaa84a9,This day the mage Celgor will battle a fearsome rampager. ,今日法師賽爾戈將迎戰一頭兇猛的狂暴獸。,translated_unreviewed,True,1,GPL-2@0x2536,0,1
+DLG_13ab12eaff4a,Watch and enjoy! ,敬請觀賞！,translated_unreviewed,True,1,GPL-2@0x256F,0,1
+DLG_6294a22b2cbb,"Do not worry, ",別擔心，,translated_unreviewed,True,1,GPL-2@0x2586,0,1
+DLG_67aa8858af43,. Your turn will come soon. Stand back and watch the battle.,。很快就輪到你了。退後觀看這場戰鬥吧。,translated_unreviewed,True,1,GPL-2@0x25A1,0,0
 DLG_a1a7c5952b7b,"Gladiators: Step forward, into the arena! ",,pending,True,1,GPL-2@0x25FE,0,1
 DLG_b3fd490edea4,The air about you crackles with magical discharges as the ,,pending,True,1,GPL-20@0x0002,0,1
 DLG_335e4dd94e3a,unmistakable presence of a dragon looms near. He creates ,,pending,True,1,GPL-20@0x003B,0,1

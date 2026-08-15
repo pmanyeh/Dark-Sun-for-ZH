@@ -19,6 +19,9 @@ dist/
 *.tmp
 *.log
 
+# User-supplied and proprietary font media/assets.
+Fonts/
+
 # DOSBox-X runtime artifacts.
 MEMDUMP.BIN
 captures/

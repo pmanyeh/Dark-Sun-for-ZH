@@ -4,6 +4,12 @@
 > 結果：成功  
 > 前置文件：`re_12_multiglyph_chinese_phrase_and_resolution_limit.md`
 
+> 2026-08-15 範圍修正：本證明只成立於當時的單一 probe。直接套用全域 15-row
+> FONT，遇到 GPL 多個連續 `print` 組成的四行文本時，會產生不可翻頁的內容缺漏；
+> 在 paginator 或 layout 尚未一併修改前，不能作為目前的可玩版預設。15-row
+> rendering 本身仍保留為研究與精進方向。詳見
+> `re_33_global_font_height_text_loss_and_9row_recovery.md`。
+
 ## 1. 結論
 
 原版 *Dark Sun: Shattered Lands* renderer 已在 DOSBox-X 實機測試中成功接受：

@@ -151,13 +151,49 @@ Breakpoint 清單與 CPU 狀態均確認命中：
 
 這套程序已成功重現 `11A4:69C4`、`11A4:685B` 與 `222E:31D4`，後續應作為標準動態追蹤流程。
 
-## 7. 明日續作方向
+### 6.1 TCP protected-memory watchpoint 已補齊
 
-下一輪不再從任意 VGA pixel 往上追，而直接鎖定「文字資料消費端」。建議順序：
+2026-08-14 續作時，已在 `D:\git\DOSBox-X-AI` 的原生 bridge 加入受限 API：
+
+```python
+client.set_protected_memory_breakpoint("SELECTOR:OFFSET")
+client.set_real_memory_breakpoint("SEGMENT:OFFSET")
+```
+
+對應 wire method：
+
+```text
+breakpoint.memory.set
+breakpoint.memory.real.set
+```
+
+實作直接重用 DOSBox-X debugger 原有的 `CBreakpoint::AddMemBreakpoint`，並分別
+保留 real-mode memory 與 `BKPNT_MEMORY_PROT`（GUI 命令 `BPPM`）模式，沒有建立
+另一份 breakpoint 狀態。遊戲這一階段使用的是 real-mode `segment << 4` alias，
+實際追蹤文字工作區時應使用 `set_real_memory_breakpoint()`。
+建立 watchpoint 時會先記錄該位址目前的 byte，避免 `CBreakpoint` 預設值為零而在
+第一次恢復執行時產生假命中。`breakpoint.list` 現在會列出：
+
+```json
+{"address":"0000:0000","enabled":true,"id":0,"type":"protected_memory"}
+```
+
+已以 Visual Studio 新版 toolset 覆寫原 solution 的 `v142` 設定完成 Release x64
+建置，並對實際 DOSBox-X process 完成建立、列出、刪除 smoke test；刪除後
+breakpoint list 為空。
+
+此 watchpoint 偵測的是「byte 值改變」，不是 memory read。因此它適合先抓出
+文字解壓縮／句子組合的寫入端；定位實際文字 buffer 後，仍須由寫入點、呼叫者
+或附近逐 byte 迴圈繼續追到 renderer 的讀取端。
+
+## 7. 續作方向（已由 re_15 接續）
+
+本節原列的文字資料消費端追蹤，已於 `re_15_text_byte_consumer_and_font100_runtime_lookup.md`
+完成。保留以下清單作為追蹤脈絡；目前主線已推進至固定雙位元組映射實驗。
 
 1. 建立只包含獨特短字串與單一替換 glyph 的最小對話測試，減少背景與動畫噪音。
 2. 在 GPL 解壓縮／句子組合完成處取得實際文字 buffer 的 selector:offset。
-3. 對文字 buffer 使用 debugger 的 memory watchpoint；若 TCP bridge 仍未公開 memory breakpoint，應優先為 bridge增加受限的 memory-watchpoint API，避免 GUI 焦點問題。
+3. 對文字 buffer 使用已加入 TCP bridge 的 protected-memory watchpoint，先定位產生文字的寫入端。
 4. 在文字 byte 被讀取時記錄 `CS:EIP`，辨認逐 byte 迴圈、控制碼分支與字串終止條件。
 5. 從該迴圈追到 glyph index／offset table lookup，確認 width 與 line-wrap 是否在同一條路徑。
 6. 先做固定映射實驗，例如一組測試 lead/trail bytes → 現有「中」glyph。
@@ -171,10 +207,21 @@ Breakpoint 清單與 CPU 狀態均確認命中：
 [完成] 六字單位元組暫用槽顯示
 [完成] 16×15「中文顯示成功」實機驗證
 [完成] 原生 TCP debugger bridge 連線與程式碼 breakpoint 流程
+[完成] TCP protected-memory watchpoint API、Release x64 建置與實機 smoke test
 [完成] 排除通用 RLE／VGA blit 呼叫鏈
-[待辦] 定位解壓縮後文字 buffer
-[待辦] 定位逐 byte 文字消費迴圈
-[待辦] 定位 FONT-100 glyph lookup／width／wrap
-[待辦] 固定雙位元組 → 單一 glyph 最小實驗
+[完成] 定位組合後文字 buffer 與 EBOX 翻頁／捲動狀態
+[完成] 定位逐 byte 文字消費迴圈與 '%' 格式控制碼分支
+[完成] 定位 FONT-100 runtime payload、glyph lookup、width 與 pixel loop
+[完成] 定位逐 byte 字串寬度計算（DBCS 必須同步修改）
+[完成] 固定雙位元組 → 單一 glyph 最小實驗（`Gl` →「中」）
+[完成] 六組連續雙位元組、ASCII 混排、MORE 與回頁重畫
+[完成] FONT 尾端 CJK bank 完整載入
+[完成] 第 257 筆 appended 16×15 glyph 實機繪製
+[完成] 16-bit CJK ID 索引、獨立 offset table、六筆 appended glyph
+[完成] 多 bank／跨 255 CJK IDs 256～258 實機繪製
+[完成] 正式 append-only Unicode→CJK ID registry 與獨立 64 KiB glyph banks
+[完成] 否決 control-byte pair；printable-triple 12 組邊界實機驗證
+[完成] base-94 algorithmic triple resolver（零逐字對照表）
+[完成] 否決 literal `^^^`；永久保留 ID 5795
+[待辦] far-bank loader／glyph scratch cache 與長句精確邊界驗證
 ```
-

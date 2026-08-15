@@ -104195,8 +104195,8 @@
       "unit_id": "DLG_f6c2fbaa84a9",
       "category": "dialogue",
       "original": "This day the mage Celgor will battle a fearsome rampager. ",
-      "translation_zh_tw": "",
-      "status": "pending",
+      "translation_zh_tw": "今日法師賽爾戈將迎戰一頭兇猛的狂暴獸。",
+      "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
         "leading_spaces": 0,
@@ -104210,8 +104210,8 @@
       "unit_id": "DLG_13ab12eaff4a",
       "category": "dialogue",
       "original": "Watch and enjoy! ",
-      "translation_zh_tw": "",
-      "status": "pending",
+      "translation_zh_tw": "敬請觀賞！",
+      "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
         "leading_spaces": 0,
@@ -104225,8 +104225,8 @@
       "unit_id": "DLG_6294a22b2cbb",
       "category": "dialogue",
       "original": "Do not worry, ",
-      "translation_zh_tw": "",
-      "status": "pending",
+      "translation_zh_tw": "別擔心，",
+      "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
         "leading_spaces": 0,
@@ -104240,8 +104240,8 @@
       "unit_id": "DLG_67aa8858af43",
       "category": "dialogue",
       "original": ". Your turn will come soon. Stand back and watch the battle.",
-      "translation_zh_tw": "",
-      "status": "pending",
+      "translation_zh_tw": "。很快就輪到你了。退後觀看這場戰鬥吧。",
+      "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
         "leading_spaces": 0,

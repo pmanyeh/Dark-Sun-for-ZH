@@ -1,8 +1,19 @@
 {
-  "source_file": "GPLDATA/NAME-1 (from GPLDATA.GFF)",
-  "description": "In-game object/item names (equipment, scenery, interactive objects) extracted via regex scan of null-delimited/garbage-interleaved raw resource data. Not all are equipment; many are world-object labels (doors, walls, plants, NPC-held items, quest items).",
-  "translation_status": "first-pass machine translation by Claude, Traditional Chinese, NOT yet verified against in-game context or repacked/tested. Proper nouns (character names like Nagi, Dagolar, Phrain, Derth, El, Balk, Grey, Tanelyv, Dapartea, Degula, Koeatl, Keldar, Tynan, A'poss, Tristram, Mirlon, Llod) are phonetically transliterated and should be cross-checked for consistency with dialogue translations once the GPL dialogue system is cracked.",
-  "count": 328,
+  "source_file": "GPLDATA.GFF/NAME-1",
+  "description": "In-game object/item names (equipment, scenery, interactive objects). Extracted by directly parsing the fixed 25-byte x 322-record table (see docs/re/re_41), not by scanning for null-delimited substrings. id is the true zero-based record slot within NAME-1 (record 149 is a blank/unused slot and is omitted here). Many names cover non-equipment world objects (doors, walls, plants, NPC-held items, quest items).",
+  "translation_status": "Traditional Chinese. 253 entries carried forward unreviewed from the prior first-pass machine translation (their whole-string English text matched a true record exactly). 68 entries (67 distinct English strings) are newly translated in this pass to replace fragments produced by the earlier, incorrect null-delimited substring scan (e.g. the true record \"Trail of Blood\" had been split into separate \"Trail\" and \"Blood\" catalog rows). None of these translations have been verified against in-game context or repacked/tested yet. Proper nouns (character/place names) are phonetically transliterated and should stay consistent with dialogue translations.",
+  "record_layout": {
+    "container": "GPLDATA.GFF",
+    "kind": "NAME",
+    "chunk_id": 1,
+    "record_bytes": 25,
+    "record_count": 322,
+    "blank_record_slots": [
+      149
+    ],
+    "field": "NUL-terminated ASCII name; trailing bytes after the terminator are leftover, unread buffer content and are preserved byte-for-byte by the importer"
+  },
+  "count": 321,
   "entries": [
     {
       "id": 0,
@@ -126,1076 +137,1063 @@
     },
     {
       "id": 24,
-      "en": "Trail",
-      "zh": "血跡",
-      "note": "extraction artifact: name likely truncated/split from a longer phrase by the extractor's word-boundary heuristic; needs manual confirmation against game context"
+      "en": "Trail of Blood",
+      "zh": "血跡"
     },
     {
       "id": 25,
-      "en": "Blood",
-      "zh": "血跡",
-      "note": "extraction artifact: name likely truncated/split from a longer phrase by the extractor's word-boundary heuristic; needs manual confirmation against game context"
-    },
-    {
-      "id": 26,
       "en": "Insect",
       "zh": "昆蟲"
     },
     {
-      "id": 27,
+      "id": 26,
       "en": "Axe",
       "zh": "斧頭"
     },
     {
-      "id": 28,
+      "id": 27,
       "en": "Shillelagh",
       "zh": "魔棒"
     },
     {
-      "id": 29,
+      "id": 28,
       "en": "Long Sword",
       "zh": "長劍"
     },
     {
-      "id": 30,
+      "id": 29,
       "en": "Flame Blade",
       "zh": "火焰刃"
     },
     {
-      "id": 31,
+      "id": 30,
       "en": "Spiritual Hammer",
       "zh": "靈能戰鎚"
     },
     {
-      "id": 32,
+      "id": 31,
       "en": "Body Weaponry",
       "zh": "徒手武器"
     },
     {
-      "id": 33,
+      "id": 32,
       "en": "Animal Affinity",
       "zh": "通靈親和"
     },
     {
-      "id": 34,
+      "id": 33,
       "en": "Parting Staff",
       "zh": "分離之杖"
     },
     {
-      "id": 35,
+      "id": 34,
       "en": "Passion Fruit",
       "zh": "百香果"
     },
     {
-      "id": 36,
+      "id": 35,
       "en": "Banana",
       "zh": "香蕉"
     },
     {
-      "id": 37,
+      "id": 36,
       "en": "Lemon",
       "zh": "檸檬"
     },
     {
-      "id": 38,
+      "id": 37,
       "en": "Orange",
       "zh": "柳橙"
     },
     {
-      "id": 39,
+      "id": 38,
       "en": "Lime",
       "zh": "萊姆"
     },
     {
-      "id": 40,
+      "id": 39,
       "en": "Grain",
       "zh": "穀物"
     },
     {
-      "id": 41,
+      "id": 40,
       "en": "Seeds",
       "zh": "種子"
     },
     {
-      "id": 42,
+      "id": 41,
       "en": "Bread",
       "zh": "麵包"
     },
     {
-      "id": 43,
+      "id": 42,
       "en": "Belt",
       "zh": "腰帶"
     },
     {
-      "id": 44,
+      "id": 43,
       "en": "Boots",
       "zh": "靴子"
     },
     {
-      "id": 45,
+      "id": 44,
       "en": "Torch",
       "zh": "火把"
     },
     {
-      "id": 46,
+      "id": 45,
       "en": "Grate",
       "zh": "柵欄"
     },
     {
-      "id": 47,
+      "id": 46,
       "en": "Grapes",
       "zh": "葡萄"
     },
     {
-      "id": 48,
+      "id": 47,
       "en": "Feather",
       "zh": "羽毛"
     },
     {
-      "id": 49,
+      "id": 48,
       "en": "Nagi's Talisman",
       "zh": "納吉的護符"
     },
     {
-      "id": 50,
+      "id": 49,
       "en": "Golden Pendant",
       "zh": "黃金墜飾"
     },
     {
-      "id": 51,
+      "id": 50,
       "en": "Brick Circle",
       "zh": "磚石圓環"
     },
     {
-      "id": 52,
+      "id": 51,
       "en": "Sacrificial Stone",
       "zh": "祭祀石"
     },
     {
-      "id": 53,
+      "id": 52,
       "en": "Chest",
       "zh": "箱子"
     },
     {
-      "id": 54,
+      "id": 53,
       "en": "Bottle",
       "zh": "瓶子"
     },
     {
-      "id": 55,
+      "id": 54,
       "en": "Arrows",
       "zh": "箭矢"
     },
     {
-      "id": 56,
+      "id": 55,
       "en": "Blackmace",
       "zh": "黑釘錘"
     },
     {
-      "id": 57,
+      "id": 56,
       "en": "Hero's Body",
       "zh": "英雄之軀"
     },
     {
-      "id": 58,
+      "id": 57,
       "en": "Chatkcha",
       "zh": "查特卡"
     },
     {
-      "id": 59,
+      "id": 58,
       "en": "Gythka",
       "zh": "吉斯卡"
     },
     {
-      "id": 60,
+      "id": 59,
       "en": "Warning Symbol",
       "zh": "警示符號"
     },
     {
-      "id": 61,
+      "id": 60,
       "en": "Rope",
       "zh": "繩索"
     },
     {
-      "id": 62,
+      "id": 61,
       "en": "Phrain's Bow",
       "zh": "弗萊恩之弓"
     },
     {
-      "id": 63,
+      "id": 62,
       "en": "Dagolar's Wand",
       "zh": "達哥拉之杖"
     },
     {
+      "id": 63,
+      "en": "Wand of Missiles",
+      "zh": "飛彈法杖"
+    },
+    {
       "id": 64,
-      "en": "Wand",
-      "zh": "法杖"
-    },
-    {
-      "id": 65,
-      "en": "Missiles",
-      "zh": "飛彈符文"
-    },
-    {
-      "id": 66,
       "en": "Derth's Wand",
       "zh": "德斯之杖"
     },
     {
-      "id": 67,
+      "id": 65,
       "en": "Wildwynd Wand",
       "zh": "狂風法杖"
     },
     {
-      "id": 68,
-      "en": "Light",
-      "zh": "光"
+      "id": 66,
+      "en": "Light of Dawn",
+      "zh": "黎明之光"
     },
     {
-      "id": 69,
-      "en": "Dawn",
-      "zh": "黎明"
-    },
-    {
-      "id": 70,
+      "id": 67,
       "en": "Steadfast Ring",
       "zh": "堅毅之戒"
     },
     {
-      "id": 71,
+      "id": 68,
       "en": "Storm Ring",
       "zh": "風暴之戒"
     },
     {
-      "id": 72,
+      "id": 69,
       "en": "Wind Ring",
       "zh": "疾風之戒"
     },
     {
-      "id": 73,
+      "id": 70,
       "en": "El's Ring",
       "zh": "艾爾之戒"
     },
     {
-      "id": 74,
+      "id": 71,
       "en": "Drake Armor",
       "zh": "龍鱗甲"
     },
     {
-      "id": 75,
+      "id": 72,
       "en": "Grey's Scale",
       "zh": "葛雷的鱗片"
     },
     {
-      "id": 76,
-      "en": "Shimmer Armor",
-      "zh": "幻光甲"
+      "id": 73,
+      "en": "- Shimmer Armor",
+      "zh": "- 幻光甲"
     },
     {
-      "id": 77,
+      "id": 74,
       "en": "El's Shield",
       "zh": "艾爾之盾"
     },
     {
-      "id": 78,
+      "id": 75,
       "en": "Drake Shield",
       "zh": "龍鱗盾"
     },
     {
-      "id": 79,
-      "en": "Belt",
-      "zh": "腰帶"
+      "id": 76,
+      "en": "Belt of Might",
+      "zh": "力量腰帶"
     },
     {
-      "id": 80,
-      "en": "Might",
-      "zh": "力量"
-    },
-    {
-      "id": 81,
+      "id": 77,
       "en": "Balk's Staff",
       "zh": "巴克之杖"
     },
     {
-      "id": 82,
+      "id": 78,
       "en": "Dark Flame",
       "zh": "黑焰"
     },
     {
-      "id": 83,
+      "id": 79,
       "en": "El's Drinker",
       "zh": "艾爾的飲血者"
     },
     {
-      "id": 84,
+      "id": 80,
       "en": "Draketooth",
       "zh": "龍牙劍"
     },
     {
-      "id": 85,
+      "id": 81,
       "en": "Swiftbite",
       "zh": "迅咬劍"
     },
     {
-      "id": 86,
-      "en": "Brgnd",
-      "zh": "鎖甲",
-      "note": "extraction artifact: name likely truncated/split from a longer phrase by the extractor's word-boundary heuristic; needs manual confirmation against game context"
+      "id": 82,
+      "en": "Brgnd.Chst Armor",
+      "zh": "鎖甲胸甲"
     },
     {
-      "id": 87,
-      "en": "Chst Armor",
-      "zh": "胸甲",
-      "note": "extraction artifact: name likely truncated/split from a longer phrase by the extractor's word-boundary heuristic; needs manual confirmation against game context"
+      "id": 83,
+      "en": "Brgnd. Arm Armor",
+      "zh": "鎖甲臂甲"
     },
     {
-      "id": 88,
-      "en": "Brgnd",
-      "zh": "鎖甲",
-      "note": "extraction artifact: name likely truncated/split from a longer phrase by the extractor's word-boundary heuristic; needs manual confirmation against game context"
+      "id": 84,
+      "en": "Brgnd.Leg Armor",
+      "zh": "鎖甲腿甲"
     },
     {
-      "id": 89,
-      "en": "Arm Armor",
-      "zh": "臂甲"
-    },
-    {
-      "id": 90,
-      "en": "Brgnd",
-      "zh": "鎖甲",
-      "note": "extraction artifact: name likely truncated/split from a longer phrase by the extractor's word-boundary heuristic; needs manual confirmation against game context"
-    },
-    {
-      "id": 91,
-      "en": "Leg Armor",
-      "zh": "腿甲"
-    },
-    {
-      "id": 92,
+      "id": 85,
       "en": "Scale Chest Armor",
       "zh": "鱗甲胸甲"
     },
     {
-      "id": 93,
+      "id": 86,
       "en": "Scale Arm Armor",
       "zh": "鱗甲臂甲"
     },
     {
-      "id": 94,
+      "id": 87,
       "en": "Scale Leg Armor",
       "zh": "鱗甲腿甲"
     },
     {
-      "id": 95,
+      "id": 88,
       "en": "Chain Chest Armor",
       "zh": "鎖鏈胸甲"
     },
     {
-      "id": 96,
+      "id": 89,
       "en": "Chain Arm Armor",
       "zh": "鎖鏈臂甲"
     },
     {
-      "id": 97,
+      "id": 90,
       "en": "Metal Detection",
       "zh": "金屬探測"
     },
     {
-      "id": 98,
+      "id": 91,
       "en": "Hole",
       "zh": "洞"
     },
     {
-      "id": 99,
+      "id": 92,
       "en": "Magical Circle",
       "zh": "魔法陣"
     },
     {
-      "id": 100,
+      "id": 93,
       "en": "Living Sculpture",
       "zh": "活體雕像"
     },
     {
-      "id": 101,
+      "id": 94,
       "en": "Torch Sconce",
       "zh": "火把架"
     },
     {
-      "id": 102,
+      "id": 95,
       "en": "Jasmine's Book",
       "zh": "茉莉的書"
     },
     {
-      "id": 103,
-      "en": "Rest",
-      "zh": "休息"
+      "id": 96,
+      "en": "Rest icon",
+      "zh": "休息圖示"
     },
     {
-      "id": 104,
-      "en": "Jar",
-      "zh": "罐子"
+      "id": 97,
+      "en": "Jar of Slime",
+      "zh": "黏液罐"
     },
     {
-      "id": 105,
-      "en": "Slime",
-      "zh": "黏液"
-    },
-    {
-      "id": 106,
+      "id": 98,
       "en": "Dagolar's Book",
       "zh": "達哥拉的書"
     },
     {
-      "id": 107,
+      "id": 99,
       "en": "Unusual Organ",
       "zh": "異常的器官"
     },
     {
-      "id": 108,
+      "id": 100,
       "en": "Bone Crank",
       "zh": "骨製曲柄"
     },
     {
-      "id": 109,
-      "en": "Slavepen",
-      "zh": "奴隸欄"
+      "id": 101,
+      "en": "Slavepen key",
+      "zh": "奴隸欄鑰匙"
     },
     {
-      "id": 110,
+      "id": 102,
       "en": "Iron Necklace",
       "zh": "鐵項鍊"
     },
     {
-      "id": 111,
-      "en": "Ring",
-      "zh": "戒指"
+      "id": 103,
+      "en": "Ring of Insight",
+      "zh": "洞察之戒"
     },
     {
-      "id": 112,
-      "en": "Insight",
-      "zh": "洞察"
-    },
-    {
-      "id": 113,
+      "id": 104,
       "en": "Note",
       "zh": "字條"
     },
     {
-      "id": 114,
+      "id": 105,
       "en": "Coffin",
       "zh": "棺材"
     },
     {
-      "id": 115,
+      "id": 106,
       "en": "Tanelyv's Armor",
       "zh": "塔奈利夫的鎧甲"
     },
     {
-      "id": 116,
-      "en": "Helm",
-      "zh": "頭盔"
+      "id": 107,
+      "en": "Helm/Contempltn",
+      "zh": "沉思頭盔"
     },
     {
-      "id": 117,
-      "en": "Contempltn",
-      "zh": "沉思",
-      "note": "extraction artifact: name likely truncated/split from a longer phrase by the extractor's word-boundary heuristic; needs manual confirmation against game context"
-    },
-    {
-      "id": 118,
+      "id": 108,
       "en": "Lava Dome",
       "zh": "熔岩穹頂"
     },
     {
-      "id": 119,
+      "id": 109,
       "en": "Silk Armor",
       "zh": "絲綢鎧甲"
     },
     {
-      "id": 120,
+      "id": 110,
       "en": "Corn",
       "zh": "玉米"
     },
     {
-      "id": 121,
+      "id": 111,
       "en": "Statue Piece",
       "zh": "雕像碎片"
     },
     {
-      "id": 122,
+      "id": 112,
       "en": "Statue Piece",
       "zh": "雕像碎片"
     },
     {
-      "id": 123,
+      "id": 113,
       "en": "Dagolar Powder",
       "zh": "達哥拉的粉末"
     },
     {
-      "id": 124,
-      "en": "Steam",
-      "zh": "蒸氣"
+      "id": 114,
+      "en": "Steam tank",
+      "zh": "蒸氣槽"
     },
     {
-      "id": 125,
+      "id": 115,
       "en": "Nagi's Curse",
       "zh": "納吉的詛咒"
     },
     {
-      "id": 126,
+      "id": 116,
       "en": "Hound Necklace",
       "zh": "獵犬項鍊"
     },
     {
-      "id": 127,
+      "id": 117,
       "en": "Dag's Dagger",
       "zh": "達格的匕首"
     },
     {
-      "id": 128,
+      "id": 118,
       "en": "Chain Leg Armor",
       "zh": "鎖鏈腿甲"
     },
     {
-      "id": 129,
+      "id": 119,
       "en": "Guava",
       "zh": "芭樂"
     },
     {
-      "id": 130,
+      "id": 120,
       "en": "Silver Necklace",
       "zh": "銀項鍊"
     },
     {
-      "id": 131,
+      "id": 121,
       "en": "Necklace",
       "zh": "項鍊"
     },
     {
-      "id": 132,
+      "id": 122,
       "en": "Chameleon Gloves",
       "zh": "變色龍手套"
     },
     {
-      "id": 133,
+      "id": 123,
       "en": "Quicksilver Glove",
       "zh": "水銀手套"
     },
     {
-      "id": 134,
+      "id": 124,
       "en": "Living Cloak",
       "zh": "活體斗篷"
     },
     {
-      "id": 135,
-      "en": "Orb",
-      "zh": "寶珠"
+      "id": 125,
+      "en": "Orb of Knowledge",
+      "zh": "知識寶珠"
     },
     {
-      "id": 136,
-      "en": "Knowledge",
-      "zh": "知識"
-    },
-    {
-      "id": 137,
+      "id": 126,
       "en": "Golden Torque",
       "zh": "黃金項圈"
     },
     {
-      "id": 138,
+      "id": 127,
       "en": "Scroll",
       "zh": "卷軸"
     },
     {
-      "id": 139,
+      "id": 128,
       "en": "Silk Talisman",
       "zh": "絲綢護符"
     },
     {
-      "id": 140,
+      "id": 129,
       "en": "Wyvern Hook",
       "zh": "雙足飛龍鉤"
     },
     {
-      "id": 141,
+      "id": 130,
       "en": "Magical Devices",
       "zh": "魔法裝置"
     },
     {
-      "id": 142,
+      "id": 131,
       "en": "The Unnamed",
       "zh": "無名者"
     },
     {
-      "id": 143,
+      "id": 132,
       "en": "Mirrors",
       "zh": "鏡子"
     },
     {
-      "id": 144,
+      "id": 133,
       "en": "Wind Potion",
       "zh": "風之藥水"
     },
     {
-      "id": 145,
+      "id": 134,
       "en": "Lizard",
       "zh": "蜥蜴"
     },
     {
-      "id": 146,
+      "id": 135,
       "en": "Nagi's Journal",
       "zh": "納吉的日誌"
     },
     {
-      "id": 147,
+      "id": 136,
       "en": "Spellbook",
       "zh": "法術書"
     },
     {
-      "id": 148,
+      "id": 137,
       "en": "Ceramic Piece",
       "zh": "陶瓷碎片"
     },
     {
-      "id": 149,
+      "id": 138,
       "en": "Boiler",
       "zh": "鍋爐"
     },
     {
-      "id": 150,
+      "id": 139,
       "en": "Tapestry",
       "zh": "掛毯"
     },
     {
-      "id": 151,
+      "id": 140,
       "en": "Strange Circle",
       "zh": "奇怪的圓環"
     },
     {
-      "id": 152,
+      "id": 141,
       "en": "Terror Blade",
       "zh": "恐怖之刃"
     },
     {
-      "id": 153,
+      "id": 142,
       "en": "Coat",
       "zh": "外衣"
     },
     {
-      "id": 154,
-      "en": "Steam",
-      "zh": "蒸氣"
+      "id": 143,
+      "en": "Steam tank",
+      "zh": "蒸氣槽"
     },
     {
-      "id": 155,
+      "id": 144,
       "en": "Mudpot",
       "zh": "泥漿池"
     },
     {
-      "id": 156,
+      "id": 145,
       "en": "Dapartea's Helm",
       "zh": "達帕蒂亞的頭盔"
     },
     {
-      "id": 157,
+      "id": 146,
       "en": "Stakes",
       "zh": "木樁"
     },
     {
-      "id": 158,
+      "id": 147,
+      "en": "crystal",
+      "zh": "水晶"
+    },
+    {
+      "id": 148,
       "en": "Cabinet",
       "zh": "櫃子"
     },
     {
-      "id": 159,
+      "id": 150,
       "en": "Degula's Tear",
       "zh": "迪古拉之淚"
     },
     {
-      "id": 160,
+      "id": 151,
       "en": "Soulcrusher",
       "zh": "碎魂者"
     },
     {
-      "id": 161,
+      "id": 152,
       "en": "Koeatl's Cloak",
       "zh": "科亞特的斗篷"
     },
     {
-      "id": 162,
+      "id": 153,
       "en": "Dreaming Eye",
       "zh": "夢境之眼"
     },
     {
-      "id": 163,
+      "id": 154,
       "en": "Serpent Ring",
       "zh": "巨蛇之戒"
     },
     {
-      "id": 164,
+      "id": 155,
       "en": "Seeker",
       "zh": "追尋者"
     },
     {
-      "id": 165,
+      "id": 156,
       "en": "Bloodwrath",
       "zh": "血怒"
     },
     {
-      "id": 166,
+      "id": 157,
       "en": "Animal Affinity",
       "zh": "通靈親和"
     },
     {
-      "id": 167,
+      "id": 158,
       "en": "Cactus",
       "zh": "仙人掌"
     },
     {
-      "id": 168,
+      "id": 159,
       "en": "Hornblade",
       "zh": "號角刃"
     },
     {
-      "id": 169,
-      "en": "Water",
-      "zh": "水"
+      "id": 160,
+      "en": "Water pump",
+      "zh": "抽水泵"
     },
     {
-      "id": 170,
-      "en": "Fire",
-      "zh": "火"
+      "id": 161,
+      "en": "Fire equipment",
+      "zh": "生火用具"
     },
     {
-      "id": 171,
+      "id": 162,
       "en": "Key",
       "zh": "鑰匙"
     },
     {
-      "id": 172,
+      "id": 163,
       "en": "Keldar's Book",
       "zh": "凱爾達的書"
     },
     {
-      "id": 173,
+      "id": 164,
       "en": "Elder's Bowl",
       "zh": "長老之碗"
     },
     {
-      "id": 174,
+      "id": 165,
       "en": "Rock",
       "zh": "岩石"
     },
     {
-      "id": 175,
+      "id": 166,
       "en": "Gong",
       "zh": "鑼"
     },
     {
-      "id": 176,
+      "id": 167,
       "en": "Striker",
       "zh": "打擊者"
     },
     {
-      "id": 177,
+      "id": 168,
       "en": "Serpent Tree",
       "zh": "巨蛇之樹"
     },
     {
-      "id": 178,
+      "id": 169,
       "en": "Hole",
       "zh": "洞"
     },
     {
-      "id": 179,
-      "en": "Mixing",
-      "zh": "混合"
+      "id": 170,
+      "en": "Mixing bowl",
+      "zh": "攪拌碗"
     },
     {
-      "id": 180,
-      "en": "Terror",
-      "zh": "恐懼"
+      "id": 171,
+      "en": "Terror extract",
+      "zh": "恐懼萃取液"
     },
     {
-      "id": 181,
+      "id": 172,
       "en": "Shovel",
       "zh": "鏟子"
     },
     {
-      "id": 182,
+      "id": 173,
+      "en": "pick",
+      "zh": "十字鎬"
+    },
+    {
+      "id": 174,
       "en": "Dead Body",
       "zh": "屍體"
     },
     {
-      "id": 183,
+      "id": 175,
+      "en": "sand pile",
+      "zh": "沙堆"
+    },
+    {
+      "id": 176,
       "en": "Spider",
       "zh": "蜘蛛"
     },
     {
-      "id": 184,
+      "id": 177,
       "en": "Worm",
       "zh": "蟲"
     },
     {
-      "id": 185,
+      "id": 178,
       "en": "Necklace",
       "zh": "項鍊"
     },
     {
-      "id": 186,
+      "id": 179,
       "en": "Junk",
       "zh": "垃圾"
     },
     {
-      "id": 187,
+      "id": 180,
+      "en": "A haystack",
+      "zh": "乾草堆"
+    },
+    {
+      "id": 181,
+      "en": "skull",
+      "zh": "頭骨"
+    },
+    {
+      "id": 182,
       "en": "Rat",
       "zh": "老鼠"
     },
     {
-      "id": 188,
+      "id": 183,
       "en": "Tash",
       "zh": "塔什"
     },
     {
-      "id": 189,
+      "id": 184,
       "en": "Share Strength",
       "zh": "分享力量"
     },
     {
-      "id": 190,
-      "en": "Sling",
-      "zh": "投石索"
+      "id": 185,
+      "en": "Sling +2",
+      "zh": "投石索 +2"
     },
     {
-      "id": 191,
+      "id": 186,
+      "en": "lilypad",
+      "zh": "荷葉"
+    },
+    {
+      "id": 187,
       "en": "Dead Slave",
       "zh": "死去的奴隸"
     },
     {
-      "id": 192,
+      "id": 188,
       "en": "Skeleton",
       "zh": "骷髏"
     },
     {
+      "id": 189,
+      "en": "ceramic pot",
+      "zh": "陶罐"
+    },
+    {
+      "id": 190,
+      "en": "broken pot",
+      "zh": "破罐"
+    },
+    {
+      "id": 191,
+      "en": "bag of sand",
+      "zh": "沙袋"
+    },
+    {
+      "id": 192,
+      "en": "Book of Focuses",
+      "zh": "法術媒介之書"
+    },
+    {
       "id": 193,
-      "en": "Book",
-      "zh": "書"
-    },
-    {
-      "id": 194,
-      "en": "Focuses",
-      "zh": "法術媒介"
-    },
-    {
-      "id": 195,
       "en": "Gem",
       "zh": "寶石"
     },
     {
-      "id": 196,
+      "id": 194,
       "en": "Sand Howler Eye",
       "zh": "沙嚎獸之眼"
     },
     {
-      "id": 197,
+      "id": 195,
       "en": "Fire Eel Tongue",
       "zh": "火鰻之舌"
     },
     {
-      "id": 198,
+      "id": 196,
       "en": "Butterfly Wing",
       "zh": "蝴蝶之翼"
     },
     {
-      "id": 199,
+      "id": 197,
       "en": "Beetle Wing",
       "zh": "甲蟲之翼"
     },
     {
-      "id": 200,
+      "id": 198,
       "en": "Mastyrial Sting",
       "zh": "馬斯泰里之刺"
     },
     {
-      "id": 201,
-      "en": "Human",
-      "zh": "人類"
+      "id": 199,
+      "en": "Human sculpture",
+      "zh": "人形雕像"
     },
     {
-      "id": 202,
+      "id": 200,
       "en": "Fountain",
       "zh": "噴泉"
     },
     {
-      "id": 203,
-      "en": "Ragged",
-      "zh": "破爛的"
+      "id": 201,
+      "en": "Ragged-looking Man",
+      "zh": "衣衫襤褸的男人"
     },
     {
-      "id": 204,
-      "en": "Man",
-      "zh": "男人"
-    },
-    {
-      "id": 205,
+      "id": 202,
       "en": "Messenger's Scroll",
       "zh": "信使的卷軸"
     },
     {
-      "id": 206,
+      "id": 203,
       "en": "Broken Weapon",
       "zh": "損壞的武器"
     },
     {
-      "id": 207,
+      "id": 204,
       "en": "Announcer",
       "zh": "主持人"
     },
     {
-      "id": 208,
+      "id": 205,
       "en": "Slave",
       "zh": "奴隸"
     },
     {
-      "id": 209,
+      "id": 206,
       "en": "Gargoyle",
       "zh": "石像鬼"
     },
     {
-      "id": 210,
+      "id": 207,
       "en": "Chief Daughter",
       "zh": "首領之女"
     },
     {
-      "id": 211,
+      "id": 208,
       "en": "Villager",
       "zh": "村民"
     },
     {
-      "id": 212,
-      "en": "Book",
-      "zh": "書"
+      "id": 209,
+      "en": "Book of Guidance",
+      "zh": "指引之書"
     },
     {
-      "id": 213,
-      "en": "Guidance",
-      "zh": "指引"
+      "id": 210,
+      "en": "magic sling",
+      "zh": "魔法投石索"
     },
     {
-      "id": 214,
+      "id": 211,
       "en": "Wheel",
       "zh": "輪子"
     },
     {
-      "id": 215,
+      "id": 212,
       "en": "Well",
       "zh": "水井"
     },
     {
-      "id": 216,
+      "id": 213,
       "en": "Mind Bar",
       "zh": "心靈之柵"
     },
     {
-      "id": 217,
-      "en": "Staff",
-      "zh": "法杖"
+      "id": 214,
+      "en": "Staff +2",
+      "zh": "法杖 +2"
     },
     {
-      "id": 218,
+      "id": 215,
+      "en": "weapon rack",
+      "zh": "武器架"
+    },
+    {
+      "id": 216,
+      "en": "open lavadome",
+      "zh": "敞開的熔岩穹頂"
+    },
+    {
+      "id": 217,
       "en": "Obelisk",
       "zh": "方尖碑"
     },
     {
+      "id": 218,
+      "en": "a button",
+      "zh": "按鈕"
+    },
+    {
       "id": 219,
-      "en": "Caged",
-      "zh": "被囚禁的"
+      "en": "altar",
+      "zh": "祭壇"
     },
     {
       "id": 220,
+      "en": "Caged animal",
+      "zh": "被囚禁的動物"
+    },
+    {
+      "id": 221,
       "en": "Magera Drummer",
       "zh": "馬吉拉鼓手"
     },
     {
-      "id": 221,
+      "id": 222,
       "en": "Tynan's Heart",
       "zh": "泰南之心"
     },
     {
-      "id": 222,
+      "id": 223,
+      "en": "a diary",
+      "zh": "日記"
+    },
+    {
+      "id": 224,
       "en": "Button",
       "zh": "按鈕"
     },
     {
-      "id": 223,
-      "en": "Portculis",
-      "zh": "閘門",
-      "note": "extraction artifact: name likely truncated/split from a longer phrase by the extractor's word-boundary heuristic; needs manual confirmation against game context"
-    },
-    {
-      "id": 224,
-      "en": "Bag",
-      "zh": "袋子"
-    },
-    {
       "id": 225,
-      "en": "Pith",
-      "zh": "髓心"
+      "en": "Portculis",
+      "zh": "閘門"
     },
     {
       "id": 226,
+      "en": "Bag of Pith",
+      "zh": "髓心袋"
+    },
+    {
+      "id": 227,
       "en": "Brick Wall",
       "zh": "磚牆"
     },
     {
-      "id": 227,
+      "id": 228,
       "en": "Pith Extract",
       "zh": "髓心萃取物"
     },
     {
-      "id": 228,
+      "id": 229,
       "en": "A'poss's Heart",
       "zh": "阿波斯之心"
     },
     {
-      "id": 229,
+      "id": 230,
       "en": "Lever",
       "zh": "拉桿"
     },
     {
-      "id": 230,
+      "id": 231,
       "en": "Unusual Fountain",
       "zh": "異常的噴泉"
     },
     {
-      "id": 231,
-      "en": "Tristram",
-      "zh": "崔斯特朗"
+      "id": 232,
+      "en": "Tristram-heart",
+      "zh": "崔斯特朗之心"
     },
     {
-      "id": 232,
+      "id": 233,
       "en": "Heart Crystal",
       "zh": "心之水晶"
     },
     {
-      "id": 233,
+      "id": 234,
       "en": "Door",
       "zh": "門"
     },
     {
-      "id": 234,
+      "id": 235,
       "en": "Pear",
       "zh": "梨子"
     },
     {
-      "id": 235,
-      "en": "Helm",
-      "zh": "頭盔"
-    },
-    {
       "id": 236,
-      "en": "Might",
-      "zh": "力量"
+      "en": "Helm of Might",
+      "zh": "力量頭盔"
     },
     {
       "id": 237,
@@ -1229,428 +1227,398 @@
     },
     {
       "id": 243,
-      "en": "Pot",
-      "zh": "罐子"
+      "en": "Pot of Water",
+      "zh": "水罐"
     },
     {
       "id": 244,
-      "en": "Water",
-      "zh": "水"
-    },
-    {
-      "id": 245,
       "en": "Apple",
       "zh": "蘋果"
     },
     {
-      "id": 246,
+      "id": 245,
       "en": "Ring",
       "zh": "戒指"
     },
     {
-      "id": 247,
+      "id": 246,
       "en": "Butterfly",
       "zh": "蝴蝶"
     },
     {
-      "id": 248,
+      "id": 247,
       "en": "Bed",
       "zh": "床"
     },
     {
-      "id": 249,
+      "id": 248,
       "en": "Guard",
       "zh": "守衛"
     },
     {
-      "id": 250,
+      "id": 249,
       "en": "Brazier",
       "zh": "火盆"
     },
     {
-      "id": 251,
+      "id": 250,
       "en": "Curtain",
       "zh": "簾幕"
     },
     {
-      "id": 252,
+      "id": 251,
       "en": "Nest",
       "zh": "巢穴"
     },
     {
-      "id": 253,
+      "id": 252,
       "en": "Water",
       "zh": "水"
     },
     {
-      "id": 254,
+      "id": 253,
       "en": "Candelabra",
       "zh": "燭台"
     },
     {
-      "id": 255,
+      "id": 254,
       "en": "Candle",
       "zh": "蠟燭"
     },
     {
-      "id": 256,
+      "id": 255,
       "en": "Wardrobe",
       "zh": "衣櫃"
     },
     {
-      "id": 257,
-      "en": "Sick",
-      "zh": "生病的"
+      "id": 256,
+      "en": "Sick patient",
+      "zh": "生病的病人"
     },
     {
-      "id": 258,
+      "id": 257,
       "en": "Vulture",
       "zh": "禿鷹"
     },
     {
-      "id": 259,
+      "id": 258,
       "en": "Geyser",
       "zh": "間歇泉"
     },
     {
-      "id": 260,
+      "id": 259,
       "en": "Serpentine Statue",
       "zh": "蛇形雕像"
     },
     {
-      "id": 261,
+      "id": 260,
       "en": "Water Tank",
       "zh": "水槽"
     },
     {
+      "id": 261,
+      "en": "Bridge of Memory",
+      "zh": "記憶之橋"
+    },
+    {
       "id": 262,
-      "en": "Bridge",
-      "zh": "橋"
+      "en": "Wall banner",
+      "zh": "壁幔"
     },
     {
       "id": 263,
-      "en": "Memory",
-      "zh": "記憶"
-    },
-    {
-      "id": 264,
-      "en": "Wall",
-      "zh": "牆"
-    },
-    {
-      "id": 265,
       "en": "Dirt",
       "zh": "泥土"
     },
     {
-      "id": 266,
-      "en": "Eye",
-      "zh": "眼睛"
+      "id": 264,
+      "en": "Eye stalk",
+      "zh": "眼柄"
     },
     {
-      "id": 267,
+      "id": 265,
       "en": "Archery Target",
       "zh": "箭靶"
     },
     {
-      "id": 268,
+      "id": 266,
       "en": "Anvil",
       "zh": "鐵砧"
     },
     {
-      "id": 269,
+      "id": 267,
       "en": "Philtre Device",
       "zh": "藥劑裝置"
     },
     {
-      "id": 270,
+      "id": 268,
       "en": "Forge",
       "zh": "熔爐"
     },
     {
-      "id": 271,
+      "id": 269,
       "en": "Metal Rod",
       "zh": "金屬棒"
     },
     {
-      "id": 272,
+      "id": 270,
       "en": "Bellows",
       "zh": "風箱"
     },
     {
-      "id": 273,
+      "id": 271,
       "en": "Talisman Venom",
       "zh": "護符毒液"
     },
     {
-      "id": 274,
+      "id": 272,
       "en": "Reeds",
       "zh": "蘆葦"
     },
     {
-      "id": 275,
+      "id": 273,
       "en": "Knuckle Bones",
       "zh": "骨骰"
     },
     {
+      "id": 274,
+      "en": "Gythka +3",
+      "zh": "吉斯卡 +3"
+    },
+    {
+      "id": 275,
+      "en": "Door of Eyes",
+      "zh": "雙眼之門"
+    },
+    {
       "id": 276,
-      "en": "Gythka",
-      "zh": "吉斯卡"
+      "en": "Heavy bones",
+      "zh": "沉重的骨頭"
     },
     {
       "id": 277,
-      "en": "Door",
-      "zh": "門"
+      "en": "Human archway",
+      "zh": "人形拱門"
     },
     {
       "id": 278,
-      "en": "Eyes",
-      "zh": "雙眼"
+      "en": "torture rack",
+      "zh": "拷問架"
     },
     {
       "id": 279,
-      "en": "Heavy",
-      "zh": "沉重的"
+      "en": "Fancy rug",
+      "zh": "花俏的地毯"
     },
     {
       "id": 280,
-      "en": "Human",
-      "zh": "人類"
-    },
-    {
-      "id": 281,
-      "en": "Fancy",
-      "zh": "花俏的"
-    },
-    {
-      "id": 282,
       "en": "Horn",
       "zh": "號角"
     },
     {
-      "id": 283,
-      "en": "Floor",
-      "zh": "地板"
+      "id": 281,
+      "en": "Floor safe",
+      "zh": "地板保險箱"
     },
     {
-      "id": 284,
+      "id": 282,
       "en": "Animal Bones",
       "zh": "動物骨骸"
     },
     {
-      "id": 285,
-      "en": "Wall",
+      "id": 283,
+      "en": "A Wall",
       "zh": "牆"
     },
     {
-      "id": 286,
-      "en": "Ancient",
-      "zh": "古老的"
+      "id": 284,
+      "en": "Ancient coffin",
+      "zh": "古老的棺材"
     },
     {
-      "id": 287,
+      "id": 285,
       "en": "Lizard",
       "zh": "蜥蜴"
     },
     {
-      "id": 288,
+      "id": 286,
       "en": "Serpent Boots",
       "zh": "巨蛇靴"
     },
     {
-      "id": 289,
+      "id": 287,
       "en": "Bug",
       "zh": "蟲"
     },
     {
-      "id": 290,
+      "id": 288,
       "en": "Ruins",
       "zh": "廢墟"
     },
     {
-      "id": 291,
-      "en": "Plank",
-      "zh": "木板"
+      "id": 289,
+      "en": "Plank bridge",
+      "zh": "木板橋"
     },
     {
-      "id": 292,
-      "en": "Grappling",
+      "id": 290,
+      "en": "Grappling hook",
       "zh": "抓鉤"
     },
     {
-      "id": 293,
-      "en": "Two",
-      "zh": "二"
+      "id": 291,
+      "en": "Two-handed Sword",
+      "zh": "雙手劍"
     },
     {
-      "id": 294,
-      "en": "Sword",
-      "zh": "劍"
-    },
-    {
-      "id": 295,
+      "id": 292,
       "en": "Energy Containment",
       "zh": "能量封存"
     },
     {
-      "id": 296,
+      "id": 293,
       "en": "Project Force",
       "zh": "力場投射"
     },
     {
-      "id": 297,
+      "id": 294,
       "en": "Scale Arm Armor",
       "zh": "鱗甲臂甲"
     },
     {
-      "id": 298,
+      "id": 295,
       "en": "Scale Leg Armor",
       "zh": "鱗甲腿甲"
     },
     {
-      "id": 299,
+      "id": 296,
       "en": "Scale Chest Armor",
       "zh": "鱗甲胸甲"
     },
     {
-      "id": 300,
+      "id": 297,
       "en": "Shelf",
       "zh": "架子"
     },
     {
-      "id": 301,
+      "id": 298,
       "en": "Llod's Rod",
       "zh": "洛德之杖"
     },
     {
-      "id": 302,
+      "id": 299,
       "en": "Ego Whip",
       "zh": "自我之鞭"
     },
     {
-      "id": 303,
+      "id": 300,
       "en": "Dragonsbane",
       "zh": "屠龍劍"
     },
     {
-      "id": 304,
+      "id": 301,
       "en": "Sword Blank",
       "zh": "劍坯"
     },
     {
+      "id": 302,
+      "en": "Dark hole",
+      "zh": "黑暗的洞"
+    },
+    {
+      "id": 303,
+      "en": "Drainage grate",
+      "zh": "排水柵欄"
+    },
+    {
+      "id": 304,
+      "en": "A pot of grain",
+      "zh": "一罐穀物"
+    },
+    {
       "id": 305,
-      "en": "Dark",
-      "zh": "黑暗的"
-    },
-    {
-      "id": 306,
-      "en": "Drainage",
-      "zh": "排水口"
-    },
-    {
-      "id": 307,
       "en": "Mirlon's Gem",
       "zh": "米爾隆之寶石"
     },
     {
-      "id": 308,
+      "id": 306,
       "en": "Starfruit",
       "zh": "楊桃"
     },
     {
-      "id": 309,
+      "id": 307,
       "en": "Screen",
       "zh": "屏風"
     },
     {
-      "id": 310,
+      "id": 308,
       "en": "Water Trough",
       "zh": "水槽"
     },
     {
-      "id": 311,
+      "id": 309,
       "en": "Folk",
       "zh": "民眾"
     },
     {
-      "id": 312,
-      "en": "Folk",
-      "zh": "民眾"
-    },
-    {
-      "id": 313,
+      "id": 310,
       "en": "Seedpod",
       "zh": "種莢"
     },
     {
-      "id": 314,
+      "id": 311,
       "en": "New Plant",
       "zh": "新生植物"
     },
     {
-      "id": 315,
+      "id": 312,
       "en": "Synaptic Static",
       "zh": "神經靜電"
     },
     {
-      "id": 316,
+      "id": 313,
       "en": "Intellect Fortress",
       "zh": "心智堡壘"
     },
     {
-      "id": 317,
+      "id": 314,
       "en": "Psionic Blast",
       "zh": "靈能爆"
     },
     {
-      "id": 318,
+      "id": 315,
       "en": "Trap",
       "zh": "陷阱"
     },
     {
-      "id": 319,
+      "id": 316,
       "en": "Terror Bloom",
       "zh": "恐懼綻放"
     },
     {
-      "id": 320,
+      "id": 317,
       "en": "Personal Diary",
       "zh": "私人日記"
     },
     {
-      "id": 321,
+      "id": 318,
       "en": "Meteor Metal",
       "zh": "隕鐵"
     },
     {
-      "id": 322,
-      "en": "Bag",
-      "zh": "袋子"
+      "id": 319,
+      "en": "Bag o'Salt",
+      "zh": "鹽袋"
     },
     {
-      "id": 323,
-      "en": "Salt",
-      "zh": "鹽"
+      "id": 320,
+      "en": "Rope-like Plant",
+      "zh": "繩狀植物"
     },
     {
-      "id": 324,
-      "en": "Rope",
-      "zh": "繩索"
-    },
-    {
-      "id": 325,
-      "en": "Plant",
-      "zh": "植物"
-    },
-    {
-      "id": 326,
-      "en": "Wall",
-      "zh": "牆"
-    },
-    {
-      "id": 327,
-      "en": "Fog",
-      "zh": "霧"
+      "id": 321,
+      "en": "Wall of Fog",
+      "zh": "迷霧牆"
     }
   ]
 }
