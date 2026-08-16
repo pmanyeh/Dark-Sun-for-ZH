@@ -125,9 +125,14 @@ BRANCH_PARAMETER = {
     0x63: 0,  # while
     0x64: 0,  # wend
 }
-# 0x14 (gpl global sub) is deliberately excluded: it is a cross-chunk call
-# site (target chunk + offset in another chunk), not a same-chunk branch, so
-# it is unaffected by this chunk's own instruction relocation.
+# 0x14 (gpl global sub) takes (offset, chunk_id) and is usually a genuine
+# cross-chunk call, unaffected by this chunk's own relocation -- EXCEPT when
+# chunk_id equals the chunk currently being patched, which does happen (a
+# subroutine calling back into its own chunk via the "global" mechanism
+# instead of 0x13 "local sub"). relocate_json_strings handles that
+# self-reference case directly instead of going through BRANCH_PARAMETER,
+# since its target/chunk parameter order is reversed from every other single-
+# target opcode. See GLOBAL_SUB_OPCODE below.
 #
 # The "template" trigger opcodes (0x65 attacktrigger, 0x66 looktrigger, 0x68
 # move tiletrigger, 0x69 door tiletrigger, 0x6A move boxtrigger, 0x6B door
@@ -156,6 +161,13 @@ MENU_OPCODE = 0x48
 MENU_ENTRY_WIDTH = 3
 MENU_ENTRY_TARGET_INDEX = 1
 
+# gpl_global_sub (0x14): params are (offset, chunk_id), reversed from the
+# (chunk_id, offset) order the disassembler's own comments describe them in
+# prose -- confirmed empirically (re_42) against real GPL-2/4 call sites.
+GLOBAL_SUB_OPCODE = 0x14
+GLOBAL_SUB_OFFSET_INDEX = 0
+GLOBAL_SUB_CHUNK_INDEX = 1
+
 
 def relocate_single_target(
     expressions: list[dict[str, object]], offset_map: dict[int, int], where: str
@@ -180,7 +192,7 @@ def packed_string_bytes(value: str) -> int:
 
 
 def relocate_json_strings(
-    source_document: dict[str, object], edits: list[dict[str, object]]
+    source_document: dict[str, object], edits: list[dict[str, object]], chunk_id: int | None = None
 ) -> tuple[dict[str, object], list[dict[str, object]]]:
     """Replace strings and relocate every instruction and local branch target."""
     document = copy.deepcopy(source_document)
@@ -278,6 +290,27 @@ def relocate_json_strings(
                     params[target_index],
                     offset_map,
                     f"menu at 0x{instruction['offset']:04X} entry {entry}",
+                )
+            continue
+        if opcode == GLOBAL_SUB_OPCODE and chunk_id is not None:
+            # gpl_global_sub (0x14) targets (offset, chunk_id). Cross-chunk
+            # calls are unaffected by this chunk's own relocation, but a call
+            # can legally target its OWN chunk (re_42 found two such
+            # self-references in GPL-2) -- that offset must move with
+            # everything else or the call lands on stale, misaligned bytes.
+            if len(params) < GLOBAL_SUB_CHUNK_INDEX + 1:
+                raise ValueError(f"global sub at 0x{instruction['offset']:04X} has no chunk parameter")
+            chunk_targets = [
+                expression for expression in params[GLOBAL_SUB_CHUNK_INDEX]
+                if expression.get("kind") == "immediate14"
+            ]
+            if len(chunk_targets) != 1:
+                raise ValueError(f"global sub at 0x{instruction['offset']:04X} has a non-literal chunk id")
+            if int(chunk_targets[0]["value"]) == chunk_id:
+                relocate_single_target(
+                    params[GLOBAL_SUB_OFFSET_INDEX],
+                    offset_map,
+                    f"self-referencing global sub at 0x{instruction['offset']:04X}",
                 )
 
     document["bytes_consumed"] = new_cursor
@@ -410,7 +443,7 @@ def main() -> int:
                 raise ValueError(f"{stem}: source chunk failed byte-identical GPL round-trip")
             source_document = json.loads(original_listing.read_text(encoding="utf-8"))
             patched_document, applied = relocate_json_strings(
-                source_document, edits
+                source_document, edits, chunk_id
             )
             write_json(patched_listing, patched_document)
             run(args.gpl_asm, patched_listing, "-o", patched_chunk)

@@ -95,6 +95,71 @@ class GplDialogueImporterTests(unittest.TestCase):
         self.assertEqual(records[0]["packed_length_delta"], delta)
 
 
+    def test_json_edit_relocates_self_referencing_global_sub(self) -> None:
+        """gpl_global_sub (0x14) is (offset, chunk_id) and is normally a
+        cross-chunk call left untouched, but re_42 found it can legally
+        target its OWN chunk -- that offset must still move with everything
+        else. A call to a genuinely different chunk must stay untouched."""
+        document = {
+            "instructions": [
+                {
+                    "offset": 0,
+                    "length": 10,
+                    "opcode": 0x4F,
+                    "params": [
+                        [{"kind": "immediate14", "value": 115}],
+                        [{"kind": "immediate_string", "sub_type": "compressed", "value": "Hello"}],
+                    ],
+                },
+                {
+                    "offset": 10,
+                    "length": 4,
+                    "opcode": 0x14,
+                    "params": [
+                        [{"kind": "immediate14", "value": 14}],
+                        [{"kind": "immediate14", "value": 2}],
+                    ],
+                },
+                {
+                    "offset": 14,
+                    "length": 4,
+                    "opcode": 0x14,
+                    "params": [
+                        [{"kind": "immediate14", "value": 999}],
+                        [{"kind": "immediate14", "value": 7}],
+                    ],
+                },
+                {"offset": 18, "length": 1, "opcode": 0x67, "params": []},
+            ],
+            "bytes_consumed": 19,
+            "total_bytes": 19,
+            "aligned": True,
+            "cfg": {},
+            "cross_chunk_calls": [],
+        }
+        replacement = b"A" * 13
+        patched, _ = relocate_json_strings(
+            document,
+            [{
+                "unit_id": "DLG_test",
+                "occurrence_id": "DLOC_test",
+                "offset": 0,
+                "original": "Hello",
+                "translation_zh_tw": "測試",
+                "encoded": replacement,
+            }],
+            chunk_id=2,
+        )
+        delta = packed_string_bytes(replacement.decode("ascii")) - packed_string_bytes("Hello")
+        # Same-chunk self-reference: offset relocates, chunk id is untouched.
+        same_chunk_call = patched["instructions"][1]
+        self.assertEqual(same_chunk_call["params"][0][0]["value"], 14 + delta)
+        self.assertEqual(same_chunk_call["params"][1][0]["value"], 2)
+        # Genuine cross-chunk reference (chunk 7): left byte-for-byte alone.
+        cross_chunk_call = patched["instructions"][2]
+        self.assertEqual(cross_chunk_call["params"][0][0]["value"], 999)
+        self.assertEqual(cross_chunk_call["params"][1][0]["value"], 7)
+
     def test_json_edit_relocates_orelse_branch_target(self) -> None:
         """0x29 (gpl orelse) was missing from BRANCH_PARAMETER (re_42);
         confirm its single immediate14 target is relocated like other

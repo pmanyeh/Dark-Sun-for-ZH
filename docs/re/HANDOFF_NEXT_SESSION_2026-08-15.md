@@ -9,23 +9,34 @@
 
 請先完整閱讀本檔，以及 `re_42`、`re_41`、`re_40`、`re_39`。保留目前 dirty
 worktree，禁止 `git reset --hard`、`git checkout --`、`git clean` 或覆寫 Steam
-原始遊戲。當前優先 checkpoint **仍然只有 v15**；法術說明與 Celgor 對話已於
+原始遊戲。當前正式 checkpoint **仍然只有 v15**；法術說明與 Celgor 對話已於
 `re_40` 實機回歸確認過關。
 
-當前最優先任務是 `re_42` 記錄的**競技場戰鬥觸發卡死**：`GPL-2~5` 開場對話批次
-（327 筆翻譯、248 筆已安全匯入）修好兩個真實的 GPL 分支重定位 bug
-（`0x48 menu`、`0x29 orelse`，皆已修復並有測試）後，對話順序與選項互動都恢復
-正常，但玩家走到「Monster Trainer: release your horde!」之後，預期的戰鬥不會
-觸發，直接跳到戰後才該出現的文字，遊戲卡死、無法前進也無法撤退。這個問題比
-`re_41` 的物品面板渲染缺口更急迫（物品面板只是顯示問題，這個是會讓遊戲卡死的
-流程控制問題）。具體重現步驟見 `re_42` 第 8 節。`D:\git\DOSBox-X-AI` 是一個
-可用的原生 DOSBox-X 除錯橋接層，見本檔第 15 節，直接沿用即可，不需要重新
-發現；用它對 `0x35 gpl fight`／怪物生成相關呼叫下中斷點，實際追蹤執行路徑，
-會比繼續靜態反組譯猜測更可靠。
+`re_42` 記錄的**競技場戰鬥觸發卡死已經修好並實機驗證**：根因是 `gpl global
+sub`（`0x14`）指令有兩處在 GPL-2 內部自我參照（呼叫自己 chunk 內的位址，卻
+用「跨 chunk」呼叫的參數形式），先前誤判成「跨 chunk 不需重定位」而完全沒調整，
+導致跳轉落在翻譯後已經位移的舊位置。連同稍早修好的 `0x48 menu`、`0x29 orelse`
+兩個分支重定位 bug，`scratch_test/cjk_display_staging_v20_global_sub_fix`
+已確認競技場開場、戰鬥觸發、戰後劇情銜接全部正常。
 
-`re_41` 記錄的物品面板（裝備欄／物品說明彈窗）中文渲染路徑調查——這是一條全新、
-尚未定位的 renderer，不要假設它與 EBOX/SPIN 共用 `36AA:0864` 路徑（已排除）——
-仍然待解決，但優先度在戰鬥卡死問題之後。
+但緊接著做全程回歸時，發現**新的、獨立的問題**（`re_42` 第 9 節）：選過
+GPL-4「衝向西側出口」逃獄選項後，走到出口沒有任何反應，無法真正離開競技場；
+v15 在對應情境下能正確顯示過場確認提示。已排除「地圖觸發表（`ETAB`）內嵌
+GPL 舊位址」與「`0x14`／`0x48`／`0x29` 已知重定位缺口」兩個假設，皆未命中。
+目前推測是「劇情旗標（`gflag`）與地圖通行資料（`GMAP`/`RMAP`/`ETAB`，33 個
+`RGN*.GFF` 區域檔）之間的關聯機制」，這是一套完全未逆向過的全新二進位格式，
+**這是下一個 session 最優先要調查的問題**，具體方向見 `re_42` 第 9.2 節。
+不要在還沒摸清楚格式前貿然修改 `GMAP`／`RMAP`／`ETAB`。
+
+在此之前，`re_42` 第 7 節記錄的跨 chunk `0x14` 一致性缺口（GPL-4 有一個呼叫
+回 GPL-2 舊位址的跨 chunk 引用，本次修復範圍只處理同 chunk 自我參照）也還沒
+處理。**v20 因此仍不能升格成正式 checkpoint**。
+
+`re_41` 記錄的物品面板（裝備欄／物品說明彈窗）中文渲染路徑調查——這是另一條
+全新、尚未定位的 renderer，不要假設它與 EBOX/SPIN 共用 `36AA:0864` 路徑
+（已排除）——仍然獨立待解決，優先度在地圖通行問題之後。`D:\git\DOSBox-X-AI`
+是一個可用的原生 DOSBox-X 除錯橋接層，見本檔第 15 節，直接沿用即可，不需要
+重新發現。
 
 ## 1. 目前最佳可玩 checkpoint
 
@@ -91,17 +102,22 @@ Base94 triple 當成逐位元組 ASCII 印出來，顯示為亂碼，比純英�
 `re_41`。**不要把 v16 推薦給使用者遊玩**，除非已經解決第 15 節的 renderer
 缺口。v15 仍是唯一建議的可玩版本。
 
-### 1.2 v17／v18／v19（已建置，同樣不要當成 checkpoint 使用）
+### 1.2 v20（已建置並實機驗證修復，但尚未完整回歸，先不要升格為 checkpoint）
 
 ```text
-scratch_test/cjk_display_staging_v19_orelse_fix   最新版本，其他為修復過程中間版
+scratch_test/cjk_display_staging_v20_global_sub_fix   目前功能正確的最新版本
+scratch_test/cjk_display_staging_v19_orelse_fix       已知會卡死，被 v20 取代
+scratch_test/cjk_display_staging_v17/v18              修復過程中間版，忽略
 ```
 
-v19 = v15 + 248 筆 GPL-2~5 開場劇情對話翻譯 + 5-bank runtime。詳見 `re_42`。
-對話順序與選項互動本身已修好兩個真實 bug（`0x48 menu`／`0x29 orelse` 分支目標
-未重定位），但玩家走到「Monster Trainer: release your horde!」後戰鬥不會
-觸發，遊戲卡死。**不要把 v17/v18/v19 推薦給使用者遊玩**，這是目前最優先要
-解決的問題（見第 0 節與 `re_42` 第 6、8 節）。
+v20 = v15 + 248 筆 GPL-2~5 開場劇情對話翻譯 + 5-bank runtime，且已修好三個真實
+GPL 重定位 bug（`0x48 menu`／`0x29 orelse`／`0x14 gpl global sub` 自我參照，
+詳見 `re_42`）。實機確認競技場開場、戰鬥觸發、戰後逃獄劇情銜接全部正常。
+
+**尚未做完整全程回歸**，也還沒修好 `re_42` 第 7 節記錄的已知缺口（GPL-4 有
+一個跨 chunk 呼叫回 GPL-2 舊位址，本次只處理同 chunk 自我參照）——先用 v20
+把 GPL-2~5 完整劇情走一輪確認無誤，再考慮升格為新 checkpoint。v17／v18／
+v19 都已被 v20 取代，不要再使用。
 
 ## 2. v15 已確認與目前取捨
 
@@ -431,7 +447,7 @@ python -m unittest discover -s tests -p 'test_*.py'
 交接時結果：
 
 ```text
-37 tests passed（含 NAME-1 匯入器測試與 GPL menu/orelse 分支重定位測試）
+38 tests passed（含 NAME-1 匯入器測試與 GPL menu/orelse/global-sub 分支重定位測試）
 ```
 
 修改 executable patch 後至少要做：
@@ -446,16 +462,22 @@ full-container verification 與 bank hash 驗證。
 
 ## 12. 下一步建議（依優先順序）
 
-1. **競技場戰鬥觸發卡死（`re_42` 開的坑，目前最優先，會讓遊戲整個卡住）。**
-   用第 15 節的 DOSBox-X-AI 橋接層，在 `scratch_test/
-   cjk_display_staging_v19_orelse_fix` 走到「Monster Trainer: release your
-   horde!」出現的當下，對 `0x35 gpl fight`／怪物生成相關的 GPL 呼叫下中斷點，
-   實際追蹤執行路徑，找出戰鬥沒有觸發的真正原因。已確認：這段本身是一連串
-   `0x27 ifcompare` 隨機播報用語選擇鏈，邏輯正確；`0x48 menu`／`0x29 orelse`
-   的跳轉目標重定位已修復並驗證（`re_42` 第 5 節）；已排除 trigger 類 opcode
-   （`0x6E`／`0x6F`／`0x70`）當成分支目標的誤判（`re_42` 第 5.3 節，數值是
-   固定門檻常數，不是位址）。具體重現步驟見 `re_42` 第 8 節。
-2. **物品面板 renderer 定位（`re_41` 開的坑）。** 找出物品說明彈窗／裝備欄／
+1. **地圖通行機制調查（`re_42` 第 9 節開的坑，目前最優先，會讓遊戲卡住）。**
+   選過 GPL-4 逃獄選項後走到出口沒有反應，v15 對應情境下正常。已排除
+   `ETAB` 內嵌 GPL 舊位址、已知三個重定位缺口（`0x48`／`0x29`／`0x14`）
+   兩類假設。目前推測與 `gflag`（劇情旗標）跟 `GMAP`/`RMAP`/`ETAB`（33 個
+   `RGN*.GFF` 區域檔）的關聯機制有關，這是全新、未逆向過的二進位格式。
+   具體排除過程與下一步方向見 `re_42` 第 9 節；不要在摸清楚格式前貿然修改
+   `GMAP`／`RMAP`／`ETAB`。
+2. **v20 完整回歸測試。** 用 `scratch_test/cjk_display_staging_v20_global_sub_fix`
+   完整走一輪 GPL-2~5 涵蓋的劇情（競技場開場 → 戰鬥 → 逃獄 → 面紗聯盟引子），
+   確認沒有其他卡死點，特別留意會不會踩到 `re_42` 第 7 節記錄的跨 chunk
+   `0x14` 一致性缺口（GPL-4 有一個呼叫回 GPL-2 舊位址的引用，本次修復只
+   處理了同 chunk 自我參照）。上述兩個問題都解決、全程無誤後才能把 v20
+   升格為新的正式 checkpoint。
+3. 修好 `re_42` 第 7 節的跨 chunk `0x14` 缺口，再繼續擴大翻譯到 GPL-4 之後
+   的內容。
+4. **物品面板 renderer 定位（`re_41` 開的坑）。** 找出物品說明彈窗／裝備欄／
    物品列實際呼叫的文字繪製函式與其字型資源。已排除：`36AA:0864`／`0941`／
    `06C0`（EBOX/SPIN 共用 renderer）、segment `36AA` 內另外 10 個候選
    `mov al,es:[bx]` 位址、目標緩衝區（`GPLDATA.GFF/NAME-1` 載入後的記憶體
@@ -463,16 +485,12 @@ full-container verification 與 bank hash 驗證。
    方向：在物品面板開啟時大量取樣 `CS`；或在低階像素輸出 `11A4:2AF4` 設點
    收集 return address 縮小候選範圍；或在遊戲重新開機、`GPLDATA.GFF` 載入
    當下設中斷點，觀察 `NAME-1` 資料被複製到記憶體的當下呼叫堆疊。
-3. 兩個問題都修好後，重新驗證 `scratch_test/cjk_display_staging_v16_name_records`
-   與 v19（匯入器、翻譯、5-bank runtime 都已完成，不需重做），實機全程玩過
-   一輪確認安全後才能升格為新 checkpoint。
-4. `MORE` 變色列為 polish：追 shared `0x007F` clip-height query 與 control redraw，不要
+5. `MORE` 變色列為 polish：追 shared `0x007F` clip-height query 與 control redraw，不要
    以犧牲第 10 列或改 `SI=5` 換回顏色。
-5. 上述都確認安全後，再擴大正式文本翻譯（目前已翻譯但因流程 bug 暫緩上線的
-   有 GPL-2~5 開場 248 句；`Dag`／`Halton`／`Garn`／`Magramar` 等 TEXT 字串表
-   標籤與 74 句選單選項文字，需要新的匯入器/架構擴充才能處理，見 `re_42`
-   第 4.2、4.3 節）與 GPL importer 覆蓋範圍。
-6. 使用者找到合適倚天字型後，只替換 bank glyph source；保持 mapping、transport、
+6. 上述都確認安全後，再擴大正式文本翻譯（`Dag`／`Halton`／`Garn`／
+   `Magramar` 等 TEXT 字串表標籤與 74 句選單選項文字，需要新的匯入器/架構
+   擴充才能處理，見 `re_42` 第 4.2、4.3 節）與 GPL importer 覆蓋範圍。
+7. 使用者找到合適倚天字型後，只替換 bank glyph source；保持 mapping、transport、
    importer、cache 與 staging contract。
 
 ## 13. 必讀逆向工程文件
