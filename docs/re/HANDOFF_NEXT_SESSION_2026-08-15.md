@@ -7,13 +7,25 @@
 
 ## 0. 給下一個 AI 的第一句指令
 
-請先完整閱讀本檔，以及 `re_41`、`re_40`、`re_39`。保留目前 dirty worktree，禁止
-`git reset --hard`、`git checkout --`、`git clean` 或覆寫 Steam 原始遊戲。當前優先
-checkpoint 仍是 v15；法術說明與 Celgor 對話已於 `re_40` 實機回歸確認過關。當前
-優先任務是 `re_41` 記錄的物品面板（裝備欄／物品說明彈窗）中文渲染路徑調查——
-這是一條全新、尚未定位的 renderer，不要假設它與 EBOX/SPIN 共用 `36AA:0864` 路徑
-（已排除）。`D:\git\DOSBox-X-AI` 是一個可用的原生 DOSBox-X 除錯橋接層，見本檔
-第 15 節，直接沿用即可，不需要重新發現。
+請先完整閱讀本檔，以及 `re_42`、`re_41`、`re_40`、`re_39`。保留目前 dirty
+worktree，禁止 `git reset --hard`、`git checkout --`、`git clean` 或覆寫 Steam
+原始遊戲。當前優先 checkpoint **仍然只有 v15**；法術說明與 Celgor 對話已於
+`re_40` 實機回歸確認過關。
+
+當前最優先任務是 `re_42` 記錄的**競技場戰鬥觸發卡死**：`GPL-2~5` 開場對話批次
+（327 筆翻譯、248 筆已安全匯入）修好兩個真實的 GPL 分支重定位 bug
+（`0x48 menu`、`0x29 orelse`，皆已修復並有測試）後，對話順序與選項互動都恢復
+正常，但玩家走到「Monster Trainer: release your horde!」之後，預期的戰鬥不會
+觸發，直接跳到戰後才該出現的文字，遊戲卡死、無法前進也無法撤退。這個問題比
+`re_41` 的物品面板渲染缺口更急迫（物品面板只是顯示問題，這個是會讓遊戲卡死的
+流程控制問題）。具體重現步驟見 `re_42` 第 8 節。`D:\git\DOSBox-X-AI` 是一個
+可用的原生 DOSBox-X 除錯橋接層，見本檔第 15 節，直接沿用即可，不需要重新
+發現；用它對 `0x35 gpl fight`／怪物生成相關呼叫下中斷點，實際追蹤執行路徑，
+會比繼續靜態反組譯猜測更可靠。
+
+`re_41` 記錄的物品面板（裝備欄／物品說明彈窗）中文渲染路徑調查——這是一條全新、
+尚未定位的 renderer，不要假設它與 EBOX/SPIN 共用 `36AA:0864` 路徑（已排除）——
+仍然待解決，但優先度在戰鬥卡死問題之後。
 
 ## 1. 目前最佳可玩 checkpoint
 
@@ -78,6 +90,18 @@ v16 = v15 + 321 筆裝備／物件名稱翻譯（`GPLDATA.GFF/NAME-1`）。匯�
 Base94 triple 當成逐位元組 ASCII 印出來，顯示為亂碼，比純英文還差。詳見
 `re_41`。**不要把 v16 推薦給使用者遊玩**，除非已經解決第 15 節的 renderer
 缺口。v15 仍是唯一建議的可玩版本。
+
+### 1.2 v17／v18／v19（已建置，同樣不要當成 checkpoint 使用）
+
+```text
+scratch_test/cjk_display_staging_v19_orelse_fix   最新版本，其他為修復過程中間版
+```
+
+v19 = v15 + 248 筆 GPL-2~5 開場劇情對話翻譯 + 5-bank runtime。詳見 `re_42`。
+對話順序與選項互動本身已修好兩個真實 bug（`0x48 menu`／`0x29 orelse` 分支目標
+未重定位），但玩家走到「Monster Trainer: release your horde!」後戰鬥不會
+觸發，遊戲卡死。**不要把 v17/v18/v19 推薦給使用者遊玩**，這是目前最優先要
+解決的問題（見第 0 節與 `re_42` 第 6、8 節）。
 
 ## 2. v15 已確認與目前取捨
 
@@ -407,7 +431,7 @@ python -m unittest discover -s tests -p 'test_*.py'
 交接時結果：
 
 ```text
-35 tests passed（含本次新增的 6 項 NAME-1 匯入器測試）
+37 tests passed（含 NAME-1 匯入器測試與 GPL menu/orelse 分支重定位測試）
 ```
 
 修改 executable patch 後至少要做：
@@ -422,25 +446,33 @@ full-container verification 與 bank hash 驗證。
 
 ## 12. 下一步建議（依優先順序）
 
-1. **物品面板 renderer 定位（`re_41` 開的坑，目前最優先）。** 用第 15 節的
-   DOSBox-X-AI 橋接層，找出物品說明彈窗／裝備欄／物品列實際呼叫的文字繪製
-   函式與其字型資源。已排除：`36AA:0864`／`0941`／`06C0`（EBOX/SPIN 共用
-   renderer）、segment `36AA` 內另外 10 個候選 `mov al,es:[bx]` 位址、目標
-   緩衝區（`GPLDATA.GFF/NAME-1` 載入後的記憶體副本）本身沒有寫入行為（唯讀
-   重複讀取，不是每次重繪都複製一份）。建議方向：在物品面板開啟時大量取樣
-   `CS`；或在低階像素輸出 `11A4:2AF4` 設點收集 return address 縮小候選範圍；
-   或在遊戲重新開機、`GPLDATA.GFF` 載入當下設中斷點，觀察 `NAME-1` 資料被
-   複製到記憶體的當下呼叫堆疊。
-2. 找到 renderer 後，若能安全掛上既有 resolver 或需要新增等效 patch，重新
-   驗證 `scratch_test/cjk_display_staging_v16_name_records`（匯入器與翻譯
-   本身已完成，不需重做），實機確認物品面板中文顯示正常後才能升格為新
-   checkpoint。
-3. `MORE` 變色列為 polish：追 shared `0x007F` clip-height query 與 control redraw，不要
+1. **競技場戰鬥觸發卡死（`re_42` 開的坑，目前最優先，會讓遊戲整個卡住）。**
+   用第 15 節的 DOSBox-X-AI 橋接層，在 `scratch_test/
+   cjk_display_staging_v19_orelse_fix` 走到「Monster Trainer: release your
+   horde!」出現的當下，對 `0x35 gpl fight`／怪物生成相關的 GPL 呼叫下中斷點，
+   實際追蹤執行路徑，找出戰鬥沒有觸發的真正原因。已確認：這段本身是一連串
+   `0x27 ifcompare` 隨機播報用語選擇鏈，邏輯正確；`0x48 menu`／`0x29 orelse`
+   的跳轉目標重定位已修復並驗證（`re_42` 第 5 節）；已排除 trigger 類 opcode
+   （`0x6E`／`0x6F`／`0x70`）當成分支目標的誤判（`re_42` 第 5.3 節，數值是
+   固定門檻常數，不是位址）。具體重現步驟見 `re_42` 第 8 節。
+2. **物品面板 renderer 定位（`re_41` 開的坑）。** 找出物品說明彈窗／裝備欄／
+   物品列實際呼叫的文字繪製函式與其字型資源。已排除：`36AA:0864`／`0941`／
+   `06C0`（EBOX/SPIN 共用 renderer）、segment `36AA` 內另外 10 個候選
+   `mov al,es:[bx]` 位址、目標緩衝區（`GPLDATA.GFF/NAME-1` 載入後的記憶體
+   副本）本身沒有寫入行為（唯讀重複讀取，不是每次重繪都複製一份）。建議
+   方向：在物品面板開啟時大量取樣 `CS`；或在低階像素輸出 `11A4:2AF4` 設點
+   收集 return address 縮小候選範圍；或在遊戲重新開機、`GPLDATA.GFF` 載入
+   當下設中斷點，觀察 `NAME-1` 資料被複製到記憶體的當下呼叫堆疊。
+3. 兩個問題都修好後，重新驗證 `scratch_test/cjk_display_staging_v16_name_records`
+   與 v19（匯入器、翻譯、5-bank runtime 都已完成，不需重做），實機全程玩過
+   一輪確認安全後才能升格為新 checkpoint。
+4. `MORE` 變色列為 polish：追 shared `0x007F` clip-height query 與 control redraw，不要
    以犧牲第 10 列或改 `SI=5` 換回顏色。
-4. 物品面板修好、其餘 UI context（角色／法術選單、小字欄位、存讀檔提示）也
-   確認安全後，再擴大正式文本翻譯（目前 GPL 對話僅 Celgor 開場 4 句）與
-   GPL importer 覆蓋範圍。
-5. 使用者找到合適倚天字型後，只替換 bank glyph source；保持 mapping、transport、
+5. 上述都確認安全後，再擴大正式文本翻譯（目前已翻譯但因流程 bug 暫緩上線的
+   有 GPL-2~5 開場 248 句；`Dag`／`Halton`／`Garn`／`Magramar` 等 TEXT 字串表
+   標籤與 74 句選單選項文字，需要新的匯入器/架構擴充才能處理，見 `re_42`
+   第 4.2、4.3 節）與 GPL importer 覆蓋範圍。
+6. 使用者找到合適倚天字型後，只替換 bank glyph source；保持 mapping、transport、
    importer、cache 與 staging contract。
 
 ## 13. 必讀逆向工程文件
@@ -448,6 +480,7 @@ full-container verification 與 bank hash 驗證。
 優先：
 
 ```text
+docs/re/re_42_opening_arc_dialogue_batch_and_gpl_branch_relocation_gaps.md
 docs/re/re_41_name1_fixed_record_importer_and_item_panel_renderer_gap.md
 docs/re/re_40_v15_spell_and_dialogue_ui_regression_confirmation.md
 docs/re/re_39_independent_10row_cjk_draw_and_v15_preferred_checkpoint.md

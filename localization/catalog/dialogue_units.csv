@@ -1,10 +1,10 @@
 ﻿unit_id,original,translation_zh_tw,status,translate,occurrence_count,first_location,leading_spaces,trailing_spaces
 DLG_e2dcee44c746,Free! Finally free! I will destroy you all! Ha ha ha! ,,pending,True,1,GPL-1@0x0017,0,1
-DLG_33724d25c948,Dag,,pending,True,1457,GPL-1@0x008A,0,0
-DLG_cfce762186f2,Halton,,pending,True,1245,GPL-1@0x008F,0,0
+DLG_33724d25c948,Dag,達格,translated_unreviewed,True,1457,GPL-1@0x008A,0,0
+DLG_cfce762186f2,Halton,哈爾頓,translated_unreviewed,True,1245,GPL-1@0x008F,0,0
 DLG_1e1f326abae2,Please help me. I was betrayed and locked in my own dungeon.,,pending,True,1,GPL-1@0x009A,0,0
-DLG_1e82ab82c6de,Garn,,pending,True,553,GPL-1@0x0116,0,0
-DLG_a8925c8ccb8e,<active_character_name>,,not_translatable,False,47,GPL-1@0x0116,0,0
+DLG_1e82ab82c6de,Garn,加恩,translated_unreviewed,True,553,GPL-1@0x0116,0,0
+DLG_a8925c8ccb8e,<active_character_name>,<active_character_name>,translated_unreviewed,False,47,GPL-1@0x0116,0,0
 DLG_2f14183907e2,  How can I free you? ,,pending,True,1,GPL-1@0x0116,2,1
 DLG_6802c1dcf451,  What is a heart-crystal?,,pending,True,1,GPL-1@0x0116,2,0
 DLG_54f98f9eb386,  What is this place?,,pending,True,1,GPL-1@0x0116,2,0
@@ -601,7 +601,7 @@ DLG_2431b3ba5814,Fool! Did you really believe that you were going to be transfor
 DLG_ae6de926a5e7,another being? Your kind's desire to better yourselves blinds you to the ,,pending,True,1,GPL-111@0x00A0,0,1
 DLG_4428644119f7,truth! Did you ever ask yourself why you never saw anyone 'transformed?',,pending,True,1,GPL-111@0x00E6,0,0
 DLG_38e3c39639b1,The babau have not noticed you yet....,,pending,True,1,GPL-111@0x0131,0,0
-DLG_979dac368383,Magramar,,pending,True,12,GPL-111@0x0159,0,0
+DLG_979dac368383,Magramar,馬格拉瑪,translated_unreviewed,True,12,GPL-111@0x0159,0,0
 DLG_0c3263fc6674,  Wait and see what happens.,,pending,True,2,GPL-111@0x0159,2,0
 DLG_8c11ab3813a8,  Attack!,,pending,True,2,GPL-111@0x0159,2,0
 DLG_75a1886a7209,Leave. ,,pending,True,2,GPL-111@0x0159,0,1
@@ -1734,7 +1734,7 @@ DLG_785b2ea9963c,  Join me in seeking more allies.,,pending,True,1,GPL-128@0x08E
 DLG_129eff89179f,  Forget it. I don't want you as allies.,,pending,True,1,GPL-128@0x08E6,2,0
 DLG_1a1cb8240328,We owe you at least that much -- we'll join your cause. Where ,,pending,True,1,GPL-128@0x0964,0,1
 DLG_153a80f7b9d8,should we go to meet the others in the alliance?,,pending,True,1,GPL-128@0x09A1,0,0
-DLG_df8a816d7aba,Goodbye.,,pending,True,20,GPL-128@0x09E1,0,0
+DLG_df8a816d7aba,Goodbye.,再見。,translated_unreviewed,True,20,GPL-128@0x09E1,0,0
 DLG_e0ba64de18a8,We're too weak and tired to do you any good. We'd better stay behind.,,pending,True,1,GPL-128@0x0A06,0,0
 DLG_dc25a331b34d,We'll go directly there. Good luck in finding more allies.,,pending,True,1,GPL-128@0x0A59,0,0
 DLG_b02019898820,Then we're getting out of here before the troops are sent after us.,,pending,True,1,GPL-128@0x0ABA,0,0
@@ -1838,7 +1838,7 @@ DLG_8cbaf815c8ee,  What do you mean? I don't work for Dagger.,,pending,True,1,GP
 DLG_7f839b37c896,  I'm Dagger's lieutenant.,,pending,True,1,GPL-132@0x0246,2,0
 DLG_7c79dbc9bc9a,  We're ex-slaves from Draj.,,pending,True,1,GPL-132@0x0246,2,0
 DLG_9dc3750027cb,  We're desert wanderers.,,pending,True,1,GPL-132@0x0246,2,0
-DLG_341e82ec2196,Goodbye. ,,pending,True,13,GPL-132@0x0246,0,1
+DLG_341e82ec2196,Goodbye. ,再見。,translated_unreviewed,True,13,GPL-132@0x0246,0,1
 DLG_b2f2c959a55e,Then who are you?,,pending,True,1,GPL-132@0x039B,0,0
 DLG_5cfdd79fecdb,I heard you were human... but no matter -- there is often a ,,pending,True,1,GPL-132@0x03D4,0,1
 DLG_96f3538e03ab,difference between truth and rumor. ,,pending,True,1,GPL-132@0x040F,0,1
@@ -6595,83 +6595,83 @@ DLG_4ed30700c494,leadership when she urged me to wait.,,pending,True,1,GPL-199@0
 DLG_63c674d1ab79,"My death is near. Nothing left to eat, and too weak to care. ",,pending,True,1,GPL-199@0x09A0,0,1
 DLG_e1c0ebca9e46,I have one last thing to do -- a partin gift for my sister. My last ,,pending,True,1,GPL-199@0x09DC,0,1
 DLG_c30afc924d82,breath shall chill Tara's very bones.,,pending,True,1,GPL-199@0x0A1E,0,0
-DLG_80148baa9b12,That's enough for me. I'm leaving. I'll go find more members for ,,pending,True,1,GPL-2@0x00A9,0,1
-DLG_b36e5ae70e70,the Alliance.,,pending,True,1,GPL-2@0x00E8,0,0
-DLG_59fb07d493ff,The crowd throws money down to you. ,,pending,True,1,GPL-2@0x01BC,0,1
-DLG_f0bc0a3809cf,Citizens of Draj!,,pending,True,4,GPL-2@0x041C,0,0
-DLG_5565dfffd3f4,Before you is a handful of gladiators. Watch and be entertained ,,pending,True,1,GPL-2@0x0432,0,1
-DLG_495b1eef3a78,as they fight to the death with the denizens of our land. ,,pending,True,1,GPL-2@0x0470,0,1
-DLG_9d7f108374f8,"Behold the gift of your king Tectuktitlay, vicious defender of Draj -- ",,pending,True,1,GPL-2@0x04AE,0,1
-DLG_56cece3361ae,the gift of battle and death! ,,pending,True,1,GPL-2@0x04F2,0,1
-DLG_43a8a5387e91,Monster Trainer: release your horde! ,,pending,True,1,GPL-2@0x0518,0,1
-DLG_6170496966c8,Behold these gladiators as they fight in melee with the terrible ,,pending,True,1,GPL-2@0x055A,0,1
-DLG_f797f995bc00,beasts that exist beyond our walls. Thank your king Tectuktitlay ,,pending,True,1,GPL-2@0x0599,0,1
-DLG_973d86180361,for his protection. ,,pending,True,1,GPL-2@0x05D8,0,1
-DLG_e713f2d026b0,"Hail our lord master, the great Tectuktitlay -- whose protective wings ",,pending,True,1,GPL-2@0x05F5,0,1
-DLG_296e162943d9,smother us all in their malignant glory!,,pending,True,1,GPL-2@0x0639,0,0
-DLG_12df0a9ea0a6,These slaves have proven their worth. It seems the arena purchased wisely. ,,pending,True,1,GPL-2@0x067D,0,1
-DLG_3f08254049e8,"On this day, King Tectuktitlay once again presents Draj ",,pending,True,1,GPL-2@0x06CA,0,1
-DLG_fec0336dfb76,with his gifts of battle and death. ,,pending,True,1,GPL-2@0x0701,0,1
-DLG_adab4712496e,Hail Tectuktitlay and the victorious armies of Draj!,,pending,True,1,GPL-2@0x0728,0,0
-DLG_b15e59008963,"These gladiators, strong and skilled, have yet to be truly tested. ",,pending,True,1,GPL-2@0x0777,0,1
-DLG_998de4e3b35f,We will challenge them this day to prove their worth against our ,,pending,True,1,GPL-2@0x07B8,0,1
-DLG_cd91d85838f9,Monster Trainer's best. ,,pending,True,1,GPL-2@0x07F7,0,1
-DLG_3fa68a80173d,Let the games begin! ,,pending,True,1,GPL-2@0x0817,0,1
-DLG_0b9f6ccd4e7c,"Once again, expectant spectators, you see trained warriors pitted ",,pending,True,2,GPL-2@0x0845,0,1
-DLG_f54c0d69c5fe,against the hordes of creatures which dwell beyond our walls. ,,pending,True,1,GPL-2@0x0885,0,1
-DLG_e770d066ac75,"This day we have a surprise! The 'King of the Pens', Scar, has ",,pending,True,1,GPL-2@0x08C5,0,1
-DLG_f1c5cd8269b4,become so disgusted with the survival of these scum that he has ,,pending,True,1,GPL-2@0x0902,0,1
-DLG_5ed80a81df46,offered to kill them himself to make room in the pens for real gladiators. ,,pending,True,1,GPL-2@0x0940,0,1
-DLG_080f5502866e,This day is very special. Let's have a round of applause for ,,pending,True,1,GPL-2@0x098E,0,1
-DLG_a344dddd8b77, the one thousandth fight of our gladiators. ,,pending,True,1,GPL-2@0x09CA,1,1
-DLG_c32295989fd7,King Tectuktitlay himself has sent gifts for these brave souls. ,,pending,True,1,GPL-2@0x09F8,0,1
-DLG_a6e553504a1f,"You win! Through fighting in the arena, you have completely depopulated ",,pending,True,1,GPL-2@0x0A5E,0,1
-DLG_0caa349441f0,Athas of all monsters. ,,pending,True,1,GPL-2@0x0AA3,0,1
-DLG_a339f640890e,against the horde of creatures which dwell beyond our walls. ,,pending,True,1,GPL-2@0x0B14,0,1
-DLG_818becb913ca,The crowd yawns. A few are still awake to applaud. ,,pending,True,1,GPL-2@0x0C07,0,1
-DLG_d81521bee378,"Oh! Sorry for the delay, I was just resting my eyes.... ",,pending,True,1,GPL-2@0x0C42,0,1
-DLG_1cc4b0e0ebea,I wouldn't suggest waiting for the monsters to die of old age ,,pending,True,1,GPL-2@0x0C8E,0,1
-DLG_35a94e25c7ef,as an entertaining tactic. ,,pending,True,1,GPL-2@0x0CCB,0,1
-DLG_eec457ac8c5e,Beast Master: Check if those monsters are dead or just sleeping. ,,pending,True,1,GPL-2@0x0CEC,0,1
-DLG_e3b833c81e08,That was too easy. Perhaps these monsters would be more of a challenge! ,,pending,True,1,GPL-2@0x0D37,0,1
-DLG_91db58d15660,Attention gladiators: Go back to the pens to heal your wounds. ,,pending,True,1,GPL-2@0x0D96,0,1
-DLG_11e794f32dd5,The citizens of Draj grow impatient with delays. ,,pending,True,1,GPL-2@0x0DD3,0,1
-DLG_1d263aabdd4f,"Citizens of Draj, ",,pending,True,1,GPL-2@0x0E14,0,1
-DLG_17b1b939fc2c,"these pathetic, wretched, sorry excuses for gladiators are not our only ",,pending,True,1,GPL-2@0x0E2A,0,1
-DLG_11ed77258525,entertainment -- do not worry! Real warriors will be fighting later today. ,,pending,True,1,GPL-2@0x0E6F,0,1
-DLG_4bc33bf18650,Luck seems to be on the side of the gladiators this day. ,,pending,True,1,GPL-2@0x0EC1,0,1
-DLG_96cd47c0e8ae,The gladiators seem to have some fight in them! Even a wounded rat ,,pending,True,1,GPL-2@0x0F03,0,1
-DLG_57c14e23605b,"will fight, if cornered. ",,pending,True,1,GPL-2@0x0F44,0,1
-DLG_19f5c3a1d8bc,Enjoy your victory while you can! You will eventually meet your match!,,pending,True,1,GPL-2@0x0F6A,0,0
-DLG_63ddf2bfd380,"Look on the bodies if you want, it won't help you. You'll still die.",,pending,True,1,GPL-2@0x0FB8,0,0
-DLG_7fd503e3614c,Yell something back at the Announcer?,,pending,True,1,GPL-2@0x1006,0,0
-DLG_396655d737a5,You have something to say? ,,pending,True,1,GPL-2@0x1070,0,1
-DLG_a85304bf83ae,"  Wounded rats, huh? Send out your worst! ",,pending,True,1,GPL-2@0x108E,2,1
-DLG_72e61360b5c7,  Call me a rat again and you'll pay! ,,pending,True,1,GPL-2@0x108E,2,1
-DLG_43faa81bc1a0,  That wasn't luck! ,,pending,True,1,GPL-2@0x108E,2,1
-DLG_938122d89faa,  You're lucky I let you live! ,,pending,True,1,GPL-2@0x108E,2,1
-DLG_7760ae41c419,  Pathetic? I'll take on your best! ,,pending,True,1,GPL-2@0x108E,2,1
-DLG_07bfe6c2b168,  I am a real warrior and I'll prove it!,,pending,True,1,GPL-2@0x108E,2,0
-DLG_081ea6eeafd6,  Is that the best you can do?,,pending,True,1,GPL-2@0x108E,2,0
-DLG_7eee6afb2abe,  I want to fight again! Now!,,pending,True,1,GPL-2@0x108E,2,0
-DLG_66c701915a3c,  You're the best announcer I've seen.,,pending,True,1,GPL-2@0x108E,2,0
-DLG_23e0cea44cd0,"Well, thanks! ",,pending,True,1,GPL-2@0x11EF,0,1
-DLG_7ecb33376d10,What?! You upstarts! Take this! ,,pending,True,1,GPL-2@0x1203,0,1
-DLG_5654d17b0a4d,Monster Trainer: Release the monsters! ,,pending,True,1,GPL-2@0x1233,0,1
-DLG_3e057b5a81ce,"So! Anxious to kill, are we? Tectuktitlay would be pleased. ",,pending,True,1,GPL-2@0x1273,0,1
-DLG_0a35165ab5c6,Monster Trainer: Another fight for our heroes!,,pending,True,1,GPL-2@0x12AF,0,0
-DLG_59182e5547d7,The crowd is awed by your awesome fighting ability. They begin ,,pending,True,1,GPL-2@0x130C,0,1
-DLG_22b7a14a7143,chanting your name and tossing money down to the arena floor. ,,pending,True,1,GPL-2@0x1349,0,1
-DLG_d4ce2f0998df,"If you don't want to return to the pens, then you must want another fight!",,pending,True,1,GPL-2@0x13E3,0,0
-DLG_9d653026e882,The patience of the citizens of Draj is not infinite. ,,pending,True,1,GPL-2@0x142F,0,1
-DLG_dd4dea24b24c,"Since you will not leave, you must fight! ",,pending,True,1,GPL-2@0x1465,0,1
-DLG_4f632fddb45c,Excellent! These gladiators wish to fight again! We shall ,,pending,True,1,GPL-2@0x1495,0,1
-DLG_173ac97e255f,see how they fare! ,,pending,True,1,GPL-2@0x14CE,0,1
+DLG_80148baa9b12,That's enough for me. I'm leaving. I'll go find more members for ,夠了，我要離開了。我要去多找一些,translated_unreviewed,True,1,GPL-2@0x00A9,0,1
+DLG_b36e5ae70e70,the Alliance.,聯盟的成員。,translated_unreviewed,True,1,GPL-2@0x00E8,0,0
+DLG_59fb07d493ff,The crowd throws money down to you. ,群眾朝你們丟下錢幣。,translated_unreviewed,True,1,GPL-2@0x01BC,0,1
+DLG_f0bc0a3809cf,Citizens of Draj!,德拉吉的市民們！,translated_unreviewed,True,4,GPL-2@0x041C,0,0
+DLG_5565dfffd3f4,Before you is a handful of gladiators. Watch and be entertained ,各位眼前是一小群角鬥士。請觀賞他們,translated_unreviewed,True,1,GPL-2@0x0432,0,1
+DLG_495b1eef3a78,as they fight to the death with the denizens of our land. ,與我們土地上的猛獸搏鬥至死。,translated_unreviewed,True,1,GPL-2@0x0470,0,1
+DLG_9d7f108374f8,"Behold the gift of your king Tectuktitlay, vicious defender of Draj -- ",看哪，這是你們的國王特克圖克特雷、德拉吉的無情守護者所賜的禮物——,translated_unreviewed,True,1,GPL-2@0x04AE,0,1
+DLG_56cece3361ae,the gift of battle and death! ,戰鬥與死亡的禮物！,translated_unreviewed,True,1,GPL-2@0x04F2,0,1
+DLG_43a8a5387e91,Monster Trainer: release your horde! ,馴獸師：放出你的獸群！,translated_unreviewed,True,1,GPL-2@0x0518,0,1
+DLG_6170496966c8,Behold these gladiators as they fight in melee with the terrible ,請看這些角鬥士如何與那些,translated_unreviewed,True,1,GPL-2@0x055A,0,1
+DLG_f797f995bc00,beasts that exist beyond our walls. Thank your king Tectuktitlay ,存在於城牆之外的恐怖野獸近身搏鬥。感謝你們的國王特克圖克特雷,translated_unreviewed,True,1,GPL-2@0x0599,0,1
+DLG_973d86180361,for his protection. ,賜予的保護。,translated_unreviewed,True,1,GPL-2@0x05D8,0,1
+DLG_e713f2d026b0,"Hail our lord master, the great Tectuktitlay -- whose protective wings ",向我們的君主致敬，偉大的特克圖克特雷——他那庇護的羽翼,translated_unreviewed,True,1,GPL-2@0x05F5,0,1
+DLG_296e162943d9,smother us all in their malignant glory!,將我們全都籠罩在他惡毒的榮光之下！,translated_unreviewed,True,1,GPL-2@0x0639,0,0
+DLG_12df0a9ea0a6,These slaves have proven their worth. It seems the arena purchased wisely. ,這些奴隸已經證明了他們的價值。看來競技場買得很值得。,translated_unreviewed,True,1,GPL-2@0x067D,0,1
+DLG_3f08254049e8,"On this day, King Tectuktitlay once again presents Draj ",在這一天，特克圖克特雷國王再次向德拉吉,translated_unreviewed,True,1,GPL-2@0x06CA,0,1
+DLG_fec0336dfb76,with his gifts of battle and death. ,獻上他戰鬥與死亡的禮物。,translated_unreviewed,True,1,GPL-2@0x0701,0,1
+DLG_adab4712496e,Hail Tectuktitlay and the victorious armies of Draj!,向特克圖克特雷與德拉吉的勝利大軍致敬！,translated_unreviewed,True,1,GPL-2@0x0728,0,0
+DLG_b15e59008963,"These gladiators, strong and skilled, have yet to be truly tested. ",這些角鬥士強壯又熟練，但尚未受過真正的考驗。,translated_unreviewed,True,1,GPL-2@0x0777,0,1
+DLG_998de4e3b35f,We will challenge them this day to prove their worth against our ,今天我們將挑戰他們，讓他們證明自己足以對抗,translated_unreviewed,True,1,GPL-2@0x07B8,0,1
+DLG_cd91d85838f9,Monster Trainer's best. ,我們馴獸師手上最厲害的猛獸。,translated_unreviewed,True,1,GPL-2@0x07F7,0,1
+DLG_3fa68a80173d,Let the games begin! ,遊戲開始！,translated_unreviewed,True,1,GPL-2@0x0817,0,1
+DLG_0b9f6ccd4e7c,"Once again, expectant spectators, you see trained warriors pitted ",再一次，滿懷期待的觀眾們，你們將見到訓練有素的戰士,translated_unreviewed,True,2,GPL-2@0x0845,0,1
+DLG_f54c0d69c5fe,against the hordes of creatures which dwell beyond our walls. ,對抗棲息在城牆之外的成群猛獸。,translated_unreviewed,True,1,GPL-2@0x0885,0,1
+DLG_e770d066ac75,"This day we have a surprise! The 'King of the Pens', Scar, has ",今天有個驚喜！「獸欄之王」斯卡，已經,translated_unreviewed,True,1,GPL-2@0x08C5,0,1
+DLG_f1c5cd8269b4,become so disgusted with the survival of these scum that he has ,對這些渣滓的苟延殘喘感到厭惡，於是他,translated_unreviewed,True,1,GPL-2@0x0902,0,1
+DLG_5ed80a81df46,offered to kill them himself to make room in the pens for real gladiators. ,自願親手殺了他們，好為真正的角鬥士騰出獸欄的空間。,translated_unreviewed,True,1,GPL-2@0x0940,0,1
+DLG_080f5502866e,This day is very special. Let's have a round of applause for ,今天是特別的日子。讓我們為,translated_unreviewed,True,1,GPL-2@0x098E,0,1
+DLG_a344dddd8b77, the one thousandth fight of our gladiators. ,角鬥士們的第一千場戰鬥鼓掌。,translated_unreviewed,True,1,GPL-2@0x09CA,1,1
+DLG_c32295989fd7,King Tectuktitlay himself has sent gifts for these brave souls. ,特克圖克特雷國王親自為這些勇者們送來了禮物。,translated_unreviewed,True,1,GPL-2@0x09F8,0,1
+DLG_a6e553504a1f,"You win! Through fighting in the arena, you have completely depopulated ",你們贏了！透過在競技場中奮戰，你們已經讓,translated_unreviewed,True,1,GPL-2@0x0A5E,0,1
+DLG_0caa349441f0,Athas of all monsters. ,整個亞薩斯的怪物絕跡。,translated_unreviewed,True,1,GPL-2@0x0AA3,0,1
+DLG_a339f640890e,against the horde of creatures which dwell beyond our walls. ,對抗棲息在城牆之外的成群猛獸。,translated_unreviewed,True,1,GPL-2@0x0B14,0,1
+DLG_818becb913ca,The crowd yawns. A few are still awake to applaud. ,群眾打起了呵欠。只有少數人還醒著鼓掌。,translated_unreviewed,True,1,GPL-2@0x0C07,0,1
+DLG_d81521bee378,"Oh! Sorry for the delay, I was just resting my eyes.... ",喔！抱歉耽擱了，我只是在閉目養神……,translated_unreviewed,True,1,GPL-2@0x0C42,0,1
+DLG_1cc4b0e0ebea,I wouldn't suggest waiting for the monsters to die of old age ,我不建議你們把「等怪物自然老死」,translated_unreviewed,True,1,GPL-2@0x0C8E,0,1
+DLG_35a94e25c7ef,as an entertaining tactic. ,當成什麼有趣的戰術。,translated_unreviewed,True,1,GPL-2@0x0CCB,0,1
+DLG_eec457ac8c5e,Beast Master: Check if those monsters are dead or just sleeping. ,野獸大師：去看看那些怪物是死了還是只是在睡覺。,translated_unreviewed,True,1,GPL-2@0x0CEC,0,1
+DLG_e3b833c81e08,That was too easy. Perhaps these monsters would be more of a challenge! ,太輕鬆了。也許這些怪物該更有挑戰性一點！,translated_unreviewed,True,1,GPL-2@0x0D37,0,1
+DLG_91db58d15660,Attention gladiators: Go back to the pens to heal your wounds. ,請注意，角鬥士們：回到獸欄去療傷。,translated_unreviewed,True,1,GPL-2@0x0D96,0,1
+DLG_11e794f32dd5,The citizens of Draj grow impatient with delays. ,德拉吉的市民們已經對延遲感到不耐煩了。,translated_unreviewed,True,1,GPL-2@0x0DD3,0,1
+DLG_1d263aabdd4f,"Citizens of Draj, ",德拉吉的市民們，,translated_unreviewed,True,1,GPL-2@0x0E14,0,1
+DLG_17b1b939fc2c,"these pathetic, wretched, sorry excuses for gladiators are not our only ",這些可悲、悽慘、丟人現眼的角鬥士並不是我們唯一的,translated_unreviewed,True,1,GPL-2@0x0E2A,0,1
+DLG_11ed77258525,entertainment -- do not worry! Real warriors will be fighting later today. ,娛樂——別擔心！真正的戰士今天稍後就會上場。,translated_unreviewed,True,1,GPL-2@0x0E6F,0,1
+DLG_4bc33bf18650,Luck seems to be on the side of the gladiators this day. ,看來今天運氣站在角鬥士這一邊。,translated_unreviewed,True,1,GPL-2@0x0EC1,0,1
+DLG_96cd47c0e8ae,The gladiators seem to have some fight in them! Even a wounded rat ,這些角鬥士似乎還有點鬥志！就連被逼到絕境的老鼠,translated_unreviewed,True,1,GPL-2@0x0F03,0,1
+DLG_57c14e23605b,"will fight, if cornered. ",也會反咬一口。,translated_unreviewed,True,1,GPL-2@0x0F44,0,1
+DLG_19f5c3a1d8bc,Enjoy your victory while you can! You will eventually meet your match!,趁現在好好享受勝利吧！你們遲早會遇上真正的對手！,translated_unreviewed,True,1,GPL-2@0x0F6A,0,0
+DLG_63ddf2bfd380,"Look on the bodies if you want, it won't help you. You'll still die.",想看屍體就儘管看吧，反正也幫不了你。你還是會死。,translated_unreviewed,True,1,GPL-2@0x0FB8,0,0
+DLG_7fd503e3614c,Yell something back at the Announcer?,要回嘴嗆司儀嗎？,translated_unreviewed,True,1,GPL-2@0x1006,0,0
+DLG_396655d737a5,You have something to say? ,你有話要說嗎？,translated_unreviewed,True,1,GPL-2@0x1070,0,1
+DLG_a85304bf83ae,"  Wounded rats, huh? Send out your worst! ",  被逼到絕境的老鼠？儘管放出你最強的傢伙！,translated_unreviewed,True,1,GPL-2@0x108E,2,1
+DLG_72e61360b5c7,  Call me a rat again and you'll pay! ,  再叫我一次老鼠，你會付出代價的！,translated_unreviewed,True,1,GPL-2@0x108E,2,1
+DLG_43faa81bc1a0,  That wasn't luck! ,  那才不是運氣！,translated_unreviewed,True,1,GPL-2@0x108E,2,1
+DLG_938122d89faa,  You're lucky I let you live! ,  算你走運，我留你一命！,translated_unreviewed,True,1,GPL-2@0x108E,2,1
+DLG_7760ae41c419,  Pathetic? I'll take on your best! ,  可悲？儘管放馬過來吧！,translated_unreviewed,True,1,GPL-2@0x108E,2,1
+DLG_07bfe6c2b168,  I am a real warrior and I'll prove it!,  我是真正的戰士，我會證明給你看！,translated_unreviewed,True,1,GPL-2@0x108E,2,0
+DLG_081ea6eeafd6,  Is that the best you can do?,  你就只有這點本事嗎？,translated_unreviewed,True,1,GPL-2@0x108E,2,0
+DLG_7eee6afb2abe,  I want to fight again! Now!,  我要再戰一場！現在就要！,translated_unreviewed,True,1,GPL-2@0x108E,2,0
+DLG_66c701915a3c,  You're the best announcer I've seen.,  你是我見過最厲害的司儀。,translated_unreviewed,True,1,GPL-2@0x108E,2,0
+DLG_23e0cea44cd0,"Well, thanks! ",好了，謝了！,translated_unreviewed,True,1,GPL-2@0x11EF,0,1
+DLG_7ecb33376d10,What?! You upstarts! Take this! ,什麼？！你們這些狂妄之徒！接招吧！,translated_unreviewed,True,1,GPL-2@0x1203,0,1
+DLG_5654d17b0a4d,Monster Trainer: Release the monsters! ,馴獸師：放出怪物！,translated_unreviewed,True,1,GPL-2@0x1233,0,1
+DLG_3e057b5a81ce,"So! Anxious to kill, are we? Tectuktitlay would be pleased. ",哦！這麼渴望殺戮嗎？特克圖克特雷會很滿意的。,translated_unreviewed,True,1,GPL-2@0x1273,0,1
+DLG_0a35165ab5c6,Monster Trainer: Another fight for our heroes!,馴獸師：再給我們的英雄們來一場戰鬥！,translated_unreviewed,True,1,GPL-2@0x12AF,0,0
+DLG_59182e5547d7,The crowd is awed by your awesome fighting ability. They begin ,群眾為你驚人的戰鬥能力所折服。他們開始,translated_unreviewed,True,1,GPL-2@0x130C,0,1
+DLG_22b7a14a7143,chanting your name and tossing money down to the arena floor. ,高呼你的名字，並將錢幣拋向競技場的地面。,translated_unreviewed,True,1,GPL-2@0x1349,0,1
+DLG_d4ce2f0998df,"If you don't want to return to the pens, then you must want another fight!",如果你不想回獸欄，那你一定是還想再打一場！,translated_unreviewed,True,1,GPL-2@0x13E3,0,0
+DLG_9d653026e882,The patience of the citizens of Draj is not infinite. ,德拉吉市民的耐性可不是無窮無盡的。,translated_unreviewed,True,1,GPL-2@0x142F,0,1
+DLG_dd4dea24b24c,"Since you will not leave, you must fight! ",既然你不願離開，那你就必須戰鬥！,translated_unreviewed,True,1,GPL-2@0x1465,0,1
+DLG_4f632fddb45c,Excellent! These gladiators wish to fight again! We shall ,太好了！這些角鬥士還想再戰！我們就,translated_unreviewed,True,1,GPL-2@0x1495,0,1
+DLG_173ac97e255f,see how they fare! ,看看他們的表現吧！,translated_unreviewed,True,1,GPL-2@0x14CE,0,1
 DLG_f6c2fbaa84a9,This day the mage Celgor will battle a fearsome rampager. ,今日法師賽爾戈將迎戰一頭兇猛的狂暴獸。,translated_unreviewed,True,1,GPL-2@0x2536,0,1
 DLG_13ab12eaff4a,Watch and enjoy! ,敬請觀賞！,translated_unreviewed,True,1,GPL-2@0x256F,0,1
 DLG_6294a22b2cbb,"Do not worry, ",別擔心，,translated_unreviewed,True,1,GPL-2@0x2586,0,1
 DLG_67aa8858af43,. Your turn will come soon. Stand back and watch the battle.,。很快就輪到你了。退後觀看這場戰鬥吧。,translated_unreviewed,True,1,GPL-2@0x25A1,0,0
-DLG_a1a7c5952b7b,"Gladiators: Step forward, into the arena! ",,pending,True,1,GPL-2@0x25FE,0,1
+DLG_a1a7c5952b7b,"Gladiators: Step forward, into the arena! ",角鬥士們：向前踏入競技場！,translated_unreviewed,True,1,GPL-2@0x25FE,0,1
 DLG_b3fd490edea4,The air about you crackles with magical discharges as the ,,pending,True,1,GPL-20@0x0002,0,1
 DLG_335e4dd94e3a,unmistakable presence of a dragon looms near. He creates ,,pending,True,1,GPL-20@0x003B,0,1
 DLG_05a21257379f,a mindlink and challenges you.,,pending,True,1,GPL-20@0x0073,0,0
@@ -8624,36 +8624,36 @@ DLG_c5caab8f9cb7,Seref got all the money -- I didn't get a single chip!,,pending
 DLG_a08e85fb8243,"Yes, right away. I don't know what I was thinking, of course you ",,pending,True,1,GPL-29@0x13F7,0,1
 DLG_d4e027b9d976,should have the money!,,pending,True,1,GPL-29@0x1436,0,0
 DLG_8aaf8dc767b9,"Tobrian fumbles at his belt, finally producing the money.",,pending,True,1,GPL-29@0x1455,0,0
-DLG_e0cdc80ef1f2,Such poor quality creatures. A child could kill them. ,,pending,True,1,GPL-3@0x01EC,0,1
-DLG_89a07c70a4e1,What a pathetic creature! Its trainer would fight better! ,,pending,True,1,GPL-3@0x0227,0,1
-DLG_8a164a04a9de,Not a surprise the monster died! ,,pending,True,1,GPL-3@0x0265,0,1
-DLG_3f6204ebf8a0,It had been sick anyway. It could barely ,,pending,True,1,GPL-3@0x0288,0,1
-DLG_3313a3ecfe47,"stand, it was so weak. ",,pending,True,1,GPL-3@0x02B2,0,1
-DLG_16485d782e54,"Ooh, good hit!",,pending,True,1,GPL-3@0x02D1,0,0
-DLG_d5bdff6d3a31,"These gladiators are tough, aren't they? ",,pending,True,1,GPL-3@0x02E9,0,1
-DLG_e0562dc6f0de,Maybe they're acceptable gladiators after all. ,,pending,True,1,GPL-3@0x031B,0,1
-DLG_37ad1c85678b,This makes ,,pending,True,1,GPL-3@0x0378,0,1
-DLG_e9d4c5f4433e, king of the pens! ,,pending,True,1,GPL-3@0x0390,1,1
-DLG_4f46e7b0d6db,"It just goes to show you... they may look tough, but underneath -- ",,pending,True,1,GPL-3@0x0494,0,1
-DLG_5dd7f9669db9,they're nothing! ,,pending,True,1,GPL-3@0x04D5,0,1
-DLG_c7e060f913e0,We've got children dressed as gladiators again! ,,pending,True,1,GPL-3@0x04EF,0,1
-DLG_e656ca92572c,I thought I told Kurzak to stop selecting slaves by looking ,,pending,True,1,GPL-3@0x051F,0,1
-DLG_445eb3cd1f8c,at their teeth! ,,pending,True,1,GPL-3@0x055A,0,1
-DLG_5d63084cb06b,One less throat to quench. ,,pending,True,1,GPL-3@0x0573,0,1
-DLG_359cb8b6f384,Ow! That had to hurt! ,,pending,True,1,GPL-3@0x05D5,0,1
-DLG_2a42971e3f25,That will take some time to heal! ,,pending,True,1,GPL-3@0x05F4,0,1
-DLG_f3e331f59bf6,A hit to the face! Ouch! ,,pending,True,1,GPL-3@0x061D,0,1
-DLG_6b49f4481d23,I'd be surprised if ,,pending,True,1,GPL-3@0x063E,0,1
-DLG_7141034dced4,he'll ,,pending,True,1,GPL-3@0x065C,0,1
-DLG_148e0379dc90,she'll ,,pending,True,1,GPL-3@0x066B,0,1
-DLG_be6f4386bea3,be able to stand tommorrow! Heh heh heh....,,pending,True,1,GPL-3@0x0678,0,0
-DLG_f9ca858fa331,Gladiators escaping! Guards! Sound the alarms!,,pending,True,1,GPL-3@0x06B7,0,0
-DLG_84adedf8bcbd,This corridor leads down to the slavepens.,,pending,True,1,GPL-3@0x07C1,0,0
-DLG_5b0bc5fe8193,Do you wish to continue?,,pending,True,1,GPL-3@0x07EE,0,0
-DLG_776eadea81dd,Cancel the alarm!,,pending,True,1,GPL-3@0x081F,0,0
-DLG_c7709673cd3e, hits it so hard ,,pending,True,1,GPL-3@0x0874,1,1
-DLG_2f9f9f67c4c3,she,,pending,True,1,GPL-3@0x089A,0,0
-DLG_4c93cabb36b3, knocks its feathers off!,,pending,True,1,GPL-3@0x08A4,1,0
+DLG_e0cdc80ef1f2,Such poor quality creatures. A child could kill them. ,多麼低劣的生物。連小孩都能殺得死牠們。,translated_unreviewed,True,1,GPL-3@0x01EC,0,1
+DLG_89a07c70a4e1,What a pathetic creature! Its trainer would fight better! ,多可悲的生物！牠的訓獸師打起來都比牠強！,translated_unreviewed,True,1,GPL-3@0x0227,0,1
+DLG_8a164a04a9de,Not a surprise the monster died! ,難怪這怪物會死！,translated_unreviewed,True,1,GPL-3@0x0265,0,1
+DLG_3f6204ebf8a0,It had been sick anyway. It could barely ,牠本來就病懨懨的了。牠幾乎,translated_unreviewed,True,1,GPL-3@0x0288,0,1
+DLG_3313a3ecfe47,"stand, it was so weak. ",站都站不穩，虛弱成那樣。,translated_unreviewed,True,1,GPL-3@0x02B2,0,1
+DLG_16485d782e54,"Ooh, good hit!",喔，這一擊真漂亮！,translated_unreviewed,True,1,GPL-3@0x02D1,0,0
+DLG_d5bdff6d3a31,"These gladiators are tough, aren't they? ",這些角鬥士挺強悍的，不是嗎？,translated_unreviewed,True,1,GPL-3@0x02E9,0,1
+DLG_e0562dc6f0de,Maybe they're acceptable gladiators after all. ,也許他們終究算得上是合格的角鬥士。,translated_unreviewed,True,1,GPL-3@0x031B,0,1
+DLG_37ad1c85678b,This makes ,這下讓,translated_unreviewed,True,1,GPL-3@0x0378,0,1
+DLG_e9d4c5f4433e, king of the pens! ,成了獸欄之王！,translated_unreviewed,True,1,GPL-3@0x0390,1,1
+DLG_4f46e7b0d6db,"It just goes to show you... they may look tough, but underneath -- ",這正好證明了……他們看起來雖強，骨子裡——,translated_unreviewed,True,1,GPL-3@0x0494,0,1
+DLG_5dd7f9669db9,they're nothing! ,根本什麼都不是！,translated_unreviewed,True,1,GPL-3@0x04D5,0,1
+DLG_c7e060f913e0,We've got children dressed as gladiators again! ,我們又抓來一群裝成角鬥士的小孩！,translated_unreviewed,True,1,GPL-3@0x04EF,0,1
+DLG_e656ca92572c,I thought I told Kurzak to stop selecting slaves by looking ,我明明跟庫爾扎克說過，別再靠看牙齒,translated_unreviewed,True,1,GPL-3@0x051F,0,1
+DLG_445eb3cd1f8c,at their teeth! ,來挑奴隸了！,translated_unreviewed,True,1,GPL-3@0x055A,0,1
+DLG_5d63084cb06b,One less throat to quench. ,少一張要餵的嘴也好。,translated_unreviewed,True,1,GPL-3@0x0573,0,1
+DLG_359cb8b6f384,Ow! That had to hurt! ,噢！那一下一定很痛！,translated_unreviewed,True,1,GPL-3@0x05D5,0,1
+DLG_2a42971e3f25,That will take some time to heal! ,這傷得花點時間才能痊癒！,translated_unreviewed,True,1,GPL-3@0x05F4,0,1
+DLG_f3e331f59bf6,A hit to the face! Ouch! ,正中臉部！好痛！,translated_unreviewed,True,1,GPL-3@0x061D,0,1
+DLG_6b49f4481d23,I'd be surprised if ,要是,translated_unreviewed,True,1,GPL-3@0x063E,0,1
+DLG_7141034dced4,he'll ,他,translated_unreviewed,True,1,GPL-3@0x065C,0,1
+DLG_148e0379dc90,she'll ,她,translated_unreviewed,True,1,GPL-3@0x066B,0,1
+DLG_be6f4386bea3,be able to stand tommorrow! Heh heh heh....,明天還站得起來，我才驚訝呢！嘿嘿嘿……,translated_unreviewed,True,1,GPL-3@0x0678,0,0
+DLG_f9ca858fa331,Gladiators escaping! Guards! Sound the alarms!,角鬥士逃跑了！守衛！拉響警報！,translated_unreviewed,True,1,GPL-3@0x06B7,0,0
+DLG_84adedf8bcbd,This corridor leads down to the slavepens.,這條走廊通往下方的奴隸欄。,translated_unreviewed,True,1,GPL-3@0x07C1,0,0
+DLG_5b0bc5fe8193,Do you wish to continue?,你要繼續嗎？,translated_unreviewed,True,1,GPL-3@0x07EE,0,0
+DLG_776eadea81dd,Cancel the alarm!,取消警報！,translated_unreviewed,True,1,GPL-3@0x081F,0,0
+DLG_c7709673cd3e, hits it so hard ,重重一擊，,translated_unreviewed,True,1,GPL-3@0x0874,1,1
+DLG_2f9f9f67c4c3,she,她,translated_unreviewed,True,1,GPL-3@0x089A,0,0
+DLG_4c93cabb36b3, knocks its feathers off!,把牠的羽毛都打飛了！,translated_unreviewed,True,1,GPL-3@0x08A4,1,0
 DLG_8599db0792ad,"Hail, fellow travellers!",,pending,True,1,GPL-30@0x0010,0,0
 DLG_126476626bca,Come share the fire and talk with me. This visitors' ,,pending,True,1,GPL-30@0x002D,0,1
 DLG_b2bdaeffe22f,circle is for raising the spirits as well as resting the body.,,pending,True,1,GPL-30@0x0062,0,0
@@ -9194,105 +9194,105 @@ DLG_27a6385fc770,Would you? My people have not eaten well in so long.,,pending,T
 DLG_215dfcf4a091,"Oh, thank you! This means so much to us.",,pending,True,1,GPL-39@0x1AEA,0,0
 DLG_79f269da8663,"These people are starving, and you are obviously well fed! Next, ",,pending,True,1,GPL-39@0x1B6F,0,1
 DLG_41559957a964,you will be stealing from us.,,pending,True,1,GPL-39@0x1BAE,0,0
-DLG_074d262b4978,Less than half the gladiators that enter the arena return. ,,pending,True,1,GPL-4@0x0036,0,1
-DLG_90a01f0c8186,Enough talk. Get in the arena! ,,pending,True,1,GPL-4@0x0075,0,1
-DLG_7357d07e220c,Either get to the pens or fight. We are growing impatient. ,,pending,True,1,GPL-4@0x009B,0,1
-DLG_0d0562169bef,Return to the pens. I have no more time to waste on you. ,,pending,True,1,GPL-4@0x00DA,0,1
-DLG_0258c593719a,I've had enough of this banter! Get moving!,,pending,True,1,GPL-4@0x0115,0,0
-DLG_03052d6e2c46,"So, you got lucky. We'll see about next time. ",,pending,True,1,GPL-4@0x018E,0,1
-DLG_5889a1777481,"Time is on my side, young gladiators. There is only one way ",,pending,True,1,GPL-4@0x01C2,0,1
-DLG_1bd3b7760084,out of the pens. ,,pending,True,1,GPL-4@0x01FD,0,1
-DLG_bf2cec76f2b0,You fought better than I expected. ,,pending,True,1,GPL-4@0x0217,0,1
-DLG_ff05a436ac2d,"What do you have to say for yourself, gladiator? ",,pending,True,1,GPL-4@0x027C,0,1
-DLG_86983e1f7208,We should send you to work on the pyramid. ,,pending,True,1,GPL-4@0x02B2,0,1
-DLG_ece5a7211b96,You have good teeth. I have a friend who would buy you. ,,pending,True,1,GPL-4@0x02E8,0,1
-DLG_4f97dc8c37c4,"Don't expect mercy from me -- we keep you here to fight, ",,pending,True,1,GPL-4@0x0329,0,1
-DLG_3a2857774a6e,not lie around and get fat. ,,pending,True,1,GPL-4@0x0361,0,1
-DLG_1737147310b2,  You can't buy and sell me. ,,pending,True,1,GPL-4@0x03BC,2,1
-DLG_8b1ccb056696,  Bravery comes easily from behind walls!,,pending,True,1,GPL-4@0x03BC,2,0
-DLG_e625af9cd62d,  I won't work on Tectuktitlay's sandcastle.,,pending,True,1,GPL-4@0x03BC,2,0
-DLG_92e29ebf4d41,  Don't let me die here! ,,pending,True,1,GPL-4@0x03BC,2,1
-DLG_60287a564c81,  Everybody dies eventually. ,,pending,True,1,GPL-4@0x03BC,2,1
-DLG_7094919d7496,"  If you let me live, I'll reward you!",,pending,True,1,GPL-4@0x03BC,2,0
-DLG_816ecd236162,  I am prepared to die -- I hope you are too.,,pending,True,1,GPL-4@0x03BC,2,0
-DLG_d16dff8c2345,"  If I die, I die. ",,pending,True,1,GPL-4@0x03BC,2,1
-DLG_3488c5b3098a,  I spit in the face of Tectuktitlay himself!,,pending,True,1,GPL-4@0x03BC,2,0
-DLG_0358dc1270ce,"  Spare me, please! I beg you! ",,pending,True,1,GPL-4@0x03BC,2,1
-DLG_39ea7f280745,  You will die by my hand!,,pending,True,1,GPL-4@0x03BC,2,0
-DLG_4a6b0d3e9306,  Few could match my fighting ability. ,,pending,True,1,GPL-4@0x03BC,2,1
-DLG_f41244878992,  Breed monsters quickly. You'll need them.,,pending,True,1,GPL-4@0x03BC,2,0
-DLG_80e7d0f6a64d,"  At this rate, you'll have to fight me!",,pending,True,1,GPL-4@0x03BC,2,0
-DLG_5ba9b371d890,Your words don't concern me. ,,pending,True,1,GPL-4@0x03BC,0,1
-DLG_30eb07b2d566,  Very funny. I'll laugh at your funeral. ,,pending,True,1,GPL-4@0x064F,2,1
-DLG_339090d2f57f,  It's easier to laugh at you than with you. ,,pending,True,1,GPL-4@0x064F,2,1
-DLG_1c4cad0295b0,  I can't wait to hack up more of your monsters! ,,pending,True,1,GPL-4@0x064F,2,1
-DLG_41b0a4fa3959,  I'll return after I've sharpened my weapons. ,,pending,True,1,GPL-4@0x064F,2,1
-DLG_2d63ed214f9a,  Do you feed those monsters?,,pending,True,1,GPL-4@0x064F,2,0
-DLG_4e2869affda0,I'll have more to say to you later. ,,pending,True,1,GPL-4@0x064F,0,1
-DLG_a1995f827a7c,It's strange you should feel that way. I did buy you -- for the ,,pending,True,1,GPL-4@0x07AF,0,1
-DLG_2d8493252634,"arena, that is.... You were quite a deal, we got you at a discount. ",,pending,True,1,GPL-4@0x07ED,0,1
-DLG_6b62ab694b24,"I can afford to laugh, you cannot. I'm rich, I have servants to fulfill ",,pending,True,1,GPL-4@0x0830,0,1
-DLG_3f0590d807c6,my every whim -- ,,pending,True,1,GPL-4@0x0875,0,1
-DLG_c5d8d157e391,I have everything and you have nothing. ,,pending,True,1,GPL-4@0x088A,0,1
-DLG_8f1b6c1350de,I'm thrilled to hear that! Enthusiastic slaves are hard to come by. ,,pending,True,1,GPL-4@0x08B4,0,1
-DLG_e95ea9cd4581,Don't think too far into the future -- you still have to survive ,,pending,True,1,GPL-4@0x0903,0,1
-DLG_b5cc7816578a,another night in the pens. ,,pending,True,1,GPL-4@0x0942,0,1
-DLG_a1a07de4c344,"Don't let the crowds' cheering persuade you that you're important, ",,pending,True,1,GPL-4@0x0965,0,1
-DLG_0d18902f6196,"because you're not. The just want to see blood, and they're just as ",,pending,True,1,GPL-4@0x09A6,0,1
-DLG_75380daee67a,happy whether it's the monsters' or yours. ,,pending,True,1,GPL-4@0x09E8,0,1
-DLG_55672df21592,"You fought this round well. The next, however, is much more difficult.",,pending,True,1,GPL-4@0x0A19,0,0
-DLG_b3c666bf3c29,Ha ha -- Superb! Spineless coward! Worthless scum! ,,pending,True,1,GPL-4@0x0A6C,0,1
-DLG_d022f69fa3fe,"You'll have a quick death, I promise! Ha ha ha! ",,pending,True,1,GPL-4@0x0A9F,0,1
-DLG_db6c02e50a7a,Maybe you weren't such a good purchase. I thought you'd have ,,pending,True,1,GPL-4@0x0AD4,0,1
-DLG_14d0f78d24d9,more backbone. ,,pending,True,1,GPL-4@0x0B10,0,1
-DLG_d70a169c3fc6,You'll need more fight than that to survive much longer. ,,pending,True,1,GPL-4@0x0B28,0,1
-DLG_9da154840cdd,No more of this talk! Act like a warrior! ,,pending,True,1,GPL-4@0x0B65,0,1
-DLG_3d5f2656a5e1,All but the great Tectuktitlay! His life has spanned a dozen ,,pending,True,1,GPL-4@0x0B9B,0,1
-DLG_f5a8e5eb059f,"generations! His reign will never end! Your death, ",,pending,True,1,GPL-4@0x0BD7,0,1
-DLG_7b08efbc25ca,"however, will come soon! ",,pending,True,1,GPL-4@0x0C0A,0,1
-DLG_bfae733ced69,"Yes, but your death will come before mine. This I guarantee. ",,pending,True,1,GPL-4@0x0C27,0,1
-DLG_a03954e8bd00,A convenient philosophy for a gladiator. I approve. ,,pending,True,1,GPL-4@0x0C64,0,1
-DLG_b94c0fa035f6,You need to learn respect!  Trainer!  Release more monsters!,,pending,True,1,GPL-4@0x0C99,0,0
-DLG_c3f946346d3c,Get into the pens before I have you killed!,,pending,True,1,GPL-4@0x0CF6,0,0
-DLG_28db273cae0a,"Be careful, gladiator. There are far worse fates that befall ",,pending,True,1,GPL-4@0x0D38,0,1
-DLG_b12c68062776,blasphemers than death in the arena! ,,pending,True,1,GPL-4@0x0D74,0,1
-DLG_c9776834e8f4,WHAT?! Release the big monsters! Teach this mortal respect! ,,pending,True,1,GPL-4@0x0D9E,0,1
-DLG_775707132e15,"Good. You have spirit, I like that in a gladiator. We should keep ",,pending,True,1,GPL-4@0x0DEF,0,1
-DLG_58463821e41c,"you here, I think. ",,pending,True,1,GPL-4@0x0E2F,0,1
-DLG_e3cbaf4f03bf,"That is good. The monsters, however, should concern you. ",,pending,True,1,GPL-4@0x0E47,0,1
-DLG_b80b92fd163f,"This'll be your last mistake, gladiators. ",,pending,True,1,GPL-4@0x0E93,0,1
-DLG_b3a7e50672d8,"Perfect plan, isn't it? I know just the way to escape! ",,pending,True,1,GPL-4@0x0F58,0,1
-DLG_0d2de3839cbd,"Welcome, beetle-bait. You've done pretty well so far, but death ",,pending,True,1,GPL-4@0x0F96,0,1
-DLG_614738caf786,awaits. The king wants blood for his pyramid.,,pending,True,1,GPL-4@0x0FD4,0,0
-DLG_c537ec786681,  I'm prepared to die this day... are you?,,pending,True,1,GPL-4@0x1003,2,0
-DLG_45188db49adf,  Let's get out of here! ,,pending,True,1,GPL-4@0x1003,2,1
-DLG_c41ed423c255,  Let's work together!,,pending,True,1,GPL-4@0x1003,2,0
-DLG_311dd8b1b408,  Well? What are you waiting for?,,pending,True,1,GPL-4@0x1003,2,0
-DLG_42e5da78af9b,  I'm breaking out. Get in my way and die!,,pending,True,1,GPL-4@0x1003,2,0
-DLG_2d4d439ed529,No more talk. I'm committed.,,pending,True,1,GPL-4@0x1003,0,0
-DLG_d2de6cc29216,We make a break for the west exit on 'one'. Ready? ,,pending,True,1,GPL-4@0x10DC,0,1
-DLG_a5336bb2e24e,Three...  Two...  One...  Go! ,,pending,True,1,GPL-4@0x1110,0,1
-DLG_4c4319481295,To the death!,,pending,True,1,GPL-4@0x113E,0,0
-DLG_02ffcc956e29,Great. I suggest we bust out through the west gate. Then you head ,,pending,True,1,GPL-4@0x1191,0,1
-DLG_3132f650643d,north and find a way out; I'll head to the south. ,,pending,True,1,GPL-4@0x11D1,0,1
-DLG_bb84fe7c5b2a,At this point we either kill each other or team up. No other options. ,,pending,True,1,GPL-4@0x1207,0,1
-DLG_ee3ee05b49d8,Do you want to fight or make a break for it?,,pending,True,1,GPL-4@0x124B,0,0
-DLG_69edc7826de4,  Let's make a break for it.,,pending,True,1,GPL-4@0x1278,2,0
-DLG_1f2c75ecf841,"  Let's fight, dirtface!",,pending,True,1,GPL-4@0x1278,2,0
-DLG_c8584a710fb7,You've set yourself against me.,,pending,True,1,GPL-4@0x12B9,0,0
-DLG_579144ce2b56,You gutless puppies would have been worthless allies anyway.,,pending,True,1,GPL-4@0x12DE,0,0
-DLG_eb141cdd2dd0,Go to the west exit!,,pending,True,1,GPL-4@0x1320,0,0
-DLG_7c4b1fcecd25,  I can't find anything to the west.,,pending,True,1,GPL-4@0x1347,2,0
-DLG_e8870e4b6dcc,  I found a way out to the west!,,pending,True,1,GPL-4@0x1347,2,0
-DLG_2c0a81c9b503,  How goes the fighting?,,pending,True,1,GPL-4@0x1347,2,0
-DLG_2fb0c119a387,  You sure you can make it on your own?,,pending,True,1,GPL-4@0x1347,2,0
-DLG_c854a288e79b,  Never mind. Just keep fighting.,,pending,True,1,GPL-4@0x1347,2,0
-DLG_de14075b01b5,It's the big door that looks like a monster.,,pending,True,1,GPL-4@0x13FF,0,0
-DLG_6e1d08617afc,Then use it and get out of here! ,,pending,True,1,GPL-4@0x142D,0,1
-DLG_45392a6e0e13,I'm alive. That means I'm winning.,,pending,True,1,GPL-4@0x1451,0,0
-DLG_20b75cab748a,"You whelps just watch yourselves. If I can't survive, then it's ",,pending,True,1,GPL-4@0x1476,0,1
-DLG_2cf79512df7f,best I die in battle!,,pending,True,1,GPL-4@0x14B4,0,0
-DLG_0b987ef77dc3,Good advice.,,pending,True,1,GPL-4@0x14CE,0,0
+DLG_074d262b4978,Less than half the gladiators that enter the arena return. ,進入競技場的角鬥士，能活著出來的還不到一半。,translated_unreviewed,True,1,GPL-4@0x0036,0,1
+DLG_90a01f0c8186,Enough talk. Get in the arena! ,廢話少說。給我進競技場！,translated_unreviewed,True,1,GPL-4@0x0075,0,1
+DLG_7357d07e220c,Either get to the pens or fight. We are growing impatient. ,要嘛回獸欄，要嘛去戰鬥。我們快沒耐性了。,translated_unreviewed,True,1,GPL-4@0x009B,0,1
+DLG_0d0562169bef,Return to the pens. I have no more time to waste on you. ,回獸欄去。我沒時間再浪費在你身上了。,translated_unreviewed,True,1,GPL-4@0x00DA,0,1
+DLG_0258c593719a,I've had enough of this banter! Get moving!,我受夠這些廢話了！快點動作！,translated_unreviewed,True,1,GPL-4@0x0115,0,0
+DLG_03052d6e2c46,"So, you got lucky. We'll see about next time. ",哼，算你走運。我們走著瞧。,translated_unreviewed,True,1,GPL-4@0x018E,0,1
+DLG_5889a1777481,"Time is on my side, young gladiators. There is only one way ",時間站在我這邊，年輕的角鬥士。離開獸欄,translated_unreviewed,True,1,GPL-4@0x01C2,0,1
+DLG_1bd3b7760084,out of the pens. ,只有一條路。,translated_unreviewed,True,1,GPL-4@0x01FD,0,1
+DLG_bf2cec76f2b0,You fought better than I expected. ,你打得比我預期的還好。,translated_unreviewed,True,1,GPL-4@0x0217,0,1
+DLG_ff05a436ac2d,"What do you have to say for yourself, gladiator? ",角鬥士，你有什麼想說的嗎？,translated_unreviewed,True,1,GPL-4@0x027C,0,1
+DLG_86983e1f7208,We should send you to work on the pyramid. ,我們該把你送去金字塔做工。,translated_unreviewed,True,1,GPL-4@0x02B2,0,1
+DLG_ece5a7211b96,You have good teeth. I have a friend who would buy you. ,你的牙口不錯。我有個朋友會想買你。,translated_unreviewed,True,1,GPL-4@0x02E8,0,1
+DLG_4f97dc8c37c4,"Don't expect mercy from me -- we keep you here to fight, ",別指望我會手下留情——我們留你在這裡是為了戰鬥，,translated_unreviewed,True,1,GPL-4@0x0329,0,1
+DLG_3a2857774a6e,not lie around and get fat. ,不是讓你躺著養肥的。,translated_unreviewed,True,1,GPL-4@0x0361,0,1
+DLG_1737147310b2,  You can't buy and sell me. ,  你不能買賣我。,translated_unreviewed,True,1,GPL-4@0x03BC,2,1
+DLG_8b1ccb056696,  Bravery comes easily from behind walls!,  站在牆後說勇氣可容易得很！,translated_unreviewed,True,1,GPL-4@0x03BC,2,0
+DLG_e625af9cd62d,  I won't work on Tectuktitlay's sandcastle.,  我才不要去幫特克圖克特雷蓋沙堡。,translated_unreviewed,True,1,GPL-4@0x03BC,2,0
+DLG_92e29ebf4d41,  Don't let me die here! ,  別讓我死在這裡！,translated_unreviewed,True,1,GPL-4@0x03BC,2,1
+DLG_60287a564c81,  Everybody dies eventually. ,  反正每個人終究都會死。,translated_unreviewed,True,1,GPL-4@0x03BC,2,1
+DLG_7094919d7496,"  If you let me live, I'll reward you!",  如果你放我活命，我會好好報答你！,translated_unreviewed,True,1,GPL-4@0x03BC,2,0
+DLG_816ecd236162,  I am prepared to die -- I hope you are too.,  我已經準備好赴死——希望你也是。,translated_unreviewed,True,1,GPL-4@0x03BC,2,0
+DLG_d16dff8c2345,"  If I die, I die. ",  要死就死吧。,translated_unreviewed,True,1,GPL-4@0x03BC,2,1
+DLG_3488c5b3098a,  I spit in the face of Tectuktitlay himself!,  我要當著特克圖克特雷的面唾棄他！,translated_unreviewed,True,1,GPL-4@0x03BC,2,0
+DLG_0358dc1270ce,"  Spare me, please! I beg you! ",  饒了我吧，求求你！,translated_unreviewed,True,1,GPL-4@0x03BC,2,1
+DLG_39ea7f280745,  You will die by my hand!,  你會死在我手上！,translated_unreviewed,True,1,GPL-4@0x03BC,2,0
+DLG_4a6b0d3e9306,  Few could match my fighting ability. ,  沒幾個人打得過我。,translated_unreviewed,True,1,GPL-4@0x03BC,2,1
+DLG_f41244878992,  Breed monsters quickly. You'll need them.,  快點繁殖你的怪物吧，你會需要的。,translated_unreviewed,True,1,GPL-4@0x03BC,2,0
+DLG_80e7d0f6a64d,"  At this rate, you'll have to fight me!",  再這樣下去，你就得跟我打了！,translated_unreviewed,True,1,GPL-4@0x03BC,2,0
+DLG_5ba9b371d890,Your words don't concern me. ,你說的話跟我無關。,translated_unreviewed,True,1,GPL-4@0x03BC,0,1
+DLG_30eb07b2d566,  Very funny. I'll laugh at your funeral. ,  真好笑。我會在你的葬禮上笑出來。,translated_unreviewed,True,1,GPL-4@0x064F,2,1
+DLG_339090d2f57f,  It's easier to laugh at you than with you. ,  嘲笑你比跟你相處還容易。,translated_unreviewed,True,1,GPL-4@0x064F,2,1
+DLG_1c4cad0295b0,  I can't wait to hack up more of your monsters! ,  我等不及要多砍幾隻你的怪物了！,translated_unreviewed,True,1,GPL-4@0x064F,2,1
+DLG_41b0a4fa3959,  I'll return after I've sharpened my weapons. ,  等我把武器磨利了再回來找你。,translated_unreviewed,True,1,GPL-4@0x064F,2,1
+DLG_2d63ed214f9a,  Do you feed those monsters?,  你有在餵那些怪物嗎？,translated_unreviewed,True,1,GPL-4@0x064F,2,0
+DLG_4e2869affda0,I'll have more to say to you later. ,晚點再跟你多聊聊。,translated_unreviewed,True,1,GPL-4@0x064F,0,1
+DLG_a1995f827a7c,It's strange you should feel that way. I did buy you -- for the ,你會這麼想也不奇怪。我買下你——是為了,translated_unreviewed,True,1,GPL-4@0x07AF,0,1
+DLG_2d8493252634,"arena, that is.... You were quite a deal, we got you at a discount. ",競技場，沒別的。你這筆買賣還挺划算，我們可是打折買到你的。,translated_unreviewed,True,1,GPL-4@0x07ED,0,1
+DLG_6b62ab694b24,"I can afford to laugh, you cannot. I'm rich, I have servants to fulfill ",我笑得出來，你可笑不出來。我很有錢，我有僕人滿足,translated_unreviewed,True,1,GPL-4@0x0830,0,1
+DLG_3f0590d807c6,my every whim -- ,我的每一個心願——,translated_unreviewed,True,1,GPL-4@0x0875,0,1
+DLG_c5d8d157e391,I have everything and you have nothing. ,我擁有一切，而你一無所有。,translated_unreviewed,True,1,GPL-4@0x088A,0,1
+DLG_8f1b6c1350de,I'm thrilled to hear that! Enthusiastic slaves are hard to come by. ,聽你這麼說我真高興！熱血的奴隸可不好找。,translated_unreviewed,True,1,GPL-4@0x08B4,0,1
+DLG_e95ea9cd4581,Don't think too far into the future -- you still have to survive ,別想得太遠——你還得先撐過,translated_unreviewed,True,1,GPL-4@0x0903,0,1
+DLG_b5cc7816578a,another night in the pens. ,在獸欄的下一夜。,translated_unreviewed,True,1,GPL-4@0x0942,0,1
+DLG_a1a07de4c344,"Don't let the crowds' cheering persuade you that you're important, ",別被群眾的歡呼沖昏頭，以為自己很重要，,translated_unreviewed,True,1,GPL-4@0x0965,0,1
+DLG_0d18902f6196,"because you're not. The just want to see blood, and they're just as ",其實你不是。他們只是想看血，不管流的是,translated_unreviewed,True,1,GPL-4@0x09A6,0,1
+DLG_75380daee67a,happy whether it's the monsters' or yours. ,怪物的血還是你的血，他們都一樣開心。,translated_unreviewed,True,1,GPL-4@0x09E8,0,1
+DLG_55672df21592,"You fought this round well. The next, however, is much more difficult.",這一回合你打得不錯。不過下一回合會更難。,translated_unreviewed,True,1,GPL-4@0x0A19,0,0
+DLG_b3c666bf3c29,Ha ha -- Superb! Spineless coward! Worthless scum! ,哈哈——太棒了！懦弱的膽小鬼！一文不值的渣滓！,translated_unreviewed,True,1,GPL-4@0x0A6C,0,1
+DLG_d022f69fa3fe,"You'll have a quick death, I promise! Ha ha ha! ",我保證讓你死得痛快！哈哈哈！,translated_unreviewed,True,1,GPL-4@0x0A9F,0,1
+DLG_db6c02e50a7a,Maybe you weren't such a good purchase. I thought you'd have ,也許你不是筆好買賣。我還以為你會更有骨氣。,translated_unreviewed,True,1,GPL-4@0x0AD4,0,1
+DLG_14d0f78d24d9,more backbone. ,更有骨氣一點。,translated_unreviewed,True,1,GPL-4@0x0B10,0,1
+DLG_d70a169c3fc6,You'll need more fight than that to survive much longer. ,你得再加把勁，才能撐得更久。,translated_unreviewed,True,1,GPL-4@0x0B28,0,1
+DLG_9da154840cdd,No more of this talk! Act like a warrior! ,別再廢話了！拿出戰士的樣子！,translated_unreviewed,True,1,GPL-4@0x0B65,0,1
+DLG_3d5f2656a5e1,All but the great Tectuktitlay! His life has spanned a dozen ,偉大的特克圖克特雷已經統治了好幾代人了！,translated_unreviewed,True,1,GPL-4@0x0B9B,0,1
+DLG_f5a8e5eb059f,"generations! His reign will never end! Your death, ",他的統治永不終結！而你的死期，,translated_unreviewed,True,1,GPL-4@0x0BD7,0,1
+DLG_7b08efbc25ca,"however, will come soon! ",很快就要到了！,translated_unreviewed,True,1,GPL-4@0x0C0A,0,1
+DLG_bfae733ced69,"Yes, but your death will come before mine. This I guarantee. ",沒錯，但你會先我一步死。這點我可以保證。,translated_unreviewed,True,1,GPL-4@0x0C27,0,1
+DLG_a03954e8bd00,A convenient philosophy for a gladiator. I approve. ,對一個角鬥士來說，這種人生哲學倒挺不錯的。,translated_unreviewed,True,1,GPL-4@0x0C64,0,1
+DLG_b94c0fa035f6,You need to learn respect!  Trainer!  Release more monsters!,你需要學學什麼叫尊重！馴獸師！放出更多怪物！,translated_unreviewed,True,1,GPL-4@0x0C99,0,0
+DLG_c3f946346d3c,Get into the pens before I have you killed!,在我殺了你之前，快滾回獸欄去！,translated_unreviewed,True,1,GPL-4@0x0CF6,0,0
+DLG_28db273cae0a,"Be careful, gladiator. There are far worse fates that befall ",小心點，角鬥士。褻瀆神明的下場,translated_unreviewed,True,1,GPL-4@0x0D38,0,1
+DLG_b12c68062776,blasphemers than death in the arena! ,可比死在競技場裡還要淒慘得多！,translated_unreviewed,True,1,GPL-4@0x0D74,0,1
+DLG_c9776834e8f4,WHAT?! Release the big monsters! Teach this mortal respect! ,什麼？！放出大型怪物！教教這個凡人什麼叫尊重！,translated_unreviewed,True,1,GPL-4@0x0D9E,0,1
+DLG_775707132e15,"Good. You have spirit, I like that in a gladiator. We should keep ",很好。我喜歡你這股氣魄。也許我們該把你,translated_unreviewed,True,1,GPL-4@0x0DEF,0,1
+DLG_58463821e41c,"you here, I think. ",留在這裡，我想。,translated_unreviewed,True,1,GPL-4@0x0E2F,0,1
+DLG_e3cbaf4f03bf,"That is good. The monsters, however, should concern you. ",很好，那些怪物就是了。不過你該擔心的是怪物。,translated_unreviewed,True,1,GPL-4@0x0E47,0,1
+DLG_b80b92fd163f,"This'll be your last mistake, gladiators. ",這會是你最後的錯誤，角鬥士們。,translated_unreviewed,True,1,GPL-4@0x0E93,0,1
+DLG_b3a7e50672d8,"Perfect plan, isn't it? I know just the way to escape! ",完美的計畫，不是嗎？我剛好知道逃出去的路！,translated_unreviewed,True,1,GPL-4@0x0F58,0,1
+DLG_0d2de3839cbd,"Welcome, beetle-bait. You've done pretty well so far, but death ",歡迎啊，蟲餌。你到目前為止表現得挺不錯，但死亡,translated_unreviewed,True,1,GPL-4@0x0F96,0,1
+DLG_614738caf786,awaits. The king wants blood for his pyramid.,正等著你。國王需要血來獻給他的金字塔。,translated_unreviewed,True,1,GPL-4@0x0FD4,0,0
+DLG_c537ec786681,  I'm prepared to die this day... are you?,  我已經準備好赴死了……你呢？,translated_unreviewed,True,1,GPL-4@0x1003,2,0
+DLG_45188db49adf,  Let's get out of here! ,  我們離開這裡吧！,translated_unreviewed,True,1,GPL-4@0x1003,2,1
+DLG_c41ed423c255,  Let's work together!,  我們合作吧！,translated_unreviewed,True,1,GPL-4@0x1003,2,0
+DLG_311dd8b1b408,  Well? What are you waiting for?,  哼？你還在等什麼？,translated_unreviewed,True,1,GPL-4@0x1003,2,0
+DLG_42e5da78af9b,  I'm breaking out. Get in my way and die!,  我要逃出去了。擋我的路就等死吧！,translated_unreviewed,True,1,GPL-4@0x1003,2,0
+DLG_2d4d439ed529,No more talk. I'm committed.,不用多說了。我已經下定決心。,translated_unreviewed,True,1,GPL-4@0x1003,0,0
+DLG_d2de6cc29216,We make a break for the west exit on 'one'. Ready? ,我們數到「一」就衝向西側出口。準備好了嗎？,translated_unreviewed,True,1,GPL-4@0x10DC,0,1
+DLG_a5336bb2e24e,Three...  Two...  One...  Go! ,三……二……一……上！,translated_unreviewed,True,1,GPL-4@0x1110,0,1
+DLG_4c4319481295,To the death!,拚死一戰！,translated_unreviewed,True,1,GPL-4@0x113E,0,0
+DLG_02ffcc956e29,Great. I suggest we bust out through the west gate. Then you head ,很好。我建議我們從西門衝出去。然後你往,translated_unreviewed,True,1,GPL-4@0x1191,0,1
+DLG_3132f650643d,north and find a way out; I'll head to the south. ,北邊找出路；我往南走。,translated_unreviewed,True,1,GPL-4@0x11D1,0,1
+DLG_bb84fe7c5b2a,At this point we either kill each other or team up. No other options. ,事到如今，我們要嘛互相殘殺，要嘛聯手。沒有其他選擇了。,translated_unreviewed,True,1,GPL-4@0x1207,0,1
+DLG_ee3ee05b49d8,Do you want to fight or make a break for it?,你想戰鬥，還是趁機逃走？,translated_unreviewed,True,1,GPL-4@0x124B,0,0
+DLG_69edc7826de4,  Let's make a break for it.,  我們找機會逃走吧。,translated_unreviewed,True,1,GPL-4@0x1278,2,0
+DLG_1f2c75ecf841,"  Let's fight, dirtface!",  我們打吧，臭泥巴臉！,translated_unreviewed,True,1,GPL-4@0x1278,2,0
+DLG_c8584a710fb7,You've set yourself against me.,你已經跟我作對了。,translated_unreviewed,True,1,GPL-4@0x12B9,0,0
+DLG_579144ce2b56,You gutless puppies would have been worthless allies anyway.,你們這些沒骨氣的小狗，本來也當不成什麼有用的盟友。,translated_unreviewed,True,1,GPL-4@0x12DE,0,0
+DLG_eb141cdd2dd0,Go to the west exit!,去西側出口！,translated_unreviewed,True,1,GPL-4@0x1320,0,0
+DLG_7c4b1fcecd25,  I can't find anything to the west.,  我在西邊什麼都找不到。,translated_unreviewed,True,1,GPL-4@0x1347,2,0
+DLG_e8870e4b6dcc,  I found a way out to the west!,  我在西邊找到出路了！,translated_unreviewed,True,1,GPL-4@0x1347,2,0
+DLG_2c0a81c9b503,  How goes the fighting?,  戰況如何？,translated_unreviewed,True,1,GPL-4@0x1347,2,0
+DLG_2fb0c119a387,  You sure you can make it on your own?,  你確定自己一個人也行嗎？,translated_unreviewed,True,1,GPL-4@0x1347,2,0
+DLG_c854a288e79b,  Never mind. Just keep fighting.,  沒事，繼續戰鬥就好。,translated_unreviewed,True,1,GPL-4@0x1347,2,0
+DLG_de14075b01b5,It's the big door that looks like a monster.,就是那扇看起來像怪物的大門。,translated_unreviewed,True,1,GPL-4@0x13FF,0,0
+DLG_6e1d08617afc,Then use it and get out of here! ,那就用它然後離開這裡吧！,translated_unreviewed,True,1,GPL-4@0x142D,0,1
+DLG_45392a6e0e13,I'm alive. That means I'm winning.,我還活著。那就表示我在贏。,translated_unreviewed,True,1,GPL-4@0x1451,0,0
+DLG_20b75cab748a,"You whelps just watch yourselves. If I can't survive, then it's ",你們這些黃口小兒自己小心點。如果我活不下來，,translated_unreviewed,True,1,GPL-4@0x1476,0,1
+DLG_2cf79512df7f,best I die in battle!,那至少要死在戰場上！,translated_unreviewed,True,1,GPL-4@0x14B4,0,0
+DLG_0b987ef77dc3,Good advice.,說得好。,translated_unreviewed,True,1,GPL-4@0x14CE,0,0
 DLG_fc07f0125674,Welcome! How did you manage to kill the bandits?,,pending,True,1,GPL-40@0x0049,0,0
 DLG_4dc160cfd2c4,"Hail, mighty warriors! We received word of your stunning defeat of Draj. ",,pending,True,1,GPL-40@0x00DA,0,1
 DLG_37885fda75e1,That sorcerer-king had better wake from his slumber if he wants to keep ,,pending,True,1,GPL-40@0x0120,0,1
@@ -9896,120 +9896,120 @@ DLG_6a25ebe9dc5d,"imprisoned in one of your own creations, where you will spend 
 DLG_bb4cdbde5489,in pain -- unbearable pain. ,,pending,True,1,GPL-49@0x0869,0,1
 DLG_bc3c518ca092,No! Stay back! You must! Don't come near me! ,,pending,True,1,GPL-49@0x0890,0,1
 DLG_0ac4180d62ff,Do not interfere! This is our duty! ,,pending,True,1,GPL-49@0x0907,0,1
-DLG_f07c7873682a,You easily kill the bound prisoner. ,,pending,True,1,GPL-5@0x0090,0,1
-DLG_04c7fe218a8a,I... I think I feel better. Thank you!,,pending,True,1,GPL-5@0x015D,0,0
-DLG_9998fa918d5e,Uunh.... ,,pending,True,1,GPL-5@0x01A2,0,1
-DLG_6eb6aaf0ebe3,The man dies before the water reaches his lips. ,,pending,True,1,GPL-5@0x01B2,0,1
-DLG_8060ec3a3a3e,"Wow, I needed that! Thanks! ",,pending,True,1,GPL-5@0x0233,0,1
-DLG_3448cdd99d2b,I'm getting out of here! ,,pending,True,1,GPL-5@0x025A,0,1
-DLG_a76c31da6bb2,Your attack is blocked by a magical ward. ,,pending,True,1,GPL-5@0x02CE,0,1
-DLG_cb1e52bee89c,I'll untie you!,,pending,True,1,GPL-5@0x0318,0,0
-DLG_73f8c7b857f5,You're not worth letting loose.,,pending,True,1,GPL-5@0x0318,0,0
-DLG_1a75ae02051c,Thank you again. Is there any way I could help you? ,,pending,True,1,GPL-5@0x047D,0,1
-DLG_c3574f461a97,"  Don't bother, just keep living! ",,pending,True,1,GPL-5@0x04C6,2,1
-DLG_4cab743290bb,  Where is the gem? ,,pending,True,1,GPL-5@0x04C6,2,1
-DLG_1588756197b4,  What could you do to help me? ,,pending,True,2,GPL-5@0x04C6,2,1
-DLG_fd063c0d0fa5,I'll free you!,,pending,True,2,GPL-5@0x04C6,0,0
-DLG_787fa552b886,Unnhh. ,,pending,True,1,GPL-5@0x0557,0,1
-DLG_36152a25a216,  Should I untie you?,,pending,True,1,GPL-5@0x05BF,2,0
-DLG_2f78be46da3d,  Are you Semyon? ,,pending,True,1,GPL-5@0x05BF,2,1
-DLG_343f7d6f0323,  Where can I get water? ,,pending,True,1,GPL-5@0x05BF,2,1
-DLG_720deb00d7fc,  Tell me where the gem is! ,,pending,True,1,GPL-5@0x05BF,2,1
-DLG_bc6cd44b2f4b,Uunh... help.... Water... just a little....,,pending,True,1,GPL-5@0x066A,0,0
-DLG_1f06e954e0c7,Help me please! ,,pending,True,1,GPL-5@0x069B,0,1
-DLG_90cc9da0ff37,I... I... who are you? ,,pending,True,1,GPL-5@0x06B4,0,1
-DLG_c5198e7621b6,Uuunh.... I'm so thirsty... help me! ,,pending,True,1,GPL-5@0x06D8,0,1
-DLG_2cab1a4a6262,I will try my best! Good luck to you! ,,pending,True,1,GPL-5@0x0722,0,1
-DLG_63daea527dbb,"Heh heh, I knew there was a reason you helped me. ",,pending,True,1,GPL-5@0x0750,0,1
-DLG_79dd405c39ed,"You want to know where the gem is, huh? It's in one of the grain pots ",,pending,True,1,GPL-5@0x0782,0,1
-DLG_ef41d88ff175,"in either the kitchen, the storage room, or near the fountain. ",,pending,True,1,GPL-5@0x07C6,0,1
-DLG_7e3892640d03,Yes! ,,pending,True,1,GPL-5@0x0811,0,1
-DLG_bd5344e2c673,"Who? What? Yes, I'm Semyon. ",,pending,True,1,GPL-5@0x0825,0,1
-DLG_9d8d8a7b1609,"Uuunh, I'm so thirsty, please -- bring me some water -- I'll ",,pending,True,1,GPL-5@0x0856,0,1
-DLG_aa558ac3d35e,tell you anything you want! ,,pending,True,1,GPL-5@0x0892,0,1
-DLG_99f6e0ab52c5,You cut him from his bonds. ,,pending,True,1,GPL-5@0x08CC,0,1
-DLG_dbcd80dab7fb,His body falls to the ground lifelessly. ,,pending,True,1,GPL-5@0x08F7,0,1
-DLG_5ea630f57d1e,Hold on. I'll talk to you in a minute. ,,pending,True,1,GPL-5@0x0978,0,1
-DLG_a2ea0ac41542,Let me at 'em. Hail the Veiled Alliance! ,,pending,True,1,GPL-5@0x09B7,0,1
-DLG_e11d49315248,  Run away! ,,pending,True,1,GPL-5@0x09E1,2,1
-DLG_bb2809f48359,  Keep following me. ,,pending,True,1,GPL-5@0x09E1,2,1
-DLG_d1379411e412,So tell me about the Veiled Alliance. ,,pending,True,1,GPL-5@0x0A78,0,1
-DLG_93c0ce752e3c,I assume you're eventually going to want to escape. ,,pending,True,1,GPL-5@0x0AAF,0,1
-DLG_bc9b6d06826a,I'd just like to thank you again for saving me. ,,pending,True,1,GPL-5@0x0AE8,0,1
-DLG_9f54fb15ab7f,"I swear, I won't tell anyone that you're part of the Alliance! ",,pending,True,1,GPL-5@0x0B22,0,1
-DLG_654d18f0a651,"Nothing out of the ordinary around here. I've been keeping my eyes open, ",,pending,True,1,GPL-5@0x0B64,0,1
-DLG_87a1a170259e,that sort of thing. ,,pending,True,1,GPL-5@0x0BAA,0,1
-DLG_91d0f4dd24d3,  You're welcome. ,,pending,True,1,GPL-5@0x0BFE,2,1
-DLG_ddb9f0ea8580,  Saving the people of Athas isn't my job. ,,pending,True,1,GPL-5@0x0BFE,2,1
-DLG_bd65c9fe9ab6,"  Good work, comrade. ",,pending,True,1,GPL-5@0x0BFE,2,1
-DLG_339b92e3e903,"  You, too, are now a member of the Alliance.",,pending,True,1,GPL-5@0x0BFE,2,0
-DLG_45e41288144b,"  Yes, would you like to go with me? ",,pending,True,1,GPL-5@0x0BFE,2,1
-DLG_012b3f85e4ba,"  No, I kind of like it here. ",,pending,True,1,GPL-5@0x0BFE,2,1
-DLG_d34540e9117c,"  Hot today, isn't it?",,pending,True,1,GPL-5@0x0BFE,2,0
-DLG_0d8bb1749ae3,  What do you know about the Veiled Alliance?,,pending,True,1,GPL-5@0x0BFE,2,0
-DLG_7947f34e7322,  I'm not from the Veiled Alliance! ,,pending,True,1,GPL-5@0x0BFE,2,1
-DLG_7e317d27af06,"  Fine -- I'm in the Alliance, now shut up!",,pending,True,1,GPL-5@0x0BFE,2,0
-DLG_14f19aab668f,"  So, Semyon... where is that gem? ",,pending,True,1,GPL-5@0x0BFE,2,1
-DLG_830a9e1ab0b7,"  Comrade, it's time for you to help me fight. ",,pending,True,1,GPL-5@0x0BFE,2,1
-DLG_8ab5d895ba78,  Want to help me in the arena? ,,pending,True,1,GPL-5@0x0BFE,2,1
-DLG_61e60017b61e,  Can't the villages fight the army?,,pending,True,1,GPL-5@0x0BFE,2,0
-DLG_436f304939fa,  Why don't the villages ally together?,,pending,True,1,GPL-5@0x0BFE,2,0
-DLG_903a591a21bb,That's enough for me. I'll see you in the holding pens. ,,pending,True,1,GPL-5@0x0E81,0,1
-DLG_ec019930812f,I wasn't going anywhere. ,,pending,True,1,GPL-5@0x0ED5,0,1
-DLG_8398474e2791,What is 'Goodbye' supposed to mean? Do you need my help? ,,pending,True,1,GPL-5@0x0EF2,0,1
-DLG_a38a44c29c43,Such politeness is refreshing. I'd expect that of a member of the ,,pending,True,1,GPL-5@0x0F3B,0,1
-DLG_e5ab537c0ce1,Veiled Alliance. ,,pending,True,1,GPL-5@0x0F7B,0,1
-DLG_3ee7c9808e9f,There is a quest worthy of the Veiled Alliance! To ally separate ,,pending,True,1,GPL-5@0x0F96,0,1
-DLG_e7088f494a64,"villages into one fighting force!  If it could be done, we would be ",,pending,True,1,GPL-5@0x0FD5,0,1
-DLG_5b07820bcd5d,"remembered for centuries! You are right, it must be tried. They will ",,pending,True,1,GPL-5@0x1017,0,1
-DLG_d1350a4397a8,"us crazy, but that is said of all great people.",,pending,True,1,GPL-5@0x105A,0,0
-DLG_45f5d6879abe,You must escape the ,,pending,True,1,GPL-5@0x108E,0,1
-DLG_63de5f01219f,"the 'pens. When you do, I will use the confusion to leave here. ",,pending,True,1,GPL-5@0x10A6,0,1
-DLG_f7d704d02f7e,"Then, you can begin your quest. For now, good luck with your fights.",,pending,True,1,GPL-5@0x10E4,0,0
-DLG_27ab24169e6e,"One village alone cannot stand against an army, no matter how good ",,pending,True,1,GPL-5@0x1131,0,1
-DLG_218dc8046c4b,the fighters.,,pending,True,1,GPL-5@0x1172,0,0
-DLG_ca2f26b794d5,"No, I don't think so. Life in Draj, even as a gladiator, is much safer ",,pending,True,1,GPL-5@0x118F,0,1
-DLG_63076bd63c44,"than desert life. Besides, someone has to stop the armies of Draj from ",,pending,True,1,GPL-5@0x11D3,0,1
-DLG_c82e7dc1cc80,"going out and slaying the villages. If they aren't stopped, the ",,pending,True,1,GPL-5@0x1217,0,1
-DLG_d677b7addde4,villages will never survive. ,,pending,True,1,GPL-5@0x1255,0,1
-DLG_6f9a85726992,"You're right. If I'm going to be part of the Alliance, I should help ",,pending,True,1,GPL-5@0x1285,0,1
-DLG_c0e19c0435b4,my brethren. ,,pending,True,1,GPL-5@0x12C8,0,1
-DLG_63d3587f878b,Not escape?! How then will you free the people of Athas from the tyranny ,,pending,True,1,GPL-5@0x12F1,0,1
-DLG_9eb35eec0b8c,of the Dragon Kings? ,,pending,True,1,GPL-5@0x1337,0,1
-DLG_db458d1462ef,Everybody knows that the Veiled Alliance is trying to overthrow ,,pending,True,1,GPL-5@0x1365,0,1
-DLG_974ef44985af,the Dragon Kings and save Athas. ,,pending,True,1,GPL-5@0x13A3,0,1
-DLG_e564abee8bfe,"Thank you, sir! ",,pending,True,1,GPL-5@0x13D1,0,1
-DLG_5ae10d8f4daa,You mean me? In the arena? I don't think I'd be any help... I'm ,,pending,True,1,GPL-5@0x13E6,0,1
-DLG_04e0dc5a63e2,"much more of a scout than a warrior, really. ",,pending,True,1,GPL-5@0x1424,0,1
-DLG_b4753886d871,"Sure, I'll see you around! ",,pending,True,1,GPL-5@0x1458,0,1
-DLG_5bceb3479c88,"Great -- listen, I'll wait here and guard the exit. ",,pending,True,1,GPL-5@0x1481,0,1
-DLG_080a133c1f01,"Yeah, today's been pretty bad -- I've been standing here watching that ",,pending,True,1,GPL-5@0x14D6,0,1
-DLG_8e98b9f26855,lizard bake. ,,pending,True,1,GPL-5@0x151A,0,1
-DLG_5f46597246d2,"Yeah, it is. I'm surprised that you can fight in this heat. It must ",,pending,True,1,GPL-5@0x1531,0,1
-DLG_52ae08e58d5a,be murder out there! ,,pending,True,1,GPL-5@0x1573,0,1
-DLG_e1432de6d141,Better to bake out here than go back into the pens. I have a feeling ,,pending,True,1,GPL-5@0x1591,0,1
-DLG_c80babc39914,I wouldn't make it back to my cell -- if you know what I mean... ,,pending,True,1,GPL-5@0x15D4,0,1
-DLG_88f9f3c231da,It was a little cooler just before you came out. A slight breeze died out ,,pending,True,1,GPL-5@0x1618,0,1
-DLG_1fd359398a30,around half an hour ago. ,,pending,True,1,GPL-5@0x165F,0,1
-DLG_34ff4376af86,Nothing. That's the trouble! I was turned in because I was looking for the ,,pending,True,1,GPL-5@0x1682,0,1
-DLG_ee892e99a612,Alliance. ,,pending,True,1,GPL-5@0x16CA,0,1
-DLG_c2341d857fb1,"Just tell me the name of one contact, anybody... ",,pending,True,1,GPL-5@0x16E4,0,1
-DLG_57ef7c3565d5,Fine -- have it your way! Can't blame a soul for asking... ,,pending,True,1,GPL-5@0x172D,0,1
-DLG_152779c6751d,No need to shout! I only need to be told something once. ,,pending,True,1,GPL-5@0x176C,0,1
-DLG_624fa0b956bd,"If I didn't know better, I'd believe you! ",,pending,True,1,GPL-5@0x17A9,0,1
-DLG_cd648796c244,I knew it! I knew it! I swear I will never speak a word to anyone! ,,pending,True,1,GPL-5@0x17E0,0,1
-DLG_d9a43c61bda1,May I join the Alliance? ,,pending,True,1,GPL-5@0x1823,0,1
-DLG_ec65fe680455,You must really be from the Veiled Alliance! I thought they were a ,,pending,True,1,GPL-5@0x1854,0,1
-DLG_eb5fd1bed164,myth! Tell me what to do -- I'll do anything! ,,pending,True,1,GPL-5@0x1895,0,1
-DLG_d92835122e42,  Meet me in the holding pen. ,,pending,True,1,GPL-5@0x18C4,2,1
-DLG_80755756d3e3,Help me fight. ,,pending,True,1,GPL-5@0x18C4,0,1
-DLG_82ad360119c1,"Oh, that... I hid it back in the 'pens. It's in one of the grain ",,pending,True,1,GPL-5@0x192C,0,1
-DLG_9ccf0deaf0cc,pots. ,,pending,True,1,GPL-5@0x196B,0,1
-DLG_5fb0997b2102,"Right, see you there! ",,pending,True,1,GPL-5@0x1998,0,1
-DLG_d8906a042780,I don't know. Not much of anything. I'm still very weak. ,,pending,True,1,GPL-5@0x19EB,0,1
-DLG_c3c78a13cba1,I would... but I'm still quite weak. Why don't I meet you in the holding pen? ,,pending,True,1,GPL-5@0x1A29,0,1
-DLG_f43f715a2e7b,He's anticipating lunch. ,,pending,True,1,GPL-5@0x1A89,0,1
-DLG_92898aec1762,There is nothing on the body. ,,pending,True,1,GPL-5@0x1AB1,0,1
+DLG_f07c7873682a,You easily kill the bound prisoner. ,你輕易殺死了那名被綁的囚犯。,translated_unreviewed,True,1,GPL-5@0x0090,0,1
+DLG_04c7fe218a8a,I... I think I feel better. Thank you!,我……我覺得好多了。謝謝你！,translated_unreviewed,True,1,GPL-5@0x015D,0,0
+DLG_9998fa918d5e,Uunh.... ,唔……,translated_unreviewed,True,1,GPL-5@0x01A2,0,1
+DLG_6eb6aaf0ebe3,The man dies before the water reaches his lips. ,那人在水碰到嘴唇前就死了。,translated_unreviewed,True,1,GPL-5@0x01B2,0,1
+DLG_8060ec3a3a3e,"Wow, I needed that! Thanks! ",哇，我正需要這個！謝了！,translated_unreviewed,True,1,GPL-5@0x0233,0,1
+DLG_3448cdd99d2b,I'm getting out of here! ,我要離開這裡了！,translated_unreviewed,True,1,GPL-5@0x025A,0,1
+DLG_a76c31da6bb2,Your attack is blocked by a magical ward. ,你的攻擊被一道魔法護盾擋下了。,translated_unreviewed,True,1,GPL-5@0x02CE,0,1
+DLG_cb1e52bee89c,I'll untie you!,我來幫你鬆綁！,translated_unreviewed,True,1,GPL-5@0x0318,0,0
+DLG_73f8c7b857f5,You're not worth letting loose.,你不值得我放你自由。,translated_unreviewed,True,1,GPL-5@0x0318,0,0
+DLG_1a75ae02051c,Thank you again. Is there any way I could help you? ,再次感謝你。有什麼我能幫你的嗎？,translated_unreviewed,True,1,GPL-5@0x047D,0,1
+DLG_c3574f461a97,"  Don't bother, just keep living! ",  別麻煩了，好好活下去就好！,translated_unreviewed,True,1,GPL-5@0x04C6,2,1
+DLG_4cab743290bb,  Where is the gem? ,  寶石在哪裡？,translated_unreviewed,True,1,GPL-5@0x04C6,2,1
+DLG_1588756197b4,  What could you do to help me? ,  你能幫我什麼忙？,translated_unreviewed,True,2,GPL-5@0x04C6,2,1
+DLG_fd063c0d0fa5,I'll free you!,我來放你自由！,translated_unreviewed,True,2,GPL-5@0x04C6,0,0
+DLG_787fa552b886,Unnhh. ,唔……,translated_unreviewed,True,1,GPL-5@0x0557,0,1
+DLG_36152a25a216,  Should I untie you?,  我該幫你鬆綁嗎？,translated_unreviewed,True,1,GPL-5@0x05BF,2,0
+DLG_2f78be46da3d,  Are you Semyon? ,  你是賽蒙嗎？,translated_unreviewed,True,1,GPL-5@0x05BF,2,1
+DLG_343f7d6f0323,  Where can I get water? ,  哪裡可以找到水？,translated_unreviewed,True,1,GPL-5@0x05BF,2,1
+DLG_720deb00d7fc,  Tell me where the gem is! ,  告訴我寶石在哪！,translated_unreviewed,True,1,GPL-5@0x05BF,2,1
+DLG_bc6cd44b2f4b,Uunh... help.... Water... just a little....,唔……救命……水……給我一點就好……,translated_unreviewed,True,1,GPL-5@0x066A,0,0
+DLG_1f06e954e0c7,Help me please! ,請幫幫我！,translated_unreviewed,True,1,GPL-5@0x069B,0,1
+DLG_90cc9da0ff37,I... I... who are you? ,我……我……你是誰？,translated_unreviewed,True,1,GPL-5@0x06B4,0,1
+DLG_c5198e7621b6,Uuunh.... I'm so thirsty... help me! ,唔……我好渴……幫幫我！,translated_unreviewed,True,1,GPL-5@0x06D8,0,1
+DLG_2cab1a4a6262,I will try my best! Good luck to you! ,我會盡力的！祝你好運！,translated_unreviewed,True,1,GPL-5@0x0722,0,1
+DLG_63daea527dbb,"Heh heh, I knew there was a reason you helped me. ",嘿嘿，我就知道你救我是有原因的。,translated_unreviewed,True,1,GPL-5@0x0750,0,1
+DLG_79dd405c39ed,"You want to know where the gem is, huh? It's in one of the grain pots ",你想知道寶石在哪嗎？它就在其中一個裝穀物的罐子裡，,translated_unreviewed,True,1,GPL-5@0x0782,0,1
+DLG_ef41d88ff175,"in either the kitchen, the storage room, or near the fountain. ",不是在廚房、儲藏室，就是在噴泉附近。,translated_unreviewed,True,1,GPL-5@0x07C6,0,1
+DLG_7e3892640d03,Yes! ,太好了！,translated_unreviewed,True,1,GPL-5@0x0811,0,1
+DLG_bd5344e2c673,"Who? What? Yes, I'm Semyon. ",誰？什麼？對，我是賽蒙。,translated_unreviewed,True,1,GPL-5@0x0825,0,1
+DLG_9d8d8a7b1609,"Uuunh, I'm so thirsty, please -- bring me some water -- I'll ",唔，我好渴，拜託——給我一點水——我什麼,translated_unreviewed,True,1,GPL-5@0x0856,0,1
+DLG_aa558ac3d35e,tell you anything you want! ,都願意告訴你！,translated_unreviewed,True,1,GPL-5@0x0892,0,1
+DLG_99f6e0ab52c5,You cut him from his bonds. ,你割斷了綁住他的繩索。,translated_unreviewed,True,1,GPL-5@0x08CC,0,1
+DLG_dbcd80dab7fb,His body falls to the ground lifelessly. ,他的身體無力地倒在地上。,translated_unreviewed,True,1,GPL-5@0x08F7,0,1
+DLG_5ea630f57d1e,Hold on. I'll talk to you in a minute. ,等一下，我馬上跟你說話。,translated_unreviewed,True,1,GPL-5@0x0978,0,1
+DLG_a2ea0ac41542,Let me at 'em. Hail the Veiled Alliance! ,讓我來對付他們。面紗聯盟萬歲！,translated_unreviewed,True,1,GPL-5@0x09B7,0,1
+DLG_e11d49315248,  Run away! ,  快逃！,translated_unreviewed,True,1,GPL-5@0x09E1,2,1
+DLG_bb2809f48359,  Keep following me. ,  繼續跟著我。,translated_unreviewed,True,1,GPL-5@0x09E1,2,1
+DLG_d1379411e412,So tell me about the Veiled Alliance. ,跟我說說面紗聯盟的事吧。,translated_unreviewed,True,1,GPL-5@0x0A78,0,1
+DLG_93c0ce752e3c,I assume you're eventually going to want to escape. ,我猜你遲早會想逃走。,translated_unreviewed,True,1,GPL-5@0x0AAF,0,1
+DLG_bc9b6d06826a,I'd just like to thank you again for saving me. ,我要再次感謝你救了我。,translated_unreviewed,True,1,GPL-5@0x0AE8,0,1
+DLG_9f54fb15ab7f,"I swear, I won't tell anyone that you're part of the Alliance! ",我發誓，我不會告訴任何人你是聯盟的一員！,translated_unreviewed,True,1,GPL-5@0x0B22,0,1
+DLG_654d18f0a651,"Nothing out of the ordinary around here. I've been keeping my eyes open, ",這裡沒什麼特別的。我一直保持警覺，,translated_unreviewed,True,1,GPL-5@0x0B64,0,1
+DLG_87a1a170259e,that sort of thing. ,就這樣而已。,translated_unreviewed,True,1,GPL-5@0x0BAA,0,1
+DLG_91d0f4dd24d3,  You're welcome. ,  不客氣。,translated_unreviewed,True,1,GPL-5@0x0BFE,2,1
+DLG_ddb9f0ea8580,  Saving the people of Athas isn't my job. ,  拯救亞薩斯的人民不是我的工作。,translated_unreviewed,True,1,GPL-5@0x0BFE,2,1
+DLG_bd65c9fe9ab6,"  Good work, comrade. ",  幹得好，同志。,translated_unreviewed,True,1,GPL-5@0x0BFE,2,1
+DLG_339b92e3e903,"  You, too, are now a member of the Alliance.",  你現在也是聯盟的一員了。,translated_unreviewed,True,1,GPL-5@0x0BFE,2,0
+DLG_45e41288144b,"  Yes, would you like to go with me? ",  好，你想跟我一起走嗎？,translated_unreviewed,True,1,GPL-5@0x0BFE,2,1
+DLG_012b3f85e4ba,"  No, I kind of like it here. ",  不，我還挺喜歡待在這裡的。,translated_unreviewed,True,1,GPL-5@0x0BFE,2,1
+DLG_d34540e9117c,"  Hot today, isn't it?",  今天真熱，不是嗎？,translated_unreviewed,True,1,GPL-5@0x0BFE,2,0
+DLG_0d8bb1749ae3,  What do you know about the Veiled Alliance?,  你知道面紗聯盟的事嗎？,translated_unreviewed,True,1,GPL-5@0x0BFE,2,0
+DLG_7947f34e7322,  I'm not from the Veiled Alliance! ,  我不是面紗聯盟的人！,translated_unreviewed,True,1,GPL-5@0x0BFE,2,1
+DLG_7e317d27af06,"  Fine -- I'm in the Alliance, now shut up!",  好啦——我是聯盟的人，別再說了！,translated_unreviewed,True,1,GPL-5@0x0BFE,2,0
+DLG_14f19aab668f,"  So, Semyon... where is that gem? ",  對了，賽蒙……那顆寶石在哪？,translated_unreviewed,True,1,GPL-5@0x0BFE,2,1
+DLG_830a9e1ab0b7,"  Comrade, it's time for you to help me fight. ",  同志，該是你幫我戰鬥的時候了。,translated_unreviewed,True,1,GPL-5@0x0BFE,2,1
+DLG_8ab5d895ba78,  Want to help me in the arena? ,  想在競技場幫我一把嗎？,translated_unreviewed,True,1,GPL-5@0x0BFE,2,1
+DLG_61e60017b61e,  Can't the villages fight the army?,  難道村落不能對抗軍隊嗎？,translated_unreviewed,True,1,GPL-5@0x0BFE,2,0
+DLG_436f304939fa,  Why don't the villages ally together?,  為什麼那些村落不聯合起來？,translated_unreviewed,True,1,GPL-5@0x0BFE,2,0
+DLG_903a591a21bb,That's enough for me. I'll see you in the holding pens. ,夠了，我先走了。我們獸欄見。,translated_unreviewed,True,1,GPL-5@0x0E81,0,1
+DLG_ec019930812f,I wasn't going anywhere. ,我哪兒都沒去。,translated_unreviewed,True,1,GPL-5@0x0ED5,0,1
+DLG_8398474e2791,What is 'Goodbye' supposed to mean? Do you need my help? ,「再見」是什麼意思？你需要我幫忙嗎？,translated_unreviewed,True,1,GPL-5@0x0EF2,0,1
+DLG_a38a44c29c43,Such politeness is refreshing. I'd expect that of a member of the ,這麼有禮貌真是難得。不愧是,translated_unreviewed,True,1,GPL-5@0x0F3B,0,1
+DLG_e5ab537c0ce1,Veiled Alliance. ,面紗聯盟的一員。,translated_unreviewed,True,1,GPL-5@0x0F7B,0,1
+DLG_3ee7c9808e9f,There is a quest worthy of the Veiled Alliance! To ally separate ,有個任務正配得上面紗聯盟！把分散的村落,translated_unreviewed,True,1,GPL-5@0x0F96,0,1
+DLG_e7088f494a64,"villages into one fighting force!  If it could be done, we would be ",聯合成一支戰鬥力量！如果真能做到，我們將,translated_unreviewed,True,1,GPL-5@0x0FD5,0,1
+DLG_5b07820bcd5d,"remembered for centuries! You are right, it must be tried. They will ",被後世銘記數百年！你說得對，這值得一試。他們會說,translated_unreviewed,True,1,GPL-5@0x1017,0,1
+DLG_d1350a4397a8,"us crazy, but that is said of all great people.",我瘋了，但偉大的人都是這樣被說的。,translated_unreviewed,True,1,GPL-5@0x105A,0,0
+DLG_45f5d6879abe,You must escape the ,你得先逃出,translated_unreviewed,True,1,GPL-5@0x108E,0,1
+DLG_63de5f01219f,"the 'pens. When you do, I will use the confusion to leave here. ",獸欄。等你成功了，我會趁亂離開這裡。,translated_unreviewed,True,1,GPL-5@0x10A6,0,1
+DLG_f7d704d02f7e,"Then, you can begin your quest. For now, good luck with your fights.",接著，你就能展開你的任務了。眼下，祝你戰鬥順利。,translated_unreviewed,True,1,GPL-5@0x10E4,0,0
+DLG_27ab24169e6e,"One village alone cannot stand against an army, no matter how good ",光憑一個村落，不管戰士再怎麼優秀，,translated_unreviewed,True,1,GPL-5@0x1131,0,1
+DLG_218dc8046c4b,the fighters.,也無法對抗一支軍隊。,translated_unreviewed,True,1,GPL-5@0x1172,0,0
+DLG_ca2f26b794d5,"No, I don't think so. Life in Draj, even as a gladiator, is much safer ",不，我不這麼認為。在德拉吉的生活，就算是當角鬥士，也比,translated_unreviewed,True,1,GPL-5@0x118F,0,1
+DLG_63076bd63c44,"than desert life. Besides, someone has to stop the armies of Draj from ",在沙漠裡討生活安全得多。再說，總得有人阻止德拉吉的軍隊,translated_unreviewed,True,1,GPL-5@0x11D3,0,1
+DLG_c82e7dc1cc80,"going out and slaying the villages. If they aren't stopped, the ",出兵屠殺那些村落。如果不阻止他們，,translated_unreviewed,True,1,GPL-5@0x1217,0,1
+DLG_d677b7addde4,villages will never survive. ,那些村落永遠不會有活路。,translated_unreviewed,True,1,GPL-5@0x1255,0,1
+DLG_6f9a85726992,"You're right. If I'm going to be part of the Alliance, I should help ",你說得對。既然我要成為聯盟的一份子，我就該幫助,translated_unreviewed,True,1,GPL-5@0x1285,0,1
+DLG_c0e19c0435b4,my brethren. ,我的同胞。,translated_unreviewed,True,1,GPL-5@0x12C8,0,1
+DLG_63d3587f878b,Not escape?! How then will you free the people of Athas from the tyranny ,不逃走？！那你要怎麼把亞薩斯的人民從,translated_unreviewed,True,1,GPL-5@0x12F1,0,1
+DLG_9eb35eec0b8c,of the Dragon Kings? ,龍王的暴政下解放出來？,translated_unreviewed,True,1,GPL-5@0x1337,0,1
+DLG_db458d1462ef,Everybody knows that the Veiled Alliance is trying to overthrow ,大家都知道面紗聯盟正試圖推翻,translated_unreviewed,True,1,GPL-5@0x1365,0,1
+DLG_974ef44985af,the Dragon Kings and save Athas. ,龍王，拯救亞薩斯。,translated_unreviewed,True,1,GPL-5@0x13A3,0,1
+DLG_e564abee8bfe,"Thank you, sir! ",謝謝你，大人！,translated_unreviewed,True,1,GPL-5@0x13D1,0,1
+DLG_5ae10d8f4daa,You mean me? In the arena? I don't think I'd be any help... I'm ,你是說我？在競技場裡？我覺得我幫不上什麼忙……我,translated_unreviewed,True,1,GPL-5@0x13E6,0,1
+DLG_04e0dc5a63e2,"much more of a scout than a warrior, really. ",比較像是個斥候，不是戰士。,translated_unreviewed,True,1,GPL-5@0x1424,0,1
+DLG_b4753886d871,"Sure, I'll see you around! ",好啊，回頭見！,translated_unreviewed,True,1,GPL-5@0x1458,0,1
+DLG_5bceb3479c88,"Great -- listen, I'll wait here and guard the exit. ",太好了——這樣吧，我在這裡守著出口。,translated_unreviewed,True,1,GPL-5@0x1481,0,1
+DLG_080a133c1f01,"Yeah, today's been pretty bad -- I've been standing here watching that ",唉，今天真夠糟的——我一直站在這裡看著那隻,translated_unreviewed,True,1,GPL-5@0x14D6,0,1
+DLG_8e98b9f26855,lizard bake. ,蜥蜴被曬乾。,translated_unreviewed,True,1,GPL-5@0x151A,0,1
+DLG_5f46597246d2,"Yeah, it is. I'm surprised that you can fight in this heat. It must ",是啊，沒錯。你居然能在這種高溫下戰鬥，真令我意外。這肯定,translated_unreviewed,True,1,GPL-5@0x1531,0,1
+DLG_52ae08e58d5a,be murder out there! ,熱得要命！,translated_unreviewed,True,1,GPL-5@0x1573,0,1
+DLG_e1432de6d141,Better to bake out here than go back into the pens. I have a feeling ,待在外面曬太陽也總比回獸欄好。我有種感覺，,translated_unreviewed,True,1,GPL-5@0x1591,0,1
+DLG_c80babc39914,I wouldn't make it back to my cell -- if you know what I mean... ,我大概回不了我的牢房了——你懂我的意思吧……,translated_unreviewed,True,1,GPL-5@0x15D4,0,1
+DLG_88f9f3c231da,It was a little cooler just before you came out. A slight breeze died out ,你出來之前這裡本來還涼快一點。有陣微風吹過，,translated_unreviewed,True,1,GPL-5@0x1618,0,1
+DLG_1fd359398a30,around half an hour ago. ,大概半小時前就停了。,translated_unreviewed,True,1,GPL-5@0x165F,0,1
+DLG_34ff4376af86,Nothing. That's the trouble! I was turned in because I was looking for the ,沒什麼。這才是問題所在！我就是因為在打聽,translated_unreviewed,True,1,GPL-5@0x1682,0,1
+DLG_ee892e99a612,Alliance. ,聯盟的事才被抓的。,translated_unreviewed,True,1,GPL-5@0x16CA,0,1
+DLG_c2341d857fb1,"Just tell me the name of one contact, anybody... ",隨便告訴我一個聯絡人的名字就好，隨便誰都行……,translated_unreviewed,True,1,GPL-5@0x16E4,0,1
+DLG_57ef7c3565d5,Fine -- have it your way! Can't blame a soul for asking... ,好吧——隨便你！也不能怪誰愛問東問西……,translated_unreviewed,True,1,GPL-5@0x172D,0,1
+DLG_152779c6751d,No need to shout! I only need to be told something once. ,不用喊那麼大聲！我只需要被告知一次就夠了。,translated_unreviewed,True,1,GPL-5@0x176C,0,1
+DLG_624fa0b956bd,"If I didn't know better, I'd believe you! ",要不是我很清楚，我還真會相信你！,translated_unreviewed,True,1,GPL-5@0x17A9,0,1
+DLG_cd648796c244,I knew it! I knew it! I swear I will never speak a word to anyone! ,我就知道！我就知道！我發誓我絕不會跟任何人透露一個字！,translated_unreviewed,True,1,GPL-5@0x17E0,0,1
+DLG_d9a43c61bda1,May I join the Alliance? ,我可以加入聯盟嗎？,translated_unreviewed,True,1,GPL-5@0x1823,0,1
+DLG_ec65fe680455,You must really be from the Veiled Alliance! I thought they were a ,你一定是真的來自面紗聯盟！我還以為那只是個,translated_unreviewed,True,1,GPL-5@0x1854,0,1
+DLG_eb5fd1bed164,myth! Tell me what to do -- I'll do anything! ,傳說！告訴我該做什麼——我什麼都願意做！,translated_unreviewed,True,1,GPL-5@0x1895,0,1
+DLG_d92835122e42,  Meet me in the holding pen. ,  在拘留欄見我。,translated_unreviewed,True,1,GPL-5@0x18C4,2,1
+DLG_80755756d3e3,Help me fight. ,幫我戰鬥。,translated_unreviewed,True,1,GPL-5@0x18C4,0,1
+DLG_82ad360119c1,"Oh, that... I hid it back in the 'pens. It's in one of the grain ",喔，那個啊……我把它藏在獸欄裡了，就在一個裝穀物的,translated_unreviewed,True,1,GPL-5@0x192C,0,1
+DLG_9ccf0deaf0cc,pots. ,罐子裡。,translated_unreviewed,True,1,GPL-5@0x196B,0,1
+DLG_5fb0997b2102,"Right, see you there! ",好，那就到時候見了！,translated_unreviewed,True,1,GPL-5@0x1998,0,1
+DLG_d8906a042780,I don't know. Not much of anything. I'm still very weak. ,我不知道，沒什麼特別的。我還很虛弱。,translated_unreviewed,True,1,GPL-5@0x19EB,0,1
+DLG_c3c78a13cba1,I would... but I'm still quite weak. Why don't I meet you in the holding pen? ,我會的……但我還很虛弱。不如我們約在拘留欄見面？,translated_unreviewed,True,1,GPL-5@0x1A29,0,1
+DLG_f43f715a2e7b,He's anticipating lunch. ,他正期待著午餐。,translated_unreviewed,True,1,GPL-5@0x1A89,0,1
+DLG_92898aec1762,There is nothing on the body. ,屍體上什麼都沒有。,translated_unreviewed,True,1,GPL-5@0x1AB1,0,1
 DLG_32aa1bbb61ca,There is nothing I can tell you here. Keep moving! I will tell you ,,pending,True,1,GPL-50@0x0045,0,1
 DLG_00c32f433842,what I can when I can! ,,pending,True,1,GPL-50@0x0086,0,1
 DLG_d3a1b349c274,"  Where am I, again?",,pending,True,2,GPL-50@0x00CC,2,0

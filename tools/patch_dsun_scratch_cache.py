@@ -58,11 +58,13 @@ def mz_relocation_file_offsets(image: bytes) -> set[int]:
     return result
 
 
-def assemble_cache(scratch_offset: int = 0x3640, record_bytes: int = 242) -> bytes:
+def assemble_cache(scratch_offset: int = 0x3640, record_bytes: int = 242, bank_count: int = 4) -> bytes:
     if not 0 <= scratch_offset <= 0xFFFF:
         raise ValueError("scratch offset must fit u16")
     if not 1 <= record_bytes <= 0xFFFF:
         raise ValueError("record size must fit a non-zero u16")
+    if not 1 <= bank_count <= 9:
+        raise ValueError("bank count must be 1..9 (single-digit CJB1 filenames)")
     with tempfile.TemporaryDirectory() as temporary:
         directory = Path(temporary)
         obj = directory / "cache.o"
@@ -76,6 +78,8 @@ def assemble_cache(scratch_offset: int = 0x3640, record_bytes: int = 242) -> byt
                 f"scratch_offset={scratch_offset}",
                 "--defsym",
                 f"cjk_record_bytes={record_bytes}",
+                "--defsym",
+                f"bank_count={bank_count}",
                 "-o",
                 obj,
                 ASM,
@@ -227,13 +231,28 @@ def glyph_height_call() -> bytes:
 
 
 def patches(
-    cache: bytes, line_gap: int = 0, cjk_draw_height: int = 9
+    cache: bytes, line_gap: int = 0, cjk_draw_height: int = 9, bank_count: int = 4
 ) -> dict[int, tuple[bytes, bytes]]:
+    if not 1 <= bank_count <= 9:
+        raise ValueError("bank count must be 1..9 (single-digit CJB1 filenames)")
     resolve = resolver()
     state = bytes.fromhex("FF 00 FF FF 00 00 00 00 00 00 00 00 00 00")
-    filenames = (b"C0.BIN\0", b"C1.BIN\0", b"C2.BIN\0", b"C3.BIN\0")
-    name_offsets = (NAMES + 8, NAMES + 15, NAMES + 22, NAMES + 29)
-    names = struct.pack("<4H", *name_offsets) + b"".join(filenames)
+    # DOS does not require a filename extension; dropping ".BIN" keeps each
+    # entry to 3 bytes ("C{n}\0") so the table still fits between NAMES and
+    # the resolver stub at COMMON even past four banks.
+    filenames = tuple(f"C{bank}\0".encode("ascii") for bank in range(bank_count))
+    table_bytes = bank_count * 2
+    offset = NAMES + table_bytes
+    name_offsets = []
+    for filename in filenames:
+        name_offsets.append(offset)
+        offset += len(filename)
+    names = struct.pack(f"<{bank_count}H", *name_offsets) + b"".join(filenames)
+    if NAMES + len(names) > min(CACHE, COMMON):
+        raise ValueError(
+            f"bank name table for {bank_count} banks ends at 0x{NAMES + len(names):04X}, "
+            f"beyond the resolver stub start 0x{COMMON:04X}"
+        )
     result = {
         CODE_BASE + 0x094A: (bytes.fromhex("26 8A 07"), bytes.fromhex("E8 59 4A")),
         CODE_BASE + 0x07F8: (bytes.fromhex("26 8A 07"), bytes.fromhex("E8 CB 4B")),
@@ -294,16 +313,17 @@ def patch_executable(
     record_bytes: int = 242,
     line_gap: int = 0,
     cjk_draw_height: int = 9,
+    bank_count: int = 4,
 ) -> tuple[bytes, bytes]:
     """Return a verified scratch-cache executable image and assembled cache."""
     data = bytearray(source)
-    cache = assemble_cache(scratch_offset, record_bytes)
+    cache = assemble_cache(scratch_offset, record_bytes, bank_count)
     if CACHE + len(cache) > CACHE_RUNTIME_LIMIT:
         raise ValueError(
             f"resident cache ends at 0x{CACHE + len(cache):04X}, "
             f"beyond runtime-safe boundary 0x{CACHE_RUNTIME_LIMIT:04X}"
         )
-    planned = patches(cache, line_gap, cjk_draw_height)
+    planned = patches(cache, line_gap, cjk_draw_height, bank_count)
     relocations = mz_relocation_file_offsets(source)
     relocated_bytes = relocations | {offset + 1 for offset in relocations}
     for offset, (_, replacement) in planned.items():

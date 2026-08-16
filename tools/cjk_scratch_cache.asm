@@ -9,6 +9,9 @@
 .ifndef cjk_record_bytes
 .equ cjk_record_bytes, 242
 .endif
+.ifndef bank_count
+.equ bank_count, 4
+.endif
 
 .equ current_bank,  0x53B6
 .equ handle,        0x53B8
@@ -34,7 +37,7 @@ cjk_cache_start:
     push ds
     push es
     mov al, ah
-    cmp al, 4
+    cmp al, bank_count
     jae cache_error
     xor ah, ah
     push ds

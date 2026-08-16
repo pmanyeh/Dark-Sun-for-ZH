@@ -240,6 +240,7 @@ class CjkLocalizationPipelineTests(unittest.TestCase):
             EBOX_STORE_LINE_HEIGHT,
             GLYPH_HEIGHT_LOAD,
             EBOX_LAYOUT_LOCALS,
+            NAMES,
             assemble_cache,
             cjk_height_helper,
             ebox_cjk_width_body,
@@ -250,6 +251,7 @@ class CjkLocalizationPipelineTests(unittest.TestCase):
             glyph_height_call,
             mz_relocation_file_offsets,
             patch_executable,
+            patches,
             resolver,
         )
 
@@ -312,6 +314,33 @@ class CjkLocalizationPipelineTests(unittest.TestCase):
             ten_row_exe[CODE_BASE + GLYPH_HEIGHT_LOAD : CODE_BASE + GLYPH_HEIGHT_LOAD + 11],
             glyph_height_call(),
         )
+        # A vocabulary that outgrows four 256-glyph banks needs a fifth
+        # CJB1 bank; the resident cache's bank-name table must grow to match
+        # without colliding with the cache code that follows it.
+        five_bank_names = patches(small, bank_count=5)[CODE_BASE + NAMES][1]
+        self.assertEqual(
+            five_bank_names,
+            b"".join(
+                struct.pack("<H", NAMES + 5 * 2 + bank * 3) for bank in range(5)
+            )
+            + b"C0\0C1\0C2\0C3\0C4\0",
+        )
+        self.assertLessEqual(NAMES + len(five_bank_names), COMMON)
+        five_bank_exe, five_bank_cache = patch_executable(
+            source, 0x206B, 102, line_gap=2, cjk_draw_height=10, bank_count=5
+        )
+        # Same code size; only the embedded bank-count bound (cmp al, N) differs.
+        self.assertEqual(len(five_bank_cache), len(ten_row_cache))
+        differing = [i for i in range(len(five_bank_cache)) if five_bank_cache[i] != ten_row_cache[i]]
+        self.assertEqual(len(differing), 1)
+        self.assertEqual(ten_row_cache[differing[0]], 4)
+        self.assertEqual(five_bank_cache[differing[0]], 5)
+        self.assertEqual(
+            five_bank_exe[CODE_BASE + NAMES : CODE_BASE + NAMES + len(five_bank_names)],
+            five_bank_names,
+        )
+        with self.assertRaisesRegex(ValueError, "1..9"):
+            patches(small, bank_count=10)
 
     def test_pixel_aligned_rasterizer_keeps_fixed_record_size(self) -> None:
         font = Path(r"C:\Windows\Fonts\NotoSansTC-VF.ttf")

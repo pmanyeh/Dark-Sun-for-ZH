@@ -119,11 +119,55 @@ BRANCH_PARAMETER = {
     0x12: 0,  # jump
     0x13: 0,  # local sub
     0x27: 1,  # ifcompare
+    0x29: 0,  # orelse
     0x3E: 0,  # if
     0x3F: 0,  # else
     0x63: 0,  # while
     0x64: 0,  # wend
 }
+# 0x14 (gpl global sub) is deliberately excluded: it is a cross-chunk call
+# site (target chunk + offset in another chunk), not a same-chunk branch, so
+# it is unaffected by this chunk's own instruction relocation.
+#
+# The "template" trigger opcodes (0x65 attacktrigger, 0x66 looktrigger, 0x68
+# move tiletrigger, 0x69 door tiletrigger, 0x6A move boxtrigger, 0x6B door
+# boxtrigger, 0x6C pickup itemtrigger, 0x6D usetrigger, 0x6E talktotrigger,
+# 0x6F noorderstrigger, 0x70 usewithtrigger) were investigated for re_42 and
+# deliberately NOT added here. Their leading immediate14 fields looked like
+# same-chunk offsets at first (e.g. two different 0x6F instances in two
+# different GPL-2..5 chunks both used the literal value 100), but that value
+# recurs identically across unrelated chunks of very different lengths --
+# it is a fixed threshold/radius constant, not a branch target. Their real
+# jump target, if any, is more likely carried by the trailing
+# `immediate_name`/`complex_access`/`variable(gname)` expression (a symbolic
+# reference, similar in spirit to 0x14's cross-chunk call), which does not
+# need same-chunk offset relocation. Do not add a numeric param index for
+# these opcodes without first confirming which field is genuinely a
+# same-chunk offset (e.g. by checking whether the value repeats identically
+# across chunks of different lengths, as it does here) -- a wrong guess
+# raises a clear "targets non-instruction" error during relocation rather
+# than a silent one, so this is safe to leave unhandled for now.
+
+# gpl_menu (0x48): one leading expression (the menu's TEXT-table name),
+# then a run of 3-expression entries (choice string, jump target, flag)
+# until the terminator byte 0x4A. The jump target sits in the middle of
+# each triple and is not covered by BRANCH_PARAMETER.
+MENU_OPCODE = 0x48
+MENU_ENTRY_WIDTH = 3
+MENU_ENTRY_TARGET_INDEX = 1
+
+
+def relocate_single_target(
+    expressions: list[dict[str, object]], offset_map: dict[int, int], where: str
+) -> None:
+    """Rewrite the one immediate14 branch target among `expressions` in place."""
+    targets = [expression for expression in expressions if expression.get("kind") == "immediate14"]
+    if len(targets) != 1:
+        raise ValueError(f"{where} has a non-literal target")
+    old_target = int(targets[0]["value"])
+    if old_target not in offset_map:
+        raise ValueError(f"{where} targets non-instruction 0x{old_target:04X}")
+    targets[0]["value"] = offset_map[old_target]
 
 
 def packed_string_bytes(value: str) -> int:
@@ -211,24 +255,30 @@ def relocate_json_strings(
         raise ValueError("GPL source instruction lengths do not cover the full chunk")
 
     for instruction in instructions:
-        parameter_index = BRANCH_PARAMETER.get(int(instruction["opcode"]))
-        if parameter_index is None:
-            continue
+        opcode = int(instruction["opcode"])
         params = instruction.get("params", [])
-        if parameter_index >= len(params):
-            raise ValueError(f"branch at 0x{instruction['offset']:04X} has no target parameter")
-        targets = [
-            expression for expression in params[parameter_index]
-            if expression.get("kind") == "immediate14"
-        ]
-        if len(targets) != 1:
-            raise ValueError(f"branch at 0x{instruction['offset']:04X} has a non-literal target")
-        old_target = int(targets[0]["value"])
-        if old_target not in offset_map:
-            raise ValueError(
-                f"branch at 0x{instruction['offset']:04X} targets non-instruction 0x{old_target:04X}"
+        parameter_index = BRANCH_PARAMETER.get(opcode)
+        if parameter_index is not None:
+            if parameter_index >= len(params):
+                raise ValueError(f"branch at 0x{instruction['offset']:04X} has no target parameter")
+            relocate_single_target(
+                params[parameter_index], offset_map, f"branch at 0x{instruction['offset']:04X}"
             )
-        targets[0]["value"] = offset_map[old_target]
+            continue
+        if opcode == MENU_OPCODE:
+            entry_params = len(params) - 1
+            if entry_params < 0 or entry_params % MENU_ENTRY_WIDTH != 0:
+                raise ValueError(
+                    f"menu at 0x{instruction['offset']:04X} has an unexpected parameter shape "
+                    f"({len(params)} params)"
+                )
+            for entry in range(entry_params // MENU_ENTRY_WIDTH):
+                target_index = 1 + entry * MENU_ENTRY_WIDTH + MENU_ENTRY_TARGET_INDEX
+                relocate_single_target(
+                    params[target_index],
+                    offset_map,
+                    f"menu at 0x{instruction['offset']:04X} entry {entry}",
+                )
 
     document["bytes_consumed"] = new_cursor
     document["total_bytes"] = new_cursor

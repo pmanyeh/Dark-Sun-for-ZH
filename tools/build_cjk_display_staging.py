@@ -154,9 +154,12 @@ def main() -> int:
         if len(payload) != item["bytes"] or sha256(payload) != item["sha256"]:
             raise ValueError(f"bank package hash mismatch: {source}")
         banks[bank_id] = read_bank(payload, bank_id)
-        bank_files.append((source, f"C{bank_id}.BIN", payload))
-    if sorted(banks) != [0, 1, 2, 3]:
-        raise ValueError(f"display staging requires banks 0..3, found {sorted(banks)}")
+        bank_files.append((source, f"C{bank_id}", payload))
+    bank_count = len(banks)
+    if sorted(banks) != list(range(bank_count)):
+        raise ValueError(f"display staging requires contiguous banks starting at 0, found {sorted(banks)}")
+    if not 1 <= bank_count <= 9:
+        raise ValueError(f"display staging requires 1..9 banks (single-digit CJB1 filenames), found {bank_count}")
     bank_heights = {bank["height"] for bank in banks.values()}
     if len(bank_heights) != 1:
         raise ValueError(f"CJB1 banks disagree on glyph height: {sorted(bank_heights)}")
@@ -203,6 +206,7 @@ def main() -> int:
             record_bytes,
             args.ebox_line_gap,
             cjk_draw_height=bank_height,
+            bank_count=bank_count,
         )
         (staged_game / "DSUN.EXE").write_bytes(patched_exe)
         for _, filename, payload in bank_files:
@@ -289,6 +293,7 @@ def main() -> int:
                 "source_sha256": sha256(original_exe),
                 "patched_sha256": sha256(patched_exe),
                 "cache_bytes": len(cache),
+                "bank_count": bank_count,
                 "scratch_cache_runtime_range": "36AA:545A..5533",
                 "scratch_cache_file_policy": "open-read-close per glyph",
                 "ebox_base94_wrap": "relocation-safe three-byte token advance",
