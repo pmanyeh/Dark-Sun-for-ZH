@@ -211,8 +211,34 @@ def main() -> int:
         (staged_game / "DSUN.EXE").write_bytes(patched_exe)
         for _, filename, payload in bank_files:
             (staged_game / filename).write_bytes(payload)
+        gpl_abi_constraint: dict[str, object] | None = None
         if gpl_payload is not None:
             (staged_game / "GPLDATA.GFF").write_bytes(gpl_payload)
+            declared_constraint = gpl_package.get("abi_constraint")
+            if declared_constraint is not None:
+                if not isinstance(declared_constraint, dict):
+                    raise ValueError("GPL dialogue package abi_constraint must be an object")
+                try:
+                    kind = str(declared_constraint["chunk"])
+                    offset = int(declared_constraint["external_entry_offset"])
+                    opcode = int(declared_constraint["required_opcode"])
+                except (KeyError, TypeError, ValueError) as exc:
+                    raise ValueError("GPL dialogue package has an invalid abi_constraint") from exc
+                if kind != "GPL-3" or offset < 0 or not 0 <= opcode <= 0xFF:
+                    raise ValueError("unsupported GPL dialogue package abi_constraint")
+                abi_chunk = work / "GPL-3.abi-check.bin"
+                run(args.gff_cat, "extract", staged_game / "GPLDATA.GFF", "GPL", "3", "-o", abi_chunk)
+                payload = abi_chunk.read_bytes()
+                actual = payload[offset] if offset < len(payload) else None
+                if actual != opcode:
+                    found = "past end of chunk" if actual is None else f"0x{actual:02X}"
+                    raise ValueError(
+                        f"GPL-3 ABI entry 0x{offset:04X} must be 0x{opcode:02X}, found {found}"
+                    )
+                gpl_abi_constraint = {
+                    **declared_constraint,
+                    "verified_chunk_bytes": len(payload),
+                }
         font_file = work / "FONT-100.cjk-scratch.bin"
         font_file.write_bytes(font_payload)
 
@@ -315,6 +341,7 @@ def main() -> int:
                     "patched_chunks": len(gpl_package["chunks"]),
                     "patched_occurrences": len(gpl_package["edits"]),
                     **gpl_package["verification"],
+                    "abi_constraint": gpl_abi_constraint,
                 }
                 if gpl_package is not None
                 else None

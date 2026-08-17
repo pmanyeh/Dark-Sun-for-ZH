@@ -590,7 +590,36 @@ c.close()
 - 使用繁體中文。
 - 工具操作前先簡短說明目的。
 - DOSBox 測試行程可由 AI 自行精確關閉／切版，不必反覆要求使用者手動關閉。
+- 啟動或操作 DOSBox-X 時，不要將滑鼠移入、定位或停留在 DOSBox 視窗內。
+- 每次啟動 DOSBox-X 前，先確認該 staging 的設定為 `autolock=false`；不要依賴預設值。
 - 每次只請使用者驗證少數清楚的畫面現象。
 - 不要把 provisional Fusion Pixel 說成倚天。
 - 不要宣稱 SDL 是唯一解；現行 v15 已證明原生 renderer 可做 9-row layout / 10-row
   CJK draw。
+
+## 17. 2026-08-16：競技場出口 ABI 修補已通過實機驗證
+
+`re_43_exit_trigger_entrypoint_and_region_format_narrowing.md` 的地圖通行調查已結案：
+問題不是 `gflag`、`GMAP`、`RMAP` 或 `ETAB`。GPL-3 的出口 callback 有未重定位的
+固定外部 entry ABI，必須在 `0x07C0` 以 `0x2A clearpic` 開始。v20 的翻譯使它移至
+`0x07D6`，故門口無對話。
+
+已驗證候選：
+
+- 封包：`scratch_test/gpl3_exit_entry_abi_v1`
+- 可玩 staging：`scratch_test/cjk_display_staging_v21_exit_abi_fix`
+- 實機：出口出現繁中確認對話，選 Yes 後正常轉場至庫爾扎克後續對話。
+
+另有從同一候選封包重新建置、且由 staging builder 再抽取 GPL-3 驗證 ABI 的：
+
+- `scratch_test/cjk_display_staging_v22_exit_abi_guard_rebuild`
+
+`tools/compile_gpl_dialogue_patch.py` 新增：
+
+```text
+--require-fixed-entry GPL:3:0x07C0:0x2A
+```
+
+未來重組包含 GPL-3 的對話封包時必須使用這個 guard；若入口位移，建置會失敗。v21
+尚是實機驗證 staging，v22 是同 payload 的可重建 guard 驗證 staging；兩者均未升格
+正式 playable checkpoint。下一步是完成短回歸後才決定升格。

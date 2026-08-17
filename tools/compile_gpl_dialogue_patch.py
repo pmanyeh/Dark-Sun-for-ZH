@@ -134,24 +134,27 @@ BRANCH_PARAMETER = {
 # since its target/chunk parameter order is reversed from every other single-
 # target opcode. See GLOBAL_SUB_OPCODE below.
 #
-# The "template" trigger opcodes (0x65 attacktrigger, 0x66 looktrigger, 0x68
-# move tiletrigger, 0x69 door tiletrigger, 0x6A move boxtrigger, 0x6B door
-# boxtrigger, 0x6C pickup itemtrigger, 0x6D usetrigger, 0x6E talktotrigger,
-# 0x6F noorderstrigger, 0x70 usewithtrigger) were investigated for re_42 and
-# deliberately NOT added here. Their leading immediate14 fields looked like
-# same-chunk offsets at first (e.g. two different 0x6F instances in two
-# different GPL-2..5 chunks both used the literal value 100), but that value
-# recurs identically across unrelated chunks of very different lengths --
-# it is a fixed threshold/radius constant, not a branch target. Their real
-# jump target, if any, is more likely carried by the trailing
-# `immediate_name`/`complex_access`/`variable(gname)` expression (a symbolic
-# reference, similar in spirit to 0x14's cross-chunk call), which does not
-# need same-chunk offset relocation. Do not add a numeric param index for
-# these opcodes without first confirming which field is genuinely a
-# same-chunk offset (e.g. by checking whether the value repeats identically
-# across chunks of different lengths, as it does here) -- a wrong guess
-# raises a clear "targets non-instruction" error during relocation rather
-# than a silent one, so this is safe to leave unhandled for now.
+# Template trigger opcodes carry a target offset and chunk id. re_42 saw a
+# recurring literal 100 in unrelated 0x6F instances, so these were initially
+# left untouched. re_44 then proved the general structure with GPL-5's
+# `talktotrigger 0x092C, 5, <name>`: 0x092C is an instruction boundary in
+# original GPL-5 but translation moved the target while the trigger retained
+# the stale number. Relocate only when the declared chunk is this chunk AND
+# the offset is an instruction boundary; fixed thresholds such as 100 safely
+# remain untouched because they are not in offset_map.
+TEMPLATE_TRIGGER_TARGET = {
+    0x65: (0, 1),  # attacktrigger: offset, chunk
+    0x66: (0, 1),  # looktrigger: offset, chunk
+    0x68: (0, 1),  # move tiletrigger: offset, chunk
+    0x69: (0, 1),  # door tiletrigger: offset, chunk
+    0x6A: (0, 1),  # move boxtrigger: offset, chunk
+    0x6B: (0, 1),  # door boxtrigger: offset, chunk
+    0x6C: (0, 1),  # pickup itemtrigger: offset, chunk
+    0x6D: (0, 1),  # usetrigger: offset, chunk
+    0x6E: (0, 1),  # talktotrigger: offset, chunk
+    0x6F: (0, 1),  # noorderstrigger: offset, chunk
+    0x70: (2, 3),  # usewithtrigger: offset, chunk
+}
 
 # gpl_menu (0x48): one leading expression (the menu's TEXT-table name),
 # then a run of 3-expression entries (choice string, jump target, flag)
@@ -182,6 +185,28 @@ def relocate_single_target(
     targets[0]["value"] = offset_map[old_target]
 
 
+def relocate_template_trigger_target(
+    params: list[list[dict[str, object]]],
+    offset_map: dict[int, int],
+    chunk_id: int | None,
+    target_index: int,
+    chunk_index: int,
+    where: str,
+) -> None:
+    """Relocate a template-trigger target only for a proven same-chunk call."""
+    if chunk_id is None or max(target_index, chunk_index) >= len(params):
+        return
+    chunk_values = [item for item in params[chunk_index] if item.get("kind") == "immediate14"]
+    target_values = [item for item in params[target_index] if item.get("kind") == "immediate14"]
+    if len(chunk_values) != 1 or len(target_values) != 1:
+        return
+    if int(chunk_values[0]["value"]) != chunk_id:
+        return
+    old_target = int(target_values[0]["value"])
+    if old_target in offset_map:
+        target_values[0]["value"] = offset_map[old_target]
+
+
 def packed_string_bytes(value: str) -> int:
     """Return the SSI 7-bit stream size including its 0x03 terminator."""
     try:
@@ -189,6 +214,122 @@ def packed_string_bytes(value: str) -> int:
     except UnicodeEncodeError as exc:
         raise ValueError("GPL compressed strings must be transport-safe ASCII") from exc
     return ((len(payload) + 1) * 7 + 7) // 8
+
+
+def parse_fixed_entry_requirement(value: str) -> tuple[str, int, int, int]:
+    """Parse ``KIND:ID:OFFSET:OPCODE`` for an externally addressed GPL entry."""
+    parts = value.split(":")
+    if len(parts) != 4:
+        raise argparse.ArgumentTypeError(
+            "fixed entry must be KIND:ID:OFFSET:OPCODE (for example GPL:3:0x07C0:0x2A)"
+        )
+    kind = parts[0].upper()
+    if kind not in {"GPL", "MAS"}:
+        raise argparse.ArgumentTypeError(f"unsupported fixed-entry kind {parts[0]!r}")
+    try:
+        chunk_id, offset, opcode = (int(item, 0) for item in parts[1:])
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError(f"invalid fixed entry {value!r}") from exc
+    if chunk_id < 0 or offset < 0 or not 0 <= opcode <= 0xFF:
+        raise argparse.ArgumentTypeError(f"out-of-range fixed entry {value!r}")
+    return kind, chunk_id, offset, opcode
+
+
+def verify_fixed_entry_requirements(
+    kind: str, chunk_id: int, payload: bytes, requirements: list[tuple[str, int, int, int]]
+) -> None:
+    """Refuse a variable-length patch which moves an externally fixed entry."""
+    for required_kind, required_id, offset, opcode in requirements:
+        if (kind, chunk_id) != (required_kind, required_id):
+            continue
+        actual = payload[offset] if offset < len(payload) else None
+        if actual != opcode:
+            actual_text = "past end of chunk" if actual is None else f"0x{actual:02X}"
+            raise ValueError(
+                f"{kind}-{chunk_id}: fixed external entry 0x{offset:04X} must start "
+                f"with 0x{opcode:02X}, found {actual_text}"
+            )
+
+
+def verify_external_entry_boundaries(
+    kind: str,
+    chunk_id: int,
+    document: dict[str, object],
+    requirements: list[tuple[str, int, int, int]],
+) -> None:
+    """Ensure diagnostic fixed entries remain *instruction* boundaries.
+
+    A byte-only check is insufficient: a variable-length rewrite may put an
+    unrelated instruction with the same opcode at the former entry address.
+    The verified disassembly is the authoritative post-assembly layout, so
+    require both the original offset and its opcode to survive there.
+    """
+    instructions = document.get("instructions")
+    if not isinstance(instructions, list):
+        raise ValueError(f"{kind}-{chunk_id}: verified disassembly has no instructions")
+    boundaries = {
+        int(instruction["offset"]): int(instruction["opcode"])
+        for instruction in instructions
+    }
+    for required_kind, required_id, offset, opcode in requirements:
+        if (kind, chunk_id) != (required_kind, required_id):
+            continue
+        actual = boundaries.get(offset)
+        if actual != opcode:
+            if actual is None:
+                actual_text = "not an instruction boundary"
+            else:
+                actual_text = f"opcode 0x{actual:02X}"
+            raise ValueError(
+                f"{kind}-{chunk_id}: external entry 0x{offset:04X} must remain an "
+                f"instruction boundary with opcode 0x{opcode:02X}, found {actual_text}"
+            )
+
+
+def parse_external_entry_listing(value: str) -> list[int]:
+    """Parse the one-hex-offset-per-line output of ``gpl-disasm --entries``.
+
+    The disassembler discovers local-sub function entries structurally; this
+    is not by itself proof that an engine-side table stores those offsets.
+    """
+    entries: list[int] = []
+    for line in value.splitlines():
+        stripped = line.strip()
+        if not stripped:
+            continue
+        try:
+            entry = int(stripped, 0)
+        except ValueError as exc:
+            raise ValueError(f"invalid gpl-disasm entry listing line {stripped!r}") from exc
+        if entry < 0:
+            raise ValueError(f"negative gpl-disasm entry {stripped!r}")
+        entries.append(entry)
+    if not entries:
+        raise ValueError("gpl-disasm returned no external entries")
+    return entries
+
+
+def external_entry_requirements(
+    gpl_disasm: Path, source: Path, kind: str, chunk_id: int, original_chunk: bytes
+) -> list[tuple[str, int, int, int]]:
+    """Capture every discovered local-sub entry as a fixed-layout probe."""
+    completed = subprocess.run(
+        [
+            str(gpl_disasm), str(source), "--kind", kind, "--id", str(chunk_id),
+            "--entries", "--no-syms",
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    requirements: list[tuple[str, int, int, int]] = []
+    for offset in parse_external_entry_listing(completed.stdout):
+        if offset >= len(original_chunk):
+            raise ValueError(
+                f"{kind}-{chunk_id}: external entry 0x{offset:04X} is past source chunk"
+            )
+        requirements.append((kind, chunk_id, offset, original_chunk[offset]))
+    return requirements
 
 
 def relocate_json_strings(
@@ -312,12 +453,62 @@ def relocate_json_strings(
                     offset_map,
                     f"self-referencing global sub at 0x{instruction['offset']:04X}",
                 )
+            continue
+        template_shape = TEMPLATE_TRIGGER_TARGET.get(opcode)
+        if template_shape is not None:
+            target_index, target_chunk_index = template_shape
+            relocate_template_trigger_target(
+                params,
+                offset_map,
+                chunk_id,
+                target_index,
+                target_chunk_index,
+                f"template trigger at 0x{instruction['offset']:04X}",
+            )
 
     document["bytes_consumed"] = new_cursor
     document["total_bytes"] = new_cursor
     document["cfg"] = None
     document["cross_chunk_calls"] = []
     return document, applied
+
+
+def relocate_gpli_event_targets(
+    source: bytes, offset_maps: dict[int, dict[int, int]]
+) -> tuple[bytes, list[dict[str, int]]]:
+    """Relocate GPLI-1's ``(event_id, offset, gpl_chunk)`` records.
+
+    GPLI is a six-byte little-endian table used by the region-event loader.
+    Its offsets are code addresses into GPL chunks, so a translated chunk
+    must move these entries in lockstep with branches and template triggers.
+    Only offsets that are known original instruction boundaries are changed.
+    """
+    record_size = 6
+    if len(source) % record_size:
+        raise ValueError(f"GPLI-1 has invalid {len(source)}-byte record layout")
+    patched = bytearray(source)
+    relocated: list[dict[str, int]] = []
+    for record_offset in range(0, len(source), record_size):
+        event_id = int.from_bytes(source[record_offset:record_offset + 2], "little")
+        old_target = int.from_bytes(source[record_offset + 2:record_offset + 4], "little")
+        chunk_id = int.from_bytes(source[record_offset + 4:record_offset + 6], "little")
+        offset_map = offset_maps.get(chunk_id)
+        if offset_map is None or old_target not in offset_map:
+            continue
+        new_target = offset_map[old_target]
+        if new_target == old_target:
+            continue
+        patched[record_offset + 2:record_offset + 4] = new_target.to_bytes(2, "little")
+        relocated.append(
+            {
+                "record_offset": record_offset,
+                "event_id": event_id,
+                "chunk_id": chunk_id,
+                "original_offset": old_target,
+                "relocated_offset": new_target,
+            }
+        )
+    return bytes(patched), relocated
 
 
 def load_selected_edits(
@@ -394,6 +585,22 @@ def main() -> int:
     parser.add_argument("--gpl-disasm", type=Path, default=DEFAULT_GPL_DISASM)
     parser.add_argument("--gpl-asm", type=Path, default=DEFAULT_GPL_ASM)
     parser.add_argument("--gff-cat", type=Path, default=DEFAULT_GFF_CAT)
+    parser.add_argument(
+        "--require-fixed-entry",
+        action="append",
+        type=parse_fixed_entry_requirement,
+        default=[],
+        metavar="KIND:ID:OFFSET:OPCODE",
+        help="require an externally addressed entry to retain its byte offset and opcode",
+    )
+    parser.add_argument(
+        "--preserve-external-entries",
+        action="store_true",
+        help=(
+            "diagnostic: preserve every original gpl-disasm --entries "
+            "(discovered local-sub) boundary"
+        ),
+    )
     parser.add_argument("--unit-id", action="append", required=True)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
@@ -417,6 +624,10 @@ def main() -> int:
         listings.mkdir(parents=True)
         target_records: list[dict[str, object]] = []
         edit_records: list[dict[str, object]] = []
+        gpl_offset_maps: dict[int, dict[int, int]] = {}
+        entry_requirements_by_target: dict[
+            tuple[str, int], list[tuple[str, int, int, int]]
+        ] = {}
 
         for (kind, chunk_id), edits in sorted(grouped.items()):
             stem = f"{kind}-{chunk_id}"
@@ -441,12 +652,32 @@ def main() -> int:
             run(args.gpl_asm, original_listing, "-o", roundtrip_chunk)
             if roundtrip_chunk.read_bytes() != original_chunk.read_bytes():
                 raise ValueError(f"{stem}: source chunk failed byte-identical GPL round-trip")
+            entry_requirements = list(args.require_fixed_entry)
+            if args.preserve_external_entries:
+                entry_requirements.extend(
+                    external_entry_requirements(
+                        args.gpl_disasm, source, kind, chunk_id, original_chunk.read_bytes()
+                    )
+                )
+            entry_requirements_by_target[(kind, chunk_id)] = entry_requirements
             source_document = json.loads(original_listing.read_text(encoding="utf-8"))
             patched_document, applied = relocate_json_strings(
                 source_document, edits, chunk_id
             )
+            if kind == "GPL":
+                original_instructions = source_document["instructions"]
+                patched_instructions = patched_document["instructions"]
+                if len(original_instructions) != len(patched_instructions):
+                    raise ValueError(f"{stem}: instruction count changed during relocation")
+                gpl_offset_maps[chunk_id] = {
+                    int(original["offset"]): int(patched["offset"])
+                    for original, patched in zip(original_instructions, patched_instructions, strict=True)
+                }
             write_json(patched_listing, patched_document)
             run(args.gpl_asm, patched_listing, "-o", patched_chunk)
+            verify_fixed_entry_requirements(
+                kind, chunk_id, patched_chunk.read_bytes(), entry_requirements
+            )
             target_records.append(
                 {
                     "kind": kind,
@@ -461,6 +692,27 @@ def main() -> int:
             for item in applied:
                 item.update({"kind": kind, "chunk_id": chunk_id})
                 edit_records.append(item)
+
+        gpli_original = chunks / "GPLI-1.original.bin"
+        gpli_patched = chunks / "GPLI-1.bin"
+        run(args.gff_cat, "extract", source, "GPLI", "1", "-o", gpli_original)
+        relocated_gpli, gpli_relocations = relocate_gpli_event_targets(
+            gpli_original.read_bytes(), gpl_offset_maps
+        )
+        if gpli_relocations:
+            gpli_patched.write_bytes(relocated_gpli)
+            target_records.append(
+                {
+                    "kind": "GPLI",
+                    "chunk_id": 1,
+                    "source_bytes": len(gpli_original.read_bytes()),
+                    "source_sha256": sha256(gpli_original.read_bytes()),
+                    "encoded_byte_length": len(relocated_gpli),
+                    "sha256": sha256(relocated_gpli),
+                    "file": "chunks/GPLI-1.bin",
+                    "relocated_event_targets": gpli_relocations,
+                }
+            )
 
         current = source
         for index, record in enumerate(target_records):
@@ -489,6 +741,8 @@ def main() -> int:
 
         for record in target_records:
             kind, chunk_id = record["kind"], record["chunk_id"]
+            if kind not in {"GPL", "MAS"}:
+                continue
             json_path = listings / f"{kind}-{chunk_id}.verified.json"
             run(
                 args.gpl_disasm,
@@ -505,6 +759,12 @@ def main() -> int:
             document = json.loads(json_path.read_text(encoding="utf-8"))
             if not document.get("aligned") or document.get("bytes_consumed") != document.get("total_bytes"):
                 raise ValueError(f"{kind}-{chunk_id}: patched chunk is not instruction-aligned")
+            verify_external_entry_boundaries(
+                kind,
+                chunk_id,
+                document,
+                entry_requirements_by_target[(kind, chunk_id)],
+            )
             values = string_values(document)
             for edit in [
                 item for item in edit_records
