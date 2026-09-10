@@ -159,9 +159,14 @@ TEMPLATE_TRIGGER_TARGET = {
 # gpl_menu (0x48): one leading expression (the menu's TEXT-table name),
 # then a run of 3-expression entries (choice string, jump target, flag)
 # until the terminator byte 0x4A. The jump target sits in the middle of
-# each triple and is not covered by BRANCH_PARAMETER.
+# each triple and is not covered by BRANCH_PARAMETER. All of a menu's
+# option strings live on the same instruction offset, so the dialogue
+# catalog records one occurrence per option but they all share that offset
+# -- relocate_json_strings must accept a list of edits per offset instead
+# of assuming one.
 MENU_OPCODE = 0x48
 MENU_ENTRY_WIDTH = 3
+MENU_ENTRY_TEXT_INDEX = 0
 MENU_ENTRY_TARGET_INDEX = 1
 
 # gpl_global_sub (0x14): params are (offset, chunk_id), reversed from the
@@ -340,41 +345,27 @@ def relocate_json_strings(
     instructions = document.get("instructions")
     if not isinstance(instructions, list) or not document.get("aligned"):
         raise ValueError("GPL disassembly is missing an aligned instruction list")
-    by_offset = {int(edit["offset"]): edit for edit in edits}
-    if len(by_offset) != len(edits):
-        raise ValueError("multiple dialogue edits target the same instruction offset")
+    by_offset: dict[int, list[dict[str, object]]] = {}
+    for edit in edits:
+        by_offset.setdefault(int(edit["offset"]), []).append(edit)
     old_offsets = [int(instruction["offset"]) for instruction in instructions]
     if len(set(old_offsets)) != len(old_offsets):
         raise ValueError("GPL disassembly contains duplicate instruction offsets")
     applied: list[dict[str, object]] = []
 
-    for instruction in instructions:
-        old_offset = int(instruction["offset"])
-        edit = by_offset.get(old_offset)
-        if edit is None:
-            continue
-        if int(instruction["opcode"]) != 0x4F:
-            raise ValueError(f"{edit['unit_id']}: 0x{old_offset:04X} is not gpl print string")
-        strings = [
-            expression
-            for parameter in instruction.get("params", [])
-            for expression in parameter
-            if expression.get("kind") == "immediate_string"
-        ]
-        if len(strings) != 1 or strings[0].get("sub_type") != "compressed":
-            raise ValueError(f"{edit['unit_id']}: expected one compressed inline string")
+    def apply_string_edit(
+        string_expression: dict[str, object], edit: dict[str, object], old_offset: int
+    ) -> int:
+        """Fingerprint-check and rewrite one compressed string in place, returning its packed-byte delta."""
         original = str(edit["original"])
-        if strings[0].get("value") != original:
+        if string_expression.get("value") != original:
             raise ValueError(
                 f"{edit['unit_id']}: source fingerprint mismatch at 0x{old_offset:04X}"
             )
         encoded = bytes(edit["encoded"])
         encoded_ascii = encoded.decode("ascii")
         delta = packed_string_bytes(encoded_ascii) - packed_string_bytes(original)
-        instruction["length"] = int(instruction["length"]) + delta
-        if instruction["length"] <= 0:
-            raise ValueError(f"{edit['unit_id']}: replacement produced invalid instruction length")
-        strings[0]["value"] = encoded_ascii
+        string_expression["value"] = encoded_ascii
         applied.append(
             {
                 "unit_id": edit["unit_id"],
@@ -388,6 +379,85 @@ def relocate_json_strings(
                 "packed_length_delta": delta,
             }
         )
+        return delta
+
+    for instruction in instructions:
+        old_offset = int(instruction["offset"])
+        offset_edits = by_offset.get(old_offset)
+        if not offset_edits:
+            continue
+        opcode = int(instruction["opcode"])
+        params = instruction.get("params", [])
+        if opcode == 0x4F:
+            if len(offset_edits) != 1:
+                raise ValueError(
+                    "multiple dialogue edits target print-string instruction at "
+                    f"0x{old_offset:04X}"
+                )
+            strings = [
+                expression
+                for parameter in params
+                for expression in parameter
+                if expression.get("kind") == "immediate_string"
+            ]
+            if len(strings) != 1 or strings[0].get("sub_type") != "compressed":
+                raise ValueError(f"{offset_edits[0]['unit_id']}: expected one compressed inline string")
+            delta = apply_string_edit(strings[0], offset_edits[0], old_offset)
+            instruction["length"] = int(instruction["length"]) + delta
+            if instruction["length"] <= 0:
+                raise ValueError(
+                    f"{offset_edits[0]['unit_id']}: replacement produced invalid instruction length"
+                )
+        elif opcode == MENU_OPCODE:
+            # Every option in this menu shares this one instruction offset, so
+            # offset_edits may hold several entries; match each to its option
+            # by exact original text (menu option text is not otherwise
+            # ordered/indexed in the dialogue catalog) and reject anything
+            # ambiguous or unmatched instead of guessing.
+            entry_params = len(params) - 1
+            if entry_params < 0 or entry_params % MENU_ENTRY_WIDTH != 0:
+                raise ValueError(
+                    f"menu at 0x{old_offset:04X} has an unexpected parameter shape "
+                    f"({len(params)} params)"
+                )
+            num_entries = entry_params // MENU_ENTRY_WIDTH
+            entry_strings: list[dict[str, object]] = []
+            for entry in range(num_entries):
+                text_index = 1 + entry * MENU_ENTRY_WIDTH + MENU_ENTRY_TEXT_INDEX
+                strings = [
+                    expression for expression in params[text_index]
+                    if expression.get("kind") == "immediate_string"
+                ]
+                if len(strings) != 1 or strings[0].get("sub_type") != "compressed":
+                    raise ValueError(
+                        f"menu at 0x{old_offset:04X} entry {entry} has an unexpected text expression"
+                    )
+                entry_strings.append(strings[0])
+            claimed = [False] * num_entries
+            total_delta = 0
+            for edit in offset_edits:
+                original = str(edit["original"])
+                candidates = [
+                    index for index in range(num_entries)
+                    if not claimed[index] and entry_strings[index].get("value") == original
+                ]
+                if not candidates:
+                    raise ValueError(
+                        f"{edit['unit_id']}: no unclaimed menu entry text matches source at "
+                        f"0x{old_offset:04X}"
+                    )
+                index = candidates[0]
+                claimed[index] = True
+                total_delta += apply_string_edit(entry_strings[index], edit, old_offset)
+            instruction["length"] = int(instruction["length"]) + total_delta
+            if instruction["length"] <= 0:
+                raise ValueError(
+                    f"menu at 0x{old_offset:04X}: replacement produced invalid instruction length"
+                )
+        else:
+            raise ValueError(
+                f"{offset_edits[0]['unit_id']}: 0x{old_offset:04X} is not gpl print string or gpl menu"
+            )
     missing = sorted(set(by_offset) - {item["original_offset"] for item in applied})
     if missing:
         raise ValueError(f"dialogue edit offsets are not instructions: {missing}")
@@ -579,6 +649,11 @@ def string_values(disassembly: dict[str, object]) -> list[str]:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", type=Path, default=DEFAULT_GPLDATA)
+    parser.add_argument(
+        "--prior-package",
+        type=Path,
+        help="an existing darksun-gpl-dialogue-patch package.json to layer this patch on top of",
+    )
     parser.add_argument("--units", type=Path, default=DEFAULT_UNITS)
     parser.add_argument("--occurrences", type=Path, default=DEFAULT_OCCURRENCES)
     parser.add_argument("--mapping", type=Path, default=DEFAULT_MAPPING)
@@ -605,7 +680,20 @@ def main() -> int:
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
 
-    source = args.source.resolve()
+    prior_package: dict[str, object] | None = None
+    if args.prior_package:
+        prior_package = json.loads(args.prior_package.read_text(encoding="utf-8"))
+        if prior_package.get("format") != "darksun-gpl-dialogue-patch":
+            raise ValueError(f"unsupported prior package: {args.prior_package}")
+        source = args.prior_package.parent / str(prior_package["patched_file"])
+        baseline = Path(str(prior_package["source"]))
+        if sha256(baseline.read_bytes()) != prior_package["source_sha256"]:
+            raise ValueError("prior package baseline GPLDATA.GFF does not match its own manifest")
+        if sha256(source.read_bytes()) != prior_package["patched_sha256"]:
+            raise ValueError("prior package patched GPLDATA.GFF does not match its own manifest")
+    else:
+        source = args.source.resolve()
+        baseline = source
     output = args.output.resolve()
     if output.exists():
         raise ValueError(f"output already exists: {output}")
@@ -613,17 +701,37 @@ def main() -> int:
     grouped = load_selected_edits(
         args.units, args.occurrences, mapping, args.unit_id
     )
+    if prior_package:
+        prior_targets = {
+            (str(record["kind"]), int(record["chunk_id"]))
+            for record in prior_package["chunks"]
+        }
+        overlapping_targets = sorted(set(grouped) & prior_targets)
+        if overlapping_targets:
+            formatted = ", ".join(f"{kind}-{chunk_id}" for kind, chunk_id in overlapping_targets)
+            raise ValueError(
+                "prior package already modifies selected dialogue chunks; "
+                f"recompile their combined unit set from the pristine baseline: {formatted}"
+            )
     output.parent.mkdir(parents=True, exist_ok=True)
 
     with tempfile.TemporaryDirectory(prefix="darksun-gpl-dialogue-", dir=output.parent) as temporary:
         temporary_root = Path(temporary)
         staging = temporary_root / "package"
+        if args.prior_package:
+            shutil.copytree(args.prior_package.parent, staging)
         chunks = staging / "chunks"
         listings = staging / "ir"
-        chunks.mkdir(parents=True)
-        listings.mkdir(parents=True)
-        target_records: list[dict[str, object]] = []
-        edit_records: list[dict[str, object]] = []
+        chunks.mkdir(parents=True, exist_ok=True)
+        listings.mkdir(parents=True, exist_ok=True)
+        target_records: list[dict[str, object]] = (
+            list(prior_package["chunks"]) if prior_package else []
+        )
+        edit_records: list[dict[str, object]] = (
+            list(prior_package["edits"]) if prior_package else []
+        )
+        new_target_records: list[dict[str, object]] = []
+        new_edit_records: list[dict[str, object]] = []
         gpl_offset_maps: dict[int, dict[int, int]] = {}
         entry_requirements_by_target: dict[
             tuple[str, int], list[tuple[str, int, int, int]]
@@ -678,7 +786,7 @@ def main() -> int:
             verify_fixed_entry_requirements(
                 kind, chunk_id, patched_chunk.read_bytes(), entry_requirements
             )
-            target_records.append(
+            new_target_records.append(
                 {
                     "kind": kind,
                     "chunk_id": chunk_id,
@@ -691,7 +799,7 @@ def main() -> int:
             )
             for item in applied:
                 item.update({"kind": kind, "chunk_id": chunk_id})
-                edit_records.append(item)
+                new_edit_records.append(item)
 
         gpli_original = chunks / "GPLI-1.original.bin"
         gpli_patched = chunks / "GPLI-1.bin"
@@ -701,7 +809,7 @@ def main() -> int:
         )
         if gpli_relocations:
             gpli_patched.write_bytes(relocated_gpli)
-            target_records.append(
+            new_target_records.append(
                 {
                     "kind": "GPLI",
                     "chunk_id": 1,
@@ -714,8 +822,16 @@ def main() -> int:
                 }
             )
 
+        replaced_targets = {(record["kind"], record["chunk_id"]) for record in new_target_records}
+        target_records = [
+            record for record in target_records
+            if (record["kind"], record["chunk_id"]) not in replaced_targets
+        ]
+        target_records.extend(new_target_records)
+        edit_records.extend(new_edit_records)
+
         current = source
-        for index, record in enumerate(target_records):
+        for index, record in enumerate(new_target_records):
             next_gff = temporary_root / f"GPLDATA.step-{index}.GFF"
             run(
                 args.gff_cat,
@@ -733,13 +849,13 @@ def main() -> int:
 
         original_all = temporary_root / "original-all"
         patched_all = temporary_root / "patched-all"
-        run(args.gff_cat, "extract", source, "--all", "-o", original_all)
+        run(args.gff_cat, "extract", baseline, "--all", "-o", original_all)
         run(args.gff_cat, "extract", patched_gff, "--all", "-o", patched_all)
         verification = verify_extracted_gff_chunks(
             original_all, patched_all, target_records, {"GFFI-8.bin"}
         )
 
-        for record in target_records:
+        for record in new_target_records:
             kind, chunk_id = record["kind"], record["chunk_id"]
             if kind not in {"GPL", "MAS"}:
                 continue
@@ -767,7 +883,7 @@ def main() -> int:
             )
             values = string_values(document)
             for edit in [
-                item for item in edit_records
+                item for item in new_edit_records
                 if item["kind"] == kind and item["chunk_id"] == chunk_id
             ]:
                 if edit["encoded_ascii"] not in values:
@@ -775,20 +891,32 @@ def main() -> int:
                         f"{edit['unit_id']}: encoded string did not survive patched disassembly"
                     )
 
+        prior_unit_ids = {
+            str(item["unit_id"])
+            for item in (prior_package.get("edits", []) if prior_package else [])
+            if item.get("unit_id")
+        }
         package = {
             "format": "darksun-gpl-dialogue-patch",
             "version": 1,
-            "source": str(source),
-            "source_sha256": sha256(source.read_bytes()),
+            "source": str(baseline),
+            "source_sha256": sha256(baseline.read_bytes()),
             "patched_file": "GPLDATA.GFF",
             "patched_bytes": len(patched_gff.read_bytes()),
             "patched_sha256": sha256(patched_gff.read_bytes()),
-            "units": sorted(set(args.unit_id)),
+            "units": sorted(
+                set(args.unit_id)
+                | set(prior_package.get("units", []) if prior_package else [])
+                | prior_unit_ids
+            ),
             "mapping_sha256": sha256(args.mapping.read_bytes()),
             "chunks": target_records,
             "edits": edit_records,
             "verification": verification,
         }
+        for inherited_key in ("name_records", "abi_constraint"):
+            if prior_package and inherited_key in prior_package:
+                package[inherited_key] = prior_package[inherited_key]
         write_json(staging / "gpl-dialogue-patch.json", package)
         shutil.move(str(staging), str(output))
 

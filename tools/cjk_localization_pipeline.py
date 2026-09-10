@@ -562,7 +562,9 @@ def command_inventory(args: argparse.Namespace) -> None:
 
 def command_build(args: argparse.Namespace) -> None:
     document = load_mapping(args.mapping)
-    entries = [entry for entry in document["entries"] if entry.get("active", True)]
+    # Runtime lookup seeks a fixed-size record directly by bank-local index.
+    # Keep inactive historical IDs in the bank so later records never shift.
+    entries = list(document["entries"])
     if args.eten_dir:
         std_path = args.eten_dir / "STDFONT.15"
         spc_path = args.eten_dir / "SPCFONT.15"
@@ -767,9 +769,8 @@ def command_verify_banks(args: argparse.Namespace) -> None:
         banks[bank_id] = bank
     checked = 0
     for entry in mapping["entries"]:
-        if entry.get("active", True):
-            glyph_record_for_id(entry["id"], banks)
-            checked += 1
+        glyph_record_for_id(entry["id"], banks)
+        checked += 1
     print(f"verified_banks={len(banks)}")
     print(f"verified_glyphs={checked}")
     print("max_record_bytes=" + str(max(len(record) for bank in banks.values() for record in bank["records"].values())))

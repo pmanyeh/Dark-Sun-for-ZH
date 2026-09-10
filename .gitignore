@@ -22,6 +22,9 @@ dist/
 # User-supplied and proprietary font media/assets.
 Fonts/
 
+# Local copy of the commercial game manual.
+Dark_Sun_Shattered_Lands_Manual.pdf
+
 # DOSBox-X runtime artifacts.
 MEMDUMP.BIN
 captures/

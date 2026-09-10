@@ -22,6 +22,11 @@ CACHE_RUNTIME_LIMIT = 0x5534
 STATE = 0x53B6
 NAMES = 0x53F6
 EBOX_OVERLAY_BASE = 0x31390
+ITEM_TEXT_FILE_BASE = 0x30BA0
+ITEM_FORMAT_LOOP = 0x02EB
+ITEM_FORMAT_WRAPPER = 0x5414
+ITEM_FORMAT_POST_HELPER = 0x51F1
+ITEM_FORMAT_POST_HELPER_ALIAS = 0x82B1
 EBOX_WIDTH_BODY = 0x0214
 EBOX_LAYOUT_LOCALS = 0x0265
 EBOX_LAYOUT_ADVANCE = 0x04A6
@@ -56,6 +61,44 @@ def mz_relocation_file_offsets(image: bytes) -> set[int]:
         offset, segment = struct.unpack_from("<HH", image, table + index * 4)
         result.add(header_bytes + segment * 16 + offset)
     return result
+
+
+def rewrite_mz_relocations(
+    image: bytearray, remove_file_offsets: set[int], add_file_offsets: set[int]
+) -> None:
+    """Replace selected MZ relocation words without moving the load image."""
+    count = struct.unpack_from("<H", image, 0x06)[0]
+    header_bytes = struct.unpack_from("<H", image, 0x08)[0] * 16
+    table = struct.unpack_from("<H", image, 0x18)[0]
+    entries: list[tuple[int, int]] = []
+    removed: set[int] = set()
+    for index in range(count):
+        offset, segment = struct.unpack_from("<HH", image, table + index * 4)
+        file_offset = header_bytes + segment * 16 + offset
+        if file_offset in remove_file_offsets:
+            removed.add(file_offset)
+        else:
+            entries.append((offset, segment))
+    if removed != remove_file_offsets:
+        missing = sorted(remove_file_offsets - removed)
+        raise ValueError(
+            "missing MZ relocation(s) to replace: "
+            + ", ".join(f"0x{item:05X}" for item in missing)
+        )
+    existing = {
+        header_bytes + segment * 16 + offset for offset, segment in entries
+    }
+    for file_offset in sorted(add_file_offsets - existing):
+        linear = file_offset - header_bytes
+        if not 0 <= linear <= 0xFFFFF:
+            raise ValueError(f"MZ relocation is outside the load image: 0x{file_offset:05X}")
+        entries.append((linear & 0xF, linear >> 4))
+    end = table + len(entries) * 4
+    if end > header_bytes:
+        raise ValueError("MZ header has no room for the added relocation entries")
+    struct.pack_into("<H", image, 0x06, len(entries))
+    for index, (offset, segment) in enumerate(entries):
+        struct.pack_into("<HH", image, table + index * 4, offset, segment)
 
 
 def assemble_cache(scratch_offset: int = 0x3640, record_bytes: int = 242, bank_count: int = 4) -> bytes:
@@ -230,8 +273,60 @@ def glyph_height_call() -> bytes:
     return b"\xE8" + struct.pack("<H", displacement) + bytes.fromhex("89 46 E8") + b"\x90" * 5
 
 
+def item_format_wrapper() -> bytes:
+    """Resolve one `%Fs` byte and return AX unchanged to the caller.
+
+    AH is the ASCII/CJK source-length flag.  The caller keeps the complete AX
+    on its own stack while FONT receives a second, AH-cleared copy.  This avoids
+    v34's unsafe use of a formatter local and keeps ES:BX unchanged for FONT.
+    """
+    displacement = (COMMON - (ITEM_FORMAT_WRAPPER + 3)) & 0xFFFF
+    return b"\xE8" + struct.pack("<H", displacement) + b"\xCB"
+
+
+def item_format_post_helper() -> bytes:
+    """Advance a `%Fs` source after FONT has consumed the current glyph.
+
+    The formatter segment aliases resident offset 51F1 at 82B1.  This helper
+    occupies the start of the original executable's 433-byte zero-filled gap,
+    immediately before the existing resident CJK wrappers.
+    """
+    return bytes.fromhex(
+        "03 F7 "                  # extend dirty rectangle after FONT
+        "8A C4 D0 E0 FE C0 30 E4 " # returned AH flag 0/1 -> AX length 1/3
+        "01 46 F2 "               # advance full 16-bit far-string offset
+        "C4 5E F2 26 80 3F 00 "   # reload source; end of string?
+        "C3"
+    )
+
+
+def item_format_loop() -> bytes:
+    """Render a far string with balanced stack storage across FONT."""
+    helper_displacement = (
+        ITEM_FORMAT_POST_HELPER_ALIAS - (ITEM_FORMAT_LOOP + 19)
+    ) & 0xFFFF
+    payload = bytes.fromhex(
+        "9A 14 54 86 2E "          # call 2E86:5414 (runtime 36AA:5414)
+        "50 30 E4 50 "             # save AX flag; push clean glyph argument
+        "9A C1 59 80 09 "          # call FONT renderer (runtime 11A4:59C1)
+        "59 58 E8 "                # discard glyph; restore flag; post helper
+    )
+    payload += struct.pack("<H", helper_displacement)
+    payload += bytes.fromhex(
+        "75 EB EB 6A "             # loop, or join the outer formatter
+        "90 90 90 90"
+    )
+    if len(payload) != 0x0306 - ITEM_FORMAT_LOOP:
+        raise ValueError("item format loop replacement has the wrong size")
+    return payload
+
+
 def patches(
-    cache: bytes, line_gap: int = 0, cjk_draw_height: int = 9, bank_count: int = 4
+    cache: bytes,
+    line_gap: int = 0,
+    cjk_draw_height: int = 9,
+    bank_count: int = 4,
+    experimental_item_text_fix: bool = False,
 ) -> dict[int, tuple[bytes, bytes]]:
     if not 1 <= bank_count <= 9:
         raise ValueError("bank count must be 1..9 (single-digit CJB1 filenames)")
@@ -248,10 +343,11 @@ def patches(
         name_offsets.append(offset)
         offset += len(filename)
     names = struct.pack(f"<{bank_count}H", *name_offsets) + b"".join(filenames)
-    if NAMES + len(names) > min(CACHE, COMMON):
+    names_limit = ITEM_FORMAT_WRAPPER if experimental_item_text_fix else COMMON
+    if NAMES + len(names) > min(CACHE, names_limit):
         raise ValueError(
             f"bank name table for {bank_count} banks ends at 0x{NAMES + len(names):04X}, "
-            f"beyond the resolver stub start 0x{COMMON:04X}"
+            f"beyond the resolver data limit 0x{names_limit:04X}"
         )
     result = {
         CODE_BASE + 0x094A: (bytes.fromhex("26 8A 07"), bytes.fromhex("E8 59 4A")),
@@ -284,6 +380,20 @@ def patches(
             ebox_layout_advance_call(),
         ),
     }
+    if experimental_item_text_fix:
+        result[CODE_BASE + ITEM_FORMAT_WRAPPER] = (
+            bytes(len(item_format_wrapper())), item_format_wrapper()
+        )
+        result[CODE_BASE + ITEM_FORMAT_POST_HELPER] = (
+            bytes(len(item_format_post_helper())), item_format_post_helper()
+        )
+        result[ITEM_TEXT_FILE_BASE + ITEM_FORMAT_LOOP] = (
+            bytes.fromhex(
+                "26 8A 07 98 50 9A C1 59 80 09 59 03 F7 FF 46 F2 "
+                "C4 5E F2 26 80 3F 00 75 E4 EB 66"
+            ),
+            item_format_loop(),
+        )
     if cjk_draw_height != 9:
         result[CODE_BASE + CJK_HEIGHT_HELPER] = (
             bytes(len(cjk_height_helper(cjk_draw_height))),
@@ -314,6 +424,7 @@ def patch_executable(
     line_gap: int = 0,
     cjk_draw_height: int = 9,
     bank_count: int = 4,
+    experimental_item_text_fix: bool = False,
 ) -> tuple[bytes, bytes]:
     """Return a verified scratch-cache executable image and assembled cache."""
     data = bytearray(source)
@@ -323,11 +434,27 @@ def patch_executable(
             f"resident cache ends at 0x{CACHE + len(cache):04X}, "
             f"beyond runtime-safe boundary 0x{CACHE_RUNTIME_LIMIT:04X}"
         )
-    planned = patches(cache, line_gap, cjk_draw_height, bank_count)
+    planned = patches(
+        cache, line_gap, cjk_draw_height, bank_count, experimental_item_text_fix
+    )
     relocations = mz_relocation_file_offsets(source)
-    relocated_bytes = relocations | {offset + 1 for offset in relocations}
+    removed_relocations = (
+        {ITEM_TEXT_FILE_BASE + 0x02F3} if experimental_item_text_fix else set()
+    )
+    added_relocations = (
+        {ITEM_TEXT_FILE_BASE + 0x02EE, ITEM_TEXT_FILE_BASE + 0x02F7}
+        if experimental_item_text_fix else set()
+    )
+    if experimental_item_text_fix and not removed_relocations <= relocations:
+        raise ValueError("item format loop's original far-call relocation is missing")
+    final_relocations = (relocations - removed_relocations) | added_relocations
+    relocated_bytes = final_relocations | {offset + 1 for offset in final_relocations}
+    allowed_relocated_bytes = added_relocations | {offset + 1 for offset in added_relocations}
     for offset, (_, replacement) in planned.items():
-        overlap = sorted(set(range(offset, offset + len(replacement))) & relocated_bytes)
+        overlap = sorted(
+            (set(range(offset, offset + len(replacement))) & relocated_bytes)
+            - allowed_relocated_bytes
+        )
         if overlap:
             raise ValueError(
                 f"patch at 0x{offset:05X} overlaps MZ relocation word(s): "
@@ -338,6 +465,8 @@ def patch_executable(
         if actual != expected:
             raise ValueError(f"unexpected bytes at 0x{offset:05X}: {actual.hex()}")
         data[offset : offset + len(replacement)] = replacement
+    if experimental_item_text_fix:
+        rewrite_mz_relocations(data, removed_relocations, added_relocations)
     result = bytes(data)
     for offset, (_, replacement) in planned.items():
         if result[offset : offset + len(replacement)] != replacement:

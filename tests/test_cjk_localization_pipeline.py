@@ -239,11 +239,19 @@ class CjkLocalizationPipelineTests(unittest.TestCase):
             EBOX_NEXT_PAGE_DELTA_FILE_OFFSETS,
             EBOX_STORE_LINE_HEIGHT,
             GLYPH_HEIGHT_LOAD,
+            ITEM_FORMAT_LOOP,
+            ITEM_FORMAT_POST_HELPER,
+            ITEM_FORMAT_POST_HELPER_ALIAS,
+            ITEM_FORMAT_WRAPPER,
+            ITEM_TEXT_FILE_BASE,
             EBOX_LAYOUT_LOCALS,
             NAMES,
             assemble_cache,
             cjk_height_helper,
             ebox_cjk_width_body,
+            item_format_loop,
+            item_format_post_helper,
+            item_format_wrapper,
             ebox_page_step,
             ebox_store_line_height,
             ebox_layout_advance_call,
@@ -266,6 +274,18 @@ class CjkLocalizationPipelineTests(unittest.TestCase):
         self.assertIn(b"\x83\xF8\x5C", small)  # cmp ax, fixed record bytes
         self.assertEqual(CACHE + len(small), CACHE_RUNTIME_LIMIT)
         self.assertEqual(len(ebox_cjk_width_body()), 0x023A - 0x0214)
+        self.assertEqual(len(item_format_wrapper()), 4)
+        self.assertEqual(len(item_format_post_helper()), 21)
+        self.assertIn(bytes.fromhex("01 46 F2"), item_format_post_helper())
+        self.assertNotIn(bytes.fromhex("00 46 F2"), item_format_post_helper())
+        self.assertEqual(len(item_format_loop()), 0x0306 - 0x02EB)
+        self.assertIn(bytes.fromhex("50 30 E4 50 9A C1 59 80 09 59 58"), item_format_loop())
+        post_call = item_format_loop().index(b"\xE8")
+        post_displacement = struct.unpack_from("<h", item_format_loop(), post_call + 1)[0]
+        self.assertEqual(
+            ITEM_FORMAT_LOOP + post_call + 3 + post_displacement,
+            ITEM_FORMAT_POST_HELPER_ALIAS,
+        )
         layout = ebox_layout_locals_and_helper()
         self.assertEqual(len(layout), 0x0297 - EBOX_LAYOUT_LOCALS)
         self.assertEqual(
@@ -325,9 +345,15 @@ class CjkLocalizationPipelineTests(unittest.TestCase):
             )
             + b"C0\0C1\0C2\0C3\0C4\0",
         )
-        self.assertLessEqual(NAMES + len(five_bank_names), COMMON)
+        self.assertLessEqual(NAMES + len(five_bank_names), ITEM_FORMAT_WRAPPER)
         five_bank_exe, five_bank_cache = patch_executable(
-            source, 0x206B, 102, line_gap=2, cjk_draw_height=10, bank_count=5
+            source,
+            0x206B,
+            102,
+            line_gap=2,
+            cjk_draw_height=10,
+            bank_count=5,
+            experimental_item_text_fix=True,
         )
         # Same code size; only the embedded bank-count bound (cmp al, N) differs.
         self.assertEqual(len(five_bank_cache), len(ten_row_cache))
@@ -339,6 +365,17 @@ class CjkLocalizationPipelineTests(unittest.TestCase):
             five_bank_exe[CODE_BASE + NAMES : CODE_BASE + NAMES + len(five_bank_names)],
             five_bank_names,
         )
+        self.assertEqual(
+            five_bank_exe[
+                CODE_BASE + ITEM_FORMAT_POST_HELPER :
+                CODE_BASE + ITEM_FORMAT_POST_HELPER + len(item_format_post_helper())
+            ],
+            item_format_post_helper(),
+        )
+        five_bank_relocations = mz_relocation_file_offsets(five_bank_exe)
+        self.assertNotIn(ITEM_TEXT_FILE_BASE + 0x02F3, five_bank_relocations)
+        self.assertIn(ITEM_TEXT_FILE_BASE + 0x02EE, five_bank_relocations)
+        self.assertIn(ITEM_TEXT_FILE_BASE + 0x02F7, five_bank_relocations)
         with self.assertRaisesRegex(ValueError, "1..9"):
             patches(small, bank_count=10)
 
@@ -350,6 +387,53 @@ class CjkLocalizationPipelineTests(unittest.TestCase):
         width, pixels = render(chr(0x5F92))
         self.assertEqual((width, len(pixels)), (16, 240))
         self.assertGreater(pixels.count(0xFE), 20)
+
+    def test_item_format_v35_instruction_contract(self) -> None:
+        from tools.patch_dsun_scratch_cache import (
+            ITEM_FORMAT_LOOP,
+            ITEM_FORMAT_POST_HELPER_ALIAS,
+            item_format_loop,
+            item_format_post_helper,
+            item_format_wrapper,
+        )
+
+        # Far resolver returns AX=00xx for ASCII or AX=017F for CJK.  The loop
+        # saves that complete value, clears AH only in FONT's argument copy,
+        # then restores the original AX for the post-render helper.
+        loop = item_format_loop()
+        self.assertEqual(loop[:16], bytes.fromhex(
+            "9A 14 54 86 2E 50 30 E4 50 9A C1 59 80 09 59 58"
+        ))
+        self.assertEqual(loop.count(b"\x50"), 2)  # push AX twice
+        self.assertEqual(loop[14:16], b"\x59\x58")  # pop glyph, pop flag
+        self.assertEqual(item_format_wrapper()[-1], 0xCB)  # retf
+
+        call_position = 16
+        self.assertEqual(loop[call_position], 0xE8)
+        displacement = struct.unpack_from("<h", loop, call_position + 1)[0]
+        self.assertEqual(
+            ITEM_FORMAT_LOOP + call_position + 3 + displacement,
+            ITEM_FORMAT_POST_HELPER_ALIAS,
+        )
+        self.assertEqual(loop[19:23], bytes.fromhex("75 EB EB 6A"))
+
+        helper = item_format_post_helper()
+        self.assertEqual(helper, bytes.fromhex(
+            "03 F7 8A C4 D0 E0 FE C0 30 E4 01 46 F2 "
+            "C4 5E F2 26 80 3F 00 C3"
+        ))
+
+        # Model the exact MOV/SHL/INC/XOR/ADD sequence above.  These boundary
+        # cases distinguish v35's word addition from v34's rejected byte add.
+        def advance(offset: int, returned_ax: int) -> int:
+            al = (returned_ax >> 8) & 0xFF  # mov al,ah
+            al = ((al << 1) + 1) & 0xFF    # shl al,1; inc al
+            ax = al                         # xor ah,ah
+            return (offset + ax) & 0xFFFF  # add word [bp-0E],ax
+
+        self.assertEqual(advance(0x00FF, 0x0041), 0x0100)
+        self.assertEqual(advance(0x00FE, 0x017F), 0x0101)
+        self.assertEqual(advance(0xFFFE, 0x017F), 0x0001)
 
     def test_ttf_rasterizer_can_disable_drop_shadow(self) -> None:
         font = Path("Fonts/Fusion_Pixel_10px.ttf")

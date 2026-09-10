@@ -154,7 +154,7 @@ DLG_47d92522d55b,  Why is there blood in the courtyard?,,pending,True,1,GPL-101@
 DLG_560f3689fb2b,  Why are you here?,,pending,True,8,GPL-101@0x00A9,2,0
 DLG_dddec1ce95cc,  Who is to be executed?,,pending,True,1,GPL-101@0x00A9,2,0
 DLG_dd7f3ec22b44,  Why are the psurlons here?,,pending,True,4,GPL-101@0x00A9,2,0
-DLG_666b5040363d,Hamonde,,pending,True,189,GPL-101@0x00A9,0,0
+DLG_666b5040363d,Hamonde,哈蒙德,translated_unreviewed,True,189,GPL-101@0x00A9,0,0
 DLG_1033b697f5c8,See the little green and red ones? They're my favorites. I wish I was ,,pending,True,1,GPL-101@0x0150,0,1
 DLG_d6aa60befb61,a fish. I'd swim all day long. Then I wouldn't have to study. ,,pending,True,1,GPL-101@0x0194,0,1
 DLG_251e514b9fba,I'm always here this time of day. It's an excuse to get out of my cursed ,,pending,True,1,GPL-101@0x01D7,0,1
@@ -4043,8 +4043,8 @@ DLG_4a3730d4133f,"  This is getting really old, Balkazar.",,pending,True,1,GPL-1
 DLG_3c4402ab3871,  Give it up!,,pending,True,1,GPL-162@0x0744,2,0
 DLG_2a630a771a4f,  You're pathetic! Die! ,,pending,True,1,GPL-162@0x0744,2,1
 DLG_b89f6a85b511,Forget it! I'm leaving! ,,pending,True,1,GPL-162@0x0744,0,1
-DLG_52dd6209e325,Fools! I swear I'll make your deaths painful!,,pending,True,2,GPL-162@0x089B,0,0
-DLG_482790e487a0,Balkazar quickly utters an incantation! ,,pending,True,2,GPL-162@0x08E0,0,1
+DLG_52dd6209e325,Fools! I swear I'll make your deaths painful!,蠢貨！我發誓要讓你們死得痛苦萬分！,translated_unreviewed,True,2,GPL-162@0x089B,0,0
+DLG_482790e487a0,Balkazar quickly utters an incantation! ,巴爾卡札迅速唸出一段咒文！,translated_unreviewed,True,2,GPL-162@0x08E0,0,1
 DLG_a97c3387f07e,"No! You will not leave! You will watch me summon the Unnamed One, or you ",,pending,True,1,GPL-162@0x095B,0,1
 DLG_1fcc48c15f04,will die! ,,pending,True,1,GPL-162@0x09A1,0,1
 DLG_09adad827dee,  Okay. Summon him. ,,pending,True,1,GPL-162@0x09B0,2,1
@@ -6400,7 +6400,7 @@ DLG_3e64a01cda86,"learned to leave us alone, but we do not want to do anything t
 DLG_016890070086,antagonize them again.,,pending,True,1,GPL-194@0x16E6,0,0
 DLG_ae261e7a3b0c,"Wait here while we open the portcullis. With luck, the castle guards ",,pending,True,1,GPL-195@0x00AA,0,1
 DLG_ea386bcaec1f,won't be alerted.,,pending,True,1,GPL-195@0x00ED,0,0
-DLG_f6a53b5459fe,Intruders!,,pending,True,2,GPL-195@0x0223,0,0
+DLG_f6a53b5459fe,Intruders!,有入侵者！,translated_unreviewed,True,2,GPL-195@0x0223,0,0
 DLG_5469e74f0016,Death will be your reward for trespassing in Darkhold!,,pending,True,1,GPL-195@0x0234,0,0
 DLG_fd42933d317e,Do you want to leave the caves?,,pending,True,1,GPL-195@0x0413,0,0
 DLG_41c593edb1d5,"You aren't leaving, are you? I need your help to convince the folk ",,pending,True,1,GPL-195@0x044F,0,1
@@ -10644,52 +10644,52 @@ DLG_c4eea3cb5fbb,I'll go now -- before I change my mind.,,pending,True,1,GPL-59@
 DLG_95509634c2df,Here you go. Thank you for sparing us! ,,pending,True,1,GPL-59@0x046D,0,1
 DLG_552f8d94605f,Please don't kill us!,,pending,True,1,GPL-59@0x0505,0,0
 DLG_728d5c933e2f,Thank you! ,,pending,True,1,GPL-59@0x051F,0,1
-DLG_a3520350baa7,"You have ruined everything! I may not have my minions, but I will ",,pending,True,1,GPL-6@0x002E,0,1
-DLG_4158370fbec9,still defeat you! ,,pending,True,1,GPL-6@0x006E,0,1
-DLG_6a76f9fca6da,You will never defeat my minions and me! Never! I am immortal! ,,pending,True,1,GPL-6@0x0087,0,1
-DLG_f1b642c95ba8,Balkazar's eyes widen when he sees the magera. ,,pending,True,1,GPL-6@0x0117,0,1
-DLG_3683672492e7,You! You were not to leave the circle! Die! ,,pending,True,1,GPL-6@0x014E,0,1
-DLG_0b3efba04c1a,You! You must be agents of Dagolar! There is no way that mere slaves could ,,pending,True,1,GPL-6@0x019A,0,1
-DLG_f6dd7fc54118,"pass my babau and vrock! Tell your master that it is I who will rule Athas, ",,pending,True,1,GPL-6@0x01E2,0,1
-DLG_053cb03c1338,not him! ,,pending,True,1,GPL-6@0x022B,0,1
-DLG_f43d29fc583b,  Dagolar is dead. I killed him. ,,pending,True,1,GPL-6@0x0260,2,1
-DLG_53f4bf688234,  Dagolar?! What are you talking about?,,pending,True,1,GPL-6@0x0260,2,0
-DLG_c2a3e78eeb3c,  I've heard this somewhere before....,,pending,True,1,GPL-6@0x0260,2,0
-DLG_98a0e97a33b6,  I won't join scum like you!,,pending,True,1,GPL-6@0x0260,2,0
-DLG_6ac1a1a5977b,"  Yes, I'm here to join you.",,pending,True,1,GPL-6@0x0260,2,0
-DLG_0b5aab04a28e,  What will I get if I join you?,,pending,True,1,GPL-6@0x0260,2,0
-DLG_7a590f6fc5f2,  I'm here to kill you!,,pending,True,1,GPL-6@0x0260,2,0
-DLG_860dc5308068,  You must die!,,pending,True,1,GPL-6@0x0260,2,0
-DLG_711bbffa5463,  Very well. I'll join you.,,pending,True,1,GPL-6@0x0260,2,0
-DLG_efa307938dcb,Of course you have! You have dreamt of this moment -- and you know the outcome! ,,pending,True,1,GPL-6@0x0396,0,1
-DLG_05d07850ca1e,You are to join me in the conquest of Athas! ,,pending,True,1,GPL-6@0x03E2,0,1
-DLG_6db170f60dea,Do not lie about your allegiance! I know that Dagolar has sent you to destroy ,,pending,True,1,GPL-6@0x0425,0,1
-DLG_1c7130526384,"me! However, I will make you a counter-proposal; Dagolar is weak -- side with ",,pending,True,1,GPL-6@0x0470,0,1
-DLG_b2fb4c26eae5,me and join in the conquest of Athas! ,,pending,True,1,GPL-6@0x04BB,0,1
-DLG_edc386b58004,"So, turned on your master, did you? I knew that Dagolar would fall eventually. ",,pending,True,1,GPL-6@0x04EE,0,1
-DLG_f4db8fe5933f,Excellent! I need your kind on my side -- join me in my conquest of Athas! ,,pending,True,1,GPL-6@0x0539,0,1
-DLG_a769cb966c58,"When I summon the Unnamed One, the world will bow down before me! ",,pending,True,1,GPL-6@0x0591,0,1
-DLG_3ce50322791c,All of Athas will be mine to command! Those who resist will perish! ,,pending,True,1,GPL-6@0x05D1,0,1
-DLG_00e8f9c7143e,You will stand by my side -- join my reign!,,pending,True,1,GPL-6@0x0613,0,0
-DLG_28c66814d8e5,Then watch while I summon the Unnamed One! Follow!,,pending,True,1,GPL-6@0x0717,0,0
-DLG_6df1a44b0d1b,Join me or die!,,pending,True,1,GPL-6@0x075F,0,0
-DLG_5b36d53268d9,Balkazar begins an unintelligible incantation.,,pending,True,1,GPL-6@0x078D,0,0
-DLG_3245f98c4505,"The ground begins to roar and growl, as if it were alive!",,pending,True,1,GPL-6@0x07C2,0,0
-DLG_ec8ffc59c705,The Unnamed One approaches! I will teleport all to the temple!,,pending,True,1,GPL-6@0x0805,0,0
-DLG_126deb82ad1f,  Forget it! You die now! ,,pending,True,1,GPL-6@0x0842,2,1
-DLG_f5302d8a1558,  Let's go! Onward to the temple!,,pending,True,1,GPL-6@0x0842,2,0
-DLG_c6b0856aca88,The unnamed book pulls away from you as you attempt to leave with it! ,,pending,True,3,GPL-6@0x08C7,0,1
-DLG_c99829921086,"In a flash, it vanishes! ",,pending,True,3,GPL-6@0x090B,0,1
-DLG_5de49821da59,You feel a strange force tugging at you -- drawing you towards the mirror. ,,pending,True,1,GPL-6@0x0992,0,1
-DLG_66fe1d98738b,"The mirror darkens, and you feel a slight tug. Nothing else happens. ",,pending,True,1,GPL-6@0x09F6,0,1
-DLG_207e71c3ada3,You are drawn into the mirror! ,,pending,True,1,GPL-6@0x0A45,0,1
-DLG_f2c1a466e105,"For destroying Balkazar, you earn 6,000 EXP! ",,pending,True,1,GPL-6@0x0BA1,0,1
-DLG_9fe8df7b5132,Fools! You are throwing away much more than your lives! I am immortal! ,,pending,True,1,GPL-6@0x0C09,0,1
-DLG_b7ff66ca2db0,Balkazar recites an,,pending,True,1,GPL-6@0x0C53,0,0
-DLG_5bc22bac2a3b,other,,pending,True,1,GPL-6@0x0C73,0,0
-DLG_c987855bd1bd, incantation! ,,pending,True,1,GPL-6@0x0C7F,1,1
-DLG_f04a0351c489,You pour the terror blossom extract into the bowl. ,,pending,True,1,GPL-6@0x0D1C,0,1
-DLG_de00f7efa524,Your dagger looks somewhat different now... ,,pending,True,1,GPL-6@0x0DCA,0,1
+DLG_a3520350baa7,"You have ruined everything! I may not have my minions, but I will ",你毀了一切！就算失去了爪牙，我仍會,translated_unreviewed,True,1,GPL-6@0x002E,0,1
+DLG_4158370fbec9,still defeat you! ,擊敗你！,translated_unreviewed,True,1,GPL-6@0x006E,0,1
+DLG_6a76f9fca6da,You will never defeat my minions and me! Never! I am immortal! ,你們永遠不可能擊敗我和我的爪牙！休想！我是不死之身！,translated_unreviewed,True,1,GPL-6@0x0087,0,1
+DLG_f1b642c95ba8,Balkazar's eyes widen when he sees the magera. ,巴爾卡札看到瑪格拉時，雙眼驚訝地睜大。,translated_unreviewed,True,1,GPL-6@0x0117,0,1
+DLG_3683672492e7,You! You were not to leave the circle! Die! ,你！你不該離開法陣！去死吧！,translated_unreviewed,True,1,GPL-6@0x014E,0,1
+DLG_0b3efba04c1a,You! You must be agents of Dagolar! There is no way that mere slaves could ,你們！你們一定是達戈拉爾派來的！區區奴隸絕不可能,translated_unreviewed,True,1,GPL-6@0x019A,0,1
+DLG_f6dd7fc54118,"pass my babau and vrock! Tell your master that it is I who will rule Athas, ",闖過我的巴布魔和弗洛魔！回去告訴你們的主人，統治亞薩斯的將是我，,translated_unreviewed,True,1,GPL-6@0x01E2,0,1
+DLG_053cb03c1338,not him! ,不是他！,translated_unreviewed,True,1,GPL-6@0x022B,0,1
+DLG_f43d29fc583b,  Dagolar is dead. I killed him. ,達戈拉爾死了。是我殺的。,translated_unreviewed,True,1,GPL-6@0x0260,2,1
+DLG_53f4bf688234,  Dagolar?! What are you talking about?,達戈拉爾？！你在說什麼？,translated_unreviewed,True,1,GPL-6@0x0260,2,0
+DLG_c2a3e78eeb3c,  I've heard this somewhere before....,我好像在哪裡聽過這套說詞……,translated_unreviewed,True,1,GPL-6@0x0260,2,0
+DLG_98a0e97a33b6,  I won't join scum like you!,我才不會和你這種人渣為伍！,translated_unreviewed,True,1,GPL-6@0x0260,2,0
+DLG_6ac1a1a5977b,"  Yes, I'm here to join you.",沒錯，我是來加入你的。,translated_unreviewed,True,1,GPL-6@0x0260,2,0
+DLG_0b5aab04a28e,  What will I get if I join you?,加入你，我能得到什麼？,translated_unreviewed,True,1,GPL-6@0x0260,2,0
+DLG_7a590f6fc5f2,  I'm here to kill you!,我是來殺你的！,translated_unreviewed,True,1,GPL-6@0x0260,2,0
+DLG_860dc5308068,  You must die!,你非死不可！,translated_unreviewed,True,1,GPL-6@0x0260,2,0
+DLG_711bbffa5463,  Very well. I'll join you.,好吧，我加入你。,translated_unreviewed,True,1,GPL-6@0x0260,2,0
+DLG_efa307938dcb,Of course you have! You have dreamt of this moment -- and you know the outcome! ,當然聽過！你曾夢見這一刻——而你也知道結局！,translated_unreviewed,True,1,GPL-6@0x0396,0,1
+DLG_05d07850ca1e,You are to join me in the conquest of Athas! ,你們將加入我，一同征服亞薩斯！,translated_unreviewed,True,1,GPL-6@0x03E2,0,1
+DLG_6db170f60dea,Do not lie about your allegiance! I know that Dagolar has sent you to destroy ,別拿效忠來騙我！我知道達戈拉爾派你們來消滅,translated_unreviewed,True,1,GPL-6@0x0425,0,1
+DLG_1c7130526384,"me! However, I will make you a counter-proposal; Dagolar is weak -- side with ",我！不過，我願意提出另一個條件：達戈拉爾太軟弱了——投靠,translated_unreviewed,True,1,GPL-6@0x0470,0,1
+DLG_b2fb4c26eae5,me and join in the conquest of Athas! ,我，和我一同征服亞薩斯！,translated_unreviewed,True,1,GPL-6@0x04BB,0,1
+DLG_edc386b58004,"So, turned on your master, did you? I knew that Dagolar would fall eventually. ",所以，你背叛主人了，是嗎？我早知道達戈拉爾遲早會垮台。,translated_unreviewed,True,1,GPL-6@0x04EE,0,1
+DLG_f4db8fe5933f,Excellent! I need your kind on my side -- join me in my conquest of Athas! ,很好！我正需要你們這種人效力——加入我，一同征服亞薩斯！,translated_unreviewed,True,1,GPL-6@0x0539,0,1
+DLG_a769cb966c58,"When I summon the Unnamed One, the world will bow down before me! ",當我召喚出無名者，整個世界都將向我臣服！,translated_unreviewed,True,1,GPL-6@0x0591,0,1
+DLG_3ce50322791c,All of Athas will be mine to command! Those who resist will perish! ,整個亞薩斯都將聽我號令！反抗者只有死路一條！,translated_unreviewed,True,1,GPL-6@0x05D1,0,1
+DLG_00e8f9c7143e,You will stand by my side -- join my reign!,你們將站在我身旁——加入我的王朝吧！,translated_unreviewed,True,1,GPL-6@0x0613,0,0
+DLG_28c66814d8e5,Then watch while I summon the Unnamed One! Follow!,那就看著我召喚無名者吧！跟上！,translated_unreviewed,True,1,GPL-6@0x0717,0,0
+DLG_6df1a44b0d1b,Join me or die!,加入我，否則就死！,translated_unreviewed,True,1,GPL-6@0x075F,0,0
+DLG_5b36d53268d9,Balkazar begins an unintelligible incantation.,巴爾卡札開始唸出晦澀難懂的咒文。,translated_unreviewed,True,1,GPL-6@0x078D,0,0
+DLG_3245f98c4505,"The ground begins to roar and growl, as if it were alive!",地面開始轟鳴咆哮，彷彿活了過來！,translated_unreviewed,True,1,GPL-6@0x07C2,0,0
+DLG_ec8ffc59c705,The Unnamed One approaches! I will teleport all to the temple!,無名者就要來了！我會把所有人傳送到神殿！,translated_unreviewed,True,1,GPL-6@0x0805,0,0
+DLG_126deb82ad1f,  Forget it! You die now! ,休想！你現在就得死！,translated_unreviewed,True,1,GPL-6@0x0842,2,1
+DLG_f5302d8a1558,  Let's go! Onward to the temple!,走吧！向神殿前進！,translated_unreviewed,True,1,GPL-6@0x0842,2,0
+DLG_c6b0856aca88,The unnamed book pulls away from you as you attempt to leave with it! ,那本無名的書在你想帶走它時掙脫了！,translated_unreviewed,True,3,GPL-6@0x08C7,0,1
+DLG_c99829921086,"In a flash, it vanishes! ",一陣閃光中，它消失了！,translated_unreviewed,True,3,GPL-6@0x090B,0,1
+DLG_5de49821da59,You feel a strange force tugging at you -- drawing you towards the mirror. ,你感到一股怪力拉扯著你——將你拖向鏡子。,translated_unreviewed,True,1,GPL-6@0x0992,0,1
+DLG_66fe1d98738b,"The mirror darkens, and you feel a slight tug. Nothing else happens. ",鏡面暗了下來，你感到一陣輕微的拉力。除此之外什麼也沒發生。,translated_unreviewed,True,1,GPL-6@0x09F6,0,1
+DLG_207e71c3ada3,You are drawn into the mirror! ,你被吸進鏡子裡了！,translated_unreviewed,True,1,GPL-6@0x0A45,0,1
+DLG_f2c1a466e105,"For destroying Balkazar, you earn 6,000 EXP! ","消滅巴爾卡札，你獲得 6,000 點經驗值！",translated_unreviewed,True,1,GPL-6@0x0BA1,0,1
+DLG_9fe8df7b5132,Fools! You are throwing away much more than your lives! I am immortal! ,蠢貨！你們葬送的遠不只自己的性命！我是不死之身！,translated_unreviewed,True,1,GPL-6@0x0C09,0,1
+DLG_b7ff66ca2db0,Balkazar recites an,巴爾卡札唸出,translated_unreviewed,True,1,GPL-6@0x0C53,0,0
+DLG_5bc22bac2a3b,other,另,translated_unreviewed,True,1,GPL-6@0x0C73,0,0
+DLG_c987855bd1bd, incantation! ,一段咒文！,translated_unreviewed,True,1,GPL-6@0x0C7F,1,1
+DLG_f04a0351c489,You pour the terror blossom extract into the bowl. ,你將恐懼之花萃取液倒進碗裡。,translated_unreviewed,True,1,GPL-6@0x0D1C,0,1
+DLG_de00f7efa524,Your dagger looks somewhat different now... ,你的匕首現在看起來有些不一樣……,translated_unreviewed,True,1,GPL-6@0x0DCA,0,1
 DLG_4bb4ae12cbfc,You are too far away to talk to the serf. ,,pending,True,1,GPL-60@0x001E,0,1
 DLG_5585c1113219,I can't talk to you anymore. I don't want to get in trouble with the guards.,,pending,True,1,GPL-60@0x006B,0,0
 DLG_153ce74f0dcb,Leave me. The guards would beat me if they caught me talking to you. ,,pending,True,1,GPL-60@0x00D2,0,1

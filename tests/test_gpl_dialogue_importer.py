@@ -358,6 +358,131 @@ class GplDialogueImporterTests(unittest.TestCase):
         self.assertEqual(entry_b_target[0]["value"], 30 + delta)
         self.assertEqual(patched["instructions"][2]["offset"], 30 + delta)
 
+    def _menu_document(self, entry_texts: list[str]) -> dict[str, object]:
+        params: list[list[dict[str, object]]] = [
+            [{"kind": "variable", "var_kind": "gstring", "id": 1}]
+        ]
+        for text in entry_texts:
+            params.append([{"kind": "immediate_string", "sub_type": "compressed", "value": text}])
+            params.append([{"kind": "immediate14", "value": 40}])
+            params.append([{"kind": "variable", "var_kind": "lflag", "id": 1}])
+        return {
+            "instructions": [
+                {"offset": 0, "length": 40, "opcode": 0x48, "params": params},
+                {"offset": 40, "length": 1, "opcode": 0x67, "params": []},
+            ],
+            "bytes_consumed": 41,
+            "total_bytes": 41,
+            "aligned": True,
+            "cfg": {},
+            "cross_chunk_calls": [],
+        }
+
+    def test_menu_accepts_multiple_option_text_edits_at_the_same_offset(self) -> None:
+        """re_42 4.3: dialogue_occurrences.json records one occurrence per
+        menu option but every option in a menu shares the instruction's
+        single offset. relocate_json_strings must match each edit to its
+        option by original text and rewrite the whole 0x48 instruction once,
+        instead of raising 'multiple dialogue edits target the same
+        instruction offset'."""
+        document = self._menu_document(["Option A", "Option B", "Option C"])
+        edits = [
+            {
+                "unit_id": "DLG_a", "occurrence_id": "DLOC_a", "offset": 0,
+                "original": "Option A", "translation_zh_tw": "選項甲", "encoded": b"A" * 5,
+            },
+            {
+                "unit_id": "DLG_c", "occurrence_id": "DLOC_c", "offset": 0,
+                "original": "Option C", "translation_zh_tw": "選項丙", "encoded": b"C" * 9,
+            },
+        ]
+        patched, applied = relocate_json_strings(document, edits)
+        menu = patched["instructions"][0]
+        self.assertEqual(menu["params"][1][0]["value"], "A" * 5)
+        self.assertEqual(menu["params"][4][0]["value"], "Option B")
+        self.assertEqual(menu["params"][7][0]["value"], "C" * 9)
+        self.assertEqual({item["unit_id"] for item in applied}, {"DLG_a", "DLG_c"})
+        delta_a = packed_string_bytes("A" * 5) - packed_string_bytes("Option A")
+        delta_c = packed_string_bytes("C" * 9) - packed_string_bytes("Option C")
+        self.assertEqual(menu["length"], 40 + delta_a + delta_c)
+        self.assertEqual(patched["instructions"][1]["offset"], 40 + delta_a + delta_c)
+
+    def test_menu_matches_duplicate_option_text_to_distinct_entries(self) -> None:
+        """re_42 batch found 6 real menus with the same option text repeated
+        (e.g. 'I want some information!' twice); since the dialogue unit_id
+        is a hash of the text, both occurrences carry the same translation,
+        so either entry may claim either edit as long as both get replaced."""
+        document = self._menu_document(["Repeat", "Repeat", "Unique"])
+        edits = [
+            {
+                "unit_id": "DLG_r", "occurrence_id": "DLOC_r1", "offset": 0,
+                "original": "Repeat", "translation_zh_tw": "重複", "encoded": b"R" * 4,
+            },
+            {
+                "unit_id": "DLG_r", "occurrence_id": "DLOC_r2", "offset": 0,
+                "original": "Repeat", "translation_zh_tw": "重複", "encoded": b"R" * 4,
+            },
+        ]
+        patched, applied = relocate_json_strings(document, edits)
+        menu = patched["instructions"][0]
+        self.assertEqual(menu["params"][1][0]["value"], "R" * 4)
+        self.assertEqual(menu["params"][4][0]["value"], "R" * 4)
+        self.assertEqual(menu["params"][7][0]["value"], "Unique")
+        self.assertEqual(len(applied), 2)
+
+    def test_menu_rejects_edit_with_no_unclaimed_matching_entry(self) -> None:
+        document = self._menu_document(["Option A", "Option B"])
+        edits = [{
+            "unit_id": "DLG_x", "occurrence_id": "DLOC_x", "offset": 0,
+            "original": "Option X", "translation_zh_tw": "未知", "encoded": b"X" * 3,
+        }]
+        with self.assertRaisesRegex(ValueError, "no unclaimed menu entry text matches"):
+            relocate_json_strings(document, edits)
+
+    def test_menu_rejects_more_edits_than_matching_entries(self) -> None:
+        document = self._menu_document(["Repeat", "Other"])
+        edits = [
+            {
+                "unit_id": "DLG_r", "occurrence_id": "DLOC_r1", "offset": 0,
+                "original": "Repeat", "translation_zh_tw": "重複", "encoded": b"R" * 4,
+            },
+            {
+                "unit_id": "DLG_r", "occurrence_id": "DLOC_r2", "offset": 0,
+                "original": "Repeat", "translation_zh_tw": "重複", "encoded": b"R" * 4,
+            },
+        ]
+        with self.assertRaisesRegex(ValueError, "no unclaimed menu entry text matches"):
+            relocate_json_strings(document, edits)
+
+    def test_print_string_still_rejects_two_edits_at_the_same_offset(self) -> None:
+        document = {
+            "instructions": [
+                {
+                    "offset": 0, "length": 10, "opcode": 0x4F,
+                    "params": [
+                        [{"kind": "immediate14", "value": 115}],
+                        [{"kind": "immediate_string", "sub_type": "compressed", "value": "Hello"}],
+                    ],
+                },
+            ],
+            "bytes_consumed": 10, "total_bytes": 10, "aligned": True,
+            "cfg": {}, "cross_chunk_calls": [],
+        }
+        edits = [
+            {
+                "unit_id": "DLG_1", "occurrence_id": "DLOC_1", "offset": 0,
+                "original": "Hello", "translation_zh_tw": "A", "encoded": b"A",
+            },
+            {
+                "unit_id": "DLG_2", "occurrence_id": "DLOC_2", "offset": 0,
+                "original": "Hello", "translation_zh_tw": "B", "encoded": b"B",
+            },
+        ]
+        with self.assertRaisesRegex(
+            ValueError, "multiple dialogue edits target print-string instruction"
+        ):
+            relocate_json_strings(document, edits)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,5 +1,56 @@
 # 《浩劫殘陽》繁中化：下一個 session 交接（2026-08-16）
 
+## 2026-09-10 最新 checkpoint：v55 右側資訊區完成
+
+目前唯一可玩基準為：
+
+```text
+scratch_test/cjk_display_staging_v55_shifted_item_panel_30px
+```
+
+使用者已實機確認 K’Ratchek 的右側能力值、PSI、AC、三組武器與 innate/racial
+摘要全部收進面板，10px 格線沒有重疊，最末列不再侵入底部控制區。詳細證據見：
+
+```text
+docs/re/re_67_v55_right_panel_shift_30px_candidate.md
+```
+
+後續不得退回 v52–v54，也不得重新引入 v47/v48 global-height hook。下一階段可回到
+UI／文本中文化；右側 overflow 不再是目前 blocker。
+
+## 2026-09-10 最新 checkpoint：v52 物品 10px 格線
+
+本檔較早內容保留歷史脈絡；物品 NAME-slot／行距工作的最新權威紀錄改見：
+
+```text
+docs/re/re_64_v52_item_grid_and_right_panel_overflow_checkpoint.md
+```
+
+目前可執行基準為 `scratch_test/cjk_display_staging_v52_ac_item_grid`。使用者已確認
+v52 的說明卡、AC 到武器區，以及兩件武器內／區塊間的 10px 格線不再重疊。
+
+新 blocker 是種族自帶武器加上裝備武器時，右側內容突破下緣；切換角色後越界
+pixels 不會被清除而留下殘影。下一輪先處理右側 clip/clear rectangle 與 overflow
+layout，不得再修改 global glyph-height query。v47/v48 均會在 Load Saved Game
+閃退，禁止作為基底。
+
+最後 debugger breakpoint list 已確認為空，guest 維持 running，`autolock=false`。
+
+## 2026-08-17 最新覆寫（優先閱讀）
+
+使用者已改變工作順序：**目前以翻譯為優先**，物品 renderer 與 DOSBox-X-AI 自動控制均
+延後。正常遊玩／翻譯期間不要啟用 execution trace；逐指令 trace 會開啟 heavy log，曾造成
+遊戲與音樂節奏明顯變慢，停用後已恢復正常。
+
+已完成 `GPL-6` 巴爾卡札場景的 50 個待譯單元；安全匯入範圍、menu/TEXT 限制、6-bank
+字庫與 44 項測試結果見：
+
+```text
+docs/re/re_46_gpl6_balkazar_translation_batch.md
+```
+
+正式可玩 checkpoint 仍是下文的 v26；GPL-6 工作包尚未合併或實機測試。
+
 > 本文件取代 2026-08-15 handoff 的「目前狀態／下一步」用途；舊 handoff 保留為歷史脈絡，
 > 而且目前已有使用者未提交修改，**不要覆寫、清理或重設**它。  
 > 使用者要求：回覆繁體中文；每次工具操作前先用一句話說明目的；不要清理 dirty worktree。
@@ -131,6 +182,10 @@ bridge 現已提供客體 framebuffer capture：`DOSBoxClient.capture_frame(form
 不含桌面／視窗框／主機游標的 PNG；客體 running 時可用，debugger stopped 時會因沒有新 frame
 回傳 `EXECUTION_TIMEOUT`。但它仍沒有 capture 狀態 API 或可靠絕對滑鼠點擊；需要操作 UI 時
 優先由使用者操控，agent 可用 frame capture 做畫面觀測。不要以 OS 桌面自動化作為正式方法。
+
+啟動規則（2026-08-17）：一般人工操作 staging 必須使用 `autolock=false`。只有 agent 明確要
+執行自動滑鼠控制時，才可在建置時加 `--mouse-autolock` 產生 `autolock=true`；完成自動控制後
+應回到預設 false。`build_cjk_display_staging.py` 已將此規則設為預設並寫入 manifest。
 
 ## 4. 第二優先：UI 中文化的範圍與研究順序
 

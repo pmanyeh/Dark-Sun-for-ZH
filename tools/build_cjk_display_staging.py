@@ -11,12 +11,16 @@ import shutil
 import subprocess
 import tempfile
 from pathlib import Path
+from collections.abc import Sequence
 
 try:
     from .cjk_localization_pipeline import (
         DEFAULT_GFF_CAT,
         DEFAULT_MAPPING,
         DEFAULT_RESOURCE_GFF,
+        TRIPLE_BASE,
+        TRIPLE_DIGIT_MIN,
+        TRIPLE_PREFIX,
         glyph_record_for_id,
         load_mapping,
         mapping_fingerprint,
@@ -30,6 +34,9 @@ except ImportError:
         DEFAULT_GFF_CAT,
         DEFAULT_MAPPING,
         DEFAULT_RESOURCE_GFF,
+        TRIPLE_BASE,
+        TRIPLE_DIGIT_MIN,
+        TRIPLE_PREFIX,
         glyph_record_for_id,
         load_mapping,
         mapping_fingerprint,
@@ -43,6 +50,9 @@ except ImportError:
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_GAME_DIR = DEFAULT_RESOURCE_GFF.parent
 DEFAULT_DOSBOX_X = Path(r"D:\git\DOSBox-X-AI\dosbox-src\bin\x64\Release\dosbox-x.exe")
+FONT100_OFFSET_TABLE = 8 + 256
+
+
 def sha256(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
@@ -51,6 +61,21 @@ def build_native_height_scratch_font(
     source: bytes, scratch: bytes, bank_height: int
 ) -> tuple[bytes, int]:
     """Append scratch without changing FONT metrics or inserting invalid padding."""
+    payload, offsets = build_native_height_scratch_font_slots(
+        source, (scratch,), bank_height
+    )
+    return payload, offsets[0]
+
+
+def build_native_height_scratch_font_slots(
+    source: bytes, scratches: Sequence[bytes], bank_height: int
+) -> tuple[bytes, tuple[int, ...]]:
+    """Append verified fixed-height scratch records and return their offsets.
+
+    The legacy 256-entry offset table is intentionally left unchanged on disk;
+    the runtime loader redirects selected control-byte entries to these records.
+    Keeping this operation append-only preserves every original FONT byte.
+    """
     font = Font100.parse(source)
     if font.count != 256:
         raise ValueError(f"expected a 256-glyph FONT, got {font.count}")
@@ -59,13 +84,102 @@ def build_native_height_scratch_font(
             f"refusing to change global FONT height {font.height}: CJK bank height "
             f"{bank_height} must match it or exceed it by exactly one independently drawn shadow row"
         )
-    expected_record_bytes = 2 + int.from_bytes(scratch[:2], "little") * bank_height
-    if len(scratch) != expected_record_bytes:
-        raise ValueError(
-            f"scratch record is {len(scratch)} bytes; width/height require {expected_record_bytes}"
+    if not scratches:
+        raise ValueError("at least one scratch record is required")
+    offsets: list[int] = []
+    cursor = len(source)
+    records: list[bytes] = []
+    for index, scratch in enumerate(scratches):
+        if len(scratch) < 2:
+            raise ValueError(f"scratch record {index} is shorter than its width field")
+        expected_record_bytes = 2 + int.from_bytes(scratch[:2], "little") * bank_height
+        if len(scratch) != expected_record_bytes:
+            raise ValueError(
+                f"scratch record {index} is {len(scratch)} bytes; width/height "
+                f"require {expected_record_bytes}"
+            )
+        if cursor > 0xFFFF or cursor + len(scratch) > 0x10000:
+            raise ValueError("scratch records exceed the 16-bit FONT payload range")
+        offsets.append(cursor)
+        records.append(scratch)
+        cursor += len(scratch)
+    return source + b"".join(records), tuple(offsets)
+
+
+def plan_dynamic_font_slots(
+    slot_codes: Sequence[int], scratch_offsets: Sequence[int]
+) -> tuple[tuple[int, int, int], ...]:
+    """Map safe one-byte glyph codes to FONT-100 offset-table entries.
+
+    The existing renderer sign-extends each byte before indexing the 256-entry
+    table, so dynamic slots must be non-NUL codes below 0x80.  Each returned
+    tuple is ``(slot_code, table_entry_offset, scratch_record_offset)``.
+    """
+    if len(slot_codes) != len(scratch_offsets):
+        raise ValueError("slot code and scratch offset counts do not match")
+    if not slot_codes:
+        raise ValueError("at least one dynamic slot is required")
+    if len(set(slot_codes)) != len(slot_codes):
+        raise ValueError("dynamic slot codes must be unique")
+    plan: list[tuple[int, int, int]] = []
+    for code, scratch_offset in zip(slot_codes, scratch_offsets):
+        if not 1 <= code <= 0x7F:
+            raise ValueError(
+                f"dynamic slot code 0x{code:02X} must be in the safe range 0x01..0x7F"
+            )
+        if not 0 <= scratch_offset <= 0xFFFF:
+            raise ValueError(
+                f"scratch offset 0x{scratch_offset:X} exceeds the 16-bit FONT range"
+            )
+        plan.append(
+            (code, FONT100_OFFSET_TABLE + code * 2, scratch_offset)
         )
-    scratch_offset = len(source)
-    return source + scratch, scratch_offset
+    return tuple(plan)
+
+
+def predecode_name_to_dynamic_slots(
+    payload: bytes, slot_codes: Sequence[int] = tuple(range(1, 8))
+) -> tuple[bytes, tuple[tuple[int, int], ...]]:
+    """Replace printable CJK triples with reusable one-byte dynamic slots.
+
+    Returns the renderer-facing byte string and ordered ``(slot_code, cjk_id)``
+    bindings. Repeated CJK IDs reuse their first slot and therefore require no
+    duplicate glyph load.
+    """
+    # Reuse the same safety checks as the FONT offset plan. Scratch offsets are
+    # irrelevant here, so zero is only a validation placeholder.
+    plan_dynamic_font_slots(slot_codes, (0,) * len(slot_codes))
+    output = bytearray()
+    bindings: list[tuple[int, int]] = []
+    slots_by_id: dict[int, int] = {}
+    position = 0
+    while position < len(payload):
+        value = payload[position]
+        if value == 0:
+            raise ValueError("NAME payload must not include its NUL terminator")
+        if value != TRIPLE_PREFIX:
+            output.append(value)
+            position += 1
+            continue
+        if position + 2 >= len(payload):
+            raise ValueError(f"truncated printable CJK triple at byte {position}")
+        high = payload[position + 1] - TRIPLE_DIGIT_MIN
+        low = payload[position + 2] - TRIPLE_DIGIT_MIN
+        if not 0 <= high < TRIPLE_BASE or not 0 <= low < TRIPLE_BASE:
+            raise ValueError(f"invalid printable CJK triple at byte {position}")
+        cjk_id = high * TRIPLE_BASE + low
+        slot = slots_by_id.get(cjk_id)
+        if slot is None:
+            if len(bindings) >= len(slot_codes):
+                raise ValueError(
+                    f"NAME requires more than {len(slot_codes)} distinct dynamic glyph slots"
+                )
+            slot = slot_codes[len(bindings)]
+            slots_by_id[cjk_id] = slot
+            bindings.append((slot, cjk_id))
+        output.append(slot)
+        position += 3
+    return bytes(output), tuple(bindings)
 
 
 def run(*arguments: Path | str) -> None:
@@ -104,6 +218,20 @@ def scale_graphics_config(payload: str, scale: int) -> str:
     return result
 
 
+def set_mouse_autolock(payload: str, enabled: bool) -> str:
+    """Set the SDL mouse lock policy without changing the source config."""
+    value = "true" if enabled else "false"
+    result, count = re.subn(
+        r"(?m)^autolock\s*=\s*[^\r\n]+$",
+        f"autolock={value}",
+        payload,
+        count=1,
+    )
+    if count != 1:
+        raise ValueError("base.conf does not contain exactly one autolock setting")
+    return result
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--game-dir", type=Path, default=DEFAULT_GAME_DIR)
@@ -114,9 +242,35 @@ def main() -> int:
     parser.add_argument("--gff-cat", type=Path, default=DEFAULT_GFF_CAT)
     parser.add_argument("--dosbox-x", type=Path, default=DEFAULT_DOSBOX_X)
     parser.add_argument("--ebox-line-gap", type=int, default=0)
+    parser.add_argument(
+        "--experimental-item-text-fix",
+        action="store_true",
+        help="rejected v34 post-render %%Fs experiment (build is refused)",
+    )
+    parser.add_argument(
+        "--experimental-item-text-fix-v35",
+        action="store_true",
+        help="rejected v35 stack-preserved %%Fs experiment (build is refused)",
+    )
     parser.add_argument("--window-scale", type=int, choices=(1, 2, 3), default=2)
+    parser.add_argument(
+        "--mouse-autolock",
+        action="store_true",
+        help="lock the mouse on click for explicit automated-control sessions (default: false)",
+    )
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
+
+    if args.experimental_item_text_fix:
+        raise ValueError(
+            "the v34 post-render %Fs experiment is rejected: item text disappears "
+            "and repeated item-info use crashes the game"
+        )
+    if args.experimental_item_text_fix_v35:
+        raise ValueError(
+            "the v35 stack-preserved %Fs experiment is rejected: the guest keeps "
+            "running but the game enters a non-updating loop after loading"
+        )
 
     game_dir = args.game_dir.resolve()
     output = args.output.resolve()
@@ -184,6 +338,13 @@ def main() -> int:
         shutil.copytree(game_dir, staged_game)
         for config in required_configs:
             shutil.copyfile(config, staging / config.name)
+        base_path = staging / "base.conf"
+        base_path.write_text(
+            set_mouse_autolock(
+                base_path.read_text(encoding="utf-8"), args.mouse_autolock
+            ),
+            encoding="utf-8",
+        )
         graphics_path = staging / "graphics.conf"
         graphics_path.write_text(
             scale_graphics_config(graphics_path.read_text(encoding="utf-8"), args.window_scale),
@@ -207,6 +368,7 @@ def main() -> int:
             args.ebox_line_gap,
             cjk_draw_height=bank_height,
             bank_count=bank_count,
+            experimental_item_text_fix=args.experimental_item_text_fix_v35,
         )
         (staged_game / "DSUN.EXE").write_bytes(patched_exe)
         for _, filename, payload in bank_files:
@@ -305,6 +467,13 @@ def main() -> int:
             "bank_package": str(args.bank_package),
             "spin_package": str(args.spin_package) if args.spin_package else None,
             "gpl_package": str(args.gpl_package) if args.gpl_package else None,
+            "validation": {
+                "candidate": args.experimental_item_text_fix_v35,
+                "runtime_status": (
+                    "not_run" if args.experimental_item_text_fix_v35 else "baseline"
+                ),
+                "requires_preflight": args.experimental_item_text_fix_v35,
+            },
             "font": {
                 "legacy_source_bytes": len(source_font.read_bytes()),
                 "height": Font100.parse(source_font.read_bytes()).height,
@@ -323,6 +492,11 @@ def main() -> int:
                 "scratch_cache_runtime_range": "36AA:545A..5533",
                 "scratch_cache_file_policy": "open-read-close per glyph",
                 "ebox_base94_wrap": "relocation-safe three-byte token advance",
+                "item_text_base94_wrap": (
+                    "v35 stack-preserved flag and 16-bit post-render source advance"
+                    if args.experimental_item_text_fix_v35
+                    else "disabled"
+                ),
                 "mz_relocation_overlap_guard": True,
                 "ebox_layout_line_gap": args.ebox_line_gap,
                 "ebox_ui_state_step": 5,
@@ -352,6 +526,7 @@ def main() -> int:
             ],
             "unchanged_copied_game_files": unchanged_files,
             "launcher": {
+                "mouse_autolock": args.mouse_autolock,
                 "file": "launch-dosbox-x.cmd",
                 "uses_original_configs": [path.name for path in required_configs],
                 "entrypoint": "DARKSUN.BAT",
@@ -363,6 +538,14 @@ def main() -> int:
         (staging / "build-manifest.json").write_text(
             json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
         )
+        if args.experimental_item_text_fix_v35:
+            (staging / "CANDIDATE-NOT-VALIDATED.txt").write_text(
+                "Dark Sun v35 item-text candidate\n"
+                "Runtime validation has NOT been performed.\n"
+                "Run tools/verify_cjk_item_candidate.py before launching.\n"
+                "Do not replace the stable v33 staging directory.\n",
+                encoding="ascii",
+            )
         shutil.move(str(staging), str(output))
 
     print(f"staging={output}")

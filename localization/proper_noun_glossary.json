@@ -9,6 +9,9 @@
     {"en": "Garn", "zh": "加恩", "category": "character", "status": "confirmed", "source": "text", "notes": "Same 'text:gstring' limitation as Dag; excluded from the re_42 GPL-2..5 import."},
     {"en": "Magramar", "zh": "馬格拉瑪", "category": "character", "status": "confirmed", "source": "text", "notes": "Same 'text:gstring' limitation as Dag; excluded from the re_42 GPL-2..5 import."},
     {"en": "Semyon", "zh": "賽蒙", "category": "character", "status": "confirmed", "source": "inline", "notes": "Prisoner rescued in GPL-5; name appears only inline within sentences, no standalone catalog row."},
+    {"en": "Balkazar", "zh": "巴爾卡札", "category": "character", "status": "draft", "source": "inline", "notes": "Antagonist encountered in GPL-6; name appears inline in dialogue and system messages."},
+    {"en": "Dagolar", "zh": "達戈拉爾", "category": "character", "status": "draft", "source": "inline", "notes": "Named rival of Balkazar in GPL-6."},
+    {"en": "Unnamed One", "zh": "無名者", "category": "entity", "status": "draft", "source": "inline", "notes": "Entity Balkazar attempts to summon in GPL-6; capitalized title."},
     {"en": "Kurzak", "zh": "庫爾扎克", "category": "character", "status": "draft", "source": "inline", "notes": "Mentioned in passing by an arena guard in GPL-3 (\"I thought I told Kurzak to stop selecting slaves by looking at their teeth!\"); never appears on screen in this batch."},
     {"en": "Draj", "zh": "德拉吉", "category": "place", "status": "draft", "source": "inline", "notes": "The city-state whose arena the opening sequence (GPL-2..5) takes place in."},
     {"en": "Athas", "zh": "亞薩斯", "category": "place", "status": "draft", "source": "inline", "notes": "The game world's name. Deliberately not '阿薩斯' to avoid the established Warcraft Arthas transliteration."},
@@ -16,7 +19,7 @@
     {"en": "Veiled Alliance", "zh": "面紗聯盟", "category": "faction", "status": "draft", "source": "inline", "notes": "Resistance organization of secret spellcasters, introduced in GPL-5."},
     {"en": "Dragon Kings", "zh": "龍王", "category": "faction", "status": "draft", "source": "inline", "notes": "The setting's tyrant sorcerer-kings collectively; render as 眾龍王/諸龍王 when explicitly plural in context."},
     {"en": "Deestan", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Hamonde", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
+    {"en": "Hamonde", "zh": "哈蒙德", "category": "character", "status": "draft", "source": "text", "notes": "Recurring TEXT string-table speaker name; first translated for GPL-6."},
     {"en": "Khamarr", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
     {"en": "Zertus", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
     {"en": "Aticus", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
@@ -80,6 +83,10 @@
     {"en": "Beast Master", "zh": "野獸大師", "notes": "Distinct arena-announcer title from Monster Trainer."},
     {"en": "the Announcer", "zh": "司儀", "notes": ""},
     {"en": "King of the Pens", "zh": "獸欄之王", "notes": ""},
-    {"en": "rampager", "zh": "狂暴獸", "notes": "Established in re_37's Celgor line."}
+    {"en": "rampager", "zh": "狂暴獸", "notes": "Established in re_37's Celgor line."},
+    {"en": "magera", "zh": "瑪格拉", "notes": "Game-specific creature encountered in GPL-6; draft transliteration."},
+    {"en": "babau", "zh": "巴布魔", "notes": "D&D demon species mentioned in GPL-6."},
+    {"en": "vrock", "zh": "弗洛魔", "notes": "D&D demon species mentioned in GPL-6."},
+    {"en": "terror blossom", "zh": "恐懼之花", "notes": "Plant extract used in a GPL-6 ritual."}
   ]
 }

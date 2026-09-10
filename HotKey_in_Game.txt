@@ -1,0 +1,31 @@
+Hotkeys
+A Toggles animations on/off
+C Brings up Cast Spells/Use Psionics screen
+E Brings up Current Spell/Effects screen
+G Sets character to Guard (in combat)
+H Centers screen on leader
+I Brings up View Inventory screen
+N Targets next opponent (in combat)
+O Brings up overhead map
+P Targets previous opponent (in combat)
+Q Ends character’s turn (in combat)
+U Brings up Cast Spells/Use Psionics screen
+V Brings up View Character screen
+W Sets character to Wait (in combat)
+Y/N Answers Yes/No questions
+Alt-X: Quits SHATTERED LANDS
+Esc: Exits all menus; quits SHATTERED LANDS if no menus on screen
+Tab: Brings up Game Menu
+Space: Turns off computer control (in combat); from Character
+Options screens, brings up modify character menu
+1-4: Sets corresponding character as leader
+5: All character icons shown when moving
+6: Only leader icon shown when moving
+Note: In conversations with NPCs, numbers 1-5 select
+the associated line from the list of possible responses
+F1: Saves game
+F2: Loads game
+F3: Quits game
+F4: Toggles music on/off
+F5: Toggles sound effects on/off
+F6: Toggles animations on/off
