@@ -152,6 +152,37 @@ def consumer_segment_relocations(
     return frozenset(offset + 3 for offset in offsets)
 
 
+def self_relative_tag_redirect(tag: int, span_len: int, *, skip_bytes: int | None = None) -> bytes:
+    """Return the v57-style self-computing-IP redirect used for inline spans.
+
+    Unlike ``ds_relative_consumer_redirect_bytes`` (which returns a decoded
+    DX:AX pointer to a fixed, precomputed continuation IP), this variant lets
+    the FONT-local entry point itself finish the call and choose when to
+    return. The continuation IP is derived at runtime from the stub's own
+    position (``call +0`` immediately popped), so the caller only supplies
+    how many bytes of the original span are being replaced, not an absolute
+    address.
+
+    ``skip_bytes`` (default: ``span_len``) is the true distance from the
+    start of this stub to the desired continuation. Pass it explicitly when
+    ``span_len`` bytes are overwritten but a further, untouched run of bytes
+    right after them must also be skipped -- e.g. because that run's own far
+    call has an overlay-relocated segment word that must never be patched.
+    """
+    if not 0 <= tag <= 0xFFFF:
+        raise ValueError("tag must fit u16")
+    if span_len < 22:
+        raise ValueError("self-relative tag redirect needs at least 22 bytes")
+    skip = span_len if skip_bytes is None else skip_bytes
+    if skip < span_len:
+        raise ValueError("skip_bytes must be at least span_len")
+    stub = bytes.fromhex("0E E8 00 00 58 05") + struct.pack("<H", skip - 4)
+    stub += b"\x50\xB8" + struct.pack("<H", tag) + bytes.fromhex("8C DB 80 EF 10 53 68 14 07 CB")
+    if len(stub) > span_len:
+        raise ValueError("self-relative tag redirect does not fit")
+    return stub.ljust(span_len, b"\x90")
+
+
 def height_helper_redirect(helper: bytes = NAME_HEIGHT_HELPER_SIGNATURE) -> bytes:
     """Redirect v33's helper to one of the reviewed 17-byte helpers."""
     if helper not in (NAME_HEIGHT_HELPER_SIGNATURE, POINTER_INITIALIZER_HEIGHT_HELPER):
@@ -168,6 +199,15 @@ def assemble_name_slot_cache(
     staging_offset: int = 0x206B,
     first_slot_offset: int = 0x20D1,
     record_bytes: int = 102,
+    *,
+    backpack_ids: tuple[int, int] | None = None,
+    ability_ids: tuple[int, ...] | None = None,
+    view_character: bool = False,
+    view_y_origin: int = 40,
+    label_ids: tuple[int, int, int, int] | None = None,
+    materials: bool = False,
+    identity: bool = False,
+    gender_position: tuple[int, int] | None = None,
 ) -> bytes:
     """Assemble the self-contained decoder appended to FONT-100."""
     for label, value in (
@@ -179,6 +219,48 @@ def assemble_name_slot_cache(
             raise ValueError(f"{label} must fit u16")
     if record_bytes == 0 or record_bytes % 2:
         raise ValueError("record size must be a non-zero even value")
+    extra_symbols: list[str] = []
+    if backpack_ids is not None:
+        if len(backpack_ids) != 2 or any(not 0 <= value < 6 * 256 for value in backpack_ids):
+            raise ValueError("backpack needs two IDs within the six CJB1 banks")
+        extra_symbols = ["--defsym", "fixed_backpack=1"]
+        for index, value in enumerate(backpack_ids):
+            extra_symbols += ["--defsym", f"backpack_id_{index}={value}"]
+    if ability_ids is not None:
+        if backpack_ids is None or len(ability_ids) != 12 or any(not 0 <= value < 1536 for value in ability_ids):
+            raise ValueError("ability labels need backpack support and twelve IDs within six banks")
+        extra_symbols += ["--defsym", "fixed_abilities=1"]
+        for index, value in enumerate(ability_ids):
+            extra_symbols += ["--defsym", f"ability_id_{index}={value}"]
+    if view_character:
+        if ability_ids is None:
+            raise ValueError("view-character layout requires ability labels")
+        # v63 reflowed the six-ability grid from two rows of three columns
+        # to three columns of two rows, so only one 12px row advance (not
+        # two) needs to clear the identity text fixed at y=86.
+        if not 0 <= view_y_origin <= 64:
+            raise ValueError("view origin must leave room before identity row 86")
+        extra_symbols += ["--defsym", "view_character=1", "--defsym", f"view_y_origin={view_y_origin}"]
+    elif view_y_origin != 40:
+        raise ValueError("view origin requires view-character support")
+    if label_ids is not None:
+        if ability_ids is None or len(label_ids) != 4 or any(not 0 <= value < 1536 for value in label_ids):
+            raise ValueError("AC/PSI labels need ability support and four IDs within six banks")
+        extra_symbols += ["--defsym", "fixed_labels=1"]
+        for index, value in enumerate(label_ids):
+            name = ("ac_label_id_0", "ac_label_id_1", "psi_label_id_0", "psi_label_id_1")[index]
+            extra_symbols += ["--defsym", f"{name}={value}"]
+    if materials:
+        extra_symbols += ["--defsym", "fixed_materials=1"]
+    if identity:
+        extra_symbols += ["--defsym", "fixed_identity=1"]
+        if gender_position is not None:
+            gy, gx = gender_position
+            if not (0 <= gy <= 0xFFFF and 0 <= gx <= 0xFFFF):
+                raise ValueError("gender position must fit u16")
+            extra_symbols += ["--defsym", f"GENDER_Y={gy}", "--defsym", f"GENDER_X={gx}"]
+    elif gender_position is not None:
+        raise ValueError("gender position requires identity support")
     with tempfile.TemporaryDirectory() as temporary:
         directory = Path(temporary)
         obj = directory / "name-cache.o"
@@ -196,6 +278,7 @@ def assemble_name_slot_cache(
                 f"cjk_record_bytes={record_bytes}",
                 "--defsym",
                 "bank_count=6",
+                *extra_symbols,
                 "-o",
                 obj,
                 ASM,
