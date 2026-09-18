@@ -21,9 +21,38 @@
 .ifndef GENDER_X
 .equ GENDER_X, 149
 .endif
+.ifndef ALIGNMENT_Y
+.equ ALIGNMENT_Y, 93
+.endif
+.ifndef ALIGNMENT_X
+.equ ALIGNMENT_X, 149
+.endif
 
 .equ font_pointer, 0xA378
 .equ name_table, 0x166D
+# The fixed 4-byte gap between [font_pointer]'s own runtime offset and
+# this payload's CS:0 (see plan_name_slot_consumers.py's
+# FONT_RUNTIME_BASE_OFFSET, and re_94's live confirmation that CS
+# equals [font_pointer]'s segment exactly at runtime): subtracting this
+# from any `OFFSET label` inside this payload converts it into the same
+# "[font_pointer]-relative" space staging_offset/first_slot_offset
+# already use, which is what copy_staging_to_slot needs to place
+# class_extra_slots' glyph data where the resident renderer will find
+# it. This is NOT the same constant as FONT_CORE_PAYLOAD_OFFSET
+# (0x239B) -- that one converts the opposite direction (font_pointer-
+# relative to CS-relative, for jumping into code) and re_93 mistakenly
+# reused it here, which is why that attempt's extra glyph slots ended
+# up overwriting unrelated FONT memory instead of their own storage.
+.equ FONT_RUNTIME_BASE_OFFSET, 0x0004
+# re_94: raised from 7 to 10 so a single VIEW CHARACTER draw (e.g. a
+# three-class character's combined class-name render, which needs every
+# distinct glyph across all three class names alive in the physical
+# glyph pool at once -- see class_skip_reset) has enough headroom for
+# names that need more than 7 distinct characters. Slots 1-7 still live
+# in the game's own pre-allocated FONT scratch area (first_slot_offset);
+# slots 8-10 live in class_extra_slots, storage this payload brings with
+# it, since the game's own scratch area is a fixed size we can't grow.
+.equ glyph_slot_count, 10
 
 # This module is appended to FONT-100 and executes from the FONT allocation.
 # AX = NAME-1 record id, DS = game data segment. The resident trampoline leaves
@@ -45,12 +74,26 @@ cjk_name_cache_start:
     je ac_label_entry
     cmp ax, 0xFFEA
     je psi_label_entry
+    cmp ax, 0xFFC9
+    je view_hp_label_entry
+    cmp ax, 0xFFCA
+    je view_psi_label_entry
 .endif
 .ifdef fixed_materials
     cmp ax, 0xFFE7
     je material_label_entry
 .endif
+.ifdef fixed_class_names
+    cmp ax, 0xFF90
+    je class_slot1_label_entry
+    cmp ax, 0xFF91
+    je class_slot2_label_entry
+    cmp ax, 0xFF92
+    je class_slot3_label_entry
+.endif
 .ifdef fixed_identity
+    cmp ax, 0xFFCB
+    je alignment_label_entry
     cmp ax, 0xFFCC
     je race_label_entry
     cmp ax, 0xFFCD
@@ -101,12 +144,13 @@ name_table_source:
 ordinary_name_source:
 .endif
 .ifdef fixed_labels
-    # AC/PSI share the ability decoder's two-triple layout but their own
-    # dedicated tag range, so extending them can never change an already
-    # shipped ability_ids build (which validates against a fixed 12-id count).
+    # AC/PSI (item panel) plus VIEW CHARACTER's own HP:/PSI: labels all
+    # share the ability decoder's two-triple layout but their own dedicated
+    # tag range, so extending them can never change an already shipped
+    # ability_ids build (which validates against a fixed 12-id count).
     cmp ax, 0xFFF6
     jb ordinary_label_source
-    cmp ax, 0xFFF8
+    cmp ax, 0xFFFA
     jae ordinary_label_source
     sub ax, 0xFFF6
     shl ax, 3
@@ -134,7 +178,38 @@ ordinary_label_source:
     jmp decode_start
 ordinary_material_source:
 .endif
+.ifdef fixed_class_names
+    # Class names (Cleric..Thief) are 2-3 characters, variable length like
+    # materials/race, so this also goes through a small offset table. All
+    # three class slots share the same 17-entry table (IDs 1-17).
+    cmp ax, 0xFFA0
+    jb ordinary_class_source
+    cmp ax, 0xFFB1
+    jae ordinary_class_source
+    sub ax, 0xFFA0
+    shl ax, 1
+    mov si, ax
+    mov si, word ptr cs:[class_offsets + si]
+    push cs
+    pop es
+    jmp decode_start
+ordinary_class_source:
+.endif
 .ifdef fixed_identity
+    # Alignment (e.g. 混亂善良) is fixed four-character text, one constant
+    # stride wider than gender's two-character entries but the same idea.
+    cmp ax, 0xFFC0
+    jb ordinary_alignment_source
+    cmp ax, 0xFFC9
+    jae ordinary_alignment_source
+    sub ax, 0xFFC0
+    shl ax, 4
+    mov si, OFFSET alignment_sources
+    add si, ax
+    push cs
+    pop es
+    jmp decode_start
+ordinary_alignment_source:
     # Gender (男性/女性) is fixed two-character text like the ability
     # labels, so it uses the same constant-stride lookup.
     cmp ax, 0xFFCE
@@ -169,7 +244,27 @@ ordinary_race_source:
     les si, [name_table]
     add si, bx
 decode_start:
+    # `class_skip_reset` lets a multiclass character's 2nd/3rd class-name
+    # field keep accumulating into the SAME physical glyph slots its
+    # earlier sibling field(s) already allocated this draw, instead of
+    # wiping them out from under a pointer that's still waiting to be
+    # drawn (see re_93/re_94: the 2-/3-class draw paths collect every
+    # slot's far pointer and only call the shared renderer once, after
+    # all fields have decoded, so a later field's fresh `slot_count=0`
+    # reset would silently repaint the very glyph memory an earlier
+    # field's pointer still relies on). It is a one-shot flag: whoever
+    # sets it to 1 (class_slot2_label_entry/class_slot3_label_entry,
+    # only when their own record check finds an earlier class slot
+    # already populated) is asking for exactly the one decode_start call
+    # that follows to skip the reset; every other caller leaves it 0, so
+    # this never affects any other NAME-slot field.
+    cmp byte ptr cs:[class_skip_reset], 0
+    je decode_reset_slots
+    mov byte ptr cs:[class_skip_reset], 0
+    jmp decode_start_ready
+decode_reset_slots:
     mov byte ptr cs:[slot_count], 0
+decode_start_ready:
     mov di, OFFSET name_buffer
 
 decode_next:
@@ -212,7 +307,7 @@ find_slot:
 allocate_slot:
     mov bl, byte ptr cs:[slot_count]
     xor bh, bh
-    cmp bl, 7
+    cmp bl, glyph_slot_count
     jae malformed_triple
     shl bx, 1
     mov word ptr cs:[slot_ids+bx], ax
@@ -241,7 +336,20 @@ emit_slot:
     jmp decode_next
 
 malformed_triple:
-    inc si
+    # re_94: this used to only `inc si` (skip the 0x5E tag byte alone),
+    # leaving the triple's two Base94 data bytes still sitting at `si`
+    # for the next decode_next iteration to copy through as two literal
+    # garbage characters (neither byte is 0x5E, so the "not a tag" path
+    # takes them verbatim). Never observed before this session because
+    # nothing used to decode a string that both needed more than the
+    # 7-slot glyph pool has room for *and* kept decoding past that point
+    # in the same call -- the multiclass accumulate-across-slots fix
+    # (`class_skip_reset`) is what first makes a single class name's
+    # own decode able to run out of physical slots mid-string. Skipping
+    # the full 3-byte triple (matching emit_slot's `add si, 3` for the
+    # success case) is what the trailing decode_next loop actually
+    # expects for "this triple, whatever happened to it, is consumed".
+    add si, 3
     mov byte ptr cs:[di], 0x3F
     inc di
     jmp decode_next
@@ -383,10 +491,31 @@ copy_staging_to_slot:
     mov bx, di
     xor ax, ax
     mov al, byte ptr cs:[active_slot]
+    cmp al, 7
+    ja copy_slot_extra
     dec ax
     mov cx, cjk_record_bytes
     mul cx
     add ax, first_slot_offset
+    jmp copy_slot_target_ready
+copy_slot_extra:
+    # re_94: slots 8-10 live in class_extra_slots (this payload's own
+    # storage), addressed as `OFFSET class_extra_slots` -- which is
+    # CS-relative, not [font_pointer]-relative like first_slot_offset --
+    # so it needs FONT_RUNTIME_BASE_OFFSET subtracted to land in the
+    # same space before the rest of this routine (and the renderer's own
+    # later lookup through the pointer table this writes) can use it the
+    # same way as a built-in slot's offset.
+    sub al, 8
+    cbw
+    mov cx, cjk_record_bytes
+    mul cx
+    push ax
+    mov ax, OFFSET class_extra_slots
+    sub ax, FONT_RUNTIME_BASE_OFFSET
+    pop cx
+    add ax, cx
+copy_slot_target_ready:
     mov si, bx
     add si, staging_offset
     add di, ax
@@ -418,7 +547,8 @@ cached_id:       .word 0xFFFF
 pending_id:      .word 0
 slot_count:      .byte 0
 active_slot:     .byte 0
-slot_ids:        .space 14, 0
+class_skip_reset: .byte 0
+slot_ids:        .space 20, 0
 loader_saved_id: .word 0
 saved_game_ds:   .word 0
 handle:          .word 0
@@ -430,8 +560,17 @@ bank2: .asciz "C2"
 bank3: .asciz "C3"
 bank4: .asciz "C4"
 bank5: .asciz "C5"
-transport_codes: .byte 0x22, 0x23, 0x26, 0x3C, 0x3E, 0x5C, 0x7E
+# re_94: the last three (backtick/underscore/pipe) are the pool-
+# expansion codes for slots 8-10. Chosen the same way as the original
+# seven -- confirmed absent from all 13295 dialogue_units.json entries
+# -- and deliberately not '/', since VIEW CHARACTER's own multiclass
+# template already draws a literal '/' separator between class names on
+# this exact screen; reusing it as a transport code would make that
+# separator glyph flicker between '/' and whatever CJK character last
+# claimed that physical slot.
+transport_codes: .byte 0x22, 0x23, 0x26, 0x3C, 0x3E, 0x5C, 0x7E, 0x60, 0x5F, 0x7C
 name_buffer: .space 25, 0
+class_extra_slots: .space 306, 0
 .ifdef fixed_backpack
 backpack_source:
     .byte 0x5E, (backpack_id_0 / 94) + 0x21, (backpack_id_0 % 94) + 0x21
@@ -552,6 +691,8 @@ ability_y_ready:
 label_sources:
     ability_text ac_label_id_0, ac_label_id_1
     ability_text psi_label_id_0, psi_label_id_1
+    ability_text view_hp_label_id_0, view_hp_label_id_1
+    ability_text view_psi_label_id_0, view_psi_label_id_1
 
 # AC: the inventory info panel already sprintf's "AC: %2d" into a stack
 # buffer before drawing it. "AC" and the translated label are both exactly
@@ -647,6 +788,94 @@ psi_decoded:
     push bx
     push cx
     lret
+
+# VIEW CHARACTER's own HP:/PSI: labels are separate literals from the item
+# panel's (re_83's ac_label_entry/psi_label_entry above) -- different call
+# site, different template shape (no extra ds:0x11A4 pointer afterwards,
+# same trailing (color, 0x14, color, dword, 0) shape as gender/race/AC's
+# view-screen draws) -- so they get their own tags and buffers rather than
+# reusing the item-panel ones.
+view_hp_buffer: .byte 0x25, 0x43, 0x25, 0x43, 0x25, 0x43, 0, 0, 0, 0
+view_hp_label_entry:
+    pop es
+    pop cx
+    pop dx
+    push dx
+    push cx
+    mov ax, 0xFFF8
+    push cs
+    push OFFSET view_hp_decoded
+    push es
+    jmp name_cache_entry
+view_hp_decoded:
+    pop ax
+    pop dx
+    pop cx
+    pop bx
+    push si
+    push di
+    mov si, ax
+    mov di, OFFSET view_hp_buffer + 6
+    mov al, byte ptr cs:[si]
+    mov byte ptr cs:[di], al
+    mov al, byte ptr cs:[si + 1]
+    mov byte ptr cs:[di + 1], al
+    mov al, byte ptr cs:[si + 2]
+    mov byte ptr cs:[di + 2], al
+    mov byte ptr cs:[di + 3], 0
+    pop di
+    pop si
+    .byte 0x66, 0x68
+    .long 0x00FE00FF
+    push 0
+    push cs
+    push OFFSET view_hp_buffer
+    .byte 0x66, 0x68
+    .long 0x007D0095
+    push bx
+    push cx
+    lret
+
+view_psi_buffer: .byte 0x25, 0x43, 0x25, 0x43, 0x25, 0x43, 0, 0, 0, 0
+view_psi_label_entry:
+    pop es
+    pop cx
+    pop dx
+    push dx
+    push cx
+    mov ax, 0xFFF9
+    push cs
+    push OFFSET view_psi_decoded
+    push es
+    jmp name_cache_entry
+view_psi_decoded:
+    pop ax
+    pop dx
+    pop cx
+    pop bx
+    push si
+    push di
+    mov si, ax
+    mov di, OFFSET view_psi_buffer + 6
+    mov al, byte ptr cs:[si]
+    mov byte ptr cs:[di], al
+    mov al, byte ptr cs:[si + 1]
+    mov byte ptr cs:[di + 1], al
+    mov al, byte ptr cs:[si + 2]
+    mov byte ptr cs:[di + 2], al
+    mov byte ptr cs:[di + 3], 0
+    pop di
+    pop si
+    .byte 0x66, 0x68
+    .long 0x00FE00FF
+    push 0
+    push cs
+    push OFFSET view_psi_buffer
+    .byte 0x66, 0x68
+    .long 0x007D00DE
+    push bx
+    push cx
+    lret
 .endif
 .ifdef fixed_materials
 # Weapon/armor material adjective ("Bone", "Wooden", ...), prefixed onto the
@@ -713,6 +942,16 @@ material_copy_loop:
     .byte 0x5E, (\first / 94) + 0x21, (\first % 94) + 0x21
     .byte 0x5E, (\second / 94) + 0x21, (\second % 94) + 0x21, 0, 0
 .endm
+# Alignment names are always exactly four characters (e.g. 混亂善良), one
+# stride step wider than identity_text's two; padded to a 16-byte stride
+# (shl ax,4) so the lookup stays a plain multiply like gender's.
+.macro alignment_text first, second, third, fourth
+    .byte 0x5E, (\first / 94) + 0x21, (\first % 94) + 0x21
+    .byte 0x5E, (\second / 94) + 0x21, (\second % 94) + 0x21
+    .byte 0x5E, (\third / 94) + 0x21, (\third % 94) + 0x21
+    .byte 0x5E, (\fourth / 94) + 0x21, (\fourth % 94) + 0x21
+    .byte 0, 0, 0, 0
+.endm
 gender_sources:
     identity_text 512, 269
     identity_text 189, 269
@@ -725,7 +964,7 @@ race_3: .byte 0x5E, (106 / 94) + 0x21, (106 % 94) + 0x21, 0x5E, (586 / 94) + 0x2
 race_4: .byte 0x5E, (106 / 94) + 0x21, (106 % 94) + 0x21, 0x5E, (227 / 94) + 0x21, (227 % 94) + 0x21, 0x5E, (27 / 94) + 0x21, (27 % 94) + 0x21, 0
 race_5: .byte 0x5E, (106 / 94) + 0x21, (106 % 94) + 0x21, 0x5E, (724 / 94) + 0x21, (724 % 94) + 0x21, 0x5E, (27 / 94) + 0x21, (27 % 94) + 0x21, 0
 race_6: .byte 0x5E, (1317 / 94) + 0x21, (1317 % 94) + 0x21, 0x5E, (484 / 94) + 0x21, (484 % 94) + 0x21, 0x5E, (27 / 94) + 0x21, (27 % 94) + 0x21, 0
-race_7: .byte 0x5E, (1319 / 94) + 0x21, (1319 % 94) + 0x21, 0x5E, (1318 / 94) + 0x21, (1318 % 94) + 0x21, 0x5E, (27 / 94) + 0x21, (27 % 94) + 0x21, 0
+race_7: .byte 0x5E, (1319 / 94) + 0x21, (1319 % 94) + 0x21, 0x5E, (1318 / 94) + 0x21, (1318 % 94) + 0x21, 0x5E, (289 / 94) + 0x21, (289 % 94) + 0x21, 0x5E, (1004 / 94) + 0x21, (1004 % 94) + 0x21, 0
 
 gender_label_entry:
     les bx, [bp + 0x0A]
@@ -743,12 +982,12 @@ gender_label_entry:
     push es
     jmp name_cache_entry
 gender_decoded:
-    # v65 moves gender up onto the equipment row, so this span was widened
-    # to also absorb the original code's own remaining argument pushes
-    # (color escape, template id, and the position pair it was about to
-    # push from DI/SI) up to -- but not including -- the still-untouched
-    # "call 339E:016D" draw itself. GENDER_Y/GENDER_X replace what would
-    # have been "push di; push si".
+    # v66 restores v64's short redirect shape: this build's parent EXE
+    # (v64) only replaces the 22-byte string-pointer span (like race),
+    # not the wider v65 span that also absorbed the position pushes --
+    # v65's own gender-reposition candidate carries that wider EXE patch
+    # separately. GENDER_Y/GENDER_X are unused now that gender shares
+    # race's row again at its original, un-overridden position.
     pop ax
     pop dx
     pop cx
@@ -756,16 +995,6 @@ gender_decoded:
     push dx
     push ax
     push word ptr ds:[0x3270]
-    push 0x14
-    push word ptr ds:[0x326E]
-    .byte 0x66, 0x68
-    .long 0x00FE00FF
-    push 0
-    push ds
-    push 0x0E11
-    push GENDER_Y
-    push GENDER_X
-    push dword ptr ss:[bp + 6]
     push bx
     push cx
     lret
@@ -793,6 +1022,273 @@ race_decoded:
     push dx
     push ax
     push word ptr ds:[0x3270]
+    push bx
+    push cx
+    lret
+
+# Alignment (e.g. 混亂善良) is record+0x1A, 1-indexed 1-9 in row-major
+# law/chaos-then-good/evil order (1=Lawful Good .. 5=True Neutral ..
+# 9=Chaotic Evil), matching AD&D's classic 3x3 grid read row by row.
+# Character IDs: 守198 序1321 善1320 良1323 中11 立1322 絕1168 對213
+# 邪753 惡276 混453 亂18.
+alignment_sources:
+    alignment_text 198, 1321, 1320, 1323  # Lawful Good -> 守序善良
+    alignment_text 198, 1321, 11, 1322    # Lawful Neutral -> 守序中立
+    alignment_text 198, 1321, 753, 276    # Lawful Evil -> 守序邪惡
+    alignment_text 11, 1322, 1320, 1323   # Neutral Good -> 中立善良
+    alignment_text 1168, 213, 11, 1322    # True Neutral -> 絕對中立
+    alignment_text 11, 1322, 753, 276     # Neutral Evil -> 中立邪惡
+    alignment_text 453, 18, 1320, 1323    # Chaotic Good -> 混亂善良
+    alignment_text 453, 18, 11, 1322      # Chaotic Neutral -> 混亂中立
+    alignment_text 453, 18, 753, 276      # Chaotic Evil -> 混亂邪惡
+
+alignment_label_entry:
+    les bx, [bp + 0x0A]
+    mov al, es:[bx + 0x1A]
+    dec al
+    cbw
+    pop es
+    pop cx
+    pop dx
+    push dx
+    push cx
+    add ax, 0xFFC0
+    push cs
+    push OFFSET alignment_decoded
+    push es
+    jmp name_cache_entry
+alignment_decoded:
+    # Alignment's own draw call has the exact same trailing-argument shape
+    # as gender's (color escape, template id, position pair, then the
+    # caller's own [bp+6] far pointer) right up to -- but not including --
+    # the still-untouched far call itself, so this mirrors gender_decoded's
+    # absorption span, moving alignment onto the equipment row in place of
+    # where gender used to sit before it moved back down to share race's
+    # row.
+    pop ax
+    pop dx
+    pop cx
+    pop bx
+    push dx
+    push ax
+    push word ptr ds:[0x3270]
+    push 0x14
+    push word ptr ds:[0x326E]
+    .byte 0x66, 0x68
+    .long 0x00FE00FF
+    push 0
+    push ds
+    push 0x0E11
+    push ALIGNMENT_Y
+    push ALIGNMENT_X
+    push dword ptr ss:[bp + 6]
+    push bx
+    push cx
+    lret
+.endif
+.ifdef fixed_class_names
+# VIEW CHARACTER's class-name draw (5B7C:2DC1 in the v67-era build, an
+# overlay unit distinct from the one gender/race/alignment/HP:/PSI: live
+# in) reads up to three 1-indexed class IDs directly from the identity
+# record (record+0x21/+0x22/+0x23, confirmed live: GERAKIS=10 alone,
+# K'RATCHEK=9/7/12 for its "Fighter/Druid/Psionic" display) and pushes a
+# far pointer straight from an English string-pool lookup table --
+# *no* NAME-slot decode in between, unlike every other identity field.
+# Overwriting that table/pool in place (tried first, see re_90) draws
+# raw Base94 escape bytes as literal garbage, because 339E:016D never
+# runs them through decode_start. So each class slot's own
+# "read record; look up table; push pointer" instruction span gets
+# redirected here instead, exactly like every other field, just with
+# its own record offset per slot.
+class_offsets: .word class_cleric, class_cleric, class_cleric, class_cleric, class_druid, class_druid, class_druid, class_druid, class_fighter, class_gladiator, class_preserver, class_psionic, class_ranger, class_ranger, class_ranger, class_ranger, class_thief
+class_cleric: .byte 0x5E, (1325 / 94) + 0x21, (1325 % 94) + 0x21, 0x5E, (232 / 94) + 0x21, (232 % 94) + 0x21, 0
+class_druid: .byte 0x5E, (261 / 94) + 0x21, (261 % 94) + 0x21, 0x5E, (1329 / 94) + 0x21, (1329 % 94) + 0x21, 0x5E, (36 / 94) + 0x21, (36 % 94) + 0x21, 0
+class_fighter: .byte 0x5E, (289 / 94) + 0x21, (289 % 94) + 0x21, 0x5E, (1004 / 94) + 0x21, (1004 % 94) + 0x21, 0
+class_gladiator: .byte 0x5E, (697 / 94) + 0x21, (697 % 94) + 0x21, 0x5E, (857 / 94) + 0x21, (857 % 94) + 0x21, 0x5E, (1004 / 94) + 0x21, (1004 % 94) + 0x21, 0
+class_preserver: .byte 0x5E, (51 / 94) + 0x21, (51 % 94) + 0x21, 0x5E, (709 / 94) + 0x21, (709 % 94) + 0x21, 0x5E, (617 / 94) + 0x21, (617 % 94) + 0x21, 0
+class_psionic: .byte 0x5E, (822 / 94) + 0x21, (822 % 94) + 0x21, 0x5E, (629 / 94) + 0x21, (629 % 94) + 0x21, 0x5E, (232 / 94) + 0x21, (232 % 94) + 0x21, 0
+class_ranger: .byte 0x5E, (1240 / 94) + 0x21, (1240 % 94) + 0x21, 0x5E, (1324 / 94) + 0x21, (1324 % 94) + 0x21, 0
+class_thief: .byte 0x5E, (1326 / 94) + 0x21, (1326 % 94) + 0x21, 0x5E, (1328 / 94) + 0x21, (1328 % 94) + 0x21, 0
+
+# re_94: the 2-/3-class draw paths (5B7C:2DC1) collect every populated
+# slot's far pointer and only call the shared 339E:016D renderer once,
+# after ALL slots have decoded -- confirmed by live disassembly this
+# session (the three-class path pushes all three pointers back-to-back,
+# THEN does a single `call 339E:016D`; the two-class path is identical
+# with two pointers). Decode order is always slot3 (if present), then
+# slot2 (if present), then slot1 last, in both the two- and three-class
+# paths -- also confirmed live. Two things break if a slot's decode is
+# treated in isolation like every other identity field:
+#   1. `name_buffer` is one shared 25-byte scratch buffer, so a later
+#      slot's decode overwrites an earlier slot's still-unread string
+#      bytes before the combined draw call ever reads them.
+#   2. The 7 physical glyph slots are a shared, reused-per-decode pool
+#      (`decode_start` used to reset `slot_count` to 0 on every call), so
+#      a later slot's decode can evict the physical bitmap data an
+#      earlier slot's transport-code characters still point to.
+# The fix is two independent pieces, one per problem:
+#   1. slot2/slot3 each copy their decoded string out to a private
+#      buffer (class_slot2_buffer/class_slot3_buffer) instead of handing
+#      back a pointer into the shared name_buffer. slot1 is always last,
+#      so nothing decodes after it before the draw call reads its
+#      pointer -- it can keep using name_buffer directly.
+#   2. `class_skip_reset` (declared next to slot_count/active_slot) lets
+#      a slot ask the *next* decode_start call to keep accumulating into
+#      the same physical slot pool instead of resetting it. Each label
+#      entry decides this from the character record itself rather than
+#      from any saved history, so it can never go stale: slot3 is always
+#      first when it fires, so it always forces a normal reset; slot2/
+#      slot1 each check whether a slot that decodes *before* them (slot3
+#      for slot2; slot2 or slot3 for slot1) is populated in this same
+#      record, and only then ask to skip the reset. A truly single-class
+#      character never sets the flag at all, so class_slot1_label_entry
+#      behaves exactly as before in that case.
+class_slot1_label_entry:
+    les bx, [bp + 0x0A]
+    mov al, es:[bx + 0x21]
+    dec al
+    cbw
+    push ax
+    mov al, es:[bx + 0x22]
+    mov cl, es:[bx + 0x23]
+    or al, cl
+    jz class_slot1_is_first
+    mov byte ptr cs:[class_skip_reset], 1
+    jmp class_slot1_check_done
+class_slot1_is_first:
+    mov byte ptr cs:[class_skip_reset], 0
+class_slot1_check_done:
+    pop ax
+    pop es
+    pop cx
+    pop dx
+    push dx
+    push cx
+    add ax, 0xFFA0
+    push cs
+    push OFFSET class_decoded
+    push es
+    jmp name_cache_entry
+class_slot2_label_entry:
+    les bx, [bp + 0x0A]
+    mov al, es:[bx + 0x22]
+    dec al
+    cbw
+    push ax
+    mov al, es:[bx + 0x23]
+    or al, al
+    jz class_slot2_is_first
+    mov byte ptr cs:[class_skip_reset], 1
+    jmp class_slot2_check_done
+class_slot2_is_first:
+    mov byte ptr cs:[class_skip_reset], 0
+class_slot2_check_done:
+    pop ax
+    pop es
+    pop cx
+    pop dx
+    push dx
+    push cx
+    add ax, 0xFFA0
+    push cs
+    push OFFSET class_slot2_decoded
+    push es
+    jmp name_cache_entry
+class_slot3_label_entry:
+    les bx, [bp + 0x0A]
+    mov al, es:[bx + 0x23]
+    dec al
+    cbw
+    # slot3 (when its record field is populated at all) always decodes
+    # before slot2/slot1 in both the two- and three-class draw paths, so
+    # it never needs to check for an earlier sibling -- it always forces
+    # a normal, full slot-pool reset.
+    mov byte ptr cs:[class_skip_reset], 0
+    pop es
+    pop cx
+    pop dx
+    push dx
+    push cx
+    add ax, 0xFFA0
+    push cs
+    push OFFSET class_slot3_decoded
+    push es
+    jmp name_cache_entry
+class_decoded:
+    # Each redirect only replaces the "read record; look up table; push
+    # far pointer" span and nothing else -- the surrounding color/
+    # position/template pushes are untouched, original code the redirect
+    # simply resumes into -- so all that's needed here is to hand back
+    # the decoded string pointer in the same dx:ax shape the original
+    # "push dword [bx+si]" would have left on the stack. Used by slot1
+    # only (always last-decoded, so name_buffer is still valid when the
+    # combined draw call reads this pointer).
+    pop ax
+    pop dx
+    pop cx
+    pop bx
+    push dx
+    push ax
+    push bx
+    push cx
+    lret
+class_slot2_buffer: .space 25, 0
+class_slot2_decoded:
+    pop ax
+    pop dx
+    pop cx
+    pop bx
+    push si
+    push di
+    mov si, ax
+    mov di, OFFSET class_slot2_buffer
+class_slot2_copy:
+    mov al, byte ptr cs:[si]
+    test al, al
+    jz class_slot2_copy_done
+    cmp di, OFFSET class_slot2_buffer + 24
+    jae class_slot2_copy_done
+    mov byte ptr cs:[di], al
+    inc si
+    inc di
+    jmp class_slot2_copy
+class_slot2_copy_done:
+    mov byte ptr cs:[di], 0
+    pop di
+    pop si
+    mov ax, OFFSET class_slot2_buffer
+    push dx
+    push ax
+    push bx
+    push cx
+    lret
+class_slot3_buffer: .space 25, 0
+class_slot3_decoded:
+    pop ax
+    pop dx
+    pop cx
+    pop bx
+    push si
+    push di
+    mov si, ax
+    mov di, OFFSET class_slot3_buffer
+class_slot3_copy:
+    mov al, byte ptr cs:[si]
+    test al, al
+    jz class_slot3_copy_done
+    cmp di, OFFSET class_slot3_buffer + 24
+    jae class_slot3_copy_done
+    mov byte ptr cs:[di], al
+    inc si
+    inc di
+    jmp class_slot3_copy
+class_slot3_copy_done:
+    mov byte ptr cs:[di], 0
+    pop di
+    pop si
+    mov ax, OFFSET class_slot3_buffer
+    push dx
+    push ax
     push bx
     push cx
     lret

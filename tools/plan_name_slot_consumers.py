@@ -208,6 +208,8 @@ def assemble_name_slot_cache(
     materials: bool = False,
     identity: bool = False,
     gender_position: tuple[int, int] | None = None,
+    alignment_position: tuple[int, int] | None = None,
+    class_names: bool = False,
 ) -> bytes:
     """Assemble the self-contained decoder appended to FONT-100."""
     for label, value in (
@@ -244,14 +246,17 @@ def assemble_name_slot_cache(
     elif view_y_origin != 40:
         raise ValueError("view origin requires view-character support")
     if label_ids is not None:
-        if ability_ids is None or len(label_ids) != 4 or any(not 0 <= value < 1536 for value in label_ids):
-            raise ValueError("AC/PSI labels need ability support and four IDs within six banks")
+        if ability_ids is None or len(label_ids) != 8 or any(not 0 <= value < 1536 for value in label_ids):
+            raise ValueError("AC/PSI/view-HP/view-PSI labels need ability support and eight IDs within six banks")
         extra_symbols += ["--defsym", "fixed_labels=1"]
         for index, value in enumerate(label_ids):
-            name = ("ac_label_id_0", "ac_label_id_1", "psi_label_id_0", "psi_label_id_1")[index]
+            name = ("ac_label_id_0", "ac_label_id_1", "psi_label_id_0", "psi_label_id_1",
+                     "view_hp_label_id_0", "view_hp_label_id_1", "view_psi_label_id_0", "view_psi_label_id_1")[index]
             extra_symbols += ["--defsym", f"{name}={value}"]
     if materials:
         extra_symbols += ["--defsym", "fixed_materials=1"]
+    if class_names:
+        extra_symbols += ["--defsym", "fixed_class_names=1"]
     if identity:
         extra_symbols += ["--defsym", "fixed_identity=1"]
         if gender_position is not None:
@@ -259,8 +264,16 @@ def assemble_name_slot_cache(
             if not (0 <= gy <= 0xFFFF and 0 <= gx <= 0xFFFF):
                 raise ValueError("gender position must fit u16")
             extra_symbols += ["--defsym", f"GENDER_Y={gy}", "--defsym", f"GENDER_X={gx}"]
-    elif gender_position is not None:
-        raise ValueError("gender position requires identity support")
+        if alignment_position is not None:
+            ay, ax_ = alignment_position
+            if not (0 <= ay <= 0xFFFF and 0 <= ax_ <= 0xFFFF):
+                raise ValueError("alignment position must fit u16")
+            extra_symbols += ["--defsym", f"ALIGNMENT_Y={ay}", "--defsym", f"ALIGNMENT_X={ax_}"]
+    else:
+        if gender_position is not None:
+            raise ValueError("gender position requires identity support")
+        if alignment_position is not None:
+            raise ValueError("alignment position requires identity support")
     with tempfile.TemporaryDirectory() as temporary:
         directory = Path(temporary)
         obj = directory / "name-cache.o"
