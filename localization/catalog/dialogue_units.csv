@@ -1987,10 +1987,10 @@ DLG_4ace9102c60a,Bad gladiators! Bad gladiators! ,,pending,True,1,GPL-136@0x02D8
 DLG_fd590bffda6b,"Kurzak told me to bring you to the arena. If ya don't go, ",,pending,True,1,GPL-136@0x031D,0,1
 DLG_998931d39f4b,there'll be trouble for ya.,,pending,True,1,GPL-136@0x0356,0,0
 DLG_c2a5d2e2e7f6,I've given you your warning. Now go.,,pending,True,1,GPL-136@0x0379,0,0
-DLG_a820e4f4b35a,It's Kurzak you want to talk to. I'm just the monster trainer. ,,pending,True,1,GPL-136@0x03A2,0,1
-DLG_4cd26b2f929a,  Should I trust Mirlon? ,,pending,True,1,GPL-136@0x0418,2,1
-DLG_15fafbfe1c36,  What am I fighting next?,,pending,True,1,GPL-136@0x0418,2,0
-DLG_ef91d95dd653,  How can I get out of here? ,,pending,True,1,GPL-136@0x0418,2,1
+DLG_a820e4f4b35a,It's Kurzak you want to talk to. I'm just the monster trainer. ,你該找庫爾扎克說話。我只是馴獸師。,translated_unreviewed,True,1,GPL-136@0x03A2,0,1
+DLG_4cd26b2f929a,  Should I trust Mirlon? ,  我該相信米爾隆嗎？,translated_unreviewed,True,1,GPL-136@0x0418,2,1
+DLG_15fafbfe1c36,  What am I fighting next?,  下一場我要對付什麼？,translated_unreviewed,True,1,GPL-136@0x0418,2,0
+DLG_ef91d95dd653,  How can I get out of here? ,  我要怎麼離開這裡？,translated_unreviewed,True,1,GPL-136@0x0418,2,1
 DLG_4f8a3b44d15f,"Goodbye,gladiator. ",,pending,True,1,GPL-136@0x0492,0,1
 DLG_f6bc539060ab,I dunno. ,,pending,True,2,GPL-136@0x04AA,0,1
 DLG_2ede7875949d,I dunno. It's too early to tell. ,,pending,True,1,GPL-136@0x051E,0,1

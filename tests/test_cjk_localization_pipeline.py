@@ -318,6 +318,16 @@ class CjkLocalizationPipelineTests(unittest.TestCase):
         )
         for offset in EBOX_NEXT_PAGE_DELTA_FILE_OFFSETS:
             self.assertEqual(line_gap_exe[offset : offset + 5], bytes.fromhex("6A FD 90 90 90"))
+        menu_gap_exe, _ = patch_executable(
+            source, 0x206B, 92, line_gap=2, menu_line_gap=5
+        )
+        self.assertEqual(menu_gap_exe[0x2C716 : 0x2C719], bytes.fromhex("05 05 00"))
+        self.assertEqual(
+            [offset for offset, (before, after) in enumerate(zip(line_gap_exe, menu_gap_exe)) if before != after],
+            [0x2C717],
+        )
+        with self.assertRaisesRegex(ValueError, "menu layout line gap"):
+            patch_executable(source, 0x206B, 92, menu_line_gap=1)
         # The four original SI=5 assignments remain byte-identical because SI
         # is shared with the control feedback path.
         for offset in (0x7CD58, 0x7CD8F, 0x7DABA, 0x7DB76):

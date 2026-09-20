@@ -13,6 +13,7 @@
     {"en": "Dagolar", "zh": "達戈拉爾", "category": "character", "status": "draft", "source": "inline", "notes": "Named rival of Balkazar in GPL-6."},
     {"en": "Unnamed One", "zh": "無名者", "category": "entity", "status": "draft", "source": "inline", "notes": "Entity Balkazar attempts to summon in GPL-6; capitalized title."},
     {"en": "Kurzak", "zh": "庫爾扎克", "category": "character", "status": "draft", "source": "inline", "notes": "Mentioned in passing by an arena guard in GPL-3 (\"I thought I told Kurzak to stop selecting slaves by looking at their teeth!\"); never appears on screen in this batch."},
+    {"en": "Mirlon", "zh": "米爾隆", "category": "character", "status": "draft", "source": "inline", "notes": "Dialogue option in GPL-136."},
     {"en": "Draj", "zh": "德拉吉", "category": "place", "status": "draft", "source": "inline", "notes": "The city-state whose arena the opening sequence (GPL-2..5) takes place in."},
     {"en": "Athas", "zh": "亞薩斯", "category": "place", "status": "draft", "source": "inline", "notes": "The game world's name. Deliberately not '阿薩斯' to avoid the established Warcraft Arthas transliteration."},
     {"en": "Tectuktitlay", "zh": "特克圖克特雷", "category": "character", "status": "draft", "source": "inline", "notes": "Sorcerer-king of Draj, referenced throughout the arena opening but does not appear as a speaking character in GPL-2..5."},

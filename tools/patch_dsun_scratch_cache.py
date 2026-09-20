@@ -32,6 +32,11 @@ EBOX_LAYOUT_LOCALS = 0x0265
 EBOX_LAYOUT_ADVANCE = 0x04A6
 EBOX_ADVANCE_HELPER = 0x028A
 EBOX_STORE_LINE_HEIGHT = 0x01CD
+# GuiMenuLayout's vertical-menu line-pitch immediate (add ax, 2) inside the
+# MENU control's own segment (0x2C450), file offset 0x2C716..0x2C718.  This
+# is unrelated to EBOX_STORE_LINE_HEIGHT: the dialogue option list is drawn
+# by a wholly separate MENU control that never consults the EBOX line table.
+MENU_LAYOUT_LINE_GAP_FILE_OFFSET = 0x2C716
 CJK_HEIGHT_HELPER = 0x53D6
 GLYPH_HEIGHT_LOAD = 0x0704
 # The two game-side EBOX dispatchers negate SI=5 immediately before passing
@@ -258,6 +263,22 @@ def ebox_page_step(line_gap: int) -> int:
     return 5 - line_gap
 
 
+def menu_layout_line_gap(line_gap: int) -> bytes:
+    """Widen GuiMenuLayout's per-item vertical pitch beyond font_height + 2.
+
+    The MENU control (dialogue option list) advances its Y cursor by exactly
+    font_height + 2 for every item, hardcoded as `add ax, 2` at file offset
+    0x2C716. That headroom is tuned for 6-7px-tall English glyphs; CJK glyphs
+    are 10-12px tall (with shadow), so the stock +2 leaves 0px of leading and
+    adjacent option lines visually merge. This only changes the immediate
+    operand, so it is a same-size, same-opcode overwrite with no relocation
+    or code-space implications (unlike the EBOX line-gap patch).
+    """
+    if not 2 <= line_gap <= 9:
+        raise ValueError("menu layout line gap must be 2..9 pixels")
+    return bytes((0x05, line_gap, 0x00))
+
+
 def cjk_height_helper(cjk_draw_height: int) -> bytes:
     """Return 10 for marker byte 0x7F so its shared draw/clip path stays aligned."""
     if cjk_draw_height not in (9, 10):
@@ -327,9 +348,11 @@ def patches(
     cjk_draw_height: int = 9,
     bank_count: int = 4,
     experimental_item_text_fix: bool = False,
+    menu_line_gap: int = 2,
 ) -> dict[int, tuple[bytes, bytes]]:
     if not 1 <= bank_count <= 9:
         raise ValueError("bank count must be 1..9 (single-digit CJB1 filenames)")
+    menu_gap_patch = menu_layout_line_gap(menu_line_gap)
     resolve = resolver()
     state = bytes.fromhex("FF 00 FF FF 00 00 00 00 00 00 00 00 00 00")
     # DOS does not require a filename extension; dropping ".BIN" keeps each
@@ -414,6 +437,11 @@ def patches(
         next_delta = bytes((0x6A, (-step) & 0xFF)) + b"\x90\x90\x90"
         for offset in EBOX_NEXT_PAGE_DELTA_FILE_OFFSETS:
             result[offset] = (bytes.fromhex("8B C6 F7 D8 50"), next_delta)
+    if menu_line_gap != 2:
+        result[MENU_LAYOUT_LINE_GAP_FILE_OFFSET] = (
+            bytes.fromhex("05 02 00"),
+            menu_gap_patch,
+        )
     return result
 
 
@@ -425,6 +453,7 @@ def patch_executable(
     cjk_draw_height: int = 9,
     bank_count: int = 4,
     experimental_item_text_fix: bool = False,
+    menu_line_gap: int = 2,
 ) -> tuple[bytes, bytes]:
     """Return a verified scratch-cache executable image and assembled cache."""
     data = bytearray(source)
@@ -435,7 +464,12 @@ def patch_executable(
             f"beyond runtime-safe boundary 0x{CACHE_RUNTIME_LIMIT:04X}"
         )
     planned = patches(
-        cache, line_gap, cjk_draw_height, bank_count, experimental_item_text_fix
+        cache,
+        line_gap,
+        cjk_draw_height,
+        bank_count,
+        experimental_item_text_fix,
+        menu_line_gap,
     )
     relocations = mz_relocation_file_offsets(source)
     removed_relocations = (
@@ -481,9 +515,14 @@ def main() -> None:
     parser.add_argument("--scratch-offset", type=lambda value: int(value, 0), default=0x3640)
     parser.add_argument("--record-bytes", type=lambda value: int(value, 0), default=242)
     parser.add_argument("--line-gap", type=int, default=0)
+    parser.add_argument("--menu-line-gap", type=int, default=2)
     args = parser.parse_args()
     data, cache = patch_executable(
-        args.exe.read_bytes(), args.scratch_offset, args.record_bytes, args.line_gap
+        args.exe.read_bytes(),
+        args.scratch_offset,
+        args.record_bytes,
+        args.line_gap,
+        menu_line_gap=args.menu_line_gap,
     )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_bytes(data)

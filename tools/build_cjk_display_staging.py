@@ -28,6 +28,7 @@ try:
         verify_extracted_gff_chunks,
     )
     from .font100_tool import Font100
+    from .patch_dialogue_menu_wind import patch_dialogue_choice_paging, patch_dialogue_menu_wind
     from .patch_dsun_scratch_cache import patch_executable
 except ImportError:
     from cjk_localization_pipeline import (
@@ -44,6 +45,7 @@ except ImportError:
         verify_extracted_gff_chunks,
     )
     from font100_tool import Font100
+    from patch_dialogue_menu_wind import patch_dialogue_choice_paging, patch_dialogue_menu_wind
     from patch_dsun_scratch_cache import patch_executable
 
 
@@ -242,6 +244,12 @@ def main() -> int:
     parser.add_argument("--gff-cat", type=Path, default=DEFAULT_GFF_CAT)
     parser.add_argument("--dosbox-x", type=Path, default=DEFAULT_DOSBOX_X)
     parser.add_argument("--ebox-line-gap", type=int, default=0)
+    parser.add_argument("--menu-line-gap", type=int, default=2)
+    parser.add_argument(
+        "--dialogue-option-pitch",
+        type=int,
+        help="four dialogue choices per page at 11-pixel pitch with working MORE paging",
+    )
     parser.add_argument(
         "--experimental-item-text-fix",
         action="store_true",
@@ -369,7 +377,10 @@ def main() -> int:
             cjk_draw_height=bank_height,
             bank_count=bank_count,
             experimental_item_text_fix=args.experimental_item_text_fix_v35,
+            menu_line_gap=args.menu_line_gap,
         )
+        if args.dialogue_option_pitch is not None:
+            patched_exe = patch_dialogue_choice_paging(patched_exe)
         (staged_game / "DSUN.EXE").write_bytes(patched_exe)
         for _, filename, payload in bank_files:
             (staged_game / filename).write_bytes(payload)
@@ -422,7 +433,11 @@ def main() -> int:
                 "-o",
                 resource_before_font,
             )
-        final_resource = staged_game / "RESOURCE.GFF"
+        resource_after_font = (
+            work / "RESOURCE.font.GFF"
+            if args.dialogue_option_pitch is not None
+            else staged_game / "RESOURCE.GFF"
+        )
         run(
             args.gff_cat,
             "replace",
@@ -431,8 +446,28 @@ def main() -> int:
             "100",
             font_file,
             "-o",
-            final_resource,
+            resource_after_font,
         )
+        dialogue_wind: bytes | None = None
+        final_resource = staged_game / "RESOURCE.GFF"
+        if args.dialogue_option_pitch is not None:
+            original_wind = work / "WIND-3008.original.bin"
+            run(args.gff_cat, "extract", game_dir / "RESOURCE.GFF", "WIND", "3008", "-o", original_wind)
+            dialogue_wind = patch_dialogue_menu_wind(
+                original_wind.read_bytes(), args.dialogue_option_pitch
+            )
+            patched_wind = work / "WIND-3008.dialogue-options.bin"
+            patched_wind.write_bytes(dialogue_wind)
+            run(
+                args.gff_cat,
+                "replace",
+                resource_after_font,
+                "WIND",
+                "3008",
+                patched_wind,
+                "-o",
+                final_resource,
+            )
 
         original_chunks, final_chunks = work / "original-chunks", work / "final-chunks"
         run(args.gff_cat, "extract", game_dir / "RESOURCE.GFF", "--all", "-o", original_chunks)
@@ -445,6 +480,15 @@ def main() -> int:
                 "encoded_byte_length": len(font_payload),
             }
         ]
+        if dialogue_wind is not None:
+            records.append(
+                {
+                    "kind": "WIND",
+                    "chunk_id": 3008,
+                    "sha256": sha256(dialogue_wind),
+                    "encoded_byte_length": len(dialogue_wind),
+                }
+            )
         resource_verification = verify_extracted_gff_chunks(original_chunks, final_chunks, records)
 
         unchanged_files = 0
@@ -502,7 +546,19 @@ def main() -> int:
                 "ebox_ui_state_step": 5,
                 "ebox_next_page_delta": -(5 - args.ebox_line_gap),
                 "ebox_previous_page_policy": "five one-line attempts with native boundary rejection",
+                "menu_layout_line_gap": args.menu_line_gap,
             },
+            "dialogue_options": (
+                {
+                    "resource_chunk": "WIND-3008",
+                    "choice_pitch": args.dialogue_option_pitch,
+                    "choice_slots": 4,
+                    "window_height": 58,
+                    "paging": "four choices per page; MORE, back page and fifth choice verified in game",
+                    "sha256": sha256(dialogue_wind),
+                }
+                if dialogue_wind is not None else None
+            ),
             "resource": {
                 "source_sha256": sha256((game_dir / "RESOURCE.GFF").read_bytes()),
                 "patched_sha256": sha256(final_resource.read_bytes()),
