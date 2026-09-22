@@ -676,9 +676,22 @@ def main() -> int:
             "(discovered local-sub) boundary"
         ),
     )
-    parser.add_argument("--unit-id", action="append", required=True)
+    parser.add_argument("--unit-id", action="append", default=[])
+    parser.add_argument(
+        "--unit-id-file",
+        type=Path,
+        help="text file with one dialogue unit id per line",
+    )
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
+    if args.unit_id_file:
+        args.unit_id.extend(
+            line.strip()
+            for line in args.unit_id_file.read_text(encoding="utf-8").splitlines()
+            if line.strip()
+        )
+    if not args.unit_id:
+        raise ValueError("select dialogue units with --unit-id or --unit-id-file")
 
     prior_package: dict[str, object] | None = None
     if args.prior_package:
@@ -739,6 +752,7 @@ def main() -> int:
 
         for (kind, chunk_id), edits in sorted(grouped.items()):
             stem = f"{kind}-{chunk_id}"
+            print(f"chunk {stem} edits={len(edits)}", flush=True)
             original_chunk = chunks / f"{stem}.original.bin"
             roundtrip_chunk = chunks / f"{stem}.roundtrip.bin"
             patched_chunk = chunks / f"{stem}.bin"
@@ -769,9 +783,13 @@ def main() -> int:
                 )
             entry_requirements_by_target[(kind, chunk_id)] = entry_requirements
             source_document = json.loads(original_listing.read_text(encoding="utf-8"))
-            patched_document, applied = relocate_json_strings(
-                source_document, edits, chunk_id
-            )
+            try:
+                patched_document, applied = relocate_json_strings(
+                    source_document, edits, chunk_id
+                )
+            except ValueError as exc:
+                print(f"skip {stem}: {exc}", flush=True)
+                continue
             if kind == "GPL":
                 original_instructions = source_document["instructions"]
                 patched_instructions = patched_document["instructions"]

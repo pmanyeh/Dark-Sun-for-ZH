@@ -3,9 +3,22 @@
 from __future__ import annotations
 
 import hashlib
+from pathlib import Path
+
+try:
+    from .patch_dsun_scratch_cache import mz_relocation_file_offsets, rewrite_mz_relocations
+except ImportError:
+    from patch_dsun_scratch_cache import mz_relocation_file_offsets, rewrite_mz_relocations
 
 
 WIND_3008_SHA256 = "a8bfcc3de03485e17006e7066b979445cccca5568f7c1895dd5a07797e1c573f"
+ROOT = Path(__file__).resolve().parent
+# Resident data-segment padding. The DOS loader relocates segment 0x4356 to DS.
+CHOICE_RESTORE_CAVE = 0x50960
+CHOICE_RESTORE_TEMPLATE = 0x50B60
+CHOICE_SET_TEXT = 0x2FDCA
+CHOICE_SET_TEXT_PROLOGUE = bytes.fromhex("558BEC81ECEA00")
+DATA_SEGMENT = 0x4356
 CHOICE_IDS = range(0x081C, 0x0820)
 REMOVED_CHOICE_ID = 0x0820
 FIRST_CHOICE_Y = 13
@@ -30,13 +43,48 @@ PAGE_SIZE_PATCHES = {
 }
 
 
+def _choice_restore_payloads() -> tuple[bytes, bytes]:
+    hook = (ROOT / "dialogue_choice_top_rows_hook.bin").read_bytes()
+    panel = (ROOT / "dialogue_choice_top_rows.bin").read_bytes()
+    if not hook.endswith(b"\xEA\x01\x08\x1D\x2A"):
+        raise ValueError("choice restore hook is missing its unrelocated return segment")
+    if len(panel) != 608:
+        raise ValueError("choice restore panel must be two 76-byte rows across four planes")
+    if CHOICE_RESTORE_CAVE + len(hook) > CHOICE_RESTORE_TEMPLATE:
+        raise ValueError("choice restore hook overlaps its panel template")
+    return hook, panel
+
+
 def patch_dialogue_choice_paging(executable: bytes) -> bytes:
-    """Change only the dialogue choice page width from five to four."""
+    """Page four choices and repair the top two rows on the hidden page."""
     patched = bytearray(executable)
     for offset, (expected, replacement) in PAGE_SIZE_PATCHES.items():
         if patched[offset:offset + len(expected)] != expected:
             raise ValueError(f"dialogue page instruction mismatch at {offset:#x}")
         patched[offset:offset + len(expected)] = replacement
+
+    hook, panel = _choice_restore_payloads()
+    if patched[CHOICE_SET_TEXT:CHOICE_SET_TEXT + 7] != CHOICE_SET_TEXT_PROLOGUE:
+        raise ValueError("choice text entry prologue does not match the verified function")
+    for offset, payload in (
+        (CHOICE_RESTORE_CAVE, hook),
+        (CHOICE_RESTORE_TEMPLATE, panel),
+    ):
+        if any(patched[offset:offset + len(payload)]):
+            raise ValueError(f"choice restore padding is not empty at {offset:#x}")
+        patched[offset:offset + len(payload)] = payload
+
+    call = b"\x9A\x00\x80" + DATA_SEGMENT.to_bytes(2, "little") + b"\xEB\x00"
+    patched[CHOICE_SET_TEXT:CHOICE_SET_TEXT + 7] = call
+    return_site = CHOICE_RESTORE_CAVE + hook.rindex(b"\xEA\x01\x08\x1D\x2A") + 3
+    rewrite_mz_relocations(
+        patched,
+        set(),
+        {CHOICE_SET_TEXT + 3, return_site},
+    )
+    relocations = mz_relocation_file_offsets(bytes(patched))
+    if not {CHOICE_SET_TEXT + 3, return_site} <= relocations:
+        raise ValueError("choice restore far pointers were not added to the MZ relocation table")
     return bytes(patched)
 
 

@@ -320,8 +320,8 @@ def main() -> int:
     bank_count = len(banks)
     if sorted(banks) != list(range(bank_count)):
         raise ValueError(f"display staging requires contiguous banks starting at 0, found {sorted(banks)}")
-    if not 1 <= bank_count <= 9:
-        raise ValueError(f"display staging requires 1..9 banks (single-digit CJB1 filenames), found {bank_count}")
+    if not 1 <= bank_count <= 16:
+        raise ValueError(f"display staging requires 1..16 banks, found {bank_count}")
     bank_heights = {bank["height"] for bank in banks.values()}
     if len(bank_heights) != 1:
         raise ValueError(f"CJB1 banks disagree on glyph height: {sorted(bank_heights)}")

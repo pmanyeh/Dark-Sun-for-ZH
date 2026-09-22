@@ -386,8 +386,13 @@ class CjkLocalizationPipelineTests(unittest.TestCase):
         self.assertNotIn(ITEM_TEXT_FILE_BASE + 0x02F3, five_bank_relocations)
         self.assertIn(ITEM_TEXT_FILE_BASE + 0x02EE, five_bank_relocations)
         self.assertIn(ITEM_TEXT_FILE_BASE + 0x02F7, five_bank_relocations)
-        with self.assertRaisesRegex(ValueError, "1..9"):
-            patches(small, bank_count=10)
+        # Ten banks no longer fit beside the resolver, so their filenames
+        # move to DS:8460 and the name table keeps only the pointers.
+        ten_bank_names = patches(small, bank_count=10)[CODE_BASE + NAMES][1]
+        self.assertEqual(ten_bank_names[:2], struct.pack("<H", 0x8460))
+        self.assertEqual(len(ten_bank_names), 20)
+        with self.assertRaisesRegex(ValueError, "1..16"):
+            patches(small, bank_count=17)
 
     def test_pixel_aligned_rasterizer_keeps_fixed_record_size(self) -> None:
         font = Path(r"C:\Windows\Fonts\NotoSansTC-VF.ttf")

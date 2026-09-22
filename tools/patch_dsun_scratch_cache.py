@@ -111,8 +111,8 @@ def assemble_cache(scratch_offset: int = 0x3640, record_bytes: int = 242, bank_c
         raise ValueError("scratch offset must fit u16")
     if not 1 <= record_bytes <= 0xFFFF:
         raise ValueError("record size must fit a non-zero u16")
-    if not 1 <= bank_count <= 9:
-        raise ValueError("bank count must be 1..9 (single-digit CJB1 filenames)")
+    if not 1 <= bank_count <= 16:
+        raise ValueError("bank count must be 1..16")
     with tempfile.TemporaryDirectory() as temporary:
         directory = Path(temporary)
         obj = directory / "cache.o"
@@ -342,6 +342,21 @@ def item_format_loop() -> bytes:
     return payload
 
 
+def open_bank_files_with_game_ds(cache: bytes) -> bytes:
+    """Leave DS as the game data segment for the bank-file open.
+
+    The following read of the bank directory still switches to CS. Only the
+    first ``push ds; push cs; pop ds`` is the filename open.
+    """
+    marker = bytes.fromhex("1E0E1F89C3D1E32E8B97F653")
+    found = cache.find(marker)
+    if found < 0 or cache.find(marker, found + 1) >= 0:
+        raise ValueError("bank-open DS switch is missing or not unique")
+    patched = bytearray(cache)
+    patched[found + 1:found + 3] = b"\x90\x90"
+    return bytes(patched)
+
+
 def patches(
     cache: bytes,
     line_gap: int = 0,
@@ -350,8 +365,8 @@ def patches(
     experimental_item_text_fix: bool = False,
     menu_line_gap: int = 2,
 ) -> dict[int, tuple[bytes, bytes]]:
-    if not 1 <= bank_count <= 9:
-        raise ValueError("bank count must be 1..9 (single-digit CJB1 filenames)")
+    if not 1 <= bank_count <= 16:
+        raise ValueError("bank count must be 1..16")
     menu_gap_patch = menu_layout_line_gap(menu_line_gap)
     resolve = resolver()
     state = bytes.fromhex("FF 00 FF FF 00 00 00 00 00 00 00 00 00 00")
@@ -359,14 +374,30 @@ def patches(
     # entry to 3 bytes ("C{n}\0") so the table still fits between NAMES and
     # the resolver stub at COMMON even past four banks.
     filenames = tuple(f"C{bank}\0".encode("ascii") for bank in range(bank_count))
-    table_bytes = bank_count * 2
-    offset = NAMES + table_bytes
-    name_offsets = []
-    for filename in filenames:
-        name_offsets.append(offset)
-        offset += len(filename)
-    names = struct.pack(f"<{bank_count}H", *name_offsets) + b"".join(filenames)
     names_limit = ITEM_FORMAT_WRAPPER if experimental_item_text_fix else COMMON
+    if bank_count <= 8:
+        table_bytes = bank_count * 2
+        offset = NAMES + table_bytes
+        name_offsets = []
+        for filename in filenames:
+            name_offsets.append(offset)
+            offset += len(filename)
+        names = struct.pack(f"<{bank_count}H", *name_offsets) + b"".join(filenames)
+        name_strings = b""
+        name_string_file_offset = None
+    else:
+        # The resolver stub occupies COMMON. Two-digit names no longer fit
+        # beside it, so the pointer table stays here and the bytes live in
+        # DS padding. The cache opens them with the game DS.
+        cache = open_bank_files_with_game_ds(cache)
+        offset = 0x8460
+        name_offsets = []
+        for filename in filenames:
+            name_offsets.append(offset)
+            offset += len(filename)
+        names = struct.pack(f"<{bank_count}H", *name_offsets)
+        name_strings = b"".join(filenames)
+        name_string_file_offset = 0x48960 + 0x8460
     if NAMES + len(names) > min(CACHE, names_limit):
         raise ValueError(
             f"bank name table for {bank_count} banks ends at 0x{NAMES + len(names):04X}, "
@@ -381,6 +412,11 @@ def patches(
         CODE_BASE + 0x53E6: (bytes(16), triple_wrapper(0x53E6, 0xF6)),
         CODE_BASE + STATE: (bytes(len(state)), state),
         CODE_BASE + NAMES: (bytes(len(names)), names),
+        **(
+            {name_string_file_offset: (bytes(len(name_strings)), name_strings)}
+            if name_string_file_offset is not None
+            else {}
+        ),
         CODE_BASE + COMMON: (bytes(len(resolve)), resolve),
         CODE_BASE + CACHE: (bytes(len(cache)), cache),
         EBOX_OVERLAY_BASE + EBOX_WIDTH_BODY: (
