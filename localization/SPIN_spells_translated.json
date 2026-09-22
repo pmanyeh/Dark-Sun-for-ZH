@@ -3,8 +3,8 @@
   "source_tag": "SPIN",
   "description": "Spell and special-item description strings (AD&D 2nd edition spells, including Dark Sun psionics). Each SPIN-NNNN file is one complete, independent GFF resource entry, so (unlike NAME-1) these can be translated and repacked individually with gff-tool's --replace-with, one resource at a time, with no risk of corrupting a shared record structure.",
   "translation_status": "First-pass Traditional Chinese translation by Claude, using standard AD&D/TRPG Chinese terminology conventions. Not yet verified in-game (game's font is single-byte ASCII only; Chinese text will not render correctly until DSUN.EXE is patched for double-byte font support -- see docs/re for that blocker). Encoding used for the ready-to-repack files: Big5.",
-  "count_total": 172,
-  "count_translated": 172,
+  "count_total": 180,
+  "count_translated": 180,
   "missing_source_ids": [
     173,
     174,
@@ -1219,6 +1219,62 @@
       "gff_number": 172,
       "en": "THOUGHT SHIELD:  Protects psionicist's mind from psionic attacks. May initiate other psionics while thus protected.",
       "zh": "思維護盾：保護心靈師的心智免受心靈攻擊。受保護期間仍可發動其他心靈能力。"
+    },
+    {
+      "id": 249,
+      "gff_tag": "SPIN",
+      "gff_number": 249,
+      "en": "RESTORE PSIONIC STRENGTH POINTS",
+      "zh": "恢復心靈力量點數"
+    },
+    {
+      "id": 250,
+      "gff_tag": "SPIN",
+      "gff_number": 250,
+      "en": "INCREASE STRENGTH",
+      "zh": "提升力量"
+    },
+    {
+      "id": 251,
+      "gff_tag": "SPIN",
+      "gff_number": 251,
+      "en": "INCREASE DEXTERITY",
+      "zh": "提升敏捷"
+    },
+    {
+      "id": 252,
+      "gff_tag": "SPIN",
+      "gff_number": 252,
+      "en": "INCREASE CONSTITUTION",
+      "zh": "提升體質"
+    },
+    {
+      "id": 253,
+      "gff_tag": "SPIN",
+      "gff_number": 253,
+      "en": "INCREASE INTELLIGENCE",
+      "zh": "提升智力"
+    },
+    {
+      "id": 254,
+      "gff_tag": "SPIN",
+      "gff_number": 254,
+      "en": "INCREASE WISDOM",
+      "zh": "提升睿智"
+    },
+    {
+      "id": 255,
+      "gff_tag": "SPIN",
+      "gff_number": 255,
+      "en": "INCREASE CHARISMA",
+      "zh": "提升魅力"
+    },
+    {
+      "id": 1000,
+      "gff_tag": "SPIN",
+      "gff_number": 1000,
+      "en": "TURN UNDEAD:  Allows a priest to turn or destroy undead creatures. May be used once per creature. The higher the priest's level, the greater the effect.",
+      "zh": "退散不死生物：允許牧師退散或消滅不死生物。每名生物限用一次。牧師等級越高，效果越強。"
     }
   ]
 }

@@ -2,92 +2,692 @@
   "description": "Authoritative Traditional Chinese glossary for every proper noun (character, place, faction, or other named entity) used anywhere in the Dark Sun: Shattered Lands localization. Consult this file before translating any new batch of dialogue, SPIN, or NAME-1 text, and add any newly-coined proper-noun translation back into it immediately so the same name never drifts into a different Chinese rendering elsewhere in the game.",
   "policy": "One entry per distinct English proper noun. `zh` is empty until decided. `status` is `confirmed` once the user has approved it, `draft` if only Claude has proposed it, or `pending` if not yet translated. `source` records where the name was first catalogued (a `localization/catalog` category, or `dynamic` for a runtime-substituted variable name that is intentionally left untranslated, or `inline` for a name embedded inside a larger dialogue sentence with no separate catalog row).",
   "entries": [
-    {"en": "Celgor", "zh": "賽爾戈", "category": "character", "status": "confirmed", "source": "inline", "notes": "Arena mage NPC; translated inline as part of DLG_f6c2fbaa84a9 (re_37, Celgor opening GPL package)."},
-    {"en": "Gerakis", "zh": "", "category": "character", "status": "confirmed", "source": "dynamic", "notes": "Runtime-substituted active-character name (POV expression); intentionally kept as the original GPL expression, not flattened to static translated text (re_37)."},
-    {"en": "Dag", "zh": "達格", "category": "character", "status": "confirmed", "source": "text", "notes": "Recurring speaker tag, 50 occurrences in GPL-2..5 alone, all read from the GFF TEXT string-table (GPL occurrence source 'text:gstring'), never as an inline compressed GPL string. compile_gpl_dialogue_patch.py cannot patch it -- excluded from the re_42 GPL-2..5 import (still displays in English). Needs a TEXT-chunk string-table importer, not yet built."},
-    {"en": "Halton", "zh": "哈爾頓", "category": "character", "status": "confirmed", "source": "text", "notes": "Same 'text:gstring' limitation as Dag; excluded from the re_42 GPL-2..5 import."},
-    {"en": "Garn", "zh": "加恩", "category": "character", "status": "confirmed", "source": "text", "notes": "Same 'text:gstring' limitation as Dag; excluded from the re_42 GPL-2..5 import."},
-    {"en": "Magramar", "zh": "馬格拉瑪", "category": "character", "status": "confirmed", "source": "text", "notes": "Same 'text:gstring' limitation as Dag; excluded from the re_42 GPL-2..5 import."},
-    {"en": "Semyon", "zh": "賽蒙", "category": "character", "status": "confirmed", "source": "inline", "notes": "Prisoner rescued in GPL-5; name appears only inline within sentences, no standalone catalog row."},
-    {"en": "Balkazar", "zh": "巴爾卡札", "category": "character", "status": "draft", "source": "inline", "notes": "Antagonist encountered in GPL-6; name appears inline in dialogue and system messages."},
-    {"en": "Dagolar", "zh": "達戈拉爾", "category": "character", "status": "draft", "source": "inline", "notes": "Named rival of Balkazar in GPL-6."},
-    {"en": "Unnamed One", "zh": "無名者", "category": "entity", "status": "draft", "source": "inline", "notes": "Entity Balkazar attempts to summon in GPL-6; capitalized title."},
-    {"en": "Kurzak", "zh": "庫爾扎克", "category": "character", "status": "draft", "source": "inline", "notes": "Mentioned in passing by an arena guard in GPL-3 (\"I thought I told Kurzak to stop selecting slaves by looking at their teeth!\"); never appears on screen in this batch."},
-    {"en": "Mirlon", "zh": "米爾隆", "category": "character", "status": "draft", "source": "inline", "notes": "Dialogue option in GPL-136."},
-    {"en": "Draj", "zh": "德拉吉", "category": "place", "status": "draft", "source": "inline", "notes": "The city-state whose arena the opening sequence (GPL-2..5) takes place in."},
-    {"en": "Athas", "zh": "亞薩斯", "category": "place", "status": "draft", "source": "inline", "notes": "The game world's name. Deliberately not '阿薩斯' to avoid the established Warcraft Arthas transliteration."},
-    {"en": "Tectuktitlay", "zh": "特克圖克特雷", "category": "character", "status": "draft", "source": "inline", "notes": "Sorcerer-king of Draj, referenced throughout the arena opening but does not appear as a speaking character in GPL-2..5."},
-    {"en": "Veiled Alliance", "zh": "面紗聯盟", "category": "faction", "status": "draft", "source": "inline", "notes": "Resistance organization of secret spellcasters, introduced in GPL-5."},
-    {"en": "Dragon Kings", "zh": "龍王", "category": "faction", "status": "draft", "source": "inline", "notes": "The setting's tyrant sorcerer-kings collectively; render as 眾龍王/諸龍王 when explicitly plural in context."},
-    {"en": "Deestan", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Hamonde", "zh": "哈蒙德", "category": "character", "status": "draft", "source": "text", "notes": "Recurring TEXT string-table speaker name; first translated for GPL-6."},
-    {"en": "Khamarr", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Zertus", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Aticus", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "T'Sharr", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "T'Jun", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Borzak", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Elstar", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Balthbeorn", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Tezral", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Lanthazar", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Cromwell", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Morbad th'Worst", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Finster", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Ulf", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Jaardoon", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Celos", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Pethius", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Shaggy", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Killer", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Rick th'Untamed", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Cyrus the Great", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Swat", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "JohnBoy", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "SeanBoy", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "HookBoldt", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "MadDog McClure", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Kornec", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Sarthana", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Shandra", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Meggyn", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Yilballa", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Roxpar", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Railune", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Zulak", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Y'Lar", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Zontorra", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Lanthazla", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Anathea", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Seneca", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Mistra", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Alura", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Ester", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Cenna", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Jenna", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Berry", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Caron the Sure", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "T'kir'taap", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "C'lex'at", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Frin'kal'kan", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Myk'tyl'gan", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Mt'z'pk'tlk", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Clk'whrr", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Bzz'klkd'ng", "zh": "", "category": "unknown", "status": "pending", "source": "text"},
-    {"en": "Diz'zg'l'spi", "zh": "", "category": "unknown", "status": "pending", "source": "text"}
+    {
+      "en": "Celgor",
+      "zh": "賽爾戈",
+      "category": "character",
+      "status": "confirmed",
+      "source": "inline",
+      "notes": "Arena mage NPC; translated inline as part of DLG_f6c2fbaa84a9 (re_37, Celgor opening GPL package)."
+    },
+    {
+      "en": "Gerakis",
+      "zh": "",
+      "category": "character",
+      "status": "confirmed",
+      "source": "dynamic",
+      "notes": "Runtime-substituted active-character name (POV expression); intentionally kept as the original GPL expression, not flattened to static translated text (re_37)."
+    },
+    {
+      "en": "Dag",
+      "zh": "達格",
+      "category": "character",
+      "status": "confirmed",
+      "source": "text",
+      "notes": "Recurring speaker tag, 50 occurrences in GPL-2..5 alone, all read from the GFF TEXT string-table (GPL occurrence source 'text:gstring'), never as an inline compressed GPL string. compile_gpl_dialogue_patch.py cannot patch it -- excluded from the re_42 GPL-2..5 import (still displays in English). Needs a TEXT-chunk string-table importer, not yet built."
+    },
+    {
+      "en": "Halton",
+      "zh": "哈爾頓",
+      "category": "character",
+      "status": "confirmed",
+      "source": "text",
+      "notes": "Same 'text:gstring' limitation as Dag; excluded from the re_42 GPL-2..5 import."
+    },
+    {
+      "en": "Garn",
+      "zh": "加恩",
+      "category": "character",
+      "status": "confirmed",
+      "source": "text",
+      "notes": "Same 'text:gstring' limitation as Dag; excluded from the re_42 GPL-2..5 import."
+    },
+    {
+      "en": "Magramar",
+      "zh": "馬格拉瑪",
+      "category": "character",
+      "status": "confirmed",
+      "source": "text",
+      "notes": "Same 'text:gstring' limitation as Dag; excluded from the re_42 GPL-2..5 import."
+    },
+    {
+      "en": "Semyon",
+      "zh": "賽蒙",
+      "category": "character",
+      "status": "confirmed",
+      "source": "inline",
+      "notes": "Prisoner rescued in GPL-5; name appears only inline within sentences, no standalone catalog row."
+    },
+    {
+      "en": "Balkazar",
+      "zh": "巴爾卡札",
+      "category": "character",
+      "status": "draft",
+      "source": "inline",
+      "notes": "Antagonist encountered in GPL-6; name appears inline in dialogue and system messages."
+    },
+    {
+      "en": "Dagolar",
+      "zh": "達戈拉爾",
+      "category": "character",
+      "status": "draft",
+      "source": "inline",
+      "notes": "Named rival of Balkazar in GPL-6."
+    },
+    {
+      "en": "Unnamed One",
+      "zh": "無名者",
+      "category": "entity",
+      "status": "draft",
+      "source": "inline",
+      "notes": "Entity Balkazar attempts to summon in GPL-6; capitalized title."
+    },
+    {
+      "en": "Kurzak",
+      "zh": "庫爾扎克",
+      "category": "character",
+      "status": "draft",
+      "source": "inline",
+      "notes": "Mentioned in passing by an arena guard in GPL-3 (\"I thought I told Kurzak to stop selecting slaves by looking at their teeth!\"); never appears on screen in this batch."
+    },
+    {
+      "en": "Mirlon",
+      "zh": "米爾隆",
+      "category": "character",
+      "status": "draft",
+      "source": "inline",
+      "notes": "Dialogue option in GPL-136."
+    },
+    {
+      "en": "Draj",
+      "zh": "德拉吉",
+      "category": "place",
+      "status": "draft",
+      "source": "inline",
+      "notes": "The city-state whose arena the opening sequence (GPL-2..5) takes place in."
+    },
+    {
+      "en": "Athas",
+      "zh": "亞薩斯",
+      "category": "place",
+      "status": "draft",
+      "source": "inline",
+      "notes": "The game world's name. Deliberately not '阿薩斯' to avoid the established Warcraft Arthas transliteration."
+    },
+    {
+      "en": "Tectuktitlay",
+      "zh": "特克圖克特雷",
+      "category": "character",
+      "status": "draft",
+      "source": "inline",
+      "notes": "Sorcerer-king of Draj, referenced throughout the arena opening but does not appear as a speaking character in GPL-2..5."
+    },
+    {
+      "en": "Veiled Alliance",
+      "zh": "面紗聯盟",
+      "category": "faction",
+      "status": "draft",
+      "source": "inline",
+      "notes": "Resistance organization of secret spellcasters, introduced in GPL-5."
+    },
+    {
+      "en": "Dragon Kings",
+      "zh": "龍王",
+      "category": "faction",
+      "status": "draft",
+      "source": "inline",
+      "notes": "The setting's tyrant sorcerer-kings collectively; render as 眾龍王/諸龍王 when explicitly plural in context."
+    },
+    {
+      "en": "Deestan",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Hamonde",
+      "zh": "哈蒙德",
+      "category": "character",
+      "status": "draft",
+      "source": "text",
+      "notes": "Recurring TEXT string-table speaker name; first translated for GPL-6."
+    },
+    {
+      "en": "Khamarr",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Zertus",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Aticus",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "T'Sharr",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "T'Jun",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Borzak",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Elstar",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Balthbeorn",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Tezral",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Lanthazar",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Cromwell",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Morbad th'Worst",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Finster",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Ulf",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Jaardoon",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Celos",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Pethius",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Shaggy",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Killer",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Rick th'Untamed",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Cyrus the Great",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Swat",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "JohnBoy",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "SeanBoy",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "HookBoldt",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "MadDog McClure",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Kornec",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Sarthana",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Shandra",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Meggyn",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Yilballa",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Roxpar",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Railune",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Zulak",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Y'Lar",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Zontorra",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Lanthazla",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Anathea",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Seneca",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Mistra",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Alura",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Ester",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Cenna",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Jenna",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Berry",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Caron the Sure",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "T'kir'taap",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "C'lex'at",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Frin'kal'kan",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Myk'tyl'gan",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Mt'z'pk'tlk",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Clk'whrr",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Bzz'klkd'ng",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Diz'zg'l'spi",
+      "zh": "",
+      "category": "unknown",
+      "status": "pending",
+      "source": "text"
+    },
+    {
+      "en": "Tanelyv",
+      "zh": "泰內利夫",
+      "category": "character",
+      "status": "confirmed",
+      "source": "GPL-75",
+      "notes": "瑪格拉神廟治療室守護之靈，能為被割舌的奴隸恢復說話能力"
+    },
+    {
+      "en": "Magera",
+      "zh": "瑪格拉族",
+      "category": "race",
+      "status": "confirmed",
+      "source": "GPL-75..77",
+      "notes": "吉德隆地下與巴卡扎爾城堡底層的受奴役地底種族/巨獸"
+    },
+    {
+      "en": "Dakaren",
+      "zh": "達卡倫",
+      "category": "character",
+      "status": "confirmed",
+      "source": "GPL-76",
+      "notes": "吉德隆東北廢墟中侍奉淤泥恐魔的墮落德魯伊"
+    },
+    {
+      "en": "silt horror",
+      "zh": "淤泥恐魔",
+      "category": "creature",
+      "status": "confirmed",
+      "source": "GPL-76",
+      "notes": "阿薩斯淤泥海與粉塵盆地的多觸手凶暴巨怪"
+    },
+    {
+      "en": "babau",
+      "zh": "巴布魔",
+      "category": "creature",
+      "status": "confirmed",
+      "source": "GPL-77",
+      "notes": "塔那厘次級惡魔，身披黏液與骨刺角，效力於巴卡扎爾"
+    },
+    {
+      "en": "Laussa",
+      "zh": "勞莎",
+      "category": "character",
+      "status": "confirmed",
+      "source": "GPL-78",
+      "notes": "原屬淤泥海灰群島部落的蘇蘭蜥蜴人雌性獵手，後成為索萬配偶"
+    },
+    {
+      "en": "Ssovan",
+      "zh": "索萬",
+      "category": "character",
+      "status": "confirmed",
+      "source": "GPL-78",
+      "notes": "西方大鹽灘新興蘇蘭蜥蜴人部落的年輕酋長，以旋風為圖騰"
+    },
+    {
+      "en": "Kivssan",
+      "zh": "基夫桑",
+      "category": "character",
+      "status": "confirmed",
+      "source": "GPL-78",
+      "notes": "灰群島部落前任蘇蘭蜥蜴人酋長，勞莎前配偶"
+    },
+    {
+      "en": "Dirssa",
+      "zh": "迪爾薩",
+      "category": "character",
+      "status": "confirmed",
+      "source": "GPL-78",
+      "notes": "受商人家族魔法強化的背叛者蘇蘭蜥蜴人"
+    },
+    {
+      "en": "Grey Isles",
+      "zh": "灰群島",
+      "category": "place",
+      "status": "confirmed",
+      "source": "GPL-78",
+      "notes": "聳立在淤泥海中的群島聚落"
+    },
+    {
+      "en": "mastyrial",
+      "zh": "巨蠍獸",
+      "category": "creature",
+      "status": "confirmed",
+      "source": "GPL-80",
+      "notes": "阿薩斯荒原深處體型龐大的蠍形巨獸"
+    },
+    {
+      "en": "Demothi",
+      "zh": "德莫西",
+      "category": "character",
+      "status": "confirmed",
+      "source": "GPL-80",
+      "notes": "荒原營地主人，擅長以鈴鐺聲召喚巨蠍獸"
+    }
   ],
   "recurring_terms": [
-    {"en": "the pens / slavepens / holding pen(s)", "zh": "獸欄", "notes": "Matches the already-imported NAME-1 translation 'Slavepen key' -> '奴隸欄鑰匙'; kept as 獸欄 for the location itself across GPL-2..5."},
-    {"en": "gladiator", "zh": "角鬥士", "notes": ""},
-    {"en": "arena", "zh": "競技場", "notes": ""},
-    {"en": "Monster Trainer", "zh": "馴獸師", "notes": "Distinct arena-announcer title from Beast Master."},
-    {"en": "Beast Master", "zh": "野獸大師", "notes": "Distinct arena-announcer title from Monster Trainer."},
-    {"en": "the Announcer", "zh": "司儀", "notes": ""},
-    {"en": "King of the Pens", "zh": "獸欄之王", "notes": ""},
-    {"en": "rampager", "zh": "狂暴獸", "notes": "Established in re_37's Celgor line."},
-    {"en": "magera", "zh": "瑪格拉", "notes": "Game-specific creature encountered in GPL-6; draft transliteration."},
-    {"en": "babau", "zh": "巴布魔", "notes": "D&D demon species mentioned in GPL-6."},
-    {"en": "vrock", "zh": "弗洛魔", "notes": "D&D demon species mentioned in GPL-6."},
-    {"en": "terror blossom", "zh": "恐懼之花", "notes": "Plant extract used in a GPL-6 ritual."}
+    {
+      "en": "the pens / slavepens / holding pen(s)",
+      "zh": "獸欄",
+      "notes": "Matches the already-imported NAME-1 translation 'Slavepen key' -> '奴隸欄鑰匙'; kept as 獸欄 for the location itself across GPL-2..5."
+    },
+    {
+      "en": "gladiator",
+      "zh": "角鬥士",
+      "notes": ""
+    },
+    {
+      "en": "arena",
+      "zh": "競技場",
+      "notes": ""
+    },
+    {
+      "en": "Monster Trainer",
+      "zh": "馴獸師",
+      "notes": "Distinct arena-announcer title from Beast Master."
+    },
+    {
+      "en": "Beast Master",
+      "zh": "野獸大師",
+      "notes": "Distinct arena-announcer title from Monster Trainer."
+    },
+    {
+      "en": "the Announcer",
+      "zh": "司儀",
+      "notes": ""
+    },
+    {
+      "en": "King of the Pens",
+      "zh": "獸欄之王",
+      "notes": ""
+    },
+    {
+      "en": "rampager",
+      "zh": "狂暴獸",
+      "notes": "Established in re_37's Celgor line."
+    },
+    {
+      "en": "magera",
+      "zh": "瑪格拉",
+      "notes": "Game-specific creature encountered in GPL-6; draft transliteration."
+    },
+    {
+      "en": "babau",
+      "zh": "巴布魔",
+      "notes": "D&D demon species mentioned in GPL-6."
+    },
+    {
+      "en": "vrock",
+      "zh": "弗洛魔",
+      "notes": "D&D demon species mentioned in GPL-6."
+    },
+    {
+      "en": "terror blossom",
+      "zh": "恐懼之花",
+      "notes": "Plant extract used in a GPL-6 ritual."
+    }
   ]
 }
