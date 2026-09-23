@@ -1,92 +1,127 @@
 # 《浩劫殘陽：破碎大地》(Dark Sun: Shattered Lands) 繁中化交接指南 (handoff.md)
 
-> **產生時間**：2026-09-21 23:01  
+> **產生時間**：2026-09-21 23:01（第 0、四節更新於 2026-09-23 晚間）  
 > **交接目的**：為下一輪重開 Session 的 AI 助手提供完整無縫的專案背景、歷史數據、技術規範、標準操作 SOP 與接續目標，確保繁中在地化推進不中斷。
 
 ---
 
-## ⚠️ 0. 最新狀態（2026-09-23 更新，新 Session 請先讀這一節）
+## ⚠️ 0. 最新狀態（2026-09-23 晚間更新，新 Session 請先讀這一節）
 
 ### 0.1 一句話現況
 
-v85 已重建完成，使用者**實機確認**：Kurzak 手動對話、進奴隸營房自動觸發、中文對話與選項、
-四選一換頁無殘影，全部正常。改動已併回 `main` 並推上 GitHub（`origin/main`）。目前可玩的組合包是 `scratch_test/cjk_display_staging_v85r5_triggers`。
+**對話翻譯已全部編進遊戲**。目前可玩的是 `scratch_test/cjk_display_staging_v86r6_gpl_pool`
+（使用者已實機確認）：215 個對話區塊全數編入，中文換行、「我是<名字>」選項、句中多餘
+空格、Trustee 等大腳本的 BAD GPL EXIT 都已修好。細節見 `docs/re/re_99_*`。
 
-**歷史中的 `019658b`～`6cfb505`（舊 v85 的 4 個 commit）不可用**：它們把修補程式與字型檔名
-放進會被遊戲覆寫的記憶體，中文會全變「?」。其後的 `90d1bb5`、`e585108` 已修正，以目前 `main` 為準。
+**下一步（使用者指定）**：把 VIEW CHARACTER 屬性畫面與物品／背包的中文化合併進這條
+主線，見第 0.4 節。
 
-### 0.2 這次 Session 修了什麼（細節見 re_98 第 29～33 節）
+### 0.2 這次 Session 做了什麼（細節見 re_99）
 
-| # | 問題 | 根因 | 修法 | 位置 |
-|---|---|---|---|---|
-| 1 | 舊 v85 中文全變「?」、各種異常 | 修補程式、面板像素、bank 檔名放在 `2E86:D730`，其實是遠資料段 `3BF6` 的執行期緩衝區 | 換頁修補改放 `147D:0010`（段表證實無人引用的死區），建置時組譯；面板以 2-bit 壓縮 | `tools/dialogue_choice_top_rows_hook.asm`、`tools/patch_dialogue_menu_wind.py` |
-| 2 | 12 個字型 bank 放不下 | 原 bank 檔名表只有 42 bytes 空間（最多 8 個 bank） | 超過 8 個 bank 時，以可重定位的 `push 0x147D; pop ds` 讀取 `147D:0110` 的檔名表；常駐快取仍卡在 `0x5534` | `tools/cjk_scratch_cache.asm`、`tools/patch_dsun_scratch_cache.py` |
-| 3 | 對話仍是英文 | EXE 內的對話編譯包 `gpl_current_v85` 只編了 215 個 GPL 區塊中的 99 個；GPL-141 因選單含 `GSTR[5]` 變數選項被整段跳過 | 選單中的非字面選項（變數、`INTRODUCE`）原樣保留，不再整段跳過 | `tools/compile_gpl_dialogue_patch.py` |
-| 4 | v85r3 點 NPC 不會對話 | 編譯器只修正同區塊內跳轉；別的區塊指進來的呼叫／觸發器留在舊位址 | 編完後全檔對照「舊位址→新位址」，修正所有 `0x14` 呼叫與觸發器；結果可重跑、不會重複修改 | 同上 |
-| 5 | 進奴隸營房不自動觸發 | 視線觸發 0x1B/0x1C 沒列入；格子／區域觸發 0x68/0x6A 的位址參數位置寫錯（前面其實是座標） | 修正對照表；全檔 2,869 個呼叫／觸發器，除位址外參數與原版逐一比對一致，剩餘過期參照 0 | 同上 |
+| # | 問題 | 修法 | 位置 |
+|---|---|---|---|
+| 1 | EXE 只含 106 個區塊的中文 | 從原版一次全量編譯；GPL-3 `0x07C0` 固定入口是誤判（真正的呼叫者是 MAS-42 的 boxtrigger），已不需要 `--require-fixed-entry` | `compile_gpl_dialogue_patch.py` |
+| 2 | 26 個區塊被整段跳過 | 支援 `string copy`（0x0A，「Goodbye.」就在 MAS-99）、選單內嵌標題、`GFFI-7` | 同上 |
+| 3 | 對話框關不掉、選單標題亂碼 | `END`/`CLOSE`/`DEBUG` 是引擎控制字；選單標題沒有中文繪製路徑，這 23 筆記入封包的 `withheld`，保留英文 | 同上 |
+| 4 | 每段譯文都另起一行 | EBOX 只在空白處斷行；每個中文字之後都視為可斷點（`147D:00FC` far routine） | `patch_dsun_scratch_cache.py` |
+| 5 | `I'm 0001` | strcpy 來源改指 `147D:015C`「我是」 | 同上、`build_cjk_display_staging.py` |
+| 6 | 「我已經在 這裡」 | 編譯時去掉中文接縫處的空格（目錄不動） | `compile_gpl_dialogue_patch.py` |
+| 7 | Trustee 對話出現 BAD GPL EXIT | GPL 記憶體池只有 10,000 bytes，GPL-146 翻譯後 10,706；`0x6A694` 改為 12,288，編譯器會擋下超過上限的 chunk | `patch_dsun_scratch_cache.py` |
 
-第 4、5 項同時修掉了舊包本來就有的錯誤：最終一共修正 859 個跨區塊參照。舊 v85 的
-「很多問題」很可能也和它們有關。
-
-### 0.3 重建 v85r5 的完整指令（`scratch_test/` 在 `.gitignore` 裡，檔案不在 git 中）
+### 0.3 重建 v86r6 的完整指令（`scratch_test/` 在 `.gitignore` 裡）
 
 ```bash
-# 1) 對話編譯包：以舊包為底，加上 GPL-141/143（及連帶的 50/117/142）
-#    scratch_test/gpl141_143_unit_ids.txt = GPL-141/143 中所有已翻譯、inline 壓縮、
-#    且沒有出現在舊包已修補區塊的 unit_id（212 筆）
-python tools/compile_gpl_dialogue_patch.py \
-  --prior-package scratch_test/gpl_current_v85/gpl-dialogue-patch.json \
-  --unit-id-file scratch_test/gpl141_143_unit_ids.txt \
-  --require-fixed-entry "GPL:3:1984:42" \
-  --output scratch_test/gpl_current_plus141_v4
+# 1) 候選清單：所有出現位置都是 GPL/MAS、inline、compressed、非 unresolved 的已翻譯單元
+python - <<'EOF'
+import json
+from collections import defaultdict
+occs = json.load(open('localization/catalog/dialogue_occurrences.json', encoding='utf-8'))['occurrences']
+units = json.load(open('localization/catalog/dialogue_units.json', encoding='utf-8'))['units']
+translated = {u['unit_id'] for u in units if u.get('translation_zh_tw', '').strip()}
+by_unit = defaultdict(list)
+for o in occs:
+    if o.get('unit_id'):
+        by_unit[o['unit_id']].append(o)
+ok = sorted(uid for uid in translated if by_unit.get(uid) and all(
+    not o.get('unresolved') and str(o.get('kind', '')).strip().upper() in ('GPL', 'MAS')
+    and o.get('source') == 'inline' and o.get('sub_type') == 'compressed'
+    for o in by_unit[uid]))
+open('scratch_test/all_translated_unit_ids.txt', 'w', encoding='utf-8').write('\n'.join(ok))
+print(len(ok))   # 13194
+EOF
 
-# 2) 組合包（12 個 bank、現行對照表與譯文、四選一換頁）
+# 2) 對話封包（從原版全編；不要加 --prior-package 或 --require-fixed-entry）
+python tools/compile_gpl_dialogue_patch.py \
+  --unit-id-file scratch_test/all_translated_unit_ids.txt \
+  --output scratch_test/gpl_full_from_pristine_v4
+
+# 3) 組合包
 python tools/build_cjk_display_staging.py \
   --mapping localization/cjk_mapping.json \
   --bank-package scratch_test/formal_cjk_fusion_10x10_v20_current/cjk-bank-set.json \
   --spin-package scratch_test/spin_gff_import_title_newline_v3_current/gff-text-replacements.json \
-  --gpl-package scratch_test/gpl_current_plus141_v4/gpl-dialogue-patch.json \
+  --gpl-package scratch_test/gpl_full_from_pristine_v4/gpl-dialogue-patch.json \
   --ebox-line-gap 2 --menu-line-gap 2 --dialogue-option-pitch 11 \
-  --output scratch_test/cjk_display_staging_v85r5_triggers
+  --output scratch_test/cjk_display_staging_v86r6_gpl_pool
 ```
 
-v85r5 雜湊：`DSUN.EXE` `986fed16…`、`GPLDATA.GFF` `2e50202e…`、bank 12 個。測試用存檔從
-`scratch_test/cjk_display_staging_v84_menu_padding_test/GAME/DARKSUN/SAVE0*.SAV` 複製。
+v86r6 雜湊：`DSUN.EXE` `74634c98…`、`GPLDATA.GFF` `2346f98a…`、`RESOURCE.GFF` `7083e879…`。
+封包數據：248 個 chunk、13,692 個編入、23 個 withheld。
 
-### 0.4 待辦（依優先順序）
+**編譯後務必驗證跨區塊參照**（re_99 §1 的做法）：用 `gpl-disasm --all --json` 反組譯
+原版與新版，逐條比對 `CROSS_CHUNK_TARGET` 指令與 GPLI-1，目標要等於
+`instruction_offset_map` 的結果，其他參數要完全相同。
 
-1. **把剩下約 110 個 GPL 區塊的翻譯編進 EXE（最重要）**
-   - 翻譯本身已完成（`dialogue_units.json` 13,295/13,295），但 EXE 只含 106 個區塊的中文。
-     遊戲中大部分仍見到的英文都是這個原因。
-   - 應改為**從原版 `GPLDATA.GFF` 一次重編所有翻譯**，不要再用 `--prior-package` 疊加：
-     舊包會擋住多個區塊共用的句子（例如 GPL-143 的 4 句，含 `"Never mind."`）。
-   - 已知阻礙：之前一次全編時，GPL-3 的固定入口 `0x07C0` 被推移，`--require-fixed-entry`
-     擋下建置（re_43：那是從 GPLDATA 以外被呼叫的出口入口，必須保持在原位址且以 `0x2A` 開頭）。
-     需要讓 GPL-3 在 `0x07C0` 之前的譯文總長度維持不變，或找出其他方法。
-   - 單元篩選：只能選「每個出現位置都是 GPL/MAS、inline、compressed、非 unresolved」的
-     unit（全部 13,295 中有 13,194 筆符合）。其他 101 筆需要另外的匯入方式。
-   - 全編完成後務必實機測：自動觸發、對話、出口轉場、戰鬥觸發。
-2. **「Goodbye.」選項未翻譯**：GPL-141 `0x0A98` 選單最後一個選項是 `GSTR[5]`，文字由別處寫入
-   （目錄推測的 `Hamonde` 是錯的）。要先找出寫入來源；使用者推測可能跟 Yes/No 一樣寫死在
-   EXE 中。
-3. **已知風險（目前無症狀）**：常駐字型快取 `2E86:545A~5533` 與計時器 ISR 的私有堆疊
-   （`33A5` 段，`cs:01B6~03B6`，`"Test"` 為溢位標記）重疊，餘裕約 115 bytes。若出現
-   隨機花字或當機，從這裡查。
+### 0.4 下一步：合併屬性（VIEW CHARACTER）與物品中文化
 
-### 0.5 本次學到、下次要記得的事
+這條線的成果在另一條舊的 build 鏈上，**從未併入 `build_cjk_display_staging.py`**：
 
-- **「檔案裡是 0」不代表執行期沒人用**。要找空位，先查 Borland 段表（`0x41378` 起，每筆 8 bytes：
-  段、大小、旗標…），再檢查所有遠指標與 `cs:` 相對參照。目前唯一證實的死區是
-  `147D:000F~0163`，已用掉：`0010~00FB`（換頁修補）、`0110~` 起（bank 檔名表）。
-- **地圖座標在前、位址在後**：`move boxtrigger x, y, w, h, offset, chunk, flag`。檢查新指令格式
-  時，用 `gpl-disasm --all` 看全遊戲的實例，不要只憑名稱猜。
-- **存檔會保存已登記的觸發器位址**。用舊版本、而且人已在相關區域時存的檔，測試新版本時
-  觸發器仍會是舊位址；要用進入該區域之前的存檔測。
-- `build_cjk_display_staging.py` 目前**沒有**串接 VIEW CHARACTER／背包等 name-slot UI 修補，
-  那些畫面顯示英文是預期中的，不是回歸。`tests/` 中有 1 failed、19 errors
-  （`test_fixed_labels_candidate` 等 name-slot 相關）在本次改動前就存在。
-- 對照用反組譯：`scratch_test/GPL-141.asm`（原版）、`GPL-141.patched.asm`。產生方式：
-  `vendor/opends/target/release/gpl-disasm.exe <GPLDATA.GFF> --kind GPL --id 141 -o <out>`。
+- 最終 checkpoint：`scratch_test/cjk_display_staging_v75_view_column_shift2`
+  （交接文件 `docs/re/HANDOFF_NEXT_SESSION_2026-09-18.md`，完整記錄 `re_85`～`re_95`）。
+- build 鏈：v33（`build_name_slot_candidate_from_v33.py`）→ 背包、能力值、固定標籤、
+  materials → `build_view_*_candidate.py` 一路疊到 v71（`build_view_class_multi_candidate.py`）
+  → v72～v75（`build_view_layout_adjust*`、`build_view_column_shift*`）。每一版都以上一版的
+  staging 目錄當 parent，依賴舊的字型與 mapping。
+- 核心：`tools/plan_name_slot_consumers.py`、`tools/cjk_name_slot_cache.asm`。
+
+**已知障礙（開工前先看）**：
+
+1. **bank 數量**：name-slot 規劃寫死「6 個 CJB1 bank」（`plan_name_slot_consumers.py` 第
+   227／233／250 行）。現行主線是 12 個 bank，`tests/` 裡的 19 個 errors 就是這個原因
+   （`...eight IDs within six banks`）。
+2. **mapping 不同**：v75 用的是 `cjk-mapping-v57.json`（1,330 字）；主線是
+   `localization/cjk_mapping.json`（12 bank）。所有字 ID 都要重新對應。
+3. **記憶體位置衝突要逐一核對**：
+   - `147D` 死區已經用滿（re_99 §9），name-slot 不能再往這裡放。
+   - name-slot 使用 FONT payload（`FONT_CORE_PAYLOAD_OFFSET = 0x239B`）與常駐段
+     `0x51F1`／`0x5414`。`2E86:51F0~55AA` 是計時器 ISR 的私有堆疊（re_98 §29.1），
+     常駐字型快取 `545A~5533` 本來就只剩約 115 bytes 餘裕，合併後要重新評估。
+   - 修補 overlay 區時，要用 `verify_overlay_relocations` 檢查（re_95：`0x8A1E4` 曾撞上
+     overlay relocation）。
+4. 建議做法：先讀 09-18 交接與 `re_94`／`re_95`，把 name-slot 系列的 EXE／RESOURCE 修補
+   整理成可以接在 `build_cjk_display_staging.py` 後面的步驟，以 v86r6 為基底；不要以 v75
+   為基底把對話修補倒灌回去。
+
+### 0.5 其他待辦
+
+1. **選單標題仍是英文**（What do you say? 等）：要先找出下方選單標題的繪製程式並加入
+   中文路徑，才能取消 `withheld` 中的標題項目。
+2. **避頭點**：換行偶爾會讓「，」「。」出現在行首。
+3. **已知風險（目前無症狀）**：常駐字型快取 `2E86:545A~5533` 與計時器 ISR 私有堆疊重疊，
+   餘裕約 115 bytes。若出現隨機花字或當機，從這裡查。
+
+### 0.6 本次學到、下次要記得的事
+
+- **存檔會記住已登記的觸發器位址**。每次對話封包改版，腳本位址都可能移動，舊存檔在同區域
+  可能出現奇怪行為。判斷是不是真 bug 時，先用新遊戲重現。
+- **大小也是限制**：GPL chunk 上限是池大小減 2（現為 12,286）。編譯器會擋下，但若再調大池，
+  要一併確認記憶體是否足夠。
+- **引擎會讀的字串不能翻**：`END`／`CLOSE`／`DEBUG`、玩家打字比對的關鍵字、`string compare`
+  的對象。新增可翻譯的指令類型前，先查這些。
+- **DOSBox-X-AI bridge 回應 id 錯位**只能結束 `dosbox-x.exe` 再重開。讀記憶體前要先
+  `pause_execution`。段位址換算：檔案段 + `0x824` = 執行期段（例：`3781` → `3FA5`）。
+- 在 Bash heredoc 裡用 Python 寫入原始碼時，`\x..`／`\0` 會變成實際的控制字元；改用暫存目錄
+  的腳本檔。
 
 ---
 
@@ -155,43 +190,6 @@ v85r5 雜湊：`DSUN.EXE` `986fed16…`、`GPLDATA.GFF` `2e50202e…`、bank 12 
 
 ## 四、接續推進目標（下一輪重開直接執行）
 
-~~GPL-151～154 翻譯批次~~：已完成，對話單元已 100% 翻譯，舊的翻譯 SOP 不再是下一步。
+~~從原版一次重編全部對話翻譯進 EXE~~：已完成（v86r6，見第 0 節與 re_99）。
 
-**下一個目標：從原版一次重編全部對話翻譯進 EXE**，細節見第 0.4 節第 1 項。建議步驟：
-
-1. 產生候選清單：
-   ```bash
-   python - <<'EOF'
-   import json
-   from collections import defaultdict
-   occs = json.load(open('localization/catalog/dialogue_occurrences.json', encoding='utf-8'))['occurrences']
-   units = json.load(open('localization/catalog/dialogue_units.json', encoding='utf-8'))['units']
-   translated = {u['unit_id'] for u in units if u.get('translation_zh_tw', '').strip()}
-   by_unit = defaultdict(list)
-   for o in occs:
-       if o.get('unit_id'):
-           by_unit[o['unit_id']].append(o)
-   ok = sorted(
-       uid for uid in translated
-       if by_unit.get(uid) and all(
-           not o.get('unresolved')
-           and str(o.get('kind', '')).strip().upper() in ('GPL', 'MAS')
-           and o.get('source') == 'inline' and o.get('sub_type') == 'compressed'
-           for o in by_unit[uid])
-   )
-   open('scratch_test/all_translated_unit_ids.txt', 'w', encoding='utf-8').write('\n'.join(ok))
-   print(len(ok))   # 預期 13194
-   EOF
-   ```
-2. 從原版全編（**不要**加 `--prior-package`）：
-   ```bash
-   python tools/compile_gpl_dialogue_patch.py \
-     --unit-id-file scratch_test/all_translated_unit_ids.txt \
-     --require-fixed-entry "GPL:3:1984:42" \
-     --output scratch_test/gpl_full_from_pristine_v1
-   ```
-   上次在這一步失敗：`GPL-3: fixed external entry 0x07C0 must start with 0x2A, found 0x00`。
-   先處理 GPL-3（re_43 第 1 節：v21 只重組 entry 前兩句競技場旁白讓長度回到 2307 bytes）。
-   其他以 `skip GPL-n: ...` 列出的區塊，逐一檢查原因。
-3. 用第 0.3 節的 `build_cjk_display_staging.py` 指令換上新包建置，實機驗證。
-4. 更新 `docs/re/re_98…` 或開新的 re 文件，並更新本檔第 0 節。
+**下一個目標：合併屬性（VIEW CHARACTER）與物品中文化**，細節與已知障礙見第 0.4 節。
