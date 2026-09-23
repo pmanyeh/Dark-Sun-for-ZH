@@ -342,21 +342,6 @@ def item_format_loop() -> bytes:
     return payload
 
 
-def open_bank_files_with_game_ds(cache: bytes) -> bytes:
-    """Leave DS as the game data segment for the bank-file open.
-
-    The following read of the bank directory still switches to CS. Only the
-    first ``push ds; push cs; pop ds`` is the filename open.
-    """
-    marker = bytes.fromhex("1E0E1F89C3D1E32E8B97F653")
-    found = cache.find(marker)
-    if found < 0 or cache.find(marker, found + 1) >= 0:
-        raise ValueError("bank-open DS switch is missing or not unique")
-    patched = bytearray(cache)
-    patched[found + 1:found + 3] = b"\x90\x90"
-    return bytes(patched)
-
-
 def patches(
     cache: bytes,
     line_gap: int = 0,
@@ -388,16 +373,16 @@ def patches(
     else:
         # The resolver stub occupies COMMON. Two-digit names no longer fit
         # beside it, so the pointer table stays here and the bytes live in
-        # DS padding. The cache opens them with the game DS.
-        cache = open_bank_files_with_game_ds(cache)
-        offset = 0x8460
+        # unused code-segment padding. Startup zeroes DS BSS, so they cannot
+        # live after the initialized data segment.
+        offset = 0x9B60
         name_offsets = []
         for filename in filenames:
             name_offsets.append(offset)
             offset += len(filename)
         names = struct.pack(f"<{bank_count}H", *name_offsets)
         name_strings = b"".join(filenames)
-        name_string_file_offset = 0x48960 + 0x8460
+        name_string_file_offset = CODE_BASE + 0x9B60
     if NAMES + len(names) > min(CACHE, names_limit):
         raise ValueError(
             f"bank name table for {bank_count} banks ends at 0x{NAMES + len(names):04X}, "

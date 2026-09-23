@@ -13,12 +13,14 @@ except ImportError:
 
 WIND_3008_SHA256 = "a8bfcc3de03485e17006e7066b979445cccca5568f7c1895dd5a07797e1c573f"
 ROOT = Path(__file__).resolve().parent
-# Resident data-segment padding. The DOS loader relocates segment 0x4356 to DS.
-CHOICE_RESTORE_CAVE = 0x50960
-CHOICE_RESTORE_TEMPLATE = 0x50B60
+# Unused padding inside the resident code segment. DS bytes after the
+# initialized image are BSS and get cleared during startup.
+CHOICE_RESTORE_CAVE = 0x33C60 + 0x9716
+CHOICE_RESTORE_TEMPLATE = 0x33C60 + 0x9900
 CHOICE_SET_TEXT = 0x2FDCA
 CHOICE_SET_TEXT_PROLOGUE = bytes.fromhex("558BEC81ECEA00")
-DATA_SEGMENT = 0x4356
+CODE_SEGMENT = 0x2E86
+CHOICE_RESTORE_IP = 0x9716
 CHOICE_IDS = range(0x081C, 0x0820)
 REMOVED_CHOICE_ID = 0x0820
 FIRST_CHOICE_Y = 13
@@ -74,7 +76,7 @@ def patch_dialogue_choice_paging(executable: bytes) -> bytes:
             raise ValueError(f"choice restore padding is not empty at {offset:#x}")
         patched[offset:offset + len(payload)] = payload
 
-    call = b"\x9A\x00\x80" + DATA_SEGMENT.to_bytes(2, "little") + b"\xEB\x00"
+    call = b"\x9A" + CHOICE_RESTORE_IP.to_bytes(2, "little") + CODE_SEGMENT.to_bytes(2, "little") + b"\xEB\x00"
     patched[CHOICE_SET_TEXT:CHOICE_SET_TEXT + 7] = call
     return_site = CHOICE_RESTORE_CAVE + hook.rindex(b"\xEA\x01\x08\x1D\x2A") + 3
     rewrite_mz_relocations(
