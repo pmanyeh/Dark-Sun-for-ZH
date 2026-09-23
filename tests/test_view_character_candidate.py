@@ -30,7 +30,7 @@ class ViewGuardsTests(unittest.TestCase):
                   "parse_fbov": lambda *_: {"exeinfo": 0, "overlay_base": 0},
                   "find_table": lambda *_: 0,
                   "parse_table": lambda *_: [{"file_start": 0x100, "file_end": 0x200, "relocation_count": 1}]}
-        with patch("tools.build_view_character_candidate.runpy.run_path", return_value=parser):
+        with patch("tools.plan_name_slot_consumers.runpy.run_path", return_value=parser):
             verify_overlay_relocations(data, [(0x100, 0x120)])
             verify_overlay_relocations(data, [(0x122, 0x130)])
             for region in ((0x120, 0x121), (0x121, 0x122)):

@@ -27,6 +27,11 @@
 .ifndef ALIGNMENT_X
 .equ ALIGNMENT_X, 149
 .endif
+# plan_name_slot_consumers.py writes this file from the current CJK mapping;
+# it defines the ui_text_* macros used by the material/identity/class tables.
+.ifdef generated_ui_text
+.include "name_slot_ui_text.inc"
+.endif
 
 .equ font_pointer, 0xA378
 .equ name_table, 0x166D
@@ -553,13 +558,20 @@ loader_saved_id: .word 0
 saved_game_ds:   .word 0
 handle:          .word 0
 dir_entry:       .long 0
-bank_names: .word bank0, bank1, bank2, bank3, bank4, bank5
-bank0: .asciz "C0"
-bank1: .asciz "C1"
-bank2: .asciz "C2"
-bank3: .asciz "C3"
-bank4: .asciz "C4"
-bank5: .asciz "C5"
+# One "C<n>" file per CJB1 bank. The v75 line shipped six banks; the main
+# build passes its own bank_count (twelve as of v87) so item names whose
+# glyphs live in the later banks decode instead of falling back to '?'.
+bank_names:
+.irp n, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
+.if \n < bank_count
+    .word bank\n
+.endif
+.endr
+.irp n, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
+.if \n < bank_count
+bank\n: .asciz "C\n"
+.endif
+.endr
 # re_94: the last three (backtick/underscore/pipe) are the pool-
 # expansion codes for slots 8-10. Chosen the same way as the original
 # seven -- confirmed absent from all 13295 dialogue_units.json entries
@@ -886,12 +898,18 @@ view_psi_decoded:
 # immediately before this span; bits 0-3 are the material index (0..5),
 # already range-checked (<6) by that same untouched code.
 material_offsets: .word material_0, material_1, material_2, material_3, material_4, material_5
+.ifdef generated_ui_text
+    ui_text_materials
+.else
+# Legacy cjk-mapping-v57 IDs (the v62-v75 line); the main build generates
+# these from localization/catalog/fixed_ui_labels.csv instead.
 material_0: .byte 0x5E, (367 / 94) + 0x21, (367 % 94) + 0x21, 0x5E, (691 / 94) + 0x21, (691 % 94) + 0x21, 0
 material_1: .byte 0x5E, (849 / 94) + 0x21, (849 % 94) + 0x21, 0x5E, (691 / 94) + 0x21, (691 % 94) + 0x21, 0
 material_2: .byte 0x5E, (544 / 94) + 0x21, (544 % 94) + 0x21, 0x5E, (691 / 94) + 0x21, (691 % 94) + 0x21, 0
 material_3: .byte 0x5E, (871 / 94) + 0x21, (871 % 94) + 0x21, 0x5E, (544 / 94) + 0x21, (544 % 94) + 0x21, 0x5E, (691 / 94) + 0x21, (691 % 94) + 0x21, 0
 material_4: .byte 0x5E, (762 / 94) + 0x21, (762 % 94) + 0x21, 0x5E, (222 / 94) + 0x21, (222 % 94) + 0x21, 0x5E, (691 / 94) + 0x21, (691 % 94) + 0x21, 0
 material_5: .byte 0x5E, (528 / 94) + 0x21, (528 % 94) + 0x21, 0x5E, (691 / 94) + 0x21, (691 % 94) + 0x21, 0
+.endif
 material_label_entry:
     mov bx, dx
     and bx, 0xf
@@ -952,11 +970,18 @@ material_copy_loop:
     .byte 0x5E, (\fourth / 94) + 0x21, (\fourth % 94) + 0x21
     .byte 0, 0, 0, 0
 .endm
+.ifdef generated_ui_text
+    ui_text_genders
+.else
 gender_sources:
     identity_text 512, 269
     identity_text 189, 269
+.endif
 
 race_offsets: .word race_0, race_1, race_2, race_3, race_4, race_5, race_6, race_7
+.ifdef generated_ui_text
+    ui_text_races
+.else
 race_0: .byte 0x5E, (27 / 94) + 0x21, (27 % 94) + 0x21, 0x5E, (838 / 94) + 0x21, (838 % 94) + 0x21, 0
 race_1: .byte 0x5E, (543 / 94) + 0x21, (543 % 94) + 0x21, 0x5E, (27 / 94) + 0x21, (27 % 94) + 0x21, 0
 race_2: .byte 0x5E, (586 / 94) + 0x21, (586 % 94) + 0x21, 0x5E, (822 / 94) + 0x21, (822 % 94) + 0x21, 0
@@ -965,6 +990,7 @@ race_4: .byte 0x5E, (106 / 94) + 0x21, (106 % 94) + 0x21, 0x5E, (227 / 94) + 0x2
 race_5: .byte 0x5E, (106 / 94) + 0x21, (106 % 94) + 0x21, 0x5E, (724 / 94) + 0x21, (724 % 94) + 0x21, 0x5E, (27 / 94) + 0x21, (27 % 94) + 0x21, 0
 race_6: .byte 0x5E, (1317 / 94) + 0x21, (1317 % 94) + 0x21, 0x5E, (484 / 94) + 0x21, (484 % 94) + 0x21, 0x5E, (27 / 94) + 0x21, (27 % 94) + 0x21, 0
 race_7: .byte 0x5E, (1319 / 94) + 0x21, (1319 % 94) + 0x21, 0x5E, (1318 / 94) + 0x21, (1318 % 94) + 0x21, 0x5E, (289 / 94) + 0x21, (289 % 94) + 0x21, 0x5E, (1004 / 94) + 0x21, (1004 % 94) + 0x21, 0
+.endif
 
 gender_label_entry:
     les bx, [bp + 0x0A]
@@ -1031,6 +1057,9 @@ race_decoded:
 # 9=Chaotic Evil), matching AD&D's classic 3x3 grid read row by row.
 # Character IDs: 守198 序1321 善1320 良1323 中11 立1322 絕1168 對213
 # 邪753 惡276 混453 亂18.
+.ifdef generated_ui_text
+    ui_text_alignments
+.else
 alignment_sources:
     alignment_text 198, 1321, 1320, 1323  # Lawful Good -> 守序善良
     alignment_text 198, 1321, 11, 1322    # Lawful Neutral -> 守序中立
@@ -1041,6 +1070,7 @@ alignment_sources:
     alignment_text 453, 18, 1320, 1323    # Chaotic Good -> 混亂善良
     alignment_text 453, 18, 11, 1322      # Chaotic Neutral -> 混亂中立
     alignment_text 453, 18, 753, 276      # Chaotic Evil -> 混亂邪惡
+.endif
 
 alignment_label_entry:
     les bx, [bp + 0x0A]
@@ -1101,6 +1131,9 @@ alignment_decoded:
 # redirected here instead, exactly like every other field, just with
 # its own record offset per slot.
 class_offsets: .word class_cleric, class_cleric, class_cleric, class_cleric, class_druid, class_druid, class_druid, class_druid, class_fighter, class_gladiator, class_preserver, class_psionic, class_ranger, class_ranger, class_ranger, class_ranger, class_thief
+.ifdef generated_ui_text
+    ui_text_classes
+.else
 class_cleric: .byte 0x5E, (1325 / 94) + 0x21, (1325 % 94) + 0x21, 0x5E, (232 / 94) + 0x21, (232 % 94) + 0x21, 0
 class_druid: .byte 0x5E, (261 / 94) + 0x21, (261 % 94) + 0x21, 0x5E, (1329 / 94) + 0x21, (1329 % 94) + 0x21, 0x5E, (36 / 94) + 0x21, (36 % 94) + 0x21, 0
 class_fighter: .byte 0x5E, (289 / 94) + 0x21, (289 % 94) + 0x21, 0x5E, (1004 / 94) + 0x21, (1004 % 94) + 0x21, 0
@@ -1109,6 +1142,7 @@ class_preserver: .byte 0x5E, (51 / 94) + 0x21, (51 % 94) + 0x21, 0x5E, (709 / 94
 class_psionic: .byte 0x5E, (822 / 94) + 0x21, (822 % 94) + 0x21, 0x5E, (629 / 94) + 0x21, (629 % 94) + 0x21, 0x5E, (232 / 94) + 0x21, (232 % 94) + 0x21, 0
 class_ranger: .byte 0x5E, (1240 / 94) + 0x21, (1240 % 94) + 0x21, 0x5E, (1324 / 94) + 0x21, (1324 % 94) + 0x21, 0
 class_thief: .byte 0x5E, (1326 / 94) + 0x21, (1326 % 94) + 0x21, 0x5E, (1328 / 94) + 0x21, (1328 % 94) + 0x21, 0
+.endif
 
 # re_94: the 2-/3-class draw paths (5B7C:2DC1) collect every populated
 # slot's far pointer and only call the shared 339E:016D renderer once,

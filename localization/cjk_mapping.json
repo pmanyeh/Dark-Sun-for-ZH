@@ -18,10 +18,11 @@
     "capacity": 8835
   },
   "sources": [
-    "localization\\catalog\\localization_manifest.csv"
+    "localization\\catalog\\localization_manifest.csv",
+    "localization\\catalog\\fixed_ui_labels.csv"
   ],
-  "active_character_count": 3002,
-  "entry_count": 3002,
+  "active_character_count": 3003,
+  "entry_count": 3003,
   "entries": [
     {
       "id": 0,
@@ -140,7 +141,7 @@
       "bank": 0,
       "index": 11,
       "transport_hex": "5E212C",
-      "occurrences": 517,
+      "occurrences": 522,
       "active": true
     },
     {
@@ -210,7 +211,7 @@
       "bank": 0,
       "index": 18,
       "transport_hex": "5E2133",
-      "occurrences": 62,
+      "occurrences": 65,
       "active": true
     },
     {
@@ -300,7 +301,7 @@
       "bank": 0,
       "index": 27,
       "transport_hex": "5E213C",
-      "occurrences": 1346,
+      "occurrences": 1351,
       "active": true
     },
     {
@@ -390,7 +391,7 @@
       "bank": 0,
       "index": 36,
       "transport_hex": "5E2145",
-      "occurrences": 43,
+      "occurrences": 44,
       "active": true
     },
     {
@@ -540,7 +541,7 @@
       "bank": 0,
       "index": 51,
       "transport_hex": "5E2154",
-      "occurrences": 161,
+      "occurrences": 162,
       "active": true
     },
     {
@@ -960,7 +961,7 @@
       "bank": 0,
       "index": 93,
       "transport_hex": "5E217E",
-      "occurrences": 357,
+      "occurrences": 360,
       "active": true
     },
     {
@@ -1030,7 +1031,7 @@
       "bank": 0,
       "index": 100,
       "transport_hex": "5E2227",
-      "occurrences": 20,
+      "occurrences": 21,
       "active": true
     },
     {
@@ -1090,7 +1091,7 @@
       "bank": 0,
       "index": 106,
       "transport_hex": "5E222D",
-      "occurrences": 62,
+      "occurrences": 65,
       "active": true
     },
     {
@@ -1420,7 +1421,7 @@
       "bank": 0,
       "index": 139,
       "transport_hex": "5E224E",
-      "occurrences": 308,
+      "occurrences": 309,
       "active": true
     },
     {
@@ -1920,7 +1921,7 @@
       "bank": 0,
       "index": 189,
       "transport_hex": "5E2322",
-      "occurrences": 140,
+      "occurrences": 141,
       "active": true
     },
     {
@@ -2010,7 +2011,7 @@
       "bank": 0,
       "index": 198,
       "transport_hex": "5E232B",
-      "occurrences": 183,
+      "occurrences": 186,
       "active": true
     },
     {
@@ -2160,7 +2161,7 @@
       "bank": 0,
       "index": 213,
       "transport_hex": "5E233A",
-      "occurrences": 599,
+      "occurrences": 600,
       "active": true
     },
     {
@@ -2170,7 +2171,7 @@
       "bank": 0,
       "index": 214,
       "transport_hex": "5E233B",
-      "occurrences": 143,
+      "occurrences": 144,
       "active": true
     },
     {
@@ -2250,7 +2251,7 @@
       "bank": 0,
       "index": 222,
       "transport_hex": "5E2343",
-      "occurrences": 60,
+      "occurrences": 61,
       "active": true
     },
     {
@@ -2300,7 +2301,7 @@
       "bank": 0,
       "index": 227,
       "transport_hex": "5E2348",
-      "occurrences": 241,
+      "occurrences": 242,
       "active": true
     },
     {
@@ -2350,7 +2351,7 @@
       "bank": 0,
       "index": 232,
       "transport_hex": "5E234D",
-      "occurrences": 150,
+      "occurrences": 152,
       "active": true
     },
     {
@@ -2640,7 +2641,7 @@
       "bank": 1,
       "index": 5,
       "transport_hex": "5E236A",
-      "occurrences": 507,
+      "occurrences": 508,
       "active": true
     },
     {
@@ -2720,7 +2721,7 @@
       "bank": 1,
       "index": 13,
       "transport_hex": "5E2372",
-      "occurrences": 56,
+      "occurrences": 58,
       "active": true
     },
     {
@@ -2790,7 +2791,7 @@
       "bank": 1,
       "index": 20,
       "transport_hex": "5E2379",
-      "occurrences": 164,
+      "occurrences": 167,
       "active": true
     },
     {
@@ -2920,7 +2921,7 @@
       "bank": 1,
       "index": 33,
       "transport_hex": "5E2428",
-      "occurrences": 458,
+      "occurrences": 460,
       "active": true
     },
     {
@@ -3570,7 +3571,7 @@
       "bank": 1,
       "index": 98,
       "transport_hex": "5E2469",
-      "occurrences": 121,
+      "occurrences": 123,
       "active": true
     },
     {
@@ -3700,7 +3701,7 @@
       "bank": 1,
       "index": 111,
       "transport_hex": "5E2476",
-      "occurrences": 27,
+      "occurrences": 28,
       "active": true
     },
     {
@@ -4560,7 +4561,7 @@
       "bank": 1,
       "index": 197,
       "transport_hex": "5E256E",
-      "occurrences": 30,
+      "occurrences": 33,
       "active": true
     },
     {
@@ -4870,7 +4871,7 @@
       "bank": 1,
       "index": 228,
       "transport_hex": "5E262F",
-      "occurrences": 773,
+      "occurrences": 774,
       "active": true
     },
     {
@@ -5100,7 +5101,7 @@
       "bank": 1,
       "index": 251,
       "transport_hex": "5E2646",
-      "occurrences": 483,
+      "occurrences": 484,
       "active": true
     },
     {
@@ -5150,7 +5151,7 @@
       "bank": 2,
       "index": 0,
       "transport_hex": "5E264B",
-      "occurrences": 14,
+      "occurrences": 15,
       "active": true
     },
     {
@@ -5310,7 +5311,7 @@
       "bank": 2,
       "index": 16,
       "transport_hex": "5E265B",
-      "occurrences": 32,
+      "occurrences": 33,
       "active": true
     },
     {
@@ -5460,7 +5461,7 @@
       "bank": 2,
       "index": 31,
       "transport_hex": "5E266A",
-      "occurrences": 11,
+      "occurrences": 12,
       "active": true
     },
     {
@@ -5470,7 +5471,7 @@
       "bank": 2,
       "index": 32,
       "transport_hex": "5E266B",
-      "occurrences": 183,
+      "occurrences": 185,
       "active": true
     },
     {
@@ -5630,7 +5631,7 @@
       "bank": 2,
       "index": 48,
       "transport_hex": "5E267B",
-      "occurrences": 17,
+      "occurrences": 18,
       "active": true
     },
     {
@@ -5890,7 +5891,7 @@
       "bank": 2,
       "index": 74,
       "transport_hex": "5E2737",
-      "occurrences": 100,
+      "occurrences": 102,
       "active": true
     },
     {
@@ -6200,7 +6201,7 @@
       "bank": 2,
       "index": 105,
       "transport_hex": "5E2756",
-      "occurrences": 382,
+      "occurrences": 383,
       "active": true
     },
     {
@@ -6320,7 +6321,7 @@
       "bank": 2,
       "index": 117,
       "transport_hex": "5E2762",
-      "occurrences": 1300,
+      "occurrences": 1303,
       "active": true
     },
     {
@@ -6940,7 +6941,7 @@
       "bank": 2,
       "index": 179,
       "transport_hex": "5E2842",
-      "occurrences": 67,
+      "occurrences": 73,
       "active": true
     },
     {
@@ -7000,7 +7001,7 @@
       "bank": 2,
       "index": 185,
       "transport_hex": "5E2848",
-      "occurrences": 179,
+      "occurrences": 180,
       "active": true
     },
     {
@@ -7120,7 +7121,7 @@
       "bank": 2,
       "index": 197,
       "transport_hex": "5E2854",
-      "occurrences": 210,
+      "occurrences": 211,
       "active": true
     },
     {
@@ -7180,7 +7181,7 @@
       "bank": 2,
       "index": 203,
       "transport_hex": "5E285A",
-      "occurrences": 52,
+      "occurrences": 53,
       "active": true
     },
     {
@@ -7270,7 +7271,7 @@
       "bank": 2,
       "index": 212,
       "transport_hex": "5E2863",
-      "occurrences": 407,
+      "occurrences": 408,
       "active": true
     },
     {
@@ -7560,7 +7561,7 @@
       "bank": 2,
       "index": 241,
       "transport_hex": "5E2922",
-      "occurrences": 117,
+      "occurrences": 120,
       "active": true
     },
     {
@@ -7640,7 +7641,7 @@
       "bank": 2,
       "index": 249,
       "transport_hex": "5E292A",
-      "occurrences": 173,
+      "occurrences": 174,
       "active": true
     },
     {
@@ -7650,7 +7651,7 @@
       "bank": 2,
       "index": 250,
       "transport_hex": "5E292B",
-      "occurrences": 52,
+      "occurrences": 53,
       "active": true
     },
     {
@@ -7970,7 +7971,7 @@
       "bank": 3,
       "index": 26,
       "transport_hex": "5E294B",
-      "occurrences": 43,
+      "occurrences": 44,
       "active": true
     },
     {
@@ -8250,7 +8251,7 @@
       "bank": 3,
       "index": 54,
       "transport_hex": "5E2967",
-      "occurrences": 382,
+      "occurrences": 387,
       "active": true
     },
     {
@@ -8410,7 +8411,7 @@
       "bank": 3,
       "index": 70,
       "transport_hex": "5E2977",
-      "occurrences": 88,
+      "occurrences": 89,
       "active": true
     },
     {
@@ -8520,7 +8521,7 @@
       "bank": 3,
       "index": 81,
       "transport_hex": "5E2A24",
-      "occurrences": 98,
+      "occurrences": 99,
       "active": true
     },
     {
@@ -8580,7 +8581,7 @@
       "bank": 3,
       "index": 87,
       "transport_hex": "5E2A2A",
-      "occurrences": 131,
+      "occurrences": 132,
       "active": true
     },
     {
@@ -8600,7 +8601,7 @@
       "bank": 3,
       "index": 89,
       "transport_hex": "5E2A2C",
-      "occurrences": 266,
+      "occurrences": 267,
       "active": true
     },
     {
@@ -8630,7 +8631,7 @@
       "bank": 3,
       "index": 92,
       "transport_hex": "5E2A2F",
-      "occurrences": 10,
+      "occurrences": 11,
       "active": true
     },
     {
@@ -8740,7 +8741,7 @@
       "bank": 3,
       "index": 103,
       "transport_hex": "5E2A3A",
-      "occurrences": 55,
+      "occurrences": 56,
       "active": true
     },
     {
@@ -10070,7 +10071,7 @@
       "bank": 3,
       "index": 236,
       "transport_hex": "5E2B61",
-      "occurrences": 440,
+      "occurrences": 443,
       "active": true
     },
     {
@@ -11710,7 +11711,7 @@
       "bank": 4,
       "index": 144,
       "transport_hex": "5E2D49",
-      "occurrences": 285,
+      "occurrences": 286,
       "active": true
     },
     {
@@ -12430,7 +12431,7 @@
       "bank": 4,
       "index": 216,
       "transport_hex": "5E2E33",
-      "occurrences": 16,
+      "occurrences": 17,
       "active": true
     },
     {
@@ -13060,7 +13061,7 @@
       "bank": 5,
       "index": 23,
       "transport_hex": "5E2E72",
-      "occurrences": 37,
+      "occurrences": 38,
       "active": true
     },
     {
@@ -13320,7 +13321,7 @@
       "bank": 5,
       "index": 49,
       "transport_hex": "5E2F2E",
-      "occurrences": 9,
+      "occurrences": 10,
       "active": true
     },
     {
@@ -13330,7 +13331,7 @@
       "bank": 5,
       "index": 50,
       "transport_hex": "5E2F2F",
-      "occurrences": 8,
+      "occurrences": 9,
       "active": true
     },
     {
@@ -13390,7 +13391,7 @@
       "bank": 5,
       "index": 56,
       "transport_hex": "5E2F35",
-      "occurrences": 16,
+      "occurrences": 17,
       "active": true
     },
     {
@@ -13610,7 +13611,7 @@
       "bank": 5,
       "index": 78,
       "transport_hex": "5E2F4B",
-      "occurrences": 46,
+      "occurrences": 47,
       "active": true
     },
     {
@@ -13650,7 +13651,7 @@
       "bank": 5,
       "index": 82,
       "transport_hex": "5E2F4F",
-      "occurrences": 36,
+      "occurrences": 37,
       "active": true
     },
     {
@@ -14190,7 +14191,7 @@
       "bank": 5,
       "index": 136,
       "transport_hex": "5E3027",
-      "occurrences": 116,
+      "occurrences": 121,
       "active": true
     },
     {
@@ -15140,7 +15141,7 @@
       "bank": 5,
       "index": 231,
       "transport_hex": "5E3128",
-      "occurrences": 41,
+      "occurrences": 44,
       "active": true
     },
     {
@@ -15600,7 +15601,7 @@
       "bank": 6,
       "index": 21,
       "transport_hex": "5E3156",
-      "occurrences": 17,
+      "occurrences": 20,
       "active": true
     },
     {
@@ -18150,7 +18151,7 @@
       "bank": 7,
       "index": 20,
       "transport_hex": "5E343B",
-      "occurrences": 27,
+      "occurrences": 28,
       "active": true
     },
     {
@@ -19380,7 +19381,7 @@
       "bank": 7,
       "index": 143,
       "transport_hex": "5E3558",
-      "occurrences": 10,
+      "occurrences": 11,
       "active": true
     },
     {
@@ -22070,7 +22071,7 @@
       "bank": 8,
       "index": 156,
       "transport_hex": "5E384B",
-      "occurrences": 9,
+      "occurrences": 10,
       "active": true
     },
     {
@@ -22100,7 +22101,7 @@
       "bank": 8,
       "index": 159,
       "transport_hex": "5E384E",
-      "occurrences": 9,
+      "occurrences": 10,
       "active": true
     },
     {
@@ -22110,7 +22111,7 @@
       "bank": 8,
       "index": 160,
       "transport_hex": "5E384F",
-      "occurrences": 9,
+      "occurrences": 10,
       "active": true
     },
     {
@@ -24590,7 +24591,7 @@
       "bank": 9,
       "index": 152,
       "transport_hex": "5E3B2D",
-      "occurrences": 4,
+      "occurrences": 7,
       "active": true
     },
     {
@@ -30040,6 +30041,16 @@
       "bank": 11,
       "index": 185,
       "transport_hex": "5E4078",
+      "occurrences": 1,
+      "active": true
+    },
+    {
+      "id": 3002,
+      "character": "俠",
+      "unicode": "U+4FE0",
+      "bank": 11,
+      "index": 186,
+      "transport_hex": "5E4079",
       "occurrences": 1,
       "active": true
     }

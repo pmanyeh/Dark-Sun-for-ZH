@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import runpy
 import struct
 import subprocess
 import tempfile
@@ -65,6 +66,102 @@ ITEM_LINE_ADVANCE_PATCHES = {
 ROOT = Path(__file__).resolve().parents[1]
 ASM = ROOT / "tools/cjk_name_slot_cache.asm"
 TOOLBIN = ROOT / ".tools/w64devkit/bin"
+FIXED_UI_LABELS = ROOT / "localization/catalog/fixed_ui_labels.csv"
+LEGACY_BANK_COUNT = 6
+
+# Assembly tables filled from fixed_ui_labels.csv, in table order. The asm
+# looks up gender (2 characters) and alignment (4 characters) by constant
+# stride; the other tables go through offset tables and may vary in length.
+UI_TEXT_TABLES = {
+    # macro: (row style, stride-table label, fixed length, (row label, unit) rows)
+    "ui_text_materials": ("label", None, None, (
+        ("material_0", "UI_material_wooden"), ("material_1", "UI_material_bone"),
+        ("material_2", "UI_material_stone"), ("material_3", "UI_material_obsidian"),
+        ("material_4", "UI_material_metal"), ("material_5", "UI_material_leather"),
+    )),
+    "ui_text_genders": ("stride", "gender_sources", 2, (
+        ("male", "UI_gender_male"), ("female", "UI_gender_female"),
+    )),
+    "ui_text_races": ("label", None, None, (
+        ("race_0", "UI_race_human"), ("race_1", "UI_race_dwarf"),
+        ("race_2", "UI_race_elf"), ("race_3", "UI_race_half_elf"),
+        ("race_4", "UI_race_half_giant"), ("race_5", "UI_race_halfling"),
+        ("race_6", "UI_race_mul"), ("race_7", "UI_race_thri_kreen"),
+    )),
+    "ui_text_alignments": ("stride", "alignment_sources", 4, (
+        ("lg", "UI_alignment_lg"), ("ln", "UI_alignment_ln"), ("le", "UI_alignment_le"),
+        ("ng", "UI_alignment_ng"), ("tn", "UI_alignment_tn"), ("ne", "UI_alignment_ne"),
+        ("cg", "UI_alignment_cg"), ("cn", "UI_alignment_cn"), ("ce", "UI_alignment_ce"),
+    )),
+    "ui_text_classes": ("label", None, None, (
+        ("class_cleric", "UI_class_cleric"), ("class_druid", "UI_class_druid"),
+        ("class_fighter", "UI_class_fighter"), ("class_gladiator", "UI_class_gladiator"),
+        ("class_preserver", "UI_class_preserver"), ("class_psionic", "UI_class_psionicist"),
+        ("class_ranger", "UI_class_ranger"), ("class_thief", "UI_class_thief"),
+    )),
+}
+# name_buffer holds 24 decoded bytes and the pool has ten glyph slots.
+UI_TEXT_MAX_CHARACTERS = 8
+BACKPACK_UNITS = ("UI_backpack",)
+ABILITY_UNITS = ("UI_ability_str", "UI_ability_dex", "UI_ability_con",
+                 "UI_ability_int", "UI_ability_wis", "UI_ability_cha")
+LABEL_UNITS = ("UI_label_ac", "UI_label_psi", "UI_view_label_hp", "UI_view_label_psi")
+
+
+def load_fixed_ui_ids(
+    mapping: dict[str, object], path: Path = FIXED_UI_LABELS
+) -> dict[str, tuple[int, ...]]:
+    """Resolve every fixed UI label to CJK IDs; ASCII is not allowed here."""
+    import csv
+
+    by_character = {entry["character"]: entry["id"] for entry in mapping["entries"]}
+    result: dict[str, tuple[int, ...]] = {}
+    with path.open("r", encoding="utf-8-sig", newline="") as stream:
+        for row in csv.DictReader(stream):
+            text = row["translation_zh_tw"]
+            missing = [character for character in text if character not in by_character]
+            if missing:
+                raise ValueError(f"{row['unit_id']}: {''.join(missing)!r} is not in the CJK mapping")
+            result[row["unit_id"]] = tuple(by_character[character] for character in text)
+    return result
+
+
+def fixed_ui_pair_ids(ids: dict[str, tuple[int, ...]], units: Sequence[str]) -> tuple[int, ...]:
+    """Flatten two-character labels in order, as the fixed-stride tables expect."""
+    flattened: list[int] = []
+    for unit in units:
+        if len(ids[unit]) != 2:
+            raise ValueError(f"{unit} must be exactly two characters for its fixed-stride table")
+        flattened += ids[unit]
+    return tuple(flattened)
+
+
+def name_slot_ui_text_include(ids: dict[str, tuple[int, ...]]) -> str:
+    """Return the ui_text_* macro definitions for cjk_name_slot_cache.asm."""
+
+    def triples(values: Sequence[int]) -> str:
+        return ", ".join(f"0x5E, {0x21 + value // 94}, {0x21 + value % 94}" for value in values)
+
+    lines: list[str] = []
+    for macro, (style, stride_label, length, rows) in UI_TEXT_TABLES.items():
+        lines.append(f".macro {macro}")
+        if stride_label:
+            lines.append(f"{stride_label}:")
+        for label, unit in rows:
+            values = ids[unit]
+            if length is not None and len(values) != length:
+                raise ValueError(f"{unit} must be exactly {length} characters")
+            if not 1 <= len(values) <= UI_TEXT_MAX_CHARACTERS:
+                raise ValueError(f"{unit} must be 1..{UI_TEXT_MAX_CHARACTERS} characters")
+            if style == "label":
+                lines.append(f"{label}: .byte {triples(values)}, 0")
+            else:
+                # identity_text pads two characters to 8 bytes and
+                # alignment_text pads four characters to 16 bytes.
+                padding = 2 if length == 2 else 4
+                lines.append(f"    .byte {triples(values)}{', 0' * padding}")
+        lines.append(".endm")
+    return "\n".join(lines) + "\n"
 
 # Bottom hover, right-click card, and the two right-side conditional branches.
 PROVEN_CONSUMER_OFFSETS = (0x06E288, 0x072955, 0x08BECF, 0x08BF00)
@@ -145,6 +242,25 @@ def verify_proven_consumer_sites(
     return tuple(verified)
 
 
+def verify_overlay_relocations(image: bytes, ranges: list[tuple[int, int]]) -> None:
+    """Conservatively reject touching either byte of a Borland overlay fixup."""
+    parser = runpy.run_path(str(ROOT / "vendor/opends/tools/ovr-map/ovr-map.py"))
+    mz = parser["parse_mz"](image)
+    fbov = parser["parse_fbov"](image, mz["image_end"])
+    start = parser["find_table"](image, fbov["exeinfo"], mz["image_end"])
+    segments = parser["parse_table"](image, start, mz["image_end"], fbov["overlay_base"])
+    for segment in segments:
+        relevant = [(a, b) for a, b in ranges if a < segment["file_end"] and b > segment["file_start"]]
+        if not relevant:
+            continue
+        count = segment["relocation_count"]
+        offsets = struct.unpack_from(f"<{count}H", image, segment["file_end"])
+        for offset in offsets:
+            site = segment["file_start"] + offset
+            if any(a < site + 2 and b > site for a, b in relevant):
+                raise ValueError(f"patch overlaps overlay relocation at 0x{site:X}")
+
+
 def consumer_segment_relocations(
     offsets: Sequence[int] = PROVEN_CONSUMER_OFFSETS,
 ) -> frozenset[int]:
@@ -210,8 +326,14 @@ def assemble_name_slot_cache(
     gender_position: tuple[int, int] | None = None,
     alignment_position: tuple[int, int] | None = None,
     class_names: bool = False,
+    bank_count: int = LEGACY_BANK_COUNT,
+    ui_text_ids: dict[str, tuple[int, ...]] | None = None,
 ) -> bytes:
-    """Assemble the self-contained decoder appended to FONT-100."""
+    """Assemble the self-contained decoder appended to FONT-100.
+
+    ``ui_text_ids`` (from :func:`load_fixed_ui_ids`) replaces the legacy
+    cjk-mapping-v57 material/identity/class tables built into the asm.
+    """
     for label, value in (
         ("staging offset", staging_offset),
         ("first slot offset", first_slot_offset),
@@ -221,16 +343,19 @@ def assemble_name_slot_cache(
             raise ValueError(f"{label} must fit u16")
     if record_bytes == 0 or record_bytes % 2:
         raise ValueError("record size must be a non-zero even value")
+    if not 1 <= bank_count <= 16:
+        raise ValueError("bank count must be 1..16")
+    id_limit = bank_count * 256
     extra_symbols: list[str] = []
     if backpack_ids is not None:
-        if len(backpack_ids) != 2 or any(not 0 <= value < 6 * 256 for value in backpack_ids):
-            raise ValueError("backpack needs two IDs within the six CJB1 banks")
+        if len(backpack_ids) != 2 or any(not 0 <= value < id_limit for value in backpack_ids):
+            raise ValueError(f"backpack needs two IDs within the {bank_count} CJB1 banks")
         extra_symbols = ["--defsym", "fixed_backpack=1"]
         for index, value in enumerate(backpack_ids):
             extra_symbols += ["--defsym", f"backpack_id_{index}={value}"]
     if ability_ids is not None:
-        if backpack_ids is None or len(ability_ids) != 12 or any(not 0 <= value < 1536 for value in ability_ids):
-            raise ValueError("ability labels need backpack support and twelve IDs within six banks")
+        if backpack_ids is None or len(ability_ids) != 12 or any(not 0 <= value < id_limit for value in ability_ids):
+            raise ValueError(f"ability labels need backpack support and twelve IDs within {bank_count} banks")
         extra_symbols += ["--defsym", "fixed_abilities=1"]
         for index, value in enumerate(ability_ids):
             extra_symbols += ["--defsym", f"ability_id_{index}={value}"]
@@ -246,8 +371,8 @@ def assemble_name_slot_cache(
     elif view_y_origin != 40:
         raise ValueError("view origin requires view-character support")
     if label_ids is not None:
-        if ability_ids is None or len(label_ids) != 8 or any(not 0 <= value < 1536 for value in label_ids):
-            raise ValueError("AC/PSI/view-HP/view-PSI labels need ability support and eight IDs within six banks")
+        if ability_ids is None or len(label_ids) != 8 or any(not 0 <= value < id_limit for value in label_ids):
+            raise ValueError(f"AC/PSI/view-HP/view-PSI labels need ability support and eight IDs within {bank_count} banks")
         extra_symbols += ["--defsym", "fixed_labels=1"]
         for index, value in enumerate(label_ids):
             name = ("ac_label_id_0", "ac_label_id_1", "psi_label_id_0", "psi_label_id_1",
@@ -274,15 +399,26 @@ def assemble_name_slot_cache(
             raise ValueError("gender position requires identity support")
         if alignment_position is not None:
             raise ValueError("alignment position requires identity support")
+    if ui_text_ids is not None:
+        for unit, values in ui_text_ids.items():
+            if any(not 0 <= value < id_limit for value in values):
+                raise ValueError(f"{unit} uses a CJK ID outside the {bank_count} banks")
+        extra_symbols += ["--defsym", "generated_ui_text=1"]
     with tempfile.TemporaryDirectory() as temporary:
         directory = Path(temporary)
         obj = directory / "name-cache.o"
         image = directory / "name-cache.exe"
         binary = directory / "name-cache.bin"
+        if ui_text_ids is not None:
+            (directory / "name_slot_ui_text.inc").write_text(
+                name_slot_ui_text_include(ui_text_ids), encoding="ascii"
+            )
         subprocess.run(
             [
                 TOOLBIN / "as.exe",
                 "--32",
+                "-I",
+                directory,
                 "--defsym",
                 f"staging_offset={staging_offset}",
                 "--defsym",
@@ -290,7 +426,7 @@ def assemble_name_slot_cache(
                 "--defsym",
                 f"cjk_record_bytes={record_bytes}",
                 "--defsym",
-                "bank_count=6",
+                f"bank_count={bank_count}",
                 *extra_symbols,
                 "-o",
                 obj,

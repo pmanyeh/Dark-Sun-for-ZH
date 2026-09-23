@@ -1,0 +1,45 @@
+﻿unit_id,category,original,translation_zh_tw,status,translate,location_count,notes
+UI_backpack,fixed_ui,BACKPACK,背包,translated,True,1,inventory bottom label; exactly 2 characters
+UI_ability_str,fixed_ui,STR,力量,translated,True,2,inventory and VIEW CHARACTER; exactly 2 characters
+UI_ability_dex,fixed_ui,DEX,敏捷,translated,True,2,exactly 2 characters
+UI_ability_con,fixed_ui,CON,體質,translated,True,2,exactly 2 characters
+UI_ability_int,fixed_ui,INT,智力,translated,True,2,exactly 2 characters
+UI_ability_wis,fixed_ui,WIS,智慧,translated,True,2,exactly 2 characters
+UI_ability_cha,fixed_ui,CHA,魅力,translated,True,2,exactly 2 characters
+UI_label_ac,fixed_ui,AC,防禦,translated,True,1,inventory panel; exactly 2 characters
+UI_label_psi,fixed_ui,PSI,靈能,translated,True,1,inventory panel; exactly 2 characters
+UI_view_label_hp,fixed_ui,HP,生命,translated,True,1,VIEW CHARACTER; exactly 2 characters
+UI_view_label_psi,fixed_ui,PSI,靈能,translated,True,1,VIEW CHARACTER; exactly 2 characters
+UI_material_wooden,fixed_ui,Wooden,木製,translated,True,1,item name prefix; one pre-rendered glyph (re_101)
+UI_material_bone,fixed_ui,Bone,骨製,translated,True,1,item name prefix; one pre-rendered glyph (re_101)
+UI_material_stone,fixed_ui,Stone,石製,translated,True,1,item name prefix; one pre-rendered glyph (re_101)
+UI_material_obsidian,fixed_ui,Obsidian,黑曜石製,translated,True,1,item name prefix; one pre-rendered glyph (re_101)
+UI_material_metal,fixed_ui,Metal,金屬製,translated,True,1,item name prefix; one pre-rendered glyph (re_101)
+UI_material_leather,fixed_ui,Leather,皮製,translated,True,1,item name prefix; one pre-rendered glyph (re_101)
+UI_gender_male,fixed_ui,MALE,男性,translated,True,1,exactly 2 characters
+UI_gender_female,fixed_ui,FEMALE,女性,translated,True,1,exactly 2 characters
+UI_race_human,fixed_ui,HUMAN,人類,translated,True,1,
+UI_race_dwarf,fixed_ui,DWARF,矮人,translated,True,1,
+UI_race_elf,fixed_ui,ELF,精靈,translated,True,1,
+UI_race_half_elf,fixed_ui,HALF-ELF,半精靈,translated,True,1,
+UI_race_half_giant,fixed_ui,HALF-GIANT,半巨人,translated,True,1,
+UI_race_halfling,fixed_ui,HALFLING,半身人,translated,True,1,
+UI_race_mul,fixed_ui,MUL,穆爾人,translated,True,1,
+UI_race_thri_kreen,fixed_ui,THRI-KREEN,螳螂戰士,translated,True,1,
+UI_alignment_lg,fixed_ui,LAWFUL GOOD,守序善良,translated,True,1,exactly 4 characters
+UI_alignment_ln,fixed_ui,LAWFUL NEUTRAL,守序中立,translated,True,1,exactly 4 characters
+UI_alignment_le,fixed_ui,LAWFUL EVIL,守序邪惡,translated,True,1,exactly 4 characters
+UI_alignment_ng,fixed_ui,NEUTRAL GOOD,中立善良,translated,True,1,exactly 4 characters
+UI_alignment_tn,fixed_ui,TRUE NEUTRAL,絕對中立,translated,True,1,exactly 4 characters
+UI_alignment_ne,fixed_ui,NEUTRAL EVIL,中立邪惡,translated,True,1,exactly 4 characters
+UI_alignment_cg,fixed_ui,CHAOTIC GOOD,混亂善良,translated,True,1,exactly 4 characters
+UI_alignment_cn,fixed_ui,CHAOTIC NEUTRAL,混亂中立,translated,True,1,exactly 4 characters
+UI_alignment_ce,fixed_ui,CHAOTIC EVIL,混亂邪惡,translated,True,1,exactly 4 characters
+UI_class_cleric,fixed_ui,CLERIC,牧師,translated,True,1,
+UI_class_druid,fixed_ui,DRUID,德魯伊,translated,True,1,
+UI_class_fighter,fixed_ui,FIGHTER,戰士,translated,True,1,
+UI_class_gladiator,fixed_ui,GLADIATOR,角鬥士,translated,True,1,
+UI_class_preserver,fixed_ui,PRESERVER,保護者,translated,True,1,
+UI_class_psionicist,fixed_ui,PSIONICIST,靈能師,translated,True,1,
+UI_class_ranger,fixed_ui,RANGER,遊俠,translated,True,1,
+UI_class_thief,fixed_ui,THIEF,小偷,translated,True,1,re_95 2.1: 盜賊 was a stand-in until 偷 had a glyph

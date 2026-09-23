@@ -77,7 +77,8 @@ class FixedLabelsMachineTests(backpack_tests.BackpackMachineTests):
         cls.core = assemble_name_slot_cache(
             backpack_ids=(1303, 100),
             ability_ids=(93, 761, 1316, 1315, 855, 715, 354, 93, 354, 1314, 860, 93),
-            label_ids=LABEL_IDS,
+            # v67 added VIEW CHARACTER HP:/PSI: (生命/靈能) after the v61 pair.
+            label_ids=LABEL_IDS + (507, 139, 822, 629),
         )
 
     def dos_interrupt(self, cpu, interrupt, unused):

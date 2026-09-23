@@ -178,7 +178,11 @@ def main() -> int:
         patched_all = temporary_root / "patched-all"
         run(args.gff_cat, "extract", baseline, "--all", "-o", original_all)
         run(args.gff_cat, "extract", patched_gff, "--all", "-o", patched_all)
-        verification = verify_extracted_gff_chunks(original_all, patched_all, target_records, {"GFFI-8.bin"})
+        # NAME-1 keeps its length, but a prior dialogue package may have
+        # resized GPL (GFFI-8) and MAS (GFFI-7) chunks.
+        verification = verify_extracted_gff_chunks(
+            original_all, patched_all, target_records, {"GFFI-7.bin", "GFFI-8.bin"}
+        )
 
         package = {
             "format": "darksun-gpl-dialogue-patch",
@@ -199,6 +203,9 @@ def main() -> int:
             "edits": edit_records,
             "verification": verification,
         }
+        for inherited_key in ("units", "withheld", "abi_constraint"):
+            if prior_package and inherited_key in prior_package:
+                package[inherited_key] = prior_package[inherited_key]
         write_json(staging / "gpl-dialogue-patch.json", package)
         shutil.move(str(staging), str(output))
 

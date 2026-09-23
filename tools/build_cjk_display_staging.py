@@ -31,6 +31,7 @@ try:
     from .font100_tool import Font100
     from .patch_dialogue_menu_wind import patch_dialogue_choice_paging, patch_dialogue_menu_wind
     from .patch_dsun_scratch_cache import patch_executable, patch_introduce_prefix
+    from .view_ui_layer import apply_view_ui_exe_patches, build_view_ui_font
 except ImportError:
     from cjk_localization_pipeline import (
         DEFAULT_GFF_CAT,
@@ -49,6 +50,7 @@ except ImportError:
     from font100_tool import Font100
     from patch_dialogue_menu_wind import patch_dialogue_choice_paging, patch_dialogue_menu_wind
     from patch_dsun_scratch_cache import patch_executable, patch_introduce_prefix
+    from view_ui_layer import apply_view_ui_exe_patches, build_view_ui_font
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -256,6 +258,11 @@ def main() -> int:
         help="four dialogue choices per page at 11-pixel pitch with working MORE paging",
     )
     parser.add_argument(
+        "--view-ui",
+        action="store_true",
+        help="add the inventory and VIEW CHARACTER Chinese UI layer (v75, see view_ui_layer.py)",
+    )
+    parser.add_argument(
         "--experimental-item-text-fix",
         action="store_true",
         help="rejected v34 post-render %%Fs experiment (build is refused)",
@@ -374,6 +381,9 @@ def main() -> int:
         font_payload, scratch_offset = build_native_height_scratch_font(
             source_font.read_bytes(), scratch, bank_height
         )
+        view_ui: dict[str, object] | None = None
+        if args.view_ui:
+            font_payload, view_ui = build_view_ui_font(font_payload, mapping, banks)
         patched_exe, cache = patch_executable(
             original_exe,
             scratch_offset,
@@ -389,6 +399,8 @@ def main() -> int:
         patched_exe = patch_introduce_prefix(
             patched_exe, encode_text(INTRODUCE_PREFIX_ZH_TW, mapping)
         )
+        if args.view_ui:
+            patched_exe = apply_view_ui_exe_patches(patched_exe)
         (staged_game / "DSUN.EXE").write_bytes(patched_exe)
         for _, filename, payload in bank_files:
             (staged_game / filename).write_bytes(payload)
@@ -567,6 +579,7 @@ def main() -> int:
                 }
                 if dialogue_wind is not None else None
             ),
+            "view_ui": view_ui,
             "resource": {
                 "source_sha256": sha256((game_dir / "RESOURCE.GFF").read_bytes()),
                 "patched_sha256": sha256(final_resource.read_bytes()),

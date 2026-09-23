@@ -5,16 +5,29 @@
 
 ---
 
-## ⚠️ 0. 最新狀態（2026-09-23 晚間更新，新 Session 請先讀這一節）
+## ⚠️ 0. 最新狀態（2026-09-23 深夜更新，新 Session 請先讀這一節）
+
+### 0.00 v88：物品材質字首也中文化了（最新可玩版本）
+
+`scratch_test/cjk_display_staging_v88b_natural_attacks` = v87 + 材質字首（木製／骨製／石製／
+黑曜石製／金屬製／皮製），懸停列與兩種右鍵資訊卡都已實機確認；傷害乘號改顯示為 `x`；螳螂人
+天生攻擊的 `<...>` 改為 `(...)`（原本 `<` 會被畫成殘留中文字）。建置指令與 v87
+相同（`--view-ui`），做法見 `docs/re/re_101_v88_material_words.md`。
+
+### 0.0 v87：背包／VIEW CHARACTER 已併入主線（實機初測通過）
+
+`scratch_test/cjk_display_staging_v87_view_ui` = v86r6 + v75 的背包／VIEW CHARACTER 中文化
++ 中文物品名稱（NAME-1）。`build_cjk_display_staging.py --view-ui` 一條指令建完，不再需要
+v33～v75 的舊 build 鏈。199 項測試全過；實機已確認 VIEW CHARACTER（含多職業、「小偷」）、
+背包標籤、中文物品名稱、懸停名稱與右鍵資訊卡。做法、重建指令與待測
+清單見 `docs/re/re_100_v87_view_ui_merge.md`。下方 0.4 節的障礙都已處理。
 
 ### 0.1 一句話現況
 
-**對話翻譯已全部編進遊戲**。目前可玩的是 `scratch_test/cjk_display_staging_v86r6_gpl_pool`
-（使用者已實機確認）：215 個對話區塊全數編入，中文換行、「我是<名字>」選項、句中多餘
-空格、Trustee 等大腳本的 BAD GPL EXIT 都已修好。細節見 `docs/re/re_99_*`。
-
-**下一步（使用者指定）**：把 VIEW CHARACTER 屬性畫面與物品／背包的中文化合併進這條
-主線，見第 0.4 節。
+**對話翻譯已全部編進遊戲**。v86r6（`scratch_test/cjk_display_staging_v86r6_gpl_pool`）
+已由使用者實機確認：215 個對話區塊全數編入，中文換行、「我是<名字>」選項、句中多餘
+空格、Trustee 等大腳本的 BAD GPL EXIT 都已修好。細節見 `docs/re/re_99_*`。v87 的對話
+部分與 v86r6 逐位元組相同。
 
 ### 0.2 這次 Session 做了什麼（細節見 re_99）
 
@@ -72,9 +85,10 @@ v86r6 雜湊：`DSUN.EXE` `74634c98…`、`GPLDATA.GFF` `2346f98a…`、`RESOURC
 原版與新版，逐條比對 `CROSS_CHUNK_TARGET` 指令與 GPLI-1，目標要等於
 `instruction_offset_map` 的結果，其他參數要完全相同。
 
-### 0.4 下一步：合併屬性（VIEW CHARACTER）與物品中文化
+### 0.4 （已完成，見 0.0／re_100）合併屬性（VIEW CHARACTER）與物品中文化
 
-這條線的成果在另一條舊的 build 鏈上，**從未併入 `build_cjk_display_staging.py`**：
+以下是合併前的狀況紀錄。這條線的成果原本在另一條舊的 build 鏈上，從未併入
+`build_cjk_display_staging.py`：
 
 - 最終 checkpoint：`scratch_test/cjk_display_staging_v75_view_column_shift2`
   （交接文件 `docs/re/HANDOFF_NEXT_SESSION_2026-09-18.md`，完整記錄 `re_85`～`re_95`）。
@@ -192,4 +206,6 @@ v86r6 雜湊：`DSUN.EXE` `74634c98…`、`GPLDATA.GFF` `2346f98a…`、`RESOURC
 
 ~~從原版一次重編全部對話翻譯進 EXE~~：已完成（v86r6，見第 0 節與 re_99）。
 
-**下一個目標：合併屬性（VIEW CHARACTER）與物品中文化**，細節與已知障礙見第 0.4 節。
+~~合併屬性（VIEW CHARACTER）與物品中文化~~：已完成建置（v87，見 re_100）。
+
+**下一個目標**：使用者遊玩確認 v87 對話無退化後，處理第 0.5 節的其他待辦。

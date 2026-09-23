@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import struct
 import unittest
 from pathlib import Path
 
@@ -206,11 +207,16 @@ class CjkDisplayStagingTests(unittest.TestCase):
         self.assertIn(bytes.fromhex("CD 21"), payload)
         # GAS Intel syntax otherwise treats a bare label as a DS memory
         # operand.  These four sites must be explicit immediate addresses.
-        self.assertIn(bytes.fromhex("BF 12 26"), payload)
-        self.assertIn(bytes.fromhex("81 FF 2A 26"), payload)
-        self.assertIn(bytes.fromhex("B8 12 26"), payload)
-        self.assertIn(bytes.fromhex("BA E9 25"), payload)
-        self.assertIn(bytes.fromhex("22 23 26 3C 3E 5C 7E"), payload)
+        # name_buffer follows the ten transport codes; dir_entry precedes
+        # the six-word bank-name table.
+        transport = payload.index(bytes.fromhex("22 23 26 3C 3E 5C 7E 60 5F 7C"))
+        name_buffer = struct.pack("<H", DECODER_OFFSET + transport + 10)
+        name_end = struct.pack("<H", DECODER_OFFSET + transport + 10 + 24)
+        dir_entry = struct.pack("<H", DECODER_OFFSET + payload.index(b"C0\0") - 12 - 4)
+        self.assertIn(b"\xBF" + name_buffer, payload)
+        self.assertIn(b"\x81\xFF" + name_end, payload)
+        self.assertIn(b"\xB8" + name_buffer, payload)
+        self.assertIn(b"\xBA" + dir_entry, payload)
         redirect = height_helper_redirect()
         self.assertEqual(len(redirect), 11)
         self.assertEqual(redirect[0], 0xE9)

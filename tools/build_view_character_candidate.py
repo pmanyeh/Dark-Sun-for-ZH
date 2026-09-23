@@ -8,20 +8,19 @@ from pathlib import Path
 import shutil
 import struct
 import tempfile
-import runpy
 
 try:
     from .build_ability_ui_candidate import DEFAULT_OUTPUT as V57_ROOT, LABELS
     from .build_backpack_ui_candidate import ROOT, sha256
     from .build_name_slot_candidate_from_v33 import run
     from .cjk_localization_pipeline import DEFAULT_GFF_CAT, load_mapping, verify_extracted_gff_chunks
-    from .plan_name_slot_consumers import FONT_CORE_PAYLOAD_OFFSET, assemble_name_slot_cache
+    from .plan_name_slot_consumers import FONT_CORE_PAYLOAD_OFFSET, assemble_name_slot_cache, verify_overlay_relocations
 except ImportError:
     from build_ability_ui_candidate import DEFAULT_OUTPUT as V57_ROOT, LABELS
     from build_backpack_ui_candidate import ROOT, sha256
     from build_name_slot_candidate_from_v33 import run
     from cjk_localization_pipeline import DEFAULT_GFF_CAT, load_mapping, verify_extracted_gff_chunks
-    from plan_name_slot_consumers import FONT_CORE_PAYLOAD_OFFSET, assemble_name_slot_cache
+    from plan_name_slot_consumers import FONT_CORE_PAYLOAD_OFFSET, assemble_name_slot_cache, verify_overlay_relocations
 
 DEFAULT_OUTPUT = ROOT / "scratch_test/cjk_display_staging_v58b_view_character_columns"
 V57_EXE_HASH = "740d0d797556c05a152baecf7e7124de13c39a0ad3e7ea8b392aaf5419643a6b"
@@ -76,25 +75,6 @@ def patch_executable(image: bytes) -> bytes:
     if any(a != b and i not in allowed for i, (a, b) in enumerate(zip(image, result))):
         raise AssertionError("unexpected EXE difference")
     return bytes(result)
-
-
-def verify_overlay_relocations(image: bytes, ranges: list[tuple[int, int]]) -> None:
-    """Conservatively reject touching either byte of a Borland overlay fixup."""
-    parser = runpy.run_path(str(ROOT / "vendor/opends/tools/ovr-map/ovr-map.py"))
-    mz = parser["parse_mz"](image)
-    fbov = parser["parse_fbov"](image, mz["image_end"])
-    start = parser["find_table"](image, fbov["exeinfo"], mz["image_end"])
-    segments = parser["parse_table"](image, start, mz["image_end"], fbov["overlay_base"])
-    for segment in segments:
-        relevant = [(a, b) for a, b in ranges if a < segment["file_end"] and b > segment["file_start"]]
-        if not relevant:
-            continue
-        count = segment["relocation_count"]
-        offsets = struct.unpack_from(f"<{count}H", image, segment["file_end"])
-        for offset in offsets:
-            site = segment["file_start"] + offset
-            if any(a < site + 2 and b > site for a, b in relevant):
-                raise ValueError(f"patch overlaps overlay relocation at 0x{site:X}")
 
 
 def patch_window(window: bytes) -> bytes:
