@@ -22,6 +22,7 @@ try:
         verify_extracted_gff_chunks,
         write_json,
     )
+    from .patch_dsun_scratch_cache import GPL_MAX_CHUNK_BYTES
 except ImportError:
     from cjk_localization_pipeline import (
         DEFAULT_MAPPING,
@@ -31,6 +32,7 @@ except ImportError:
         verify_extracted_gff_chunks,
         write_json,
     )
+    from patch_dsun_scratch_cache import GPL_MAX_CHUNK_BYTES
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -164,7 +166,60 @@ TEMPLATE_TRIGGER_TARGET = {
     0x70: (2, 3),  # usewithtrigger: offset, chunk
 }
 
-# gpl_menu (0x48): one leading expression (the menu's TEXT-table name),
+# gpl_string_copy (0x0A): (destination variable, source). MAS-99 seeds the
+# global UI strings this way (GSTR[5] = "Goodbye.", the last option of many
+# menus), and chunks such as GPL-157 build menu options in LSTR before the
+# menu runs. Only the inline compressed source literal is rewritten. Values
+# later matched with `string compare` stay safe: GPL-20's typed keywords keep
+# their English translation, and GPL-85's "nada" sentinel is translated
+# identically at every copy.
+STRING_COPY_OPCODE = 0x0A
+
+# Strings the engine reads rather than displays are withheld (left English)
+# instead of failing the chunk:
+# - DSUN.EXE compares printed text with "CLOSE" (0x4A871), "DEBUG" and "END"
+#   (0x4A87D); every dialogue ends with `print GSTR[2]` + `print GSTR[3]`.
+#   Translated, they print as text and the box never closes or clears.
+# - The bottom-panel menu title renderer has no CJK path: a translated title
+#   draws as ASCII garbage. Titles are GSTR[1] (553 menus), GSTR[4] (12) or
+#   one of 19 inline literals.
+ENGINE_CONTROL_STRINGS = frozenset({"END", "CLOSE", "DEBUG"})
+MENU_TITLE_VARIABLES = frozenset({("gstring", 1), ("gstring", 4)})
+
+
+def is_wide_text_character(character: str) -> bool:
+    """CJK ideographs and full-width/general punctuation (… — ，。「」)."""
+    return ord(character) >= 0x2000
+
+
+def tighten_cjk_join_spaces(translation: str, encoded: bytes, strip_leading: bool) -> bytes:
+    """Drop the join spaces a split English sentence needs but Chinese does not.
+
+    The engine prints one sentence as several print-string fragments
+    ("...I've " + "been in here awhile. "), and the catalog keeps each
+    fragment's edge spaces to match the English. Between Chinese fragments
+    those spaces show as gaps ("我已經在 這裡"). A trailing space after a wide
+    character is dropped; so is a single leading space before one when
+    `strip_leading` (print strings only: menu options keep their two-space
+    indent, and three-space list indents are kept everywhere). Spaces next
+    to ASCII words and numbers stay.
+    """
+    body = translation.strip(" ")
+    if not body:
+        return encoded
+    if is_wide_text_character(body[-1]):
+        encoded = encoded.rstrip(b" ")
+    if (
+        strip_leading
+        and translation.startswith(" ")
+        and not translation.startswith("  ")
+        and is_wide_text_character(body[0])
+        and encoded.startswith(b" ")
+    ):
+        encoded = encoded[1:]
+    return encoded
+
+# gpl_menu (0x48): one leading expression (the menu title),
 # then a run of 3-expression entries (choice string, jump target, flag)
 # until the terminator byte 0x4A. The jump target sits in the middle of
 # each triple and is not covered by BRANCH_PARAMETER. All of a menu's
@@ -425,9 +480,31 @@ def external_entry_requirements(
 
 
 def relocate_json_strings(
-    source_document: dict[str, object], edits: list[dict[str, object]], chunk_id: int | None = None
+    source_document: dict[str, object],
+    edits: list[dict[str, object]],
+    chunk_id: int | None = None,
+    withheld: list[dict[str, object]] | None = None,
 ) -> tuple[dict[str, object], list[dict[str, object]]]:
-    """Replace strings and relocate every instruction and local branch target."""
+    """Replace strings and relocate every instruction and local branch target.
+
+    Edits the engine cannot display are appended to `withheld` (when given)
+    with a reason and leave their English source in place.
+    """
+    withheld_offsets: set[int] = set()
+
+    def withhold(edit: dict[str, object], old_offset: int, reason: str) -> None:
+        withheld_offsets.add(old_offset)
+        if withheld is not None:
+            withheld.append(
+                {
+                    "unit_id": edit["unit_id"],
+                    "occurrence_id": edit["occurrence_id"],
+                    "original_offset": old_offset,
+                    "original": edit["original"],
+                    "reason": reason,
+                }
+            )
+
     document = copy.deepcopy(source_document)
     instructions = document.get("instructions")
     if not isinstance(instructions, list) or not document.get("aligned"):
@@ -441,7 +518,10 @@ def relocate_json_strings(
     applied: list[dict[str, object]] = []
 
     def apply_string_edit(
-        string_expression: dict[str, object], edit: dict[str, object], old_offset: int
+        string_expression: dict[str, object],
+        edit: dict[str, object],
+        old_offset: int,
+        strip_leading: bool = False,
     ) -> int:
         """Fingerprint-check and rewrite one compressed string in place, returning its packed-byte delta."""
         original = str(edit["original"])
@@ -449,7 +529,9 @@ def relocate_json_strings(
             raise ValueError(
                 f"{edit['unit_id']}: source fingerprint mismatch at 0x{old_offset:04X}"
             )
-        encoded = bytes(edit["encoded"])
+        encoded = tighten_cjk_join_spaces(
+            str(edit["translation_zh_tw"]), bytes(edit["encoded"]), strip_leading
+        )
         encoded_ascii = encoded.decode("ascii")
         delta = packed_string_bytes(encoded_ascii) - packed_string_bytes(original)
         string_expression["value"] = encoded_ascii
@@ -475,10 +557,10 @@ def relocate_json_strings(
             continue
         opcode = int(instruction["opcode"])
         params = instruction.get("params", [])
-        if opcode == 0x4F:
+        if opcode in (0x4F, STRING_COPY_OPCODE):
             if len(offset_edits) != 1:
                 raise ValueError(
-                    "multiple dialogue edits target print-string instruction at "
+                    "multiple dialogue edits target string instruction at "
                     f"0x{old_offset:04X}"
                 )
             strings = [
@@ -489,7 +571,17 @@ def relocate_json_strings(
             ]
             if len(strings) != 1 or strings[0].get("sub_type") != "compressed":
                 raise ValueError(f"{offset_edits[0]['unit_id']}: expected one compressed inline string")
-            delta = apply_string_edit(strings[0], offset_edits[0], old_offset)
+            if opcode == STRING_COPY_OPCODE:
+                destination = params[0][0] if params and len(params[0]) == 1 else {}
+                if strings[0].get("value") in ENGINE_CONTROL_STRINGS:
+                    withhold(offset_edits[0], old_offset, "engine control string")
+                    continue
+                if (destination.get("var_kind"), destination.get("id")) in MENU_TITLE_VARIABLES:
+                    withhold(offset_edits[0], old_offset, "menu title variable")
+                    continue
+            delta = apply_string_edit(
+                strings[0], offset_edits[0], old_offset, strip_leading=opcode == 0x4F
+            )
             instruction["length"] = int(instruction["length"]) + delta
             if instruction["length"] <= 0:
                 raise ValueError(
@@ -528,8 +620,29 @@ def relocate_json_strings(
                     entry_strings.append(None)
             claimed = [False] * num_entries
             total_delta = 0
+            # The leading parameter is usually a variable, but 19 menus (e.g.
+            # GPL-29's "Do you drink the wine?") carry their prompt inline;
+            # the catalog records it on the same offset as the options. It is
+            # matched only so it can be withheld (see MENU_TITLE_VARIABLES).
+            title_expressions = params[0]
+            title_string = (
+                title_expressions[0]
+                if len(title_expressions) == 1
+                and title_expressions[0].get("kind") == "immediate_string"
+                and title_expressions[0].get("sub_type") == "compressed"
+                else None
+            )
+            title_claimed = False
             for edit in offset_edits:
                 original = str(edit["original"])
+                if (
+                    title_string is not None
+                    and not title_claimed
+                    and title_string.get("value") == original
+                ):
+                    title_claimed = True
+                    withhold(edit, old_offset, "inline menu title")
+                    continue
                 candidates = [
                     index for index in range(num_entries)
                     if not claimed[index]
@@ -551,9 +664,12 @@ def relocate_json_strings(
                 )
         else:
             raise ValueError(
-                f"{offset_edits[0]['unit_id']}: 0x{old_offset:04X} is not gpl print string or gpl menu"
+                f"{offset_edits[0]['unit_id']}: 0x{old_offset:04X} is not gpl print string, "
+                "string copy or menu"
             )
-    missing = sorted(set(by_offset) - {item["original_offset"] for item in applied})
+    missing = sorted(
+        set(by_offset) - {item["original_offset"] for item in applied} - withheld_offsets
+    )
     if missing:
         raise ValueError(f"dialogue edit offsets are not instructions: {missing}")
 
@@ -840,6 +956,7 @@ def main() -> int:
         )
         new_target_records: list[dict[str, object]] = []
         new_edit_records: list[dict[str, object]] = []
+        withheld_records: list[dict[str, object]] = []
         gpl_offset_maps: dict[int, dict[int, int]] = {}
         entry_requirements_by_target: dict[
             tuple[str, int], list[tuple[str, int, int, int]]
@@ -879,8 +996,9 @@ def main() -> int:
             entry_requirements_by_target[(kind, chunk_id)] = entry_requirements
             source_document = json.loads(original_listing.read_text(encoding="utf-8"))
             try:
+                chunk_withheld: list[dict[str, object]] = []
                 patched_document, applied = relocate_json_strings(
-                    source_document, edits, chunk_id
+                    source_document, edits, chunk_id, chunk_withheld
                 )
             except ValueError as exc:
                 print(f"skip {stem}: {exc}", flush=True)
@@ -899,6 +1017,14 @@ def main() -> int:
             verify_fixed_entry_requirements(
                 kind, chunk_id, patched_chunk.read_bytes(), entry_requirements
             )
+            # The engine cannot load a chunk that outgrows its GPL pool
+            # (patch_dsun_scratch_cache.GPL_POOL_BYTES); talking to the
+            # NPC then fails with BAD GPL EXIT.
+            if len(patched_chunk.read_bytes()) > GPL_MAX_CHUNK_BYTES:
+                raise ValueError(
+                    f"{stem}: {len(patched_chunk.read_bytes())} bytes exceeds the "
+                    f"{GPL_MAX_CHUNK_BYTES}-byte GPL pool limit"
+                )
             new_target_records.append(
                 {
                     "kind": kind,
@@ -913,6 +1039,9 @@ def main() -> int:
             for item in applied:
                 item.update({"kind": kind, "chunk_id": chunk_id})
                 new_edit_records.append(item)
+            for item in chunk_withheld:
+                item.update({"kind": kind, "chunk_id": chunk_id})
+                withheld_records.append(item)
 
         gpli_original = chunks / "GPLI-1.original.bin"
         gpli_patched = chunks / "GPLI-1.bin"
@@ -1035,8 +1164,11 @@ def main() -> int:
         patched_all = temporary_root / "patched-all"
         run(args.gff_cat, "extract", baseline, "--all", "-o", original_all)
         run(args.gff_cat, "extract", patched_gff, "--all", "-o", patched_all)
+        # GFFI-8 indexes the 217 GPL chunks and GFFI-7 the 33 MAS chunks;
+        # either changes when a chunk of that kind changes length (MAS-99's
+        # translated UI strings do).
         verification = verify_extracted_gff_chunks(
-            original_all, patched_all, target_records, {"GFFI-8.bin"}
+            original_all, patched_all, target_records, {"GFFI-7.bin", "GFFI-8.bin"}
         )
 
         for record in new_target_records:
@@ -1096,6 +1228,7 @@ def main() -> int:
             "mapping_sha256": sha256(args.mapping.read_bytes()),
             "chunks": target_records,
             "edits": edit_records,
+            "withheld": withheld_records,
             "verification": verification,
         }
         for inherited_key in ("name_records", "abi_constraint"):
@@ -1108,6 +1241,7 @@ def main() -> int:
     print(f"patched_sha256={package['patched_sha256']}")
     print(f"patched_chunks={len(target_records)}")
     print(f"patched_occurrences={len(edit_records)}")
+    print(f"withheld_occurrences={len(withheld_records)}")
     print(f"cross_chunk_retargets={cross_relocations_total}")
     print(f"unchanged_chunks={verification['unchanged_non_target_chunks']}")
     return 0

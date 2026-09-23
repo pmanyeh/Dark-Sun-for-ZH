@@ -561,10 +561,143 @@ class GplDialogueImporterTests(unittest.TestCase):
             },
         ]
         with self.assertRaisesRegex(
-            ValueError, "multiple dialogue edits target print-string instruction"
+            ValueError, "multiple dialogue edits target string instruction"
         ):
             relocate_json_strings(document, edits)
 
+    def test_string_copy_source_literal_is_translated(self) -> None:
+        """MAS-99 seeds GSTR[5] = "Goodbye." with gpl string copy (0x0A);
+        the destination variable must stay and only the literal changes."""
+        document = {
+            "instructions": [
+                {
+                    "offset": 0, "length": 13, "opcode": 0x0A,
+                    "params": [
+                        [{"kind": "variable", "var_kind": "gstring", "id": 5}],
+                        [{"kind": "immediate_string", "sub_type": "compressed", "value": "Goodbye."}],
+                    ],
+                },
+                {"offset": 13, "length": 1, "opcode": 0x67, "params": []},
+            ],
+            "bytes_consumed": 14, "total_bytes": 14, "aligned": True,
+            "cfg": {}, "cross_chunk_calls": [],
+        }
+        edits = [{
+            "unit_id": "DLG_bye", "occurrence_id": "DLOC_bye", "offset": 0,
+            "original": "Goodbye.", "translation_zh_tw": "再見。", "encoded": b"B" * 12,
+        }]
+        patched, applied = relocate_json_strings(document, edits)
+        copy_instruction = patched["instructions"][0]
+        self.assertEqual(copy_instruction["params"][0][0]["id"], 5)
+        self.assertEqual(copy_instruction["params"][1][0]["value"], "B" * 12)
+        delta = packed_string_bytes("B" * 12) - packed_string_bytes("Goodbye.")
+        self.assertEqual(patched["instructions"][1]["offset"], 13 + delta)
+        self.assertEqual([item["unit_id"] for item in applied], ["DLG_bye"])
+
+    def test_menu_withholds_an_inline_title(self) -> None:
+        """GPL-29's menu carries "Do you drink the wine?" inline as its
+        leading parameter, on the same offset as its options. The title
+        renderer has no CJK path, so the title stays English while the
+        options on the same offset are still translated."""
+        document = self._menu_document(["Yes", "No"])
+        document["instructions"][0]["params"][0] = [
+            {"kind": "immediate_string", "sub_type": "compressed", "value": "Drink?"}
+        ]
+        edits = [
+            {
+                "unit_id": "DLG_t", "occurrence_id": "DLOC_t", "offset": 0,
+                "original": "Drink?", "translation_zh_tw": "喝嗎？", "encoded": b"T" * 3,
+            },
+            {
+                "unit_id": "DLG_y", "occurrence_id": "DLOC_y", "offset": 0,
+                "original": "Yes", "translation_zh_tw": "是", "encoded": b"Y" * 2,
+            },
+        ]
+        withheld: list[dict[str, object]] = []
+        patched, applied = relocate_json_strings(document, edits, None, withheld)
+        menu = patched["instructions"][0]
+        self.assertEqual(menu["params"][0][0]["value"], "Drink?")
+        self.assertEqual(menu["params"][1][0]["value"], "Y" * 2)
+        self.assertEqual(menu["params"][4][0]["value"], "No")
+        self.assertEqual([item["unit_id"] for item in applied], ["DLG_y"])
+        self.assertEqual([(item["unit_id"], item["reason"]) for item in withheld],
+                         [("DLG_t", "inline menu title")])
+
+    def _string_copy_document(self, var_id: int, value: str) -> dict[str, object]:
+        return {
+            "instructions": [
+                {
+                    "offset": 0, "length": 10, "opcode": 0x0A,
+                    "params": [
+                        [{"kind": "variable", "var_kind": "gstring", "id": var_id}],
+                        [{"kind": "immediate_string", "sub_type": "compressed", "value": value}],
+                    ],
+                },
+            ],
+            "bytes_consumed": 10, "total_bytes": 10, "aligned": True,
+            "cfg": {}, "cross_chunk_calls": [],
+        }
+
+    def test_string_copy_withholds_engine_control_and_menu_title_strings(self) -> None:
+        """DSUN.EXE compares printed text with "END"/"CLOSE" (MAS-99 seeds
+        GSTR[2]/[3]), and GSTR[1]/[4] are menu titles with no CJK renderer;
+        translating either broke v86's dialogue (it never closed and the
+        title drew as garbage)."""
+        for var_id, value, reason in (
+            (2, "END", "engine control string"),
+            (3, "CLOSE", "engine control string"),
+            (1, "What do you say?", "menu title variable"),
+            (4, "What do you do?", "menu title variable"),
+        ):
+            document = self._string_copy_document(var_id, value)
+            withheld: list[dict[str, object]] = []
+            patched, applied = relocate_json_strings(document, [{
+                "unit_id": "DLG_x", "occurrence_id": "DLOC_x", "offset": 0,
+                "original": value, "translation_zh_tw": "中", "encoded": b"Z" * 2,
+            }], None, withheld)
+            self.assertEqual(patched["instructions"][0]["params"][1][0]["value"], value)
+            self.assertEqual(applied, [])
+            self.assertEqual([item["reason"] for item in withheld], [reason])
+
+
+    def test_cjk_join_spaces_are_dropped_only_next_to_wide_characters(self) -> None:
+        """A split sentence's edge spaces showed as gaps ("我已經在 這裡")."""
+        from tools.compile_gpl_dialogue_patch import tighten_cjk_join_spaces
+
+        # Trailing space after a CJK character or full-width punctuation.
+        self.assertEqual(tighten_cjk_join_spaces("我已經在 ", b"^!! ", False), b"^!!")
+        self.assertEqual(tighten_cjk_join_spaces("等等…… ", b"^!!^!! ", False), b"^!!^!!")
+        # A space after an ASCII word or number stays.
+        self.assertEqual(tighten_cjk_join_spaces("提升 THAC0 ", b"^!! THAC0 ", True), b"^!! THAC0 ")
+        # One leading space before CJK goes only when strip_leading is set.
+        self.assertEqual(tighten_cjk_join_spaces(" 在城鎮裡。", b" ^!!", True), b"^!!")
+        self.assertEqual(tighten_cjk_join_spaces(" 在城鎮裡。", b" ^!!", False), b" ^!!")
+        # Menu indents (two spaces) and list indents (three) stay.
+        self.assertEqual(tighten_cjk_join_spaces("  是的。 ", b"  ^!! ", True), b"  ^!!")
+        self.assertEqual(tighten_cjk_join_spaces("   最近", b"   ^!!", True), b"   ^!!")
+        # A leading space before ASCII stays.
+        self.assertEqual(tighten_cjk_join_spaces(" 100", b" 100", True), b" 100")
+
+    def test_print_string_edit_drops_cjk_join_spaces(self) -> None:
+        document = {
+            "instructions": [
+                {
+                    "offset": 0, "length": 10, "opcode": 0x4F,
+                    "params": [
+                        [{"kind": "immediate14", "value": 98}],
+                        [{"kind": "immediate_string", "sub_type": "compressed", "value": "been in "}],
+                    ],
+                },
+            ],
+            "bytes_consumed": 10, "total_bytes": 10, "aligned": True,
+            "cfg": {}, "cross_chunk_calls": [],
+        }
+        patched, applied = relocate_json_strings(document, [{
+            "unit_id": "DLG_s", "occurrence_id": "DLOC_s", "offset": 0,
+            "original": "been in ", "translation_zh_tw": " 在這裡 ", "encoded": b" ^!!^!\" ",
+        }])
+        self.assertEqual(patched["instructions"][0]["params"][1][0]["value"], "^!!^!\"")
+        self.assertEqual(applied[0]["encoded_ascii"], "^!!^!\"")
 
 if __name__ == "__main__":
     unittest.main()
