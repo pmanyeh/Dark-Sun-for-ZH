@@ -1614,3 +1614,200 @@ copy 覆蓋對話框。這與本問題所需的「每個 choice 各保留 300×1
 `3241:05D7 -> 36AA:052F` 已完成背景 blit、但 `3241:0426` 尚未進入
 `36AA:0864` 輸出第一個字形的短暫區間。此時保存四個 entry 才能讓後續 MORE
 重繪前逐一復原真正無字形的背景。
+
+## 29. 2026-09-23：舊 v85 失敗的根因，與從 v84 重建的 v85r
+
+### 29.1 舊 v85 為何中文全變「?」且問題很多
+
+第 28.3 節的固化把 hook（`2E86:D730`）、面板像素（`2E86:D860`，608 bytes）與
+12 個 bank 檔名（`2E86:DAC0`）都放在「檔案裡為 0」的位置。換算成線性位址後，
+`2E86:D730` 其實是 **遠資料段 `3BF6` 的 `0030`**：Borland 段表記載 `3BF6` 大小
+`0x886`，DGROUP 裡有遠指標 `3BF6:000A`、`3BF6:0106` 指進這塊 0 區，屬於執行期
+使用中的緩衝區。資料被覆寫後，bank 檔名壞掉導致所有 CJK 字都顯示「?」，hook
+程式本身也被蓋掉。
+
+同一輪也查清楚：
+
+- `2E86:51F0~55AA` 是段 `33A5`（計時器 ISR 模組）的 CS 內資料；`cs:01B2` 的
+  `"Test"` 是堆疊溢位標記，ISR 會把 `SS:SP` 切成 `CS:03B6`，所以 `2E86:53B6~55A6`
+  是 ISR 私有堆疊。既有 CJK 快取 `545A~5533` 位於該堆疊深處，只剩約 0x73 bytes
+  餘裕，這是既存的潛在風險。
+- 段表涵蓋的其他 0 區（`0x37844` 以後）都是遠資料段；`22F8:0005~0386` 是
+  `mov ds,cs` 後使用的 8-byte 表格，也都不能用。
+
+### 29.2 v85r 的做法
+
+- 素材與 v84 完全相同：`af7ca25` 的 `cjk_mapping.json`（存成
+  `scratch_test/cjk_mapping_v84.json`）、`formal_cjk_fusion_10x10_v19_dense`（6 個
+  bank）、`spin_gff_import_title_newline_v2_current_mapping`、
+  `gpl136_trainer_options_v1`。RESOURCE、GPLDATA、bank、字型的雜湊都與 v84
+  manifest 一致。
+- `patch_dsun_scratch_cache.py` 的「超過 8 個 bank 時把檔名放到 `0xDAC0`」已
+  還原為 v84 版本（上限 9 個 bank）。
+- Hook 改寫為 `tools/dialogue_choice_top_rows_hook.asm`，建置時組譯。放在
+  `147D:0010~00FB`：段表記載 `147D` 大小 `0x21A`，只有一個函式
+  （`147D:0166~0219`），只存取 `cs:0164`；`000F~0163` 沒有任何遠指標或
+  `cs:` 引用。
+- 面板檔的兩列位元組完全相同；除了 plane 0/1 的第 0 byte 以外，值都在
+  `0x18~0x1B`。因此每個 plane 存 19 bytes 的 2-bit 值加 1 byte 原值，共 80 bytes。
+  測試會重播解碼並逐位元組比對原面板。
+- 行為與第 28.3 節相同：只處理 `081C~081F`（全部 RESOURCE 裡只有 WIND-3008 使用
+  這組 ID），讀 CRTC 起始位址後 XOR `0x4000` 得到背後頁，每個選項最上 2 列貼
+  面板，保存並還原 CRTC index、Sequencer index 與 Map Mask，用 `pushf/cli/popf`。
+
+實機（v85r）：開機、讀取 SAVE01 都正常；讀檔後 `1CA1:0010` 的 236 bytes 與建置
+結果完全相同，`3241:07FA` 為 `call far 1CA1:0010`，回跳已重定位為
+`3241:0801`。對話換頁的畫面效果仍需使用者確認。
+
+## 30. 2026-09-23（同日第二輪）：12-bank 字型檔名也需要獨立死區，不能沿用第 29 節的舊
+兩層式設計
+
+第 29 節把「選項換頁修補程式」搬到 `147D:0010` 之後，`patch_dsun_scratch_cache.py`／
+`build_cjk_display_staging.py` 暫時整段還原回 v84（bank 上限鎖回 8～9 個），代表
+v85r 當時只能用 v84 的舊翻譯素材（6 個 bank），這也是使用者這輪回報「畫面還是
+英文」的直接原因——不是漏翻，是這個中繼版本本來就沒有載入最新翻譯。
+
+### 30.1 為什麼不能比照第 29 節、直接把檔名表也搬進同一個死區
+
+`cjk_cache_start`（`tools/cjk_scratch_cache.asm`）開檔时用的是
+`push cs; pop ds; mov dx, cs:[bank_names+bx]`——`dx` 存的是「相對於目前 `CS`
+（執行期會被 loader 加上相同 bias 的 `2E86` 段）」的**近位移**，不是遠指標。
+這代表檔名字串本身也必須落在 `cs=2E86` 這個段可定址的 64KB 視窗內
+（`[2E86*16, 2E86*16+0x10000)`），不能像選項修補的 hook 那樣搬到完全不同、
+數值更小的段（`147D`）——`147D` 的實體位址比 `2E86` 視窗的起點還低，`cs=2E86`
+用不帶正負號的 16-bit 位移永遠讀不到那裡。
+
+### 30.2 解法：把「開檔用的 DS」本身變成一個可重定位的立即值
+
+沒有直接把整張表搬過去，而是修改 `cjk_cache_start` 的開檔序列：先算出
+`bx = bank_id*2`（維持不變），再依 bank 數量分兩路：
+
+- `bank_count<=8`：完全比照原本 v84 的位元組（`push ds`／`push cs`／`pop ds`／
+  `mov dx, cs:[bank_names+bx]`），一個位元組都沒改，沿用既有、已經在正式版
+  跑過的路徑。
+- `bank_count>8`：改成 `push 0x147D`／`pop ds`／`mov dx, [0x0110+bx]`——把
+  `147D`（跟第 29 節選項修補程式相同的死區段，但位移不同、彼此有 20 bytes
+  緩衝，互不重疊）當成一個**立即值直接寫進指令**，如同任何其他遠位址一樣
+  交給 `rewrite_mz_relocations` 登記，loader 開檔時會自動加上跟這個模組其他
+  遠參照相同的 bias。開檔用完 `DS=147D` 之後刻意不還原：往後的 `seek`
+  （用 `cs:` 前綴或暫存器運算，不吃預設 `DS`）跟稍後的 `dir_entry` 讀取
+  （自己會 `push ds`／`push cs`／`pop ds`／…／`pop ds` 獨立存還）都不依賴
+  這裡的 `DS` 值，省下的一個 `pop ds` 讓新路徑比原本的還少一個位元組，兩條
+  路徑組出來的常駐快取都精準卡在原本驗證過的 `0x5534` 邊界（「其後的位元組
+  是法術 UI 會覆寫的執行期工作區」），完全不需要放寬這個早就驗證過的天花板。
+
+字型檔名字串本身（`C0\0`…`C11\0`）連同其位移表則放在 `147D:0110`——比第
+29 節 hook 結尾（`147D:00FB`）晚 20 bytes、比 `147D:0166` 那個唯一活著的函式
+早 24 bytes 以上，同樣落在第 29 節已經逐一排除過遠指標／`cs:` 參照的死區
+（`147D:000F..0163`）之內。
+
+### 30.3 驗證
+
+- `tests/test_cjk_localization_pipeline.py` 新增
+  `test_bank_names_beyond_eight_move_to_the_147d_cave`：組出 12-bank 版本、
+  確認常駐快取仍精準卡在 `0x5534`、檔名表內容與位置正確、新增的重定位項目
+  確實出現在最終 EXE、且 16-bank 會因超出死區容量而丟出清楚錯誤。
+- 用 `localization/cjk_mapping.json`（現行 12-bank 對照表）＋
+  `formal_cjk_fusion_10x10_v20_current`／`spin_gff_import_title_newline_v3_current`／
+  `gpl_current_v85`（現行最新翻譯，4126 筆已修補對話）＋
+  `--dialogue-option-pitch 11` 重建，得到
+  `scratch_test/cjk_display_staging_v85r2_choice_top_rows_full`；`RESOURCE.GFF`
+  雜湊與舊（有問題的）v85 manifest 一致，證明翻譯內容正確對齊到最新進度，
+  只有 `DSUN.EXE` 不同。
+- 靜態核對：新增的三個重定位位址（選項修補的 far call 位址、回跳位址、字型
+  檔名段立即值）彼此獨立、互不重疊，且都精準對應各自的預期公式算出的位址。
+- 實機測試：開機、讀取 SAVE01、開合選單、開啟 VIEW CHARACTER 均正常無當機；
+  `VIEW CHARACTER` 顯示英文屬於既有已知範圍（該畫面的中文標籤來自另一條
+  完全獨立、`build_cjk_display_staging.py` 目前沒有串接的 name-slot patch
+  管線，`tools/plan_name_slot_consumers.py` 相關測試在還原前的 `main` 上就已
+  經是失敗狀態，跟本次改動無關）。本輪因為滑鼠／鍵盤操作在遠端偵錯環境下
+  不穩定，沒能穩定重現「WHAT DO YOU SAY?」對話換頁畫面，中文對話文字與
+  換頁效果最終仍需使用者在自己手上實測確認。
+
+## 31. 2026-09-23（第三輪）：對話仍是英文的原因——EXE 內的對話編譯包落後
+
+`dialogue_units.json` 的 13,295 筆對話都已翻譯，但 v85 一直沿用的
+`scratch_test/gpl_current_v85` 只把 215 個 GPL 區塊中的 99 個編進 `GPLDATA.GFF`。
+Kurzak「These are the slavepens...」在 GPL-141，不在其中，所以遊戲裡仍是英文。
+
+GPL-141 過去進不去的原因：`compile_gpl_dialogue_patch.py` 處理 `gpl menu`
+（0x48）時，要求**每個**選項的文字都是 inline 壓縮字串；只要有一格不是，整個區塊
+就跳過。實際上：
+
+- GPL-141 `0x0A98`（「WHAT DO YOU SAY?」）第 10 個選項是 `GSTR[5]` 字串變數。
+- GPL-143 `0x0797` 第 1 個選項是 `INTRODUCE`（遊戲自動填入角色名字）。
+
+這些選項本來就不在翻譯範圍內。現在的規則改為：非 inline 字面字串的選項原樣保留，
+只有 inline 字面字串能被對應到翻譯；若有翻譯指向非字面選項，仍然會報錯。新增測試
+`test_menu_leaves_variable_and_introduce_options_untouched`。
+
+以 `gpl_current_v85` 為基底（`--prior-package`），加入 GPL-141/143 全部可編譯的
+翻譯，重建 `scratch_test/gpl_current_plus141_v2`（106 個區塊、4347 處）。有 4 筆
+GPL-143 的句子也出現在舊包已修補的 GPL-90/144/205，工具不允許重複修補，暫時略過
+（例如 `"Never mind."` 仍為英文）。反組譯確認 `GSTR[5]` 與 `INTRODUCE` 選項保留，
+跳轉目標已隨譯文長度正確移動（`6509→7164`、`2788→2973`）。
+
+組合包：`scratch_test/cjk_display_staging_v85r3_gpl141`。
+
+**待辦**：還有約 110 個 GPL 區塊的翻譯沒編進 EXE。要把它們補齊，應該從原版
+`GPLDATA.GFF` 一次重編所有翻譯，而不是一直往舊包上疊（舊包會擋住共用句子）。
+上次一次全編時卡在 GPL-3 固定進入點 `0x07C0` 被移動，需要先處理這個限制。
+
+## 32. v85r3「無法觸發對話」：跨區塊呼叫與觸發器沒有跟著移動
+
+v85r3 把 GPL-141/143 編進去後，實機點 NPC 不會開始對話。原因：編譯器只修正
+**同一區塊內**的跳轉；其他區塊用「區塊編號＋位址」指進來的參照都沒改。例如：
+
+- MAS-41 `talktotrigger`（0x6E）指向 GPL-141 `2334`，翻譯後應為 `2482`。
+- GPL-137、GPL-141 的 `gpl global sub`（0x14）指向 GPL-143 `5413`，應為 `5894`。
+- 舊 `gpl_current_v85` 早就有同類錯誤，例如 GPL-141/143 呼叫 GPL-137 `4521/3892/4005`，
+  實際已移到 `4541/3928/4041`。
+
+`compile_gpl_dialogue_patch.py` 新增一道編完後的全檔修正：對原版與編譯後的
+`GPLDATA.GFF` 各做一次 `gpl-disasm --all --json`，以指令順序對照出每個被改過的 GPL
+區塊「舊位址→新位址」（包含 `--prior-package` 帶進來的區塊），再掃所有 GPL/MAS
+區塊的 `0x14` 與觸發器 `0x65~0x70`，指向被改過區塊的目標一律改成新位址。目標值
+永遠從原版反組譯取得，所以重跑不會重複修改；原版目標若不是指令邊界則直接報錯。
+修正後區塊長度必須不變（`immediate14` 固定寬度）。
+
+`scratch_test/gpl_current_plus141_v3`：修正了 79 個區塊、577 個參照
+（`0x14` 221、觸發器 356），沒有碰到任何原值為 `100` 的常數。組合包：
+`scratch_test/cjk_display_staging_v85r4_cross_chunk`。
+
+仍未處理：從 `GPLDATA.GFF` 以外（EXE、地圖 RGN 等）固定指進 GPL 的位址。GPL-3
+`0x07C0` 是已知的一個，靠 `--require-fixed-entry` 守住。
+
+## 33. v85r4「走進奴隸營房不會自動觸發 Kurzak」：觸發器參數位置寫錯
+
+v85r4 手動點 Kurzak 可以對話、中文與換頁都正常，但贏了競技場走進奴隸營房時，
+原本應該自動開始的對話不會出現。
+
+根因：`TEMPLATE_TRIGGER_TARGET` 對幾種觸發器的「位址、區塊」位置寫錯或漏列。實際格式
+（由全檔反組譯確認）：
+
+| 指令 | 參數 | 位址、區塊在 |
+|---|---|---|
+| `inlostrigger` 0x1B／`notinlostrigger` 0x1C | offset, chunk, name, range | 0、1（原本**漏列**） |
+| `move tiletrigger` 0x68 | x, y, offset, chunk, flag | 2、3（原本寫 0、1） |
+| `move boxtrigger` 0x6A | x, y, w, h, offset, chunk, flag | 4、5（原本寫 0、1） |
+| door tile/box 0x69／0x6B | 遊戲中沒有實例，比照 0x68／0x6A | |
+
+所以視線觸發與走入區域觸發**從來沒被修正過**。座標多半是 `immediate_byte`，舊程式
+只看 `immediate14`，因此沒有誤改到座標。本例是 MAS-41 的 `inlostrigger` 指向
+GPL-141 `620`，翻譯後應為 `627`。
+
+修正對照表後重編 `scratch_test/gpl_current_plus141_v4`：跨區塊修正共 859 處，比
+v3 多出 282 處（0x1B 122、0x1C 46、0x6A 102、0x68 12）。驗證：
+
+- 全檔 2,869 個呼叫／觸發器指令，除目標位址外的所有參數（座標、名稱、範圍）與原版
+  完全一致。
+- 對最終 `GPLDATA.GFF` 重跑修正，剩餘過期參照為 0。
+
+組合包：`scratch_test/cjk_display_staging_v85r5_triggers`。
+
+注意：觸發器是腳本在執行時「登記」的，登記內容會存進存檔。若存檔是在舊版本、
+而且已經身處相關區域時存的，存檔裡的觸發器仍是舊位址。測試應使用進入該區域之前的
+存檔。
+
+另記：GPL-141 選單最後的 `GSTR[5]` 實際顯示為「Goodbye.」（目錄推測的 `Hamonde`
+是錯的），是其他地方寫入的字串，尚未翻譯，另案處理。
