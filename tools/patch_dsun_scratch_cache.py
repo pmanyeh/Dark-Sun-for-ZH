@@ -47,6 +47,19 @@ EBOX_NEXT_PAGE_DELTA_FILE_OFFSETS = (0x7CDBC, 0x7DBC5)
 ASM = ROOT / "tools/cjk_scratch_cache.asm"
 TOOLBIN = ROOT / ".tools/w64devkit/bin"
 
+# Beyond 8 banks the inline table at NAMES no longer fits before COMMON.
+# Segment 147D is dead padding verified by static analysis (no far pointer
+# or CS-relative reference anywhere in the module touches 147D:000F..0163
+# except the one unrelated function starting at 147D:0166 -- see
+# tools/patch_dialogue_menu_wind.py's CHOICE_RESTORE_CAVE, which occupies
+# 147D:0010..00FB for a different, independent repair). The cache asm's
+# "bank_names_cave_*" .equ constants must match these exactly.
+MZ_HEADER_BYTES = 0x5400
+BANK_NAMES_CAVE_SEGMENT = 0x147D
+BANK_NAMES_CAVE_TABLE = 0x0110
+BANK_NAMES_CAVE_LIMIT = 0x0164
+BANK_NAMES_CAVE_FILE_OFFSET = MZ_HEADER_BYTES + BANK_NAMES_CAVE_SEGMENT * 16 + BANK_NAMES_CAVE_TABLE
+
 
 def sha256(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
@@ -356,38 +369,41 @@ def patches(
     resolve = resolver()
     state = bytes.fromhex("FF 00 FF FF 00 00 00 00 00 00 00 00 00 00")
     # DOS does not require a filename extension; dropping ".BIN" keeps each
-    # entry to 3 bytes ("C{n}\0") so the table still fits between NAMES and
-    # the resolver stub at COMMON even past four banks.
+    # entry to 3 bytes ("C{n}\0") for banks 0..9. Past 8 banks the table no
+    # longer fits between NAMES and the resolver stub at COMMON, so it moves
+    # to the verified-dead cave in segment 147D instead (see
+    # BANK_NAMES_CAVE_FILE_OFFSET above); the cache asm's .if bank_count > 8
+    # branch loads that segment before reading the table.
     filenames = tuple(f"C{bank}\0".encode("ascii") for bank in range(bank_count))
-    names_limit = ITEM_FORMAT_WRAPPER if experimental_item_text_fix else COMMON
+    table_bytes = bank_count * 2
     if bank_count <= 8:
-        table_bytes = bank_count * 2
         offset = NAMES + table_bytes
         name_offsets = []
         for filename in filenames:
             name_offsets.append(offset)
             offset += len(filename)
         names = struct.pack(f"<{bank_count}H", *name_offsets) + b"".join(filenames)
-        name_strings = b""
-        name_string_file_offset = None
+        names_limit = ITEM_FORMAT_WRAPPER if experimental_item_text_fix else COMMON
+        if NAMES + len(names) > min(CACHE, names_limit):
+            raise ValueError(
+                f"bank name table for {bank_count} banks ends at 0x{NAMES + len(names):04X}, "
+                f"beyond the resolver data limit 0x{names_limit:04X}"
+            )
+        name_table_patch = {CODE_BASE + NAMES: (bytes(len(names)), names)}
     else:
-        # The resolver stub occupies COMMON. Two-digit names no longer fit
-        # beside it, so the pointer table stays here and the bytes live in
-        # unused code-segment padding. Startup zeroes DS BSS, so they cannot
-        # live after the initialized data segment.
-        offset = 0xDAC0
+        offset = BANK_NAMES_CAVE_TABLE + table_bytes
         name_offsets = []
         for filename in filenames:
             name_offsets.append(offset)
             offset += len(filename)
-        names = struct.pack(f"<{bank_count}H", *name_offsets)
-        name_strings = b"".join(filenames)
-        name_string_file_offset = CODE_BASE + 0xDAC0
-    if NAMES + len(names) > min(CACHE, names_limit):
-        raise ValueError(
-            f"bank name table for {bank_count} banks ends at 0x{NAMES + len(names):04X}, "
-            f"beyond the resolver data limit 0x{names_limit:04X}"
-        )
+        names = struct.pack(f"<{bank_count}H", *name_offsets) + b"".join(filenames)
+        if BANK_NAMES_CAVE_TABLE + len(names) > BANK_NAMES_CAVE_LIMIT:
+            raise ValueError(
+                f"bank name table for {bank_count} banks ends at 0x{BANK_NAMES_CAVE_TABLE + len(names):04X} "
+                f"in segment 0x{BANK_NAMES_CAVE_SEGMENT:04X}, beyond the verified-dead limit "
+                f"0x{BANK_NAMES_CAVE_LIMIT:04X}"
+            )
+        name_table_patch = {BANK_NAMES_CAVE_FILE_OFFSET: (bytes(len(names)), names)}
     result = {
         CODE_BASE + 0x094A: (bytes.fromhex("26 8A 07"), bytes.fromhex("E8 59 4A")),
         CODE_BASE + 0x07F8: (bytes.fromhex("26 8A 07"), bytes.fromhex("E8 CB 4B")),
@@ -396,12 +412,7 @@ def patches(
         CODE_BASE + 0x53C6: (bytes(16), triple_wrapper(0x53C6, 0x06)),
         CODE_BASE + 0x53E6: (bytes(16), triple_wrapper(0x53E6, 0xF6)),
         CODE_BASE + STATE: (bytes(len(state)), state),
-        CODE_BASE + NAMES: (bytes(len(names)), names),
-        **(
-            {name_string_file_offset: (bytes(len(name_strings)), name_strings)}
-            if name_string_file_offset is not None
-            else {}
-        ),
+        **name_table_patch,
         CODE_BASE + COMMON: (bytes(len(resolve)), resolve),
         CODE_BASE + CACHE: (bytes(len(cache)), cache),
         EBOX_OVERLAY_BASE + EBOX_WIDTH_BODY: (
@@ -496,10 +507,20 @@ def patch_executable(
     removed_relocations = (
         {ITEM_TEXT_FILE_BASE + 0x02F3} if experimental_item_text_fix else set()
     )
-    added_relocations = (
+    added_relocations = set(
         {ITEM_TEXT_FILE_BASE + 0x02EE, ITEM_TEXT_FILE_BASE + 0x02F7}
         if experimental_item_text_fix else set()
     )
+    if bank_count > 8:
+        # The cache's cache_open routine pushes this immediate and pops it
+        # into DS before reading the bank-name table out of segment 147D;
+        # the loader must relocate it exactly like every other far
+        # reference in this module.
+        marker = bytes((0x68,)) + BANK_NAMES_CAVE_SEGMENT.to_bytes(2, "little")
+        if cache.count(marker) != 1:
+            raise ValueError("bank-names cave segment immediate not found exactly once in cache")
+        bank_names_relocation = CODE_BASE + CACHE + cache.index(marker) + 1
+        added_relocations.add(bank_names_relocation)
     if experimental_item_text_fix and not removed_relocations <= relocations:
         raise ValueError("item format loop's original far-call relocation is missing")
     final_relocations = (relocations - removed_relocations) | added_relocations
@@ -520,12 +541,14 @@ def patch_executable(
         if actual != expected:
             raise ValueError(f"unexpected bytes at 0x{offset:05X}: {actual.hex()}")
         data[offset : offset + len(replacement)] = replacement
-    if experimental_item_text_fix:
+    if removed_relocations or added_relocations:
         rewrite_mz_relocations(data, removed_relocations, added_relocations)
     result = bytes(data)
     for offset, (_, replacement) in planned.items():
         if result[offset : offset + len(replacement)] != replacement:
             raise ValueError(f"patched bytes failed verification at 0x{offset:05X}")
+    if bank_count > 8 and bank_names_relocation not in mz_relocation_file_offsets(result):
+        raise ValueError("bank-names cave segment word was not added to the MZ relocation table")
     return result, cache
 
 

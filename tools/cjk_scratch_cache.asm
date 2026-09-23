@@ -20,6 +20,18 @@
 .equ dir_entry,     0x53C0
 .equ bank_names,    0x53F6
 
+# Beyond 8 banks the inline table above no longer fits between bank_names
+# and the resolver stub at COMMON. The filenames and their offset table
+# then live instead in segment 147D's verified-dead padding (see
+# tools/patch_dialogue_menu_wind.py's CHOICE_RESTORE_CAVE for how that dead
+# span was confirmed: no far pointer or CS-relative reference in the whole
+# module touches 147D:000F..0163 other than the one unrelated function at
+# 147D:0166). bank_names_cave_table sits well clear of both that function
+# and the separate dialogue choice-repair hook, which only occupies up to
+# 147D:00FB.
+.equ bank_names_cave_segment, 0x147D
+.equ bank_names_cave_table,   0x0110
+
 # AX=CJK ID. Read one CJB1 record directly into FONT scratch.
 #
 # Do not retain an open bank handle here.  Bytes at 0x5534 and above are a
@@ -40,15 +52,32 @@ cjk_cache_start:
     cmp al, bank_count
     jae cache_error
     xor ah, ah
+    mov bx, ax
+    shl bx, 1
+.if bank_count > 8
+    # Segment word patched to 0x147D and marked in the MZ relocation table
+    # by patches(); the loader adds the same load bias it already applies
+    # to every other far reference in this module. DS is left pointing at
+    # this segment afterward: the seek below only uses cs:-prefixed and
+    # register operands, and the dir_entry read further down saves and
+    # restores DS around itself independently, so nothing here needs DS
+    # put back first -- that saves the one byte this branch would otherwise
+    # cost over the inline table below, keeping the resident cache inside
+    # its fixed 0x5534 boundary.
+    push bank_names_cave_segment
+    pop ds
+    mov dx, [bank_names_cave_table+bx]
+    mov ax, 0x3D00
+    int 0x21
+.else
     push ds
     push cs
     pop ds
-    mov bx, ax
-    shl bx, 1
     mov dx, cs:[bank_names+bx]
     mov ax, 0x3D00
     int 0x21
     pop ds
+.endif
     jc cache_error
     mov cs:[handle], ax
 

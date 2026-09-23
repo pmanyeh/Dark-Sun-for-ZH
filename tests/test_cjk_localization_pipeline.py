@@ -386,13 +386,54 @@ class CjkLocalizationPipelineTests(unittest.TestCase):
         self.assertNotIn(ITEM_TEXT_FILE_BASE + 0x02F3, five_bank_relocations)
         self.assertIn(ITEM_TEXT_FILE_BASE + 0x02EE, five_bank_relocations)
         self.assertIn(ITEM_TEXT_FILE_BASE + 0x02F7, five_bank_relocations)
-        # Ten banks no longer fit beside the resolver, so their filenames
-        # move to DS:8460 and the name table keeps only the pointers.
-        ten_bank_names = patches(small, bank_count=10)[CODE_BASE + NAMES][1]
-        self.assertEqual(ten_bank_names[:2], struct.pack("<H", 0xDAC0))
-        self.assertEqual(len(ten_bank_names), 20)
         with self.assertRaisesRegex(ValueError, "1..16"):
             patches(small, bank_count=17)
+        with self.assertRaisesRegex(ValueError, "1..16"):
+            patches(small, bank_count=0)
+
+    def test_bank_names_beyond_eight_move_to_the_147d_cave(self) -> None:
+        from tools.patch_dsun_scratch_cache import (
+            BANK_NAMES_CAVE_FILE_OFFSET,
+            BANK_NAMES_CAVE_LIMIT,
+            BANK_NAMES_CAVE_SEGMENT,
+            BANK_NAMES_CAVE_TABLE,
+            CACHE,
+            CACHE_RUNTIME_LIMIT,
+            CODE_BASE,
+            NAMES,
+            mz_relocation_file_offsets,
+            patch_executable,
+            patches,
+        )
+
+        source = Path(r"from Steam/games/Dark Sun-ENG/GAME/DARKSUN/DSUN.EXE").read_bytes()
+        exe, cache = patch_executable(source, 0x3640, 242, bank_count=12)
+        # The resident cache must still fit exactly inside its fixed
+        # 0x5534 boundary (bytes at and beyond it are a runtime work area
+        # the spell UI overwrites) -- the >8-bank branch must cost no more
+        # than the inline table it replaces.
+        self.assertEqual(CACHE + len(cache), CACHE_RUNTIME_LIMIT)
+        self.assertNotIn(CODE_BASE + NAMES, patches(cache, bank_count=12))
+        twelve_bank_names = struct.pack(
+            "<12H",
+            *(BANK_NAMES_CAVE_TABLE + 12 * 2 + sum(len(f"C{b}\0") for b in range(bank)) for bank in range(12)),
+        ) + b"".join(f"C{bank}\0".encode("ascii") for bank in range(12))
+        self.assertLessEqual(BANK_NAMES_CAVE_TABLE + len(twelve_bank_names), BANK_NAMES_CAVE_LIMIT)
+        self.assertEqual(
+            exe[BANK_NAMES_CAVE_FILE_OFFSET : BANK_NAMES_CAVE_FILE_OFFSET + len(twelve_bank_names)],
+            twelve_bank_names,
+        )
+        # The cache's cache_open routine loads DS from a literal segment
+        # word before reading the table; that word must be in the MZ
+        # relocation table so the loader biases it like every other far
+        # reference in this module.
+        marker = bytes([0x68]) + BANK_NAMES_CAVE_SEGMENT.to_bytes(2, "little")
+        self.assertEqual(cache.count(marker), 1)
+        relocation = CODE_BASE + CACHE + cache.index(marker) + 1
+        self.assertIn(relocation, mz_relocation_file_offsets(exe))
+        self.assertNotIn(relocation, mz_relocation_file_offsets(source))
+        with self.assertRaisesRegex(ValueError, "beyond the verified-dead limit"):
+            patches(cache, bank_count=16)
 
     def test_pixel_aligned_rasterizer_keeps_fixed_record_size(self) -> None:
         font = Path(r"C:\Windows\Fonts\NotoSansTC-VF.ttf")
