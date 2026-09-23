@@ -230,6 +230,9 @@ class CjkLocalizationPipelineTests(unittest.TestCase):
 
     def test_scratch_resolver_calls_resident_cache(self) -> None:
         from tools.patch_dsun_scratch_cache import (
+            EBOX_BREAK_CALL_RELOCATION,
+            EBOX_OVERLAY_BASE,
+            ebox_cjk_break_routine,
             CACHE,
             CACHE_RUNTIME_LIMIT,
             CODE_BASE,
@@ -288,10 +291,16 @@ class CjkLocalizationPipelineTests(unittest.TestCase):
         )
         layout = ebox_layout_locals_and_helper()
         self.assertEqual(len(layout), 0x0297 - EBOX_LAYOUT_LOCALS)
+        # The helper far-calls the CJK line-break routine in segment 147D.
         self.assertEqual(
-            EBOX_LAYOUT_LOCALS + layout.index(bytes.fromhex("80 7E F6 5E")),
+            EBOX_LAYOUT_LOCALS + layout.index(bytes.fromhex("9A FC 00 7D 14")),
             EBOX_ADVANCE_HELPER,
         )
+        self.assertEqual(EBOX_BREAK_CALL_RELOCATION, EBOX_OVERLAY_BASE + EBOX_ADVANCE_HELPER + 3)
+        routine = ebox_cjk_break_routine()
+        self.assertEqual(len(routine), 20)
+        self.assertEqual(routine[:4], bytes.fromhex("80 7E F6 5E"))
+        self.assertEqual(routine[-1], 0xCB)
         call = ebox_layout_advance_call()
         displacement = struct.unpack_from("<h", call, 1)[0]
         self.assertEqual(0x04A6 + 3 + displacement, EBOX_ADVANCE_HELPER)
@@ -390,6 +399,59 @@ class CjkLocalizationPipelineTests(unittest.TestCase):
             patches(small, bank_count=17)
         with self.assertRaisesRegex(ValueError, "1..16"):
             patches(small, bank_count=0)
+
+    def test_introduce_prefix_is_repointed_to_the_147d_cave(self) -> None:
+        """DSUN.EXE strcpy's "I'm " from 377E:0000 before appending the
+        active character's name; the translated prefix must replace that
+        source without disturbing the relocated segment word."""
+        from tools.patch_dsun_scratch_cache import (
+            BANK_NAMES_CAVE_SEGMENT,
+            INTRODUCE_PREFIX_CAVE_IP,
+            INTRODUCE_PREFIX_FILE_OFFSET,
+            INTRODUCE_STRCPY_SOURCE,
+            mz_relocation_file_offsets,
+            patch_executable,
+            patch_introduce_prefix,
+        )
+
+        source = Path(r"from Steam/games/Dark Sun-ENG/GAME/DARKSUN/DSUN.EXE").read_bytes()
+        exe, _ = patch_executable(source, 0x3640, 242, bank_count=12)
+        prefix = b"^!!^!\""
+        patched = patch_introduce_prefix(exe, prefix)
+        site = INTRODUCE_STRCPY_SOURCE
+        self.assertEqual(
+            patched[site:site + 6],
+            bytes((0x68,)) + struct.pack("<H", BANK_NAMES_CAVE_SEGMENT)
+            + bytes((0x68,)) + struct.pack("<H", INTRODUCE_PREFIX_CAVE_IP),
+        )
+        cave = INTRODUCE_PREFIX_FILE_OFFSET
+        self.assertEqual(patched[cave:cave + len(prefix) + 1], prefix + bytes(1))
+        self.assertIn(site + 1, mz_relocation_file_offsets(patched))
+        changed = [index for index in range(len(exe)) if exe[index] != patched[index]]
+        self.assertTrue(all(
+            site + 1 <= index < site + 6 or cave <= index < cave + len(prefix)
+            for index in changed
+        ))
+        with self.assertRaisesRegex(ValueError, "beyond the 8-byte cave"):
+            patch_introduce_prefix(exe, b"x" * 8)
+
+    def test_gpl_pool_is_enlarged_past_the_largest_translated_chunk(self) -> None:
+        """The engine loads a GPL chunk only while size + 1 < pool size;
+        translated GPL-146 (10,706 bytes) outgrew the original 10,000."""
+        from tools.patch_dsun_scratch_cache import (
+            GPL_MAX_CHUNK_BYTES,
+            GPL_POOL_BYTES,
+            GPL_POOL_SIZE_FILE_OFFSET,
+            patch_executable,
+        )
+
+        source = Path(r"from Steam/games/Dark Sun-ENG/GAME/DARKSUN/DSUN.EXE").read_bytes()
+        site = GPL_POOL_SIZE_FILE_OFFSET
+        # push dword 10000; push 200; call far <pool init>
+        self.assertEqual(source[site - 2:site + 7], bytes.fromhex("66 68 10 27 00 00 68 C8 00"))
+        exe, _ = patch_executable(source, 0x3640, 242, bank_count=12)
+        self.assertEqual(struct.unpack_from("<I", exe, site)[0], GPL_POOL_BYTES)
+        self.assertGreaterEqual(GPL_MAX_CHUNK_BYTES, 10706)
 
     def test_bank_names_beyond_eight_move_to_the_147d_cave(self) -> None:
         from tools.patch_dsun_scratch_cache import (

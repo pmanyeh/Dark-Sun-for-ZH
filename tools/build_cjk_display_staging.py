@@ -21,6 +21,7 @@ try:
         TRIPLE_BASE,
         TRIPLE_DIGIT_MIN,
         TRIPLE_PREFIX,
+        encode_text,
         glyph_record_for_id,
         load_mapping,
         mapping_fingerprint,
@@ -29,7 +30,7 @@ try:
     )
     from .font100_tool import Font100
     from .patch_dialogue_menu_wind import patch_dialogue_choice_paging, patch_dialogue_menu_wind
-    from .patch_dsun_scratch_cache import patch_executable
+    from .patch_dsun_scratch_cache import patch_executable, patch_introduce_prefix
 except ImportError:
     from cjk_localization_pipeline import (
         DEFAULT_GFF_CAT,
@@ -38,6 +39,7 @@ except ImportError:
         TRIPLE_BASE,
         TRIPLE_DIGIT_MIN,
         TRIPLE_PREFIX,
+        encode_text,
         glyph_record_for_id,
         load_mapping,
         mapping_fingerprint,
@@ -46,10 +48,13 @@ except ImportError:
     )
     from font100_tool import Font100
     from patch_dialogue_menu_wind import patch_dialogue_choice_paging, patch_dialogue_menu_wind
-    from patch_dsun_scratch_cache import patch_executable
+    from patch_dsun_scratch_cache import patch_executable, patch_introduce_prefix
 
 
 ROOT = Path(__file__).resolve().parents[1]
+# DSUN.EXE builds the INTRODUCE menu option as "I'm " + active character
+# name; the name follows the prefix directly, as Chinese needs no space.
+INTRODUCE_PREFIX_ZH_TW = "我是"
 DEFAULT_GAME_DIR = DEFAULT_RESOURCE_GFF.parent
 DEFAULT_DOSBOX_X = Path(r"D:\git\DOSBox-X-AI\dosbox-src\bin\x64\Release\dosbox-x.exe")
 FONT100_OFFSET_TABLE = 8 + 256
@@ -381,6 +386,9 @@ def main() -> int:
         )
         if args.dialogue_option_pitch is not None:
             patched_exe = patch_dialogue_choice_paging(patched_exe)
+        patched_exe = patch_introduce_prefix(
+            patched_exe, encode_text(INTRODUCE_PREFIX_ZH_TW, mapping)
+        )
         (staged_game / "DSUN.EXE").write_bytes(patched_exe)
         for _, filename, payload in bank_files:
             (staged_game / filename).write_bytes(payload)

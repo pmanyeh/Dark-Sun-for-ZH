@@ -44,6 +44,18 @@ GLYPH_HEIGHT_LOAD = 0x0704
 # it also participates in the original control feedback path.  These are file
 # offsets, not offsets in the EBOX overlay above.
 EBOX_NEXT_PAGE_DELTA_FILE_OFFSETS = (0x7CDBC, 0x7DBC5)
+# GPL/MAS chunks are loaded into one pool (3781:0255, size 3781:0313) that
+# the loader fills with chunk bytes plus a trailing 0x31 exit; a chunk
+# only loads while size + 1 < pool size. The overlay startup code sets the
+# pool with `push dword 10000; push 200; call far <init>` (file offset
+# 0x6A692). Translated GPL-146 grew to 10,706 bytes, never loaded, and the
+# Trustee's dialogue failed with BAD GPL EXIT; the original game's largest
+# chunk (GPL-2) is 9,792. Runtime read of 3781:0313 confirmed 0x2710.
+GPL_POOL_SIZE_FILE_OFFSET = 0x6A694
+GPL_POOL_ORIGINAL_BYTES = 10000
+GPL_POOL_BYTES = 0x3000
+# Largest chunk that still loads: size + 1 must stay below the pool size.
+GPL_MAX_CHUNK_BYTES = GPL_POOL_BYTES - 2
 ASM = ROOT / "tools/cjk_scratch_cache.asm"
 TOOLBIN = ROOT / ".tools/w64devkit/bin"
 
@@ -57,8 +69,16 @@ TOOLBIN = ROOT / ".tools/w64devkit/bin"
 MZ_HEADER_BYTES = 0x5400
 BANK_NAMES_CAVE_SEGMENT = 0x147D
 BANK_NAMES_CAVE_TABLE = 0x0110
-BANK_NAMES_CAVE_LIMIT = 0x0164
+# 147D:015C..0163 holds the translated INTRODUCE prefix (see
+# patch_introduce_prefix), so the name table may grow to 14 banks.
+BANK_NAMES_CAVE_LIMIT = 0x015C
 BANK_NAMES_CAVE_FILE_OFFSET = MZ_HEADER_BYTES + BANK_NAMES_CAVE_SEGMENT * 16 + BANK_NAMES_CAVE_TABLE
+# The 20 bytes between the choice-restore hook (147D:0010..00FB) and the bank
+# name table hold the EBOX CJK line-break routine; see ebox_cjk_break_routine.
+EBOX_BREAK_CAVE_IP = 0x00FC
+EBOX_BREAK_CAVE_FILE_OFFSET = MZ_HEADER_BYTES + BANK_NAMES_CAVE_SEGMENT * 16 + EBOX_BREAK_CAVE_IP
+# File offset of the segment word in the helper's `call far 147D:00FC`.
+EBOX_BREAK_CALL_RELOCATION = EBOX_OVERLAY_BASE + EBOX_ADVANCE_HELPER + 3
 
 
 def sha256(data: bytes) -> str:
@@ -233,10 +253,13 @@ def ebox_layout_locals_and_helper() -> bytes:
         "40 89 46 FA "             # one
         "EB 0D"                    # normal entry skips embedded helper
     )
-    helper = bytes.fromhex(
-        "80 7E F6 5E "             # current source byte == '^'
-        "75 02 46 46 "             # two extra increments for a triple
-        "46 3B 76 F4 C3"           # common increment, loop cmp, return
+    helper = (
+        bytes((0x9A,))                           # call far 147D:00FC
+        + struct.pack("<HH", EBOX_BREAK_CAVE_IP, BANK_NAMES_CAVE_SEGMENT)
+        + bytes.fromhex(
+            "46 3B 76 F4 C3 "      # common increment, loop cmp, return
+            "90 90 90"
+        )
     )
     if EBOX_LAYOUT_LOCALS + len(initialization) != EBOX_ADVANCE_HELPER:
         raise ValueError("EBOX initialization does not meet embedded helper")
@@ -245,6 +268,76 @@ def ebox_layout_locals_and_helper() -> bytes:
     if len(payload) != expected:
         raise ValueError(f"EBOX local/helper block is {len(payload)} bytes, expected {expected}")
     return payload
+
+
+def ebox_cjk_break_routine() -> bytes:
+    """Let EBOX wrap after any CJK glyph instead of only at spaces.
+
+    The layout loop treats a run without spaces as one word: [bp-1C] is the
+    current word's start (-1 = none), [bp-24] says a word is open, and
+    [bp-1A] != -1 says the line already holds a finished word. On overflow
+    it carries the open word to the next line, or breaks at the overflowing
+    byte when there is no open word. A space-free Chinese sentence was one
+    word, so every translated print fragment jumped to a fresh line.
+
+    After each '^' triple this closes the word and marks the line breakable,
+    so an overflowing glyph breaks right before itself and an ASCII word
+    that follows CJK text is still carried whole. It also advances SI past
+    the triple's two trailing bytes; the caller adds the common increment.
+    """
+    code = bytes.fromhex(
+        "80 7E F6 5E "             # cmp byte [bp-0A],'^'
+        "75 0D "                   # not a triple -> return
+        "89 76 E6 "                # mov [bp-1A],si: line has a break point
+        "83 4E E4 FF "             # or word [bp-1C],-1: no open word start
+        "83 66 DC 00 "             # and word [bp-24],0: word closed
+        "46 46 "                   # skip the triple's two trailing bytes
+        "CB"                       # retf
+    )
+    if len(code) != BANK_NAMES_CAVE_TABLE - EBOX_BREAK_CAVE_IP:
+        raise ValueError(f"EBOX break routine is {len(code)} bytes, expected 20")
+    return code
+
+
+# The INTRODUCE menu option ("I'm <name>") is built in DSUN.EXE, not GPL:
+#   0xD088  push 377E / push 0000 / push ds / push 4285 / call far strcpy
+#   0xD0A4  ... strcat(DS:4285, active character name); return DS:4285
+# 377E:0000 holds "I'm \0" but 377E:0019.. are live variables, so the prefix
+# cannot grow in place. The strcpy source is repointed instead; its segment
+# word at 0xD089 already carries an MZ relocation. The next variable after
+# DS:4285 is DS:42C8, so the 67-byte buffer has room for a longer prefix.
+INTRODUCE_STRCPY_SOURCE = 0xD088
+INTRODUCE_STRCPY_ORIGINAL = bytes.fromhex("68 7E 37 68 00 00")
+INTRODUCE_ORIGINAL_TEXT_FILE_OFFSET = MZ_HEADER_BYTES + 0x377E * 16
+INTRODUCE_PREFIX_CAVE_IP = BANK_NAMES_CAVE_LIMIT
+INTRODUCE_PREFIX_CAVE_LIMIT = 0x0164
+INTRODUCE_PREFIX_FILE_OFFSET = (
+    MZ_HEADER_BYTES + BANK_NAMES_CAVE_SEGMENT * 16 + INTRODUCE_PREFIX_CAVE_IP
+)
+
+
+def patch_introduce_prefix(image: bytes, encoded_prefix: bytes) -> bytes:
+    """Point the INTRODUCE option's "I'm " prefix at a translated string."""
+    text = encoded_prefix + b"\0"
+    if len(text) > INTRODUCE_PREFIX_CAVE_LIMIT - INTRODUCE_PREFIX_CAVE_IP:
+        raise ValueError(f"INTRODUCE prefix is {len(text)} bytes, beyond the 8-byte cave")
+    if image[INTRODUCE_ORIGINAL_TEXT_FILE_OFFSET:INTRODUCE_ORIGINAL_TEXT_FILE_OFFSET + 5] != b"I'm \0":
+        raise ValueError("DSUN.EXE does not hold the original INTRODUCE prefix at 377E:0000")
+    site = INTRODUCE_STRCPY_SOURCE
+    if image[site:site + 6] != INTRODUCE_STRCPY_ORIGINAL:
+        raise ValueError(f"unexpected INTRODUCE strcpy source at 0x{site:05X}")
+    if site + 1 not in mz_relocation_file_offsets(image):
+        raise ValueError("INTRODUCE strcpy source segment is not relocated")
+    cave = INTRODUCE_PREFIX_FILE_OFFSET
+    if any(image[cave:cave + len(text)]):
+        raise ValueError(f"INTRODUCE prefix cave is not empty at 0x{cave:05X}")
+    patched = bytearray(image)
+    patched[cave:cave + len(text)] = text
+    patched[site:site + 6] = (
+        bytes((0x68,)) + struct.pack("<H", BANK_NAMES_CAVE_SEGMENT)
+        + bytes((0x68,)) + struct.pack("<H", INTRODUCE_PREFIX_CAVE_IP)
+    )
+    return bytes(patched)
 
 
 def ebox_layout_advance_call() -> bytes:
@@ -434,6 +527,11 @@ def patches(
             bytes.fromhex("46 3B 76 F4"),
             ebox_layout_advance_call(),
         ),
+        EBOX_BREAK_CAVE_FILE_OFFSET: (bytes(20), ebox_cjk_break_routine()),
+        GPL_POOL_SIZE_FILE_OFFSET: (
+            struct.pack("<I", GPL_POOL_ORIGINAL_BYTES),
+            struct.pack("<I", GPL_POOL_BYTES),
+        ),
     }
     if experimental_item_text_fix:
         result[CODE_BASE + ITEM_FORMAT_WRAPPER] = (
@@ -511,6 +609,8 @@ def patch_executable(
         {ITEM_TEXT_FILE_BASE + 0x02EE, ITEM_TEXT_FILE_BASE + 0x02F7}
         if experimental_item_text_fix else set()
     )
+    # The EBOX advance helper's far call into segment 147D.
+    added_relocations.add(EBOX_BREAK_CALL_RELOCATION)
     if bank_count > 8:
         # The cache's cache_open routine pushes this immediate and pops it
         # into DS before reading the bank-name table out of segment 147D;
@@ -547,8 +647,11 @@ def patch_executable(
     for offset, (_, replacement) in planned.items():
         if result[offset : offset + len(replacement)] != replacement:
             raise ValueError(f"patched bytes failed verification at 0x{offset:05X}")
-    if bank_count > 8 and bank_names_relocation not in mz_relocation_file_offsets(result):
+    final = mz_relocation_file_offsets(result)
+    if bank_count > 8 and bank_names_relocation not in final:
         raise ValueError("bank-names cave segment word was not added to the MZ relocation table")
+    if EBOX_BREAK_CALL_RELOCATION not in final:
+        raise ValueError("EBOX break call segment word was not added to the MZ relocation table")
     return result, cache
 
 
