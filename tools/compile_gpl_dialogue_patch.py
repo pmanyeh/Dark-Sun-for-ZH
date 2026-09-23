@@ -142,13 +142,21 @@ BRANCH_PARAMETER = {
 # the stale number. Relocate only when the declared chunk is this chunk AND
 # the offset is an instruction boundary; fixed thresholds such as 100 safely
 # remain untouched because they are not in offset_map.
+#
+# Tile and box triggers lead with map coordinates, e.g. MAS-10's
+# `move boxtrigger 32, 1, 9, 1, 822, 80, 0` is (x, y, w, h, offset, chunk,
+# flag). Treating their first two parameters as the target left every
+# walk-in trigger unrelocated (re_98 section 33). No 0x69/0x6B instance
+# exists in GPLDATA; they follow their move counterparts.
 TEMPLATE_TRIGGER_TARGET = {
+    0x1B: (0, 1),  # inlostrigger: offset, chunk, name, range
+    0x1C: (0, 1),  # notinlostrigger: offset, chunk, name, range
     0x65: (0, 1),  # attacktrigger: offset, chunk
     0x66: (0, 1),  # looktrigger: offset, chunk
-    0x68: (0, 1),  # move tiletrigger: offset, chunk
-    0x69: (0, 1),  # door tiletrigger: offset, chunk
-    0x6A: (0, 1),  # move boxtrigger: offset, chunk
-    0x6B: (0, 1),  # door boxtrigger: offset, chunk
+    0x68: (2, 3),  # move tiletrigger: x, y, offset, chunk, flag
+    0x69: (2, 3),  # door tiletrigger: x, y, offset, chunk, flag
+    0x6A: (4, 5),  # move boxtrigger: x, y, w, h, offset, chunk, flag
+    0x6B: (4, 5),  # door boxtrigger: x, y, w, h, offset, chunk, flag
     0x6C: (0, 1),  # pickup itemtrigger: offset, chunk
     0x6D: (0, 1),  # usetrigger: offset, chunk
     0x6E: (0, 1),  # talktotrigger: offset, chunk
@@ -175,6 +183,85 @@ MENU_ENTRY_TARGET_INDEX = 1
 GLOBAL_SUB_OPCODE = 0x14
 GLOBAL_SUB_OFFSET_INDEX = 0
 GLOBAL_SUB_CHUNK_INDEX = 1
+
+
+# Every instruction that names another chunk's offset: (offset index, chunk
+# index). relocate_json_strings only rewrites these when they point back into
+# the chunk being edited; retarget_cross_chunk_references handles the rest.
+CROSS_CHUNK_TARGET = {
+    GLOBAL_SUB_OPCODE: (GLOBAL_SUB_OFFSET_INDEX, GLOBAL_SUB_CHUNK_INDEX),
+    **TEMPLATE_TRIGGER_TARGET,
+}
+
+
+def instruction_offset_map(
+    original: dict[str, object], patched: dict[str, object], where: str
+) -> dict[int, int]:
+    """Map each original instruction offset to its offset in the patched chunk."""
+    original_instructions = original["instructions"]
+    patched_instructions = patched["instructions"]
+    if len(original_instructions) != len(patched_instructions):
+        raise ValueError(f"{where}: instruction count differs from the baseline")
+    return {
+        int(before["offset"]): int(after["offset"])
+        for before, after in zip(original_instructions, patched_instructions, strict=True)
+    }
+
+
+def retarget_cross_chunk_references(
+    baseline: dict[str, object],
+    current: dict[str, object],
+    offset_maps: dict[int, dict[int, int]],
+    where: str,
+) -> list[dict[str, int]]:
+    """Point calls and triggers into relocated GPL chunks at their new offsets.
+
+    The target is always derived from the baseline listing, so running this
+    again on an already corrected chunk changes nothing.
+    """
+    baseline_instructions = baseline["instructions"]
+    current_instructions = current["instructions"]
+    if len(baseline_instructions) != len(current_instructions):
+        raise ValueError(f"{where}: instruction count differs from the baseline")
+    relocations: list[dict[str, int]] = []
+    for before, after in zip(baseline_instructions, current_instructions, strict=True):
+        shape = CROSS_CHUNK_TARGET.get(int(before["opcode"]))
+        if shape is None:
+            continue
+        target_index, chunk_index = shape
+        params = before.get("params", [])
+        if max(target_index, chunk_index) >= len(params):
+            continue
+        chunk_values = [item for item in params[chunk_index] if item.get("kind") == "immediate14"]
+        target_values = [item for item in params[target_index] if item.get("kind") == "immediate14"]
+        if len(chunk_values) != 1 or len(target_values) != 1:
+            continue
+        target_chunk = int(chunk_values[0]["value"])
+        offset_map = offset_maps.get(target_chunk)
+        if offset_map is None:
+            continue
+        original_target = int(target_values[0]["value"])
+        if original_target not in offset_map:
+            raise ValueError(
+                f"{where} 0x{int(before['offset']):04X} targets GPL-{target_chunk} "
+                f"non-instruction 0x{original_target:04X}"
+            )
+        current_values = [
+            item for item in after["params"][target_index] if item.get("kind") == "immediate14"
+        ]
+        desired = offset_map[original_target]
+        if int(current_values[0]["value"]) != desired:
+            current_values[0]["value"] = desired
+            relocations.append(
+                {
+                    "offset": int(after["offset"]),
+                    "opcode": int(before["opcode"]),
+                    "target_chunk": target_chunk,
+                    "original_target": original_target,
+                    "relocated_target": desired,
+                }
+            )
+    return relocations
 
 
 def relocate_single_target(
@@ -421,25 +508,33 @@ def relocate_json_strings(
                     f"({len(params)} params)"
                 )
             num_entries = entry_params // MENU_ENTRY_WIDTH
-            entry_strings: list[dict[str, object]] = []
+            # An option's text is not always an inline literal: GPL-141's
+            # 0x0A98 menu ends with a string variable (GSTR[5]) and GPL-143's
+            # 0x0797 menu starts with INTRODUCE (the active character's name).
+            # Such options are left untouched. Only inline compressed
+            # literals can be matched to an edit, so an edit aimed at any
+            # other option still fails below with "no unclaimed menu entry".
+            entry_strings: list[dict[str, object] | None] = []
             for entry in range(num_entries):
                 text_index = 1 + entry * MENU_ENTRY_WIDTH + MENU_ENTRY_TEXT_INDEX
-                strings = [
-                    expression for expression in params[text_index]
-                    if expression.get("kind") == "immediate_string"
-                ]
-                if len(strings) != 1 or strings[0].get("sub_type") != "compressed":
-                    raise ValueError(
-                        f"menu at 0x{old_offset:04X} entry {entry} has an unexpected text expression"
-                    )
-                entry_strings.append(strings[0])
+                expressions = params[text_index]
+                if (
+                    len(expressions) == 1
+                    and expressions[0].get("kind") == "immediate_string"
+                    and expressions[0].get("sub_type") == "compressed"
+                ):
+                    entry_strings.append(expressions[0])
+                else:
+                    entry_strings.append(None)
             claimed = [False] * num_entries
             total_delta = 0
             for edit in offset_edits:
                 original = str(edit["original"])
                 candidates = [
                     index for index in range(num_entries)
-                    if not claimed[index] and entry_strings[index].get("value") == original
+                    if not claimed[index]
+                    and entry_strings[index] is not None
+                    and entry_strings[index].get("value") == original
                 ]
                 if not candidates:
                     raise ValueError(
@@ -862,6 +957,77 @@ def main() -> int:
                 next_gff,
             )
             current = next_gff
+        # Calls and triggers in other chunks still hold baseline offsets into
+        # every relocated GPL chunk (including prior-package chunks); point
+        # them at the new offsets across the whole file.
+        baseline_listings = temporary_root / "baseline-listings"
+        current_listings = temporary_root / "current-listings"
+        run(args.gpl_disasm, baseline, "--all", "--json", "--no-syms", "-o", baseline_listings)
+        run(args.gpl_disasm, current, "--all", "--json", "--no-syms", "-o", current_listings)
+        relocated_gpl = sorted(
+            int(record["chunk_id"]) for record in target_records if record["kind"] == "GPL"
+        )
+        cross_offset_maps = {
+            chunk_id: instruction_offset_map(
+                json.loads((baseline_listings / f"GPL-{chunk_id}.json").read_text(encoding="utf-8")),
+                json.loads((current_listings / f"GPL-{chunk_id}.json").read_text(encoding="utf-8")),
+                f"GPL-{chunk_id}",
+            )
+            for chunk_id in relocated_gpl
+        }
+        records_by_target = {(record["kind"], record["chunk_id"]): record for record in target_records}
+        cross_relocations_total = 0
+        for listing in sorted(current_listings.glob("*.json")):
+            kind, _, chunk_text = listing.stem.partition("-")
+            chunk_id = int(chunk_text)
+            stem = f"{kind}-{chunk_id}"
+            current_document = json.loads(listing.read_text(encoding="utf-8"))
+            baseline_document = json.loads(
+                (baseline_listings / listing.name).read_text(encoding="utf-8")
+            )
+            relocations = retarget_cross_chunk_references(
+                baseline_document, current_document, cross_offset_maps, stem
+            )
+            if not relocations:
+                continue
+            cross_relocations_total += len(relocations)
+            print(f"retarget {stem}: {len(relocations)} cross-chunk reference(s)", flush=True)
+            retargeted_listing = listings / f"{stem}.retargeted.json"
+            retargeted_chunk = chunks / f"{stem}.bin"
+            write_json(retargeted_listing, current_document)
+            run(args.gpl_asm, retargeted_listing, "-o", retargeted_chunk)
+            payload = retargeted_chunk.read_bytes()
+            if len(payload) != int(current_document["total_bytes"]):
+                raise ValueError(f"{stem}: retargeting changed the chunk length")
+            verify_fixed_entry_requirements(
+                kind, chunk_id, payload, list(args.require_fixed_entry)
+            )
+            next_gff = temporary_root / f"GPLDATA.retarget-{stem}.GFF"
+            run(args.gff_cat, "replace", current, kind, str(chunk_id), retargeted_chunk, "-o", next_gff)
+            current = next_gff
+            record = records_by_target.get((kind, chunk_id))
+            if record is None:
+                baseline_chunk = chunks / f"{stem}.baseline.bin"
+                run(args.gff_cat, "extract", baseline, kind, str(chunk_id), "-o", baseline_chunk)
+                record = {
+                    "kind": kind,
+                    "chunk_id": chunk_id,
+                    "source_bytes": len(baseline_chunk.read_bytes()),
+                    "source_sha256": sha256(baseline_chunk.read_bytes()),
+                    "file": f"chunks/{stem}.bin",
+                }
+                target_records.append(record)
+                records_by_target[(kind, chunk_id)] = record
+                new_target_records.append(record)
+                entry_requirements_by_target[(kind, chunk_id)] = list(args.require_fixed_entry)
+            record["encoded_byte_length"] = len(payload)
+            record["sha256"] = sha256(payload)
+            record["relocated_cross_chunk_targets"] = relocations
+            if (kind, chunk_id) not in entry_requirements_by_target:
+                entry_requirements_by_target[(kind, chunk_id)] = list(args.require_fixed_entry)
+            if record not in new_target_records:
+                new_target_records.append(record)
+
         patched_gff = staging / "GPLDATA.GFF"
         shutil.copyfile(current, patched_gff)
 
@@ -942,6 +1108,7 @@ def main() -> int:
     print(f"patched_sha256={package['patched_sha256']}")
     print(f"patched_chunks={len(target_records)}")
     print(f"patched_occurrences={len(edit_records)}")
+    print(f"cross_chunk_retargets={cross_relocations_total}")
     print(f"unchanged_chunks={verification['unchanged_non_target_chunks']}")
     return 0
 

@@ -430,6 +430,88 @@ class GplDialogueImporterTests(unittest.TestCase):
         self.assertEqual(menu["params"][7][0]["value"], "Unique")
         self.assertEqual(len(applied), 2)
 
+    def test_cross_chunk_references_follow_relocated_targets(self) -> None:
+        """MAS-41's talktotrigger into GPL-141 kept offset 2334 after GPL-141
+        was translated and grew, so talking to the NPC did nothing."""
+        from tools.compile_gpl_dialogue_patch import retarget_cross_chunk_references
+
+        def document(talk_target: int, call_target: int) -> dict[str, object]:
+            return {"instructions": [
+                {"offset": 0, "opcode": 0x6E, "params": [
+                    [{"kind": "immediate14", "value": talk_target}],
+                    [{"kind": "immediate14", "value": 141}],
+                ]},
+                {"offset": 4, "opcode": 0x14, "params": [
+                    [{"kind": "immediate14", "value": call_target}],
+                    [{"kind": "immediate14", "value": 9}],
+                ]},
+            ]}
+
+        baseline = document(2334, 50)
+        current = document(2334, 50)
+        maps = {141: {2334: 2482}}
+        relocations = retarget_cross_chunk_references(baseline, current, maps, "MAS-41")
+        self.assertEqual(current["instructions"][0]["params"][0][0]["value"], 2482)
+        self.assertEqual(current["instructions"][1]["params"][0][0]["value"], 50)
+        self.assertEqual(len(relocations), 1)
+        # Running again on the corrected chunk changes nothing.
+        self.assertEqual(retarget_cross_chunk_references(baseline, current, maps, "MAS-41"), [])
+        with self.assertRaisesRegex(ValueError, "non-instruction"):
+            retarget_cross_chunk_references(document(2335, 50), document(2335, 50), maps, "MAS-41")
+
+    def test_tile_box_and_sight_triggers_relocate_their_real_target(self) -> None:
+        """Box/tile triggers lead with map coordinates; the target is later."""
+        from tools.compile_gpl_dialogue_patch import retarget_cross_chunk_references
+
+        def imm(value: int) -> list[dict[str, object]]:
+            return [{"kind": "immediate14", "value": value}]
+
+        def byte(value: int) -> list[dict[str, object]]:
+            return [{"kind": "immediate_byte", "value": value}]
+
+        def document() -> dict[str, object]:
+            return {"instructions": [
+                {"offset": 0, "opcode": 0x6A,
+                 "params": [byte(32), byte(1), byte(9), byte(1), imm(822), imm(80), byte(0)]},
+                {"offset": 9, "opcode": 0x68,
+                 "params": [byte(54), byte(21), imm(822), imm(80), byte(0)]},
+                {"offset": 16, "opcode": 0x1B,
+                 "params": [imm(822), imm(80), [{"kind": "name", "value": -1}], byte(25)]},
+            ]}
+
+        baseline, current = document(), document()
+        relocations = retarget_cross_chunk_references(baseline, current, {80: {822: 900}}, "MAS-10")
+        box, tile, sight = current["instructions"]
+        self.assertEqual(box["params"][4], imm(900))
+        self.assertEqual(box["params"][:4], [byte(32), byte(1), byte(9), byte(1)])
+        self.assertEqual(tile["params"][2], imm(900))
+        self.assertEqual(sight["params"][0], imm(900))
+        self.assertEqual(len(relocations), 3)
+
+    def test_menu_leaves_variable_and_introduce_options_untouched(self) -> None:
+        """GPL-141's 0x0A98 menu ends with a GSTR[5] option and GPL-143's
+        0x0797 menu starts with INTRODUCE. Neither is an inline literal, so
+        they stay as they are while the literal options are still edited."""
+        document = self._menu_document(["Option A", "Option B", "Option C"])
+        params = document["instructions"][0]["params"]
+        variable = [{"kind": "variable", "var_kind": "gstring", "id": 5}]
+        introduce = [{"kind": "immediate_string", "sub_type": "introduce", "value": "<active_character_name>"}]
+        params[1] = introduce
+        params[7] = variable
+        edits = [{
+            "unit_id": "DLG_b", "occurrence_id": "DLOC_b", "offset": 0,
+            "original": "Option B", "translation_zh_tw": "選項乙", "encoded": b"B" * 5,
+        }]
+        patched, applied = relocate_json_strings(document, edits)
+        menu = patched["instructions"][0]
+        self.assertEqual(menu["params"][1], introduce)
+        self.assertEqual(menu["params"][4][0]["value"], "B" * 5)
+        self.assertEqual(menu["params"][7], variable)
+        self.assertEqual(len(applied), 1)
+        # An edit can never be matched to a non-literal option.
+        with self.assertRaisesRegex(ValueError, "no unclaimed menu entry text matches"):
+            relocate_json_strings(document, [dict(edits[0], original="<active_character_name>")])
+
     def test_menu_rejects_edit_with_no_unclaimed_matching_entry(self) -> None:
         document = self._menu_document(["Option A", "Option B"])
         edits = [{
