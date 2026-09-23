@@ -15,12 +15,12 @@ WIND_3008_SHA256 = "a8bfcc3de03485e17006e7066b979445cccca5568f7c1895dd5a07797e1c
 ROOT = Path(__file__).resolve().parent
 # Unused padding inside the resident code segment. DS bytes after the
 # initialized image are BSS and get cleared during startup.
-CHOICE_RESTORE_CAVE = 0x33C60 + 0x9716
-CHOICE_RESTORE_TEMPLATE = 0x33C60 + 0x9900
+CHOICE_RESTORE_CAVE = 0x33C60 + 0xFD80
+CHOICE_RESTORE_TEMPLATE = 0x33C60 + 0xD720
 CHOICE_SET_TEXT = 0x2FDCA
 CHOICE_SET_TEXT_PROLOGUE = bytes.fromhex("558BEC81ECEA00")
 CODE_SEGMENT = 0x2E86
-CHOICE_RESTORE_IP = 0x9716
+CHOICE_RESTORE_IP = 0xFD80
 CHOICE_IDS = range(0x081C, 0x0820)
 REMOVED_CHOICE_ID = 0x0820
 FIRST_CHOICE_Y = 13
@@ -52,7 +52,9 @@ def _choice_restore_payloads() -> tuple[bytes, bytes]:
         raise ValueError("choice restore hook is missing its unrelocated return segment")
     if len(panel) != 608:
         raise ValueError("choice restore panel must be two 76-byte rows across four planes")
-    if CHOICE_RESTORE_CAVE + len(hook) > CHOICE_RESTORE_TEMPLATE:
+    hook_end = CHOICE_RESTORE_CAVE + len(hook)
+    panel_end = CHOICE_RESTORE_TEMPLATE + len(panel)
+    if not (hook_end <= CHOICE_RESTORE_TEMPLATE or panel_end <= CHOICE_RESTORE_CAVE):
         raise ValueError("choice restore hook overlaps its panel template")
     return hook, panel
 

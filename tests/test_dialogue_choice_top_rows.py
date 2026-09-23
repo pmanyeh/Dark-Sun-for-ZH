@@ -16,7 +16,7 @@ EXE = Path("from Steam/games/Dark Sun-ENG/GAME/DARKSUN/DSUN.EXE")
 @pytest.mark.skipif(not EXE.is_file(), reason="original DSUN.EXE is not in this checkout")
 def test_choice_restore_is_relocation_safe() -> None:
     patched = patch_dialogue_choice_paging(EXE.read_bytes())
-    assert patched[CHOICE_SET_TEXT:CHOICE_SET_TEXT + 7] == bytes.fromhex("9A1697862EEB00")
+    assert patched[CHOICE_SET_TEXT:CHOICE_SET_TEXT + 7] == bytes.fromhex("9A80FD862EEB00")
     hook = (Path("tools/dialogue_choice_top_rows_hook.bin")).read_bytes()
     panel = (Path("tools/dialogue_choice_top_rows.bin")).read_bytes()
     assert patched[CHOICE_RESTORE_CAVE:CHOICE_RESTORE_CAVE + len(hook)] == hook

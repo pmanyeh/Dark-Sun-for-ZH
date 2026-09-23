@@ -375,14 +375,14 @@ def patches(
         # beside it, so the pointer table stays here and the bytes live in
         # unused code-segment padding. Startup zeroes DS BSS, so they cannot
         # live after the initialized data segment.
-        offset = 0x9B60
+        offset = 0xD980
         name_offsets = []
         for filename in filenames:
             name_offsets.append(offset)
             offset += len(filename)
         names = struct.pack(f"<{bank_count}H", *name_offsets)
         name_strings = b"".join(filenames)
-        name_string_file_offset = CODE_BASE + 0x9B60
+        name_string_file_offset = CODE_BASE + 0xD980
     if NAMES + len(names) > min(CACHE, names_limit):
         raise ValueError(
             f"bank name table for {bank_count} banks ends at 0x{NAMES + len(names):04X}, "
