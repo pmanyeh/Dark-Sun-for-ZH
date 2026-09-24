@@ -55,6 +55,22 @@ NAME_GLYPH_SLOTS = 7
 # The v75 layout values (re_95); the decoder draws with these directly.
 VIEW_Y_ORIGIN = 63
 ALIGNMENT_POSITION = (44, 149)
+# VIEW CHARACTER lower half (re_102): four rows 10px apart. v75 left them at
+# 106/115/125/138; the class row sits 2px lower so it clears the panel edge.
+# Each (file offset of the Y byte in a "push dword Y:X", v75 value) pair
+# belongs to one row; the class row is moved by the decoder instead.
+CLASS_ROW = (106, 108)
+LEVEL_ROW_Y = 118
+STAT_ROW_Y = 128
+ARMOUR_ROW_Y = 138
+VIEW_ROW_SITES = (
+    (0x8A218, 115, LEVEL_ROW_Y),   # level digits
+    (0x8A285, 115, LEVEL_ROW_Y),   # EXP
+    (0x8A2D3, 125, STAT_ROW_Y),    # HP value (the labels are in the decoder)
+    (0x8A349, 125, STAT_ROW_Y),    # PSI value
+    (0x8A390, 138, ARMOUR_ROW_Y),  # AC
+    (0x8A3C5, 138, ARMOUR_ROW_Y),  # DAM
+)
 
 # (file offset, original bytes, patched bytes, origin). Origins name the
 # candidate that introduced each run; see re_56..re_95 for the reasoning.
@@ -188,6 +204,10 @@ def apply_view_ui_exe_patches(image: bytes) -> bytes:
         if image[offset] != ord("*"):
             raise ValueError(f"damage multiplier at 0x{offset:X} found modified bytes")
         result[offset] = ord("x")
+    for offset, v75_row, row in VIEW_ROW_SITES:
+        if result[offset] != v75_row:
+            raise ValueError(f"VIEW CHARACTER row at 0x{offset:X} is not the v75 layout")
+        result[offset] = row
     for offset, original, replacement in NATURAL_ATTACK_BRACKETS:
         if image[offset] != original:
             raise ValueError(f"natural attack bracket at 0x{offset:X} found modified bytes")
@@ -226,6 +246,8 @@ def build_view_ui_font(
         class_names=True,
         bank_count=bank_count,
         ui_text_ids=ids,
+        class_row=CLASS_ROW,
+        stat_row_y=STAT_ROW_Y,
     )
     result = bytearray(expanded + core)
     height = next(iter(banks.values()))["height"]

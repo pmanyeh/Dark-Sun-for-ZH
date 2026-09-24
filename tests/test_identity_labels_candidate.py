@@ -107,5 +107,59 @@ class IdentityLabelsMachineTests(backpack_tests.BackpackMachineTests):
                     self.assertEqual(self.slot_record(code), self.glyph(cjk_id))
 
 
+@unittest.skipUnless(HAVE_UNICORN and (backpack_tests.TOOLBIN / "as.exe").exists(), "requires Unicorn and GNU toolchain")
+class ClassSlotMachineTests(IdentityLabelsMachineTests):
+    @classmethod
+    def setUpClass(cls):
+        cls.core = assemble_name_slot_cache(
+            backpack_ids=(1303, 100),
+            ability_ids=(93, 761, 1316, 1315, 855, 715, 354, 93, 354, 1314, 860, 93),
+            view_character=True,
+            view_y_origin=63,
+            label_ids=(794, 560, 822, 629, 507, 139, 822, 629),
+            identity=True,
+            class_names=True,
+            class_row=(106, 108),
+        )
+
+    def run_class_slot(self, tag, colour, bp=0x9000, row=106):
+        # The 17-byte VIEW CHARACTER class redirect installed in the EXE. Each
+        # tag gets its own address: Unicorn keeps executing a cached
+        # translation if code is rewritten in place between runs.
+        helper_ip = 0x1000 + (tag & 0xFF) * 0x20
+        trap_ip = helper_ip + 17
+        stub = (b"\xB8" + tag.to_bytes(2, "little") + b"\x0E\x68" + trap_ip.to_bytes(2, "little")
+                + bytes.fromhex("8C DB 80 EF 10 53 68 14 07 CB"))
+        self.cpu.mem_write(0xA0000 + helper_ip, stub + bytes.fromhex("CD 80"))
+        record_seg, record_off = 0x7000, 0x0040
+        regs = {UC_X86_REG_CS: 0xA000, UC_X86_REG_DS: 0x5000, UC_X86_REG_ES: 0x0430,
+                UC_X86_REG_SS: 0x8000, UC_X86_REG_SP: 0xF000, UC_X86_REG_BP: bp,
+                UC_X86_REG_SI: 0x1111, UC_X86_REG_DI: 0x2222, UC_X86_REG_DX: colour}
+        for register, value in regs.items():
+            self.cpu.reg_write(register, value)
+        self.cpu.mem_write(0x80000 + bp + 0xA, record_off.to_bytes(2, "little") + record_seg.to_bytes(2, "little"))
+        self.cpu.mem_write(0x80000 + bp + 0x10, row.to_bytes(2, "little"))
+        # K'RATCHEK: Fighter / Druid / Psionicist.
+        self.cpu.mem_write(record_seg * 16 + record_off + 0x21, bytes([9, 7, 12]))
+        self.stopped = False
+        self.cpu.emu_start(0xA0000 + helper_ip, 0x100000, count=200000)
+        self.assertTrue(self.stopped, "did not reach the untouched continuation")
+        return self.cpu.reg_read(UC_X86_REG_DX)
+
+    def test_third_class_keeps_the_callers_colour_in_dx(self):
+        # 0x72C37 pushes DX (slot 3's class colour) right after this span.
+        self.assertEqual(self.run_class_slot(0xFF92, 0x004D), 0x004D)
+
+    def class_row_after(self, tag, row, bp=0x9000):
+        self.run_class_slot(tag, 0, bp=bp, row=row)
+        return int.from_bytes(self.cpu.mem_read(0x80000 + bp + 0x10, 2), "little")
+
+    def test_slot1_moves_only_the_class_row(self):
+        # The formatter reads the class row from the caller's [bp+0x10].
+        self.assertEqual(self.class_row_after(0xFF90, 106), 108)
+        self.assertEqual(self.class_row_after(0xFF90, 100), 100)
+        self.assertEqual(self.class_row_after(0xFF92, 106), 106)
+
+
 if __name__ == "__main__":
     unittest.main()

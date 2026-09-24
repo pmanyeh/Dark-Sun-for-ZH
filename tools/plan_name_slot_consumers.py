@@ -328,6 +328,8 @@ def assemble_name_slot_cache(
     class_names: bool = False,
     bank_count: int = LEGACY_BANK_COUNT,
     ui_text_ids: dict[str, tuple[int, ...]] | None = None,
+    class_row: tuple[int, int] | None = None,
+    stat_row_y: int | None = None,
 ) -> bytes:
     """Assemble the self-contained decoder appended to FONT-100.
 
@@ -404,6 +406,14 @@ def assemble_name_slot_cache(
             if any(not 0 <= value < id_limit for value in values):
                 raise ValueError(f"{unit} uses a CJK ID outside the {bank_count} banks")
         extra_symbols += ["--defsym", "generated_ui_text=1"]
+    if class_row is not None:
+        if not class_names or not all(0 <= value < 200 for value in class_row):
+            raise ValueError("class row needs class-name support and two on-screen Y values")
+        extra_symbols += ["--defsym", f"CLASS_ROW_FROM={class_row[0]}", "--defsym", f"CLASS_ROW_TO={class_row[1]}"]
+    if stat_row_y is not None:
+        if label_ids is None or not 0 <= stat_row_y < 200:
+            raise ValueError("stat row needs the VIEW HP/PSI labels and an on-screen Y value")
+        extra_symbols += ["--defsym", f"VIEW_STAT_ROW_Y={stat_row_y}"]
     with tempfile.TemporaryDirectory() as temporary:
         directory = Path(temporary)
         obj = directory / "name-cache.o"

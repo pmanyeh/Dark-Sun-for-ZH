@@ -27,6 +27,12 @@
 .ifndef ALIGNMENT_X
 .equ ALIGNMENT_X, 149
 .endif
+# VIEW CHARACTER lower half: the HP:/PSI: labels' row (re_95: 125), and the
+# class-name row. The class row's own EXE immediate (0x8A1E4) overlaps an
+# overlay relocation, so the class-name redirect moves it instead (re_102).
+.ifndef VIEW_STAT_ROW_Y
+.equ VIEW_STAT_ROW_Y, 125
+.endif
 # plan_name_slot_consumers.py writes this file from the current CJK mapping;
 # it defines the ui_text_* macros used by the material/identity/class tables.
 .ifdef generated_ui_text
@@ -843,7 +849,7 @@ view_hp_decoded:
     push cs
     push OFFSET view_hp_buffer
     .byte 0x66, 0x68
-    .long 0x007D0095
+    .long (VIEW_STAT_ROW_Y << 16) | 0x0095
     push bx
     push cx
     lret
@@ -884,7 +890,7 @@ view_psi_decoded:
     push cs
     push OFFSET view_psi_buffer
     .byte 0x66, 0x68
-    .long 0x007D00DE
+    .long (VIEW_STAT_ROW_Y << 16) | 0x00DE
     push bx
     push cx
     lret
@@ -1178,6 +1184,14 @@ class_thief: .byte 0x5E, (1326 / 94) + 0x21, (1326 % 94) + 0x21, 0x5E, (1328 / 9
 #      character never sets the flag at all, so class_slot1_label_entry
 #      behaves exactly as before in that case.
 class_slot1_label_entry:
+.ifdef CLASS_ROW_FROM
+    # Slot 1 decodes exactly once per class-name draw, always before the
+    # formatter call reads the row from the caller's [bp+0x10] argument.
+    cmp word ptr ss:[bp + 0x10], CLASS_ROW_FROM
+    jne class_row_ready
+    mov word ptr ss:[bp + 0x10], CLASS_ROW_TO
+class_row_ready:
+.endif
     les bx, [bp + 0x0A]
     mov al, es:[bx + 0x21]
     dec al
@@ -1229,6 +1243,12 @@ class_slot2_check_done:
     push es
     jmp name_cache_entry
 class_slot3_label_entry:
+    # The three-class caller computed slot3's class colour into DX just
+    # before this redirected span and pushes DX right after it (0x72C37),
+    # but the shared decoder returns its pointer in DX:AX. Keep the caller's
+    # DX so the third class name is not drawn in whatever palette index the
+    # FONT segment's low byte happens to be (re_102).
+    mov cs:[class3_saved_dx], dx
     les bx, [bp + 0x0A]
     mov al, es:[bx + 0x23]
     dec al
@@ -1325,7 +1345,9 @@ class_slot3_copy_done:
     push ax
     push bx
     push cx
+    mov dx, cs:[class3_saved_dx]
     lret
+class3_saved_dx: .word 0
 .endif
 cjk_name_cache_end:
 .ifdef view_character

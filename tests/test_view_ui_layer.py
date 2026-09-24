@@ -22,6 +22,7 @@ from tools.view_ui_layer import (
     MATERIAL_TABLE_OFFSET,
     MATERIAL_UNITS,
     NATURAL_ATTACK_BRACKETS,
+    VIEW_ROW_SITES,
     VIEW_UI_EXE_PATCHES,
     apply_view_ui_exe_patches,
     build_view_ui_font,
@@ -132,9 +133,11 @@ class ViewUiExePatchTests(unittest.TestCase):
     def test_applies_to_pristine_and_refuses_conflicts(self):
         image = PRISTINE_EXE.read_bytes()
         patched = apply_view_ui_exe_patches(image)
+        rows = {offset: row for offset, _, row in VIEW_ROW_SITES}
         for offset, _, replacement, _ in VIEW_UI_EXE_PATCHES:
-            expected = bytes.fromhex(replacement)
-            self.assertEqual(patched[offset : offset + len(expected)], expected)
+            for index, value in enumerate(bytes.fromhex(replacement), offset):
+                self.assertEqual(patched[index], rows.get(index, value))
+        self.assertEqual(sorted(set(rows.values())), [118, 128, 138])
         table = patched[MATERIAL_TABLE_OFFSET : MATERIAL_TABLE_OFFSET + len(MATERIAL_TABLE)]
         self.assertEqual(table, material_table_bytes())
         self.assertEqual(bytes(patched[offset] for offset in DAMAGE_MULTIPLIER_OFFSETS), b"xxx")
