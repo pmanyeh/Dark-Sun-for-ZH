@@ -1,49 +1,30 @@
 # 《浩劫殘陽：破碎大地》(Dark Sun: Shattered Lands) 繁中化交接指南 (handoff.md)
 
-> **產生時間**：2026-09-21 23:01（第 0、四節更新於 2026-09-23 晚間）  
+> **產生時間**：2026-09-21 23:01（第 0、四節更新於 2026-09-24）  
 > **交接目的**：為下一輪重開 Session 的 AI 助手提供完整無縫的專案背景、歷史數據、技術規範、標準操作 SOP 與接續目標，確保繁中在地化推進不中斷。
 
 ---
 
-## ⚠️ 0. 最新狀態（2026-09-23 深夜更新，新 Session 請先讀這一節）
+## ⚠️ 0. 最新狀態（2026-09-24 更新，新 Session 請先讀這一節）
 
-### 0.00 v89：最新可玩版本（背包／VIEW CHARACTER／材質／職業顏色／行距）
+### 0.1 現況
 
-`scratch_test/cjk_display_staging_v89_view_rows`，建置指令與 v87 相同（`--view-ui`）。
-依序疊上：材質字首（re_101）、傷害乘號改 `x`、天生攻擊 `(...)`（re_101 §7）、第三職業顏色
-修正與下半部四行 108／118／128／138（re_102）。全部經使用者實機確認。
+- **可玩版本**：`scratch_test/cjk_display_staging_v89_view_rows`（使用者已實機確認）。
+- **已中文化**：
+  - 全部對話（re_99）
+  - 背包／VIEW CHARACTER 的標籤、性別、種族、陣營、職業（含多職業）
+  - 物品名稱（NAME-1）
+  - 物品材質字首（re_100、re_101）
+- **v89 的修正**：第三職業顏色、VIEW CHARACTER 下半部四行行距（re_102）。
+- **最新 commit**：`18c85ac`。
 
-### 0.0 v87：背包／VIEW CHARACTER 已併入主線（實機初測通過）
+**下一輪目標（使用者指定）：翻譯寫在程式裡的字串**，例如選單下方的「WHAT DO YOU SAY?」。
+使用者也注意到其他畫面還有英文字串。細節見 0.3 節。
 
-`scratch_test/cjk_display_staging_v87_view_ui` = v86r6 + v75 的背包／VIEW CHARACTER 中文化
-+ 中文物品名稱（NAME-1）。`build_cjk_display_staging.py --view-ui` 一條指令建完，不再需要
-v33～v75 的舊 build 鏈。199 項測試全過；實機已確認 VIEW CHARACTER（含多職業、「小偷」）、
-背包標籤、中文物品名稱、懸停名稱與右鍵資訊卡。做法、重建指令與待測
-清單見 `docs/re/re_100_v87_view_ui_merge.md`。下方 0.4 節的障礙都已處理。
-
-### 0.1 一句話現況
-
-**對話翻譯已全部編進遊戲**。v86r6（`scratch_test/cjk_display_staging_v86r6_gpl_pool`）
-已由使用者實機確認：215 個對話區塊全數編入，中文換行、「我是<名字>」選項、句中多餘
-空格、Trustee 等大腳本的 BAD GPL EXIT 都已修好。細節見 `docs/re/re_99_*`。v87 的對話
-部分與 v86r6 逐位元組相同。
-
-### 0.2 這次 Session 做了什麼（細節見 re_99）
-
-| # | 問題 | 修法 | 位置 |
-|---|---|---|---|
-| 1 | EXE 只含 106 個區塊的中文 | 從原版一次全量編譯；GPL-3 `0x07C0` 固定入口是誤判（真正的呼叫者是 MAS-42 的 boxtrigger），已不需要 `--require-fixed-entry` | `compile_gpl_dialogue_patch.py` |
-| 2 | 26 個區塊被整段跳過 | 支援 `string copy`（0x0A，「Goodbye.」就在 MAS-99）、選單內嵌標題、`GFFI-7` | 同上 |
-| 3 | 對話框關不掉、選單標題亂碼 | `END`/`CLOSE`/`DEBUG` 是引擎控制字；選單標題沒有中文繪製路徑，這 23 筆記入封包的 `withheld`，保留英文 | 同上 |
-| 4 | 每段譯文都另起一行 | EBOX 只在空白處斷行；每個中文字之後都視為可斷點（`147D:00FC` far routine） | `patch_dsun_scratch_cache.py` |
-| 5 | `I'm 0001` | strcpy 來源改指 `147D:015C`「我是」 | 同上、`build_cjk_display_staging.py` |
-| 6 | 「我已經在 這裡」 | 編譯時去掉中文接縫處的空格（目錄不動） | `compile_gpl_dialogue_patch.py` |
-| 7 | Trustee 對話出現 BAD GPL EXIT | GPL 記憶體池只有 10,000 bytes，GPL-146 翻譯後 10,706；`0x6A694` 改為 12,288，編譯器會擋下超過上限的 chunk | `patch_dsun_scratch_cache.py` |
-
-### 0.3 重建 v86r6 的完整指令（`scratch_test/` 在 `.gitignore` 裡）
+### 0.2 重建 v89（`scratch_test/` 在 `.gitignore` 裡）
 
 ```bash
-# 1) 候選清單：所有出現位置都是 GPL/MAS、inline、compressed、非 unresolved 的已翻譯單元
+# 0) 候選清單：所有出現位置都是 GPL/MAS、inline、compressed、非 unresolved 的已翻譯單元
 python - <<'EOF'
 import json
 from collections import defaultdict
@@ -62,81 +43,144 @@ open('scratch_test/all_translated_unit_ids.txt', 'w', encoding='utf-8').write('\
 print(len(ok))   # 13194
 EOF
 
-# 2) 對話封包（從原版全編；不要加 --prior-package 或 --require-fixed-entry）
-python tools/compile_gpl_dialogue_patch.py \
-  --unit-id-file scratch_test/all_translated_unit_ids.txt \
-  --output scratch_test/gpl_full_from_pristine_v4
+# 1) mapping（已 commit；只有新增字元時才重跑，兩個 catalog 都要給）
+python tools/cjk_localization_pipeline.py inventory \
+  --catalog localization/catalog/localization_manifest.csv \
+  --catalog localization/catalog/fixed_ui_labels.csv
 
-# 3) 組合包
+# 2) 字型 bank（mapping 有新字時才重建）
+python tools/cjk_localization_pipeline.py build-banks --mapping localization/cjk_mapping.json \
+  --output scratch_test/formal_cjk_fusion_10x10_v21_fixed_ui --font Fonts/Fusion_Pixel_10px.ttf \
+  --font-size 10 --pixel-width 10 --height 10 --advance 10 --threshold 64 --fit-mode pixel-aligned
+
+# 3) 對話封包 → 疊上 NAME-1
+python tools/compile_gpl_dialogue_patch.py \
+  --unit-id-file scratch_test/all_translated_unit_ids.txt --output scratch_test/gpl_full_from_pristine_v5
+python tools/compile_gff_name_records.py \
+  --prior-package scratch_test/gpl_full_from_pristine_v5/gpl-dialogue-patch.json \
+  --output scratch_test/gpl_full_v5_name_records
+
+# 4) 組合包
 python tools/build_cjk_display_staging.py \
   --mapping localization/cjk_mapping.json \
-  --bank-package scratch_test/formal_cjk_fusion_10x10_v20_current/cjk-bank-set.json \
+  --bank-package scratch_test/formal_cjk_fusion_10x10_v21_fixed_ui/cjk-bank-set.json \
   --spin-package scratch_test/spin_gff_import_title_newline_v3_current/gff-text-replacements.json \
-  --gpl-package scratch_test/gpl_full_from_pristine_v4/gpl-dialogue-patch.json \
-  --ebox-line-gap 2 --menu-line-gap 2 --dialogue-option-pitch 11 \
-  --output scratch_test/cjk_display_staging_v86r6_gpl_pool
+  --gpl-package scratch_test/gpl_full_v5_name_records/gpl-dialogue-patch.json \
+  --ebox-line-gap 2 --menu-line-gap 2 --dialogue-option-pitch 11 --view-ui \
+  --output scratch_test/cjk_display_staging_vNN_xxx
 ```
 
-v86r6 雜湊：`DSUN.EXE` `74634c98…`、`GPLDATA.GFF` `2346f98a…`、`RESOURCE.GFF` `7083e879…`。
-封包數據：248 個 chunk、13,692 個編入、23 個 withheld。
+- 建好後，把 v86r6 的 `SAVE01～08.SAV` 與 `DARKRUN.GFF` 複製進去，讓使用者可以讀進度。
+  存檔名稱另存在別的檔，所以讀檔清單上的名字會跟遊戲內不同，但 SAVE01 本身是同一份。
+- 只要對話封包改版，舊存檔記住的觸發器位址就可能失效（re_99）。
+- `tests/`：209 項全過，指令是 `python -m pytest tests -q`。
 
-**編譯後務必驗證跨區塊參照**（re_99 §1 的做法）：用 `gpl-disasm --all --json` 反組譯
-原版與新版，逐條比對 `CROSS_CHUNK_TARGET` 指令與 GPLI-1，目標要等於
-`instruction_offset_map` 的結果，其他參數要完全相同。
+### 0.3 下一輪：程式內字串翻譯——已知事實與限制
 
-### 0.4 （已完成，見 0.0／re_100）合併屬性（VIEW CHARACTER）與物品中文化
+**A. 字串從哪裡來**
 
-以下是合併前的狀況紀錄。這條線的成果原本在另一條舊的 build 鏈上，從未併入
-`build_cjk_display_staging.py`：
+1. **「WHAT DO YOU SAY?」這類選單標題其實不在 EXE 裡**：
+   - 它們是 GPLDATA 的 `GSTR[1]`（553 個選單）、`GSTR[4]`（12 個），另有 19 個內嵌標題。
+   - 目前刻意保留英文，記在對話封包的 `withheld`（re_99 §4）。
+   - 原因是下方選單標題的繪製程式沒有中文路徑，而且目前還不知道是哪一段程式。
+   - 要翻譯，得先找到這段繪製程式並補上 Base94 解碼，然後取消 withheld。可以從 WIND-3008
+     對話選單與 re_96～re_98 的選單繪製研究往下追。
+2. **EXE 的畫面字串都在 DGROUP 裡**：
+   - DGROUP 在檔案 `0x48960`，執行期段為 `4B7A`。
+   - 用「以 NUL 結尾、主要是英文字母」的條件篩選，約有 570 條，內容包括：
+     - 遊戲選單（`GAME MENU`、`RETURN TO GAME`、`MUSIC ON`）
+     - 戰鬥（`END TURN`、`GUARD`）
+     - 背包錯誤訊息（`Too heavy a load to carry`）
+     - 狀態（`Stunned`、`Dead`）
+     - 法術效果（`Hasted`）
+     - 商店（`NO DEAL!`、`SOLD!`）
+     - 升級（`CHOOSE A SPELL,`）
+     - 法術／靈能名稱（約 150 條）
+   - 不含 GUI 錯誤訊息，這部分約 700 bytes，在 `38D7～3B97`。
+   - 篩選程式：用 regex `(?<=\x00)[\x20-\x7e]{4,}(?=\x00)` 掃描 DGROUP，再排除檔名、錯誤訊息等。
+   - `localization_manifest.json` 裡有 656 筆 `exe_*` 單元，都還沒翻，但混了大量雜訊，
+     例如 `X?VCT?VC...`、`Borland C++`。要先清理再開始翻譯。
 
-- 最終 checkpoint：`scratch_test/cjk_display_staging_v75_view_column_shift2`
-  （交接文件 `docs/re/HANDOFF_NEXT_SESSION_2026-09-18.md`，完整記錄 `re_85`～`re_95`）。
-- build 鏈：v33（`build_name_slot_candidate_from_v33.py`）→ 背包、能力值、固定標籤、
-  materials → `build_view_*_candidate.py` 一路疊到 v71（`build_view_class_multi_candidate.py`）
-  → v72～v75（`build_view_layout_adjust*`、`build_view_column_shift*`）。每一版都以上一版的
-  staging 目錄當 parent，依賴舊的字型與 mapping。
-- 核心：`tools/plan_name_slot_consumers.py`、`tools/cjk_name_slot_cache.asm`。
+**B. 技術限制（開工前先想清楚）**
 
-**已知障礙（開工前先看）**：
+1. **位址換算**：檔案位移 = `0x5400` + (執行期段 − `0x824`) × 16 + 偏移。
+   - 例：`339E:016D` → `0x30D0D`；`4B7A:0000` → `0x48960`。
+   - 舊文件（re_94）用的 `0xD640` 是錯的。
+2. **空間**：一個中文字編碼成 `^xy`，佔 3 bytes。字串在 DGROUP 裡長度固定，原地通常放不下，
+   例如 `GAME MENU` 是 9 bytes，「遊戲選單」要 12 bytes。
+   - 程式碼用立即值 `push 2403h` 之類引用字串，所以可以把字串搬到別處，再改這些立即值。
+   - 問題是 DGROUP 沒有現成的空地：re_56 已證明 DGROUP 尾端不能用。
+   - 可能的來源：`38D7～3B97` 這段 GUI 錯誤訊息，以及 `1FA5～1FDD` 的除錯字串。
+     但必須先證明這些字串沒有其他引用、改掉不影響功能，才能拿來用。
+3. **大多數 UI 繪製路徑不會解碼 Base94**：
+   - 主線的常駐 resolver 只掛在 EBOX（對話框），還有 MENU 的行距修補。
+   - 最通用的 formatter 是 `339E:016D`（`%C%s%d…`）：
+     - `%s` 迴圈在 `339E:02E8`，檔案 `0x30BA0+0x2EB`，逐字呼叫 `11A4:59C1` 畫字。
+     - v34／v35 曾經在這個迴圈加解碼，結果畫面空白或當機（re_52、re_53）。
+       `build_cjk_display_staging.py` 目前會拒絕這兩個實驗旗標。
+     - 這條路徑的前進量是固定的 `寬度('H')+1`，大約 7px（re_63）。10px 寬的中文字會重疊 3px。
+   - 物品懸停列、右鍵資訊卡已經實測，都不會解碼（re_101 §2）。
+   - 所以翻譯每一條字串之前，都要先確認它走哪條繪製路徑；也可以考慮設計一個安全的通用解碼點。
+     這是下一輪的核心問題。
+4. **可用的字元碼已經用完**：
+   - name-slot 暫借了 10 個碼：`` " # & < > \ ~ ` _ | ``。
+   - 材質字首用了 6 個碼：`* @ [ ] { }`。
+   - 這 16 個字元只要出現在任何畫面文字裡，就會被畫成中文字形。re_101 §7 的「貝」就是這樣來的：
+     `<` 被畫成了殘留的中文字。
+   - 所以翻譯後的字串不能含這些字元。看到英文裡夾著莫名的中文字，先查它原本是不是其中之一。
+5. **修補 overlay 區**：必須用 `plan_name_slot_consumers.verify_overlay_relocations` 檢查，
+   並確認沒碰到 MZ 重定位。`view_ui_layer.apply_view_ui_exe_patches` 是現成的範例。
+6. **會被引擎比對的字串不能翻**：
+   - `END`、`CLOSE`、`DEBUG`、玩家打字比對的關鍵字、`string compare` 的對象（re_99）。
+   - DGROUP 的 `CLOSE`（`1F11`）、`DEBUG`（`1F17`）就是其中之一。
 
-1. **bank 數量**：name-slot 規劃寫死「6 個 CJB1 bank」（`plan_name_slot_consumers.py` 第
-   227／233／250 行）。現行主線是 12 個 bank，`tests/` 裡的 19 個 errors 就是這個原因
-   （`...eight IDs within six banks`）。
-2. **mapping 不同**：v75 用的是 `cjk-mapping-v57.json`（1,330 字）；主線是
-   `localization/cjk_mapping.json`（12 bank）。所有字 ID 都要重新對應。
-3. **記憶體位置衝突要逐一核對**：
-   - `147D` 死區已經用滿（re_99 §9），name-slot 不能再往這裡放。
-   - name-slot 使用 FONT payload（`FONT_CORE_PAYLOAD_OFFSET = 0x239B`）與常駐段
-     `0x51F1`／`0x5414`。`2E86:51F0~55AA` 是計時器 ISR 的私有堆疊（re_98 §29.1），
-     常駐字型快取 `545A~5533` 本來就只剩約 115 bytes 餘裕，合併後要重新評估。
-   - 修補 overlay 區時，要用 `verify_overlay_relocations` 檢查（re_95：`0x8A1E4` 曾撞上
-     overlay relocation）。
-4. 建議做法：先讀 09-18 交接與 `re_94`／`re_95`，把 name-slot 系列的 EXE／RESOURCE 修補
-   整理成可以接在 `build_cjk_display_staging.py` 後面的步驟，以 v86r6 為基底；不要以 v75
-   為基底把對話修補倒灌回去。
+**C. 建議的起手式**
 
-### 0.5 其他待辦
+1. 請使用者提供想先處理的畫面截圖或字串（使用者說「有發現一些地方還有其他字串」）。
+2. 對每一條字串：
+   - 找出引用它的程式碼（搜尋 `push <DGROUP偏移>` 等立即值）。
+   - 判斷它走哪條繪製路徑。
+   - 評估「原地放得下嗎？」、「路徑會解碼嗎？」。
+3. 如果大量字串都走 `339E:016D`，就研究在 formatter 加一個**窄範圍**的 Base94 解碼：
+   - 先讀 re_52、re_53、re_63，了解當年失敗的原因。
+   - 同時處理 7px 固定前進量的問題。
+4. 譯名以 `docs/名詞權威對照表.md` 為準。法術、靈能名稱在對照表裡大多已經有智冠手冊的定名。
 
-1. **選單標題仍是英文**（What do you say? 等）：要先找出下方選單標題的繪製程式並加入
-   中文路徑，才能取消 `withheld` 中的標題項目。
-2. **避頭點**：換行偶爾會讓「，」「。」出現在行首。
-3. **已知風險（目前無症狀）**：常駐字型快取 `2E86:545A~5533` 與計時器 ISR 私有堆疊重疊，
-   餘裕約 115 bytes。若出現隨機花字或當機，從這裡查。
+### 0.4 其他待辦
 
-### 0.6 本次學到、下次要記得的事
+1. **避頭點**：換行偶爾會讓「，」「。」出現在行首。
+2. **已知風險（目前沒有症狀）**：常駐字型快取 `2E86:545A～5533` 和 name-slot trampoline
+   `2E86:5414`，都在計時器 ISR 的私有堆疊 `53B6～55A6` 裡。若出現隨機花字或當機，從這裡查。
+3. **名詞**：Psionicist 維持「靈能師」（使用者 2026-09-24 決定），Thief 用「小偷」。
 
-- **存檔會記住已登記的觸發器位址**。每次對話封包改版，腳本位址都可能移動，舊存檔在同區域
-  可能出現奇怪行為。判斷是不是真 bug 時，先用新遊戲重現。
-- **大小也是限制**：GPL chunk 上限是池大小減 2（現為 12,286）。編譯器會擋下，但若再調大池，
-  要一併確認記憶體是否足夠。
-- **引擎會讀的字串不能翻**：`END`／`CLOSE`／`DEBUG`、玩家打字比對的關鍵字、`string compare`
-  的對象。新增可翻譯的指令類型前，先查這些。
-- **DOSBox-X-AI bridge 回應 id 錯位**只能結束 `dosbox-x.exe` 再重開。讀記憶體前要先
-  `pause_execution`。段位址換算：檔案段 + `0x824` = 執行期段（例：`3781` → `3FA5`）。
-- 在 Bash heredoc 裡用 Python 寫入原始碼時，`\x..`／`\0` 會變成實際的控制字元；改用暫存目錄
-  的腳本檔。
+### 0.5 操作注意（本輪學到的）
+
+- **DOSBox-X-AI**：
+  - 一律用 PowerShell `Start-Process` 啟動（`-WorkingDirectory` 指到組合包根目錄）。
+  - 重開之前，要等 9876 埠釋放。否則新執行個體的 bridge 綁定失敗，會整個停用，
+    這時只能再重開一次。
+  - 關掉使用者可能正在玩的執行個體之前，要先問。
+- **滑鼠座標**：`move_mouse_absolute` 的 x 要用擷取畫面上的 x 乘 2（擷取寬 640，遊戲內容在左半），
+  y 不變。
+- **快捷鍵**：主選單按 `L` → `Enter` 讀檔。`i` 開背包，`v` 開 VIEW CHARACTER，`1～4` 切換角色。
+- **記憶體**：讀之前先 `pause_execution`；讀完記得 `continue_execution`。
+- **組合包目錄被佔用**：DOSBox 開著組合包時，那個目錄刪不掉。重建時請換一個新的輸出目錄名。
+- **Python 腳本**：寫在 Bash heredoc 裡時，`\x..` 會被轉成真的控制字元。請把腳本寫進暫存目錄的檔案再執行。
+- **Unicorn 模擬測試**：同一位址改寫程式碼之後，Unicorn 會沿用舊的翻譯快取。每個 stub 要放在不同位址。
+
+### 0.6 相關文件
+
+| 主題 | 文件 |
+|---|---|
+| 對話全量編譯、GPL 池、withheld | `docs/re/re_99_*` |
+| 背包／VIEW CHARACTER 併入主線 | `docs/re/re_100_v87_view_ui_merge.md` |
+| 材質字首、固定字元碼、天生攻擊括號 | `docs/re/re_101_v88_material_words.md` |
+| 職業顏色、行距、位址換算更正 | `docs/re/re_102_v89_class_colour_and_view_rows.md` |
+| 選單換頁／疊影 | `docs/re/re_96`～`re_98` |
+| `%s` 迴圈解碼失敗紀錄 | `docs/re/re_52`、`re_53`、`re_63` |
 
 ---
+
 
 ## 一、重大歷史成就與當前進度總覽
 
@@ -203,8 +247,7 @@ v86r6 雜湊：`DSUN.EXE` `74634c98…`、`GPLDATA.GFF` `2346f98a…`、`RESOURC
 
 ## 四、接續推進目標（下一輪重開直接執行）
 
-~~從原版一次重編全部對話翻譯進 EXE~~：已完成（v86r6，見第 0 節與 re_99）。
+~~從原版一次重編全部對話翻譯進 EXE~~：已完成（v86r6，re_99）。
+~~合併屬性（VIEW CHARACTER）與物品中文化~~：已完成（v87～v89，re_100～re_102）。
 
-~~合併屬性（VIEW CHARACTER）與物品中文化~~：已完成建置（v87，見 re_100）。
-
-**下一個目標**：使用者遊玩確認 v87 對話無退化後，處理第 0.5 節的其他待辦。
+**下一個目標：翻譯寫在程式裡的字串（選單標題、EXE 畫面字串）**，已知事實、限制與起手式見第 0.3 節。
