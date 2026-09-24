@@ -155,5 +155,99 @@ class WindowTextMachineTests(MenuTitleMachineTests):
         pass
 
 
+@unittest.skipUnless(HAVE_UNICORN and (backpack_tests.TOOLBIN / "as.exe").exists(), "requires Unicorn and GNU toolchain")
+class DrawTextMachineTests(MenuTitleMachineTests):
+    """The resident draw_text wrapper 191F:0A40 (tag FF84)."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.core = assemble_name_slot_cache(backpack_ids=(1303, 100), text_draws=True)
+
+    def draw(self, text, helper_ip=0x3000, bp=0x9000):
+        stub = self_relative_tag_redirect(0xFF84, 30)
+        self.cpu.mem_write(0xA0000 + helper_ip, stub + bytes.fromhex("CD 80"))
+        self.cpu.mem_write(0x60000 + 0x0200, text + b"\0")
+        # [bp+6] window, [bp+0A] text, [bp+0E] x, [bp+10] y, [bp+12]/[bp+14] colours
+        self.cpu.mem_write(0x80000 + bp + 6, struct.pack("<HHHHHHHH", 0x1111, 0x2222, 0x0200, 0x6000,
+                                                        0x0033, 0x0044, 0x0055, 0x0066))
+        regs = {UC_X86_REG_CS: 0xA000, UC_X86_REG_DS: 0x5000, UC_X86_REG_ES: 0x3333,
+                UC_X86_REG_SS: 0x8000, UC_X86_REG_SP: 0xF000, UC_X86_REG_BP: bp,
+                UC_X86_REG_SI: 0x4321, UC_X86_REG_DI: 0x2222}
+        for register, value in regs.items():
+            self.cpu.reg_write(register, value)
+        self.stopped = False
+        self.cpu.emu_start(0xA0000 + helper_ip, 0x100000, count=200000)
+        self.assertTrue(self.stopped, "did not reach the untouched formatter call")
+        for register in (UC_X86_REG_BP, UC_X86_REG_SI, UC_X86_REG_DI, UC_X86_REG_DS,
+                         UC_X86_REG_ES, UC_X86_REG_SS):
+            self.assertEqual(self.cpu.reg_read(register), regs[register])
+        # The span's 24 bytes of pushes, exactly as the original.
+        self.assertEqual(self.landed_sp, 0xF000 - 24)
+        words = struct.unpack("<12H", self.cpu.mem_read(0x80000 + self.landed_sp, 24))
+        # top first: [bp+0E], [bp+10] (+2 for Chinese), 0D8F, ds, 0, 00FF, 00FE, [bp+12], 14h, [bp+14], text
+        self.assertEqual(words[0], 0x0033)
+        self.last_y = words[1]
+        self.assertEqual(words[2:10], (0x0D8F, 0x5000, 0x0000, 0x00FF, 0x00FE, 0x0055, 0x0014, 0x0066))
+        offset, segment = words[10:]
+        return offset, segment, bytes(self.cpu.mem_read(segment * 16 + offset, 25)).split(b"\0")[0]
+
+    def test_chinese_status_becomes_slot_codes(self):
+        _, segment, text = self.draw(triple(40) + triple(300))
+        self.assertEqual((segment, text), (0x7000, b'"#'))
+        self.assertEqual(self.slot_record(0x23), self.glyph(300))
+        self.assertEqual(self.last_y, 0x0046)
+
+    def test_english_label_passes_through(self):
+        self.assertEqual(self.draw(b"Okay", helper_ip=0x3100), (0x0200, 0x6000, b"Okay"))
+        self.assertEqual(self.last_y, 0x0044)
+
+    def width(self, pointer, text=b"", bp=0x9000):
+        # The 17-byte redirect at 191F:0406 returns to the loop test at IP 042A,
+        # or to the epilogue at 0437 for a null text.
+        stub = bytes.fromhex("B8 86 FF 0E 68 2A 04 8C DB 80 EF 10 53 68 14 07 CB")
+        self.cpu.mem_write(0xA0000 + 0x0406, stub)
+        self.cpu.mem_write(0xA0000 + 0x042A, bytes.fromhex("CD 80"))
+        self.cpu.mem_write(0xA0000 + 0x0437, bytes.fromhex("CD 80"))
+        self.cpu.mem_write(0x60000 + 0x0300, text + b"\0")
+        self.cpu.mem_write(0x80000 + bp + 6, struct.pack("<HH", *pointer))
+        regs = {UC_X86_REG_CS: 0xA000, UC_X86_REG_DS: 0x5000, UC_X86_REG_ES: 0x3333,
+                UC_X86_REG_SS: 0x8000, UC_X86_REG_SP: 0xF000, UC_X86_REG_BP: bp,
+                UC_X86_REG_SI: 0x4321, UC_X86_REG_DI: 0x1234, UC_X86_REG_AX: 0x7777}
+        for register, value in regs.items():
+            self.cpu.reg_write(register, value)
+        self.stopped = False
+        self.cpu.emu_start(0xA0000 + 0x0406, 0x100000, count=200000)
+        self.assertTrue(self.stopped)
+        self.assertEqual(self.landed_sp, 0xF000)
+        self.assertEqual((self.cpu.reg_read(UC_X86_REG_SI), self.cpu.reg_read(UC_X86_REG_DI)), (0, 0))
+        for register in (UC_X86_REG_BP, UC_X86_REG_DS, UC_X86_REG_ES, UC_X86_REG_SS):
+            self.assertEqual(self.cpu.reg_read(register), regs[register])
+        landed_ip = self.cpu.reg_read(UC_X86_REG_IP) - 2
+        return landed_ip, struct.unpack("<HH", self.cpu.mem_read(0x80000 + bp + 6, 4))
+
+    def test_width_of_null_text_returns_zero(self):
+        ip, _ = self.width((0, 0))
+        self.assertEqual((ip, self.cpu.reg_read(UC_X86_REG_AX)), (0x0437, 0))
+
+    def test_width_measures_the_decoded_slot_codes(self):
+        ip, pointer = self.width((0x0300, 0x6000), triple(40) + triple(300))
+        self.assertEqual(ip, 0x042A)
+        self.assertEqual(pointer[1], 0x7000)
+        self.assertEqual(bytes(self.cpu.mem_read(0x70000 + pointer[0], 3)), b'"#\0')
+
+    def test_width_of_english_text_is_untouched(self):
+        ip, pointer = self.width((0x0300, 0x6000), b"Okay")
+        self.assertEqual((ip, pointer), (0x042A, (0x0300, 0x6000)))
+
+    def test_chinese_title_decodes_into_name_slots(self):
+        pass
+
+    def test_consecutive_titles_are_not_served_from_the_cache(self):
+        pass
+
+    def test_english_title_is_upper_cased_and_passed_through(self):
+        pass
+
+
 if __name__ == "__main__":
     unittest.main()

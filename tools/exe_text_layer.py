@@ -15,8 +15,10 @@ needs the view UI layer, so the display build applies it only with --view-ui.
 
 from __future__ import annotations
 
+import csv
 import re
 from dataclasses import dataclass
+from pathlib import Path
 
 try:
     from .cjk_localization_pipeline import encode_text
@@ -39,6 +41,12 @@ class TextRegion:
     # (original DGROUP offset, new DGROUP offset, Chinese text)
     strings: tuple[tuple[int, int, str], ...]
     note: str
+    # Reached through a data table instead of push ds; such strings never move.
+    table_referenced: bool = False
+    # DGROUP far-pointer tables (offset, count) whose entries point into the
+    # region as offset:4356 (DGROUP's load-relative segment). Moved strings
+    # are followed there; the relocated segment words are never touched.
+    pointer_tables: tuple[tuple[int, int], ...] = ()
 
 
 def _same(*items: tuple[int, str]) -> tuple[tuple[int, int, str], ...]:
@@ -111,7 +119,119 @@ TEXT_REGIONS = (
                 (0x30BC, 0x30BA, "水")), "cleric sphere choice"),
     TextRegion(0x3195, b"ONLY ACTIVE CHAR CAN CAST\0", _same((0x3195, "僅限當前角色施法")), "casting"),
     TextRegion(0x3440, b"CANNOT LEARN FROM THIS ITEM\0", _same((0x3440, "無法從此物品學習")), "scroll learning"),
+    # --- combat: end of a character's move ---------------------------------
+    # Resident 0x1DB1F sprintf's "END %Fs's MOVE" (or "END MOVE" for names
+    # over 20 characters) and pops up 41B4:0025 with three buttons, which
+    # set their labels through 2A1D:07FA like the dialogue choices.
+    TextRegion(0x0C1D, b"END %Fs's MOVE\0END MOVE\0GUARD\0WAIT\0END TURN\0",
+               ((0x0C1D, 0x0C1D, "%Fs回合"), (0x0C2C, 0x0C27, "回合"), (0x0C35, 0x0C2E, "防守"),
+                (0x0C3B, 0x0C35, "等待"), (0x0C40, 0x0C3C, "結束回合")), "combat end-of-move popup"),
+    # --- USE screen, party portraits, spell learning --------------------------
+    # Far-pointer table DGROUP:11DC (29 entries) names the portrait status,
+    # the class of each class id, and the three spell-list toggle buttons.
+    # The toggles share the class strings.
+    TextRegion(0x1250, b"New\0Okay\0Stunned\0Out Cold\0Dying\0Dead\0Animated\0Petrified\0Gone\0"
+                       b"Cleric\0Druid\0Fighter\0Gladiator\0Preserver\0Psionic\0Ranger\0Thief\0 MAGE\0CLERIC\0PSlONlC\0",
+               ((0x1250, 0x1250, "新"), (0x1254, 0x1254, "正常"), (0x1259, 0x125B, "昏眩"),
+                (0x1261, 0x1262, "昏迷"), (0x126A, 0x1269, "瀕死"), (0x1270, 0x1270, "死亡"),
+                (0x1275, 0x1277, "活屍"), (0x127E, 0x127E, "石化"), (0x1288, 0x1285, "消失"),
+                (0x128D, 0x128C, "牧師"), (0x1294, 0x1293, "德魯伊"), (0x129A, 0x129D, "戰士"),
+                (0x12A2, 0x12A4, "角鬥士"), (0x12AC, 0x12AE, "保護者"), (0x12B6, 0x12B8, "靈能師"),
+                (0x12BE, 0x12C2, "遊俠"), (0x12C5, 0x12C9, "小偷"), (0x12CB, 0x12D0, "法師"),
+                (0x12D1, 0x128C, "牧師"), (0x12D8, 0x12B8, "靈能師")),
+               "portrait status, class names and spell-list toggles", pointer_tables=((0x11DC, 29),)),
+    # Far-pointer table DGROUP:30FA (4 entries): the psionic discipline button.
+    TextRegion(0x310A, b"Kinetics\0Metabolic\0Telepath\0Psi-port\0",
+               # 3112 (Kinetics' NUL) is also pushed as an empty string, so it stays.
+               ((0x310A, 0x310A, "念動"), (0x3112, 0x3112, ""), (0x3113, 0x3113, "精神"),
+                (0x311D, 0x311A, "感應"), (0x3126, 0x3121, "傳送")), "psionic disciplines",
+               pointer_tables=((0x30FA, 4),)),
+    # Spell learning scroll (overlay 0x85xxx); LEVEL %d and LEARN go through
+    # the decoding set-text call.
+    TextRegion(0x2FCE, b"LEVEL %d\0CHOOSE A SPELL,\0LEARN\0IS LEARNED!\0",
+               ((0x2FCE, 0x2FCE, "第%d級"), (0x2FD7, 0x2FD7, "選擇法術，"), (0x2FE7, 0x2FE7, "學習"),
+                (0x2FED, 0x2FEE, "已學會")), "spell learning scroll"),
+    TextRegion(0x1BF6, b"LEVEL %d\0", _same((0x1BF6, "第%d級")), "USE screen spell level button"),
+    # --- sprintf formats shown in a message box -----------------------------
+    # 00A8:0002 is sprintf; each of these is formatted into a stack buffer and
+    # handed to 41B4:002A or :0025, i.e. drawn by the window text decoder
+    # (30 bytes, 10 distinct CJK glyphs, %Fs names included).
+    TextRegion(0x05C0, b"%s is broken !\0", _same((0x05C0, "%s壞了！")), "item broken"),
+    TextRegion(0x0606, b"YOU GET %u$\0", _same((0x0606, "獲得 %u$")), "money received"),
+    TextRegion(0x0B96, b"Maximum of %ld save games!\0", _same((0x0B96, "存檔上限為 %ld 個！")), "save slots"),
+    TextRegion(0x1899, b"CAN'T USE ITEM W/ITEM IN A %Fs\0", _same((0x1899, "無法在%Fs裡使用物品")),
+               "item in a container"),
+    TextRegion(0x1C43, b"%Fs GUARDS\0%Fs WAITS\0", _same((0x1C43, "%Fs防守"), (0x1C4E, "%Fs等待")),
+               "combat guard / wait"),
+    TextRegion(0x1D8A, b"YOU FIND %u$\0", _same((0x1D8A, "找到 %u$")), "money found"),
+    TextRegion(0x1DC0, b"%Fs GETS ITEM\0", _same((0x1DC0, "%Fs取得")), "item received"),
+    TextRegion(0x1E4C, b"%Fs is charmed\0", _same((0x1E4C, "%Fs被魅惑")), "charmed"),
+    TextRegion(0x2F1A, b"I'll give you %u$\0", _same((0x2F1A, "我出價 %u$")), "shop offer"),
+    TextRegion(0x30E1, b"%Fs gains a level\0", _same((0x30E1, "%Fs升級了")), "level up"),
 )
+
+# --- spell and psionic names -------------------------------------------------
+# DGROUP 254E..2EBA holds every spell and psionic name, reached only through
+# two data tables: the spell table (file 0x4512E, 138 records of 7 bytes, name
+# offset at +3) and the psionic table (file 0x44F96, 34 records of 8 bytes,
+# name offset at +0). The linker merged some names into others' tails (ARMOR
+# is the end of FLESH ARMOR, INVISIBILITY of SUPERIOR INVISIBILITY...). The
+# whole block is repacked: every referenced name, tails included, gets its own
+# Chinese string from localization/catalog/exe_spell_names.csv, and both
+# tables are rewritten to the new offsets. The names are drawn by the decoding
+# window text paths (USE bar, learn scroll).
+SPELL_BLOCK = (0x254E, 0x2EBB)
+NAME_TABLES = ((0x4512E, 138, 7, 3), (0x44F96, 34, 8, 0))  # file start, count, stride, field
+SPELL_CATALOG = Path(__file__).resolve().parents[1] / "localization/catalog/exe_spell_names.csv"
+
+
+def load_spell_names(path: Path = SPELL_CATALOG) -> dict[int, tuple[str, str]]:
+    names = {}
+    with path.open(encoding="utf-8-sig", newline="") as stream:
+        for row in csv.DictReader(stream):
+            offset = int(row["unit_id"].rsplit("_", 1)[1], 16)
+            names[offset] = (row["original"], row["translation_zh_tw"])
+    return names
+
+
+def spell_block_patch(
+    image: bytes, mapping: dict[str, object], names: dict[int, tuple[str, str]] | None = None
+) -> tuple[bytes, dict[int, int], list[tuple[int, bytes, bytes]]]:
+    """Return the repacked DGROUP block, old->new offsets and the table word patches."""
+    names = load_spell_names() if names is None else names
+    first, end = SPELL_BLOCK
+    block = image[DGROUP_FILE_BASE + first : DGROUP_FILE_BASE + end]
+    referenced = []
+    for table, count, stride, field in NAME_TABLES:
+        for index in range(count):
+            site = table + index * stride + field
+            referenced.append((site, int.from_bytes(image[site : site + 2], "little")))
+    wanted = {offset for _, offset in referenced}
+    if wanted != set(names):
+        raise ValueError(
+            f"spell name catalog does not match the tables: missing {sorted(map(hex, wanted - set(names)))}, "
+            f"unused {sorted(map(hex, set(names) - wanted))}"
+        )
+    payload = bytearray(len(block))
+    moved: dict[int, int] = {}
+    cursor = first
+    for offset in sorted(names):
+        english, chinese = names[offset]
+        stop = block.index(0, offset - first)
+        if block[offset - first : stop].decode("ascii") != english:
+            raise ValueError(f"DGROUP:{offset:04X} is not {english!r}")
+        encoded = encode_text(chinese, mapping) + b"\0"
+        if cursor + len(encoded) > end:
+            raise ValueError("Chinese spell names overflow the original name block")
+        payload[cursor - first : cursor - first + len(encoded)] = encoded
+        moved[offset] = cursor
+        cursor += len(encoded)
+    table_patches = [
+        (site, old.to_bytes(2, "little"), moved[old].to_bytes(2, "little"))
+        for site, old in referenced
+        if moved[old] != old
+    ]
+    return bytes(payload), moved, table_patches
 
 # Strings that the engine compares with stricmp must translate identically.
 MATCHED_STRINGS = ((0x1600, 0x1F61),)
@@ -120,7 +240,10 @@ MATCHED_STRINGS = ((0x1600, 0x1F61),)
 def region_bytes(region: TextRegion, mapping: dict[str, object]) -> bytes:
     payload = bytearray(len(region.original))
     end_of_previous = region.start
-    for _, offset, text in sorted(region.strings, key=lambda item: item[1]):
+    placed = sorted({(offset, text) for _, offset, text in region.strings})
+    if len({offset for offset, _ in placed}) != len(placed):
+        raise ValueError(f"{region.note}: two different strings share one offset")
+    for offset, text in placed:
         if offset < end_of_previous:
             raise ValueError(f"DGROUP:{offset:04X} overlaps the previous string in {region.note}")
         encoded = encode_text(text, mapping) + b"\0"
@@ -145,6 +268,27 @@ def string_push_sites(image: bytes, offset: int) -> list[int]:
     ]
 
 
+DGROUP_LOAD_SEGMENT = 0x4356
+
+
+def pointer_table_patches(image: bytes) -> list[tuple[int, bytes, bytes, str]]:
+    """Follow moved strings in the DGROUP far-pointer tables that reach them."""
+    patches = []
+    for region in TEXT_REGIONS:
+        moves = {old: new for old, new, _ in region.strings}
+        for table, count in region.pointer_tables:
+            for index in range(count):
+                site = DGROUP_FILE_BASE + table + index * 4
+                offset = int.from_bytes(image[site : site + 2], "little")
+                segment = int.from_bytes(image[site + 2 : site + 4], "little")
+                if segment != DGROUP_LOAD_SEGMENT or offset not in moves:
+                    raise ValueError(f"DGROUP:{table + index * 4:04X} is not a pointer to a placed string of {region.note}")
+                if moves[offset] != offset:
+                    patches.append((site, offset.to_bytes(2, "little"), moves[offset].to_bytes(2, "little"),
+                                    f"{region.note}: table DGROUP:{table + index * 4:04X}"))
+    return patches
+
+
 def code_patches(image: bytes) -> list[tuple[int, bytes, bytes, str]]:
     """Rewrite the push of every moved string; refuse references into a region's interior."""
     patches = []
@@ -155,7 +299,11 @@ def code_patches(image: bytes) -> list[tuple[int, bytes, bytes, str]]:
                 raise ValueError(f"DGROUP:{inner:04X} inside {region.note} is referenced but not placed")
         for old, new, _ in region.strings:
             sites = string_push_sites(image, old)
-            if not sites:
+            if region.table_referenced:
+                if old != new:
+                    raise ValueError(f"DGROUP:{old:04X} ({region.note}) is table-referenced and cannot move")
+                continue
+            if not sites and not region.pointer_tables:
                 raise ValueError(f"DGROUP:{old:04X} ({region.note}) has no push ds reference")
             if old == new:
                 continue
@@ -170,11 +318,16 @@ def code_patches(image: bytes) -> list[tuple[int, bytes, bytes, str]]:
 
 
 def exe_text_ranges(image: bytes) -> list[tuple[int, int]]:
-    ranges = [
+    first, end = SPELL_BLOCK
+    ranges = [(DGROUP_FILE_BASE + first, DGROUP_FILE_BASE + end)]
+    ranges += [(site, site + 2) for table, count, stride, field in NAME_TABLES
+               for site in (table + index * stride + field for index in range(count))]
+    ranges += [
         (DGROUP_FILE_BASE + region.start, DGROUP_FILE_BASE + region.start + len(region.original))
         for region in TEXT_REGIONS
     ]
     ranges += [(offset, offset + len(original)) for offset, original, _, _ in code_patches(image)]
+    ranges += [(offset, offset + len(original)) for offset, original, _, _ in pointer_table_patches(image)]
     return sorted(ranges)
 
 
@@ -200,7 +353,19 @@ def apply_exe_text_patches(image: bytes, mapping: dict[str, object]) -> bytes:
     for first, second in MATCHED_STRINGS:
         if texts[first] != texts[second]:
             raise ValueError(f"DGROUP:{first:04X} and {second:04X} are compared and must match")
-    for offset, original, patched, reason in code_patches(image):
+    first, end = SPELL_BLOCK
+    for match in re.finditer(rb"\x1e\x68(..)", image, re.S):
+        if DGROUP_FILE_BASE <= match.start() < DGROUP_FILE_END:
+            continue
+        if first <= int.from_bytes(match.group(1), "little") < end:
+            raise ValueError(f"push ds at 0x{match.start():X} points into the spell name block")
+    block, _, table_patches = spell_block_patch(image, mapping)
+    result[DGROUP_FILE_BASE + first : DGROUP_FILE_BASE + end] = block
+    for site, original, patched in table_patches:
+        if image[site : site + 2] != original:
+            raise ValueError(f"spell name table word 0x{site:X} found modified bytes")
+        result[site : site + 2] = patched
+    for offset, original, patched, reason in code_patches(image) + pointer_table_patches(image):
         if image[offset : offset + len(original)] != original:
             raise ValueError(f"EXE text code patch 0x{offset:X} ({reason}) found modified bytes")
         result[offset : offset + len(original)] = patched

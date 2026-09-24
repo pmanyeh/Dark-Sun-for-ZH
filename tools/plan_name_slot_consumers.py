@@ -332,6 +332,7 @@ def assemble_name_slot_cache(
     stat_row_y: int | None = None,
     menu_titles: bool = False,
     status_texts: bool = False,
+    text_draws: bool = False,
 ) -> bytes:
     """Assemble the self-contained decoder appended to FONT-100.
 
@@ -390,6 +391,8 @@ def assemble_name_slot_cache(
         extra_symbols += ["--defsym", "menu_titles=1"]
     if status_texts:
         extra_symbols += ["--defsym", "status_texts=1"]
+    if text_draws:
+        extra_symbols += ["--defsym", "text_draws=1"]
     if identity:
         extra_symbols += ["--defsym", "fixed_identity=1"]
         if gender_position is not None:

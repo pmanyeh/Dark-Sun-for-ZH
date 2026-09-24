@@ -84,6 +84,13 @@ VIEW_UI_EXE_PATCHES = (
     (0x065125, "8B DE C1 E3 02 66 FF B7 F2 0E FF 36 70 32 6A 14 FF 36 6E 32 66 68 FF 00 FE 00 6A 00 1E 68 11 0E 8B C6 6B C0 07 8B 56 0C 03 D0 52 FF 76 0A 66 FF 76 06", "0E E8 00 00 58 05 2E 00 50 B8 ED FF 8C DB 80 EF 10 53 68 14 07 CB 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90", "v57 ability label loop redirect"),
     (0x06E111, "55 8B EC 66 FF 76 06 68 06 2C 66 FF 36 A4 11", "0E 68 A0 23 8C DB 80 EF 10 53 68 14 07 CB 90", "v56 BACKPACK label redirect"),
     (0x06E288, "6B C0 19 8B 16 6D 16 03 D0 FF 36 6F 16 52", "0E 68 16 25 8C DB 80 EF 10 53 68 14 07 CB", "v55 NAME consumer: bottom hover"),
+    # Inventory portrait column (overlay 0x6BFAC): per portrait si the HP
+    # line sits at y = si*48+38 and the status at +44, 6px apart, too tight
+    # for 10px CJK status words. The two-character status moves into the
+    # bottom of the portrait frame (+26, drawn 2px lower as Chinese) and 4px
+    # right; HP keeps its row, where three-digit values still fit.
+    (0x06BFB2, "2C", "1A", "v106 inventory portrait status inside the frame, 1px above its bottom edge"),
+    (0x06BFB6, "01", "05", "v105 inventory portrait status 4px right"),
     (0x06F5A4, "35", "08", "v55/v57 inventory panel 10px line grid and 30px shift"),
     (0x06F5E9, "07 05 35 00 50 68 04", "0A 05 08 00 50 68 08", "v55/v57 inventory panel 10px line grid and 30px shift"),
     (0x06F60E, "66 68 FF 00 FE 00 6A 00 1E 68 4C 1A 66 68 EC 00 63 00 66 FF 36 A4 11", "0E E8 00 00 58 05 13 00 50 B8 EA FF 8C DB 80 EF 10 53 68 14 07 CB 90", "v61 inventory PSI label redirect"),
@@ -133,6 +140,13 @@ VIEW_UI_EXE_PATCHES = (
     # setup before strncpy becomes a tag-FF82 redirect that returns to the
     # untouched strncpy call at overlay IP 06EE (file 0x704BE).
     (0x0704AB, "89 36 35 54 C6 46 D8 00 6A 1F 66 FF 76 0C 16 8D 46 D8 50", "B8 82 FF 0E 68 EE 06 8C DB 80 EF 10 53 68 14 07 CB 90 90", "v97 window text redirect"),
+    # Resident draw_text wrapper 191F:0A40 (portrait status, item panel
+    # labels...): its argument pushes become a tag-FF84 redirect that
+    # returns to the untouched push dword [bp+6] / lcall 339E:016D at 1F051.
+    # 191F:0401, the string width used to centre the VIEW/USE portrait status:
+    # tag-FF86 redirect back to its loop test at IP 042A.
+    (0x01E9F6, "66 83 7E 06 00 75 04 33 C0 EB 26 33 F6 33 FF EB 13", "B8 86 FF 0E 68 2A 04 8C DB 80 EF 10 53 68 14 07 CB", "v102 text width redirect"),
+    (0x01F033, "66 FF 76 0A FF 76 14 6A 14 FF 76 12 66 68 FF 00 FE 00 6A 00 1E 68 8F 0D FF 76 10 FF 76 0E", "0E E8 00 00 58 05 1A 00 50 B8 84 FF 8C DB 80 EF 10 53 68 14 07 CB 90 90 90 90 90 90 90 90", "v102 draw_text wrapper redirect"),
 )
 
 
@@ -266,6 +280,7 @@ def build_view_ui_font(
         stat_row_y=STAT_ROW_Y,
         menu_titles=True,
         status_texts=True,
+        text_draws=True,
     )
     result = bytearray(expanded + core)
     height = next(iter(banks.values()))["height"]

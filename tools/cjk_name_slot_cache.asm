@@ -45,6 +45,8 @@
 .equ MENU_TITLE_SOURCE_ID, 0xFF80
 # One-line window text (message boxes, "SAVING GAME"): its private source id.
 .equ STATUS_TEXT_SOURCE_ID, 0xFF83
+# The resident draw_text wrapper 191F:0A40: its private source id.
+.equ TEXT_DRAW_SOURCE_ID, 0xFF85
 # The overlay draws the title at x=6, y=4. English capitals sit in the top
 # seven rows of FONT-100's nine-row cell, but a CJK glyph fills all ten, so
 # at y=4 it touched the first choice (y=13); Chinese titles draw 2px higher.
@@ -129,6 +131,12 @@ cjk_name_cache_start:
     cmp ax, 0xFF82
     je status_text_entry
 .endif
+.ifdef text_draws
+    cmp ax, 0xFF84
+    je text_draw_entry
+    cmp ax, 0xFF86
+    je text_width_entry
+.endif
 .ifdef fixed_backpack
     # Only the new bottom-label wrapper has this continuation. The four
     # existing NAME callers use 2516, 2B93, 0FFD, and 102E instead.
@@ -167,6 +175,13 @@ ordinary_title_source:
     les si, dword ptr cs:[status_source]
     jmp decode_start
 ordinary_status_source:
+.endif
+.ifdef text_draws
+    cmp ax, TEXT_DRAW_SOURCE_ID
+    jne ordinary_text_draw_source
+    les si, dword ptr cs:[text_draw_source]
+    jmp decode_start
+ordinary_text_draw_source:
 .endif
 .ifdef fixed_backpack
     cmp ax, 0xFFFE
@@ -817,6 +832,136 @@ status_text_arguments:
     push cx
     lret
 status_source: .long 0
+.endif
+.ifdef text_draws
+# Replacement for the argument pushes of the resident draw_text wrapper
+# 191F:0A40 (file 1F033..1F050), which formats "%C%C%C%s" through 339E:016D:
+#     push dword [bp+0Ah]            ; the text        #     push [bp+14h]; push 14h; push [bp+12h]           |  this span
+#     push dword 00FE00FFh; push 0; push ds:0D8F       |
+#     push [bp+10h]; push [bp+0Eh]                     /
+#     push dword [bp+6]; lcall 339E:016D      ; 1F051, untouched
+# Portrait status words, item panel labels and other callers pass their
+# text here; a Chinese one is decoded into NAME glyph slots first.
+text_draw_entry:
+    pop es
+    pop cx
+    pop dx
+    push dx
+    push cx
+    mov ax, word ptr ss:[bp+0x0A]
+    mov dx, word ptr ss:[bp+0x0C]
+    mov word ptr cs:[text_draw_source], ax
+    mov word ptr cs:[text_draw_source+2], dx
+    push es
+    push si
+    les si, dword ptr cs:[text_draw_source]
+text_draw_scan:
+    mov al, byte ptr es:[si]
+    test al, al
+    jz text_draw_english
+    cmp al, 0x5E
+    je text_draw_chinese
+    inc si
+    jmp text_draw_scan
+text_draw_english:
+    pop si
+    pop es
+    mov word ptr cs:[text_draw_dy], 0
+    mov ax, word ptr cs:[text_draw_source]
+    mov dx, word ptr cs:[text_draw_source+2]
+    jmp text_draw_arguments
+text_draw_chinese:
+    pop si
+    pop es
+    # CJK glyphs fill all ten rows where capitals use the middle seven, so a
+    # Chinese line drawn 7px under another (inventory HP/status) would touch it.
+    mov word ptr cs:[text_draw_dy], 2
+    mov word ptr cs:[cached_id], 0xFFFF
+    mov ax, TEXT_DRAW_SOURCE_ID
+    push cs
+    push OFFSET text_draw_decoded
+    push es
+    jmp name_cache_entry
+text_draw_decoded:
+    pop ax
+    pop dx
+text_draw_arguments:
+    pop cx
+    pop bx
+    push dx
+    push ax
+    push word ptr ss:[bp+0x14]
+    push 0x14
+    push word ptr ss:[bp+0x12]
+    .byte 0x66, 0x68
+    .long 0x00FE00FF
+    push 0
+    push ds
+    push 0x0D8F
+    mov ax, word ptr ss:[bp+0x10]
+    add ax, word ptr cs:[text_draw_dy]
+    push ax
+    push word ptr ss:[bp+0x0E]
+    push bx
+    push cx
+    lret
+
+# Replacement for 191F:0401..0416 (file 1E9F6..1EA06), the width of a string
+# as the sum of its glyph widths, used to centre the VIEW/USE portrait status:
+#     if (!text) return 0; si = di = 0; goto loop_test (0x042A)
+# A Chinese text is decoded into NAME glyph slots and the width loop then
+# measures the slot codes, i.e. what text_draw_entry will draw.
+text_width_entry:
+    pop es
+    pop cx
+    pop dx
+    xor si, si
+    xor di, di
+    mov ax, word ptr ss:[bp+0x06]
+    or ax, word ptr ss:[bp+0x08]
+    jnz text_width_measure
+    mov cx, 0x0437
+    push dx
+    push cx
+    lret
+text_width_measure:
+    push dx
+    push cx
+    mov ax, word ptr ss:[bp+0x06]
+    mov dx, word ptr ss:[bp+0x08]
+    mov word ptr cs:[text_draw_source], ax
+    mov word ptr cs:[text_draw_source+2], dx
+    push es
+    les si, dword ptr cs:[text_draw_source]
+text_width_scan:
+    mov al, byte ptr es:[si]
+    test al, al
+    jz text_width_english
+    cmp al, 0x5E
+    je text_width_chinese
+    inc si
+    jmp text_width_scan
+text_width_english:
+    pop es
+    xor si, si
+    lret
+text_width_chinese:
+    pop es
+    mov word ptr cs:[cached_id], 0xFFFF
+    mov ax, TEXT_DRAW_SOURCE_ID
+    push cs
+    push OFFSET text_width_decoded
+    push es
+    jmp name_cache_entry
+text_width_decoded:
+    pop ax
+    pop dx
+    mov word ptr ss:[bp+0x06], ax
+    mov word ptr ss:[bp+0x08], dx
+    xor si, si
+    lret
+text_draw_source: .long 0
+text_draw_dy: .word 0
 .endif
 .ifdef fixed_abilities
 # Six fixed eight-byte strings: two Base94 triples, colon, NUL.

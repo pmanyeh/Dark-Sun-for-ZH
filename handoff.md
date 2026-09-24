@@ -1,22 +1,25 @@
 # 《浩劫殘陽：破碎大地》(Dark Sun: Shattered Lands) 繁中化交接指南 (handoff.md)
 
-> **產生時間**：2026-09-21 23:01（第 0、四節更新於 2026-09-24）  
+> **產生時間**：2026-09-21 23:01（第 0、四節更新於 2026-09-25）  
 > **交接目的**：為下一輪重開 Session 的 AI 助手提供完整無縫的專案背景、歷史數據、技術規範、標準操作 SOP 與接續目標，確保繁中在地化推進不中斷。
 
 ---
 
-## ⚠️ 0. 最新狀態（2026-09-24 更新，新 Session 請先讀這一節）
+## ⚠️ 0. 最新狀態（2026-09-25 更新，新 Session 請先讀這一節）
 
 ### 0.1 現況
 
-- **可玩版本**：`scratch_test/cjk_display_staging_v97_window_text`（使用者已實機確認，2026-09-24）。
+- **可玩版本**：`scratch_test/cjk_display_staging_v106_status_lower`（使用者已實機確認，2026-09-25）。
+- **本輪總整理**：`docs/re/re_103_v90_v106_menu_titles_and_exe_strings.md`，下一輪建議先讀這份。
 - **已中文化**：
   - 全部對話（re_99）
   - 背包／VIEW CHARACTER 的標籤、性別、種族、陣營、職業（含多職業）
   - 物品名稱（NAME-1）
   - 物品材質字首（re_100、re_101）
+  - 對話選單標題、漏抽的短片段、是非選單（re_103）
+  - EXE 內的訊息框、存讀檔提示、戰鬥彈出框、法術／靈能名稱、頭像狀態、USE 按鈕（re_103）
 - **v89 的修正**：第三職業顏色、VIEW CHARACTER 下半部四行行距（re_102）。
-- **最新 commit**：`18c85ac`。
+- **最新 commit**：見 `git log`；v90～v106 已分兩次 commit，最後一次在 2026-09-25 並已 push。
 - **v90（2026-09-24，已確認）**：`scratch_test/cjk_display_staging_v90_fragments`
   - 對話裡殘留的 `he`、`is` 之類英文，原因是 opends 抽取時跳過了 3 字元以內的 print string，
     這些字串從來沒進 catalog。
@@ -42,6 +45,79 @@
   - 編譯器新增 `--translate-menu-titles`，封包會記錄 `menu_titles_translated`。
     組合包沒有 `--view-ui` 時會拒絕建置。
   - withheld 只剩 `END`、`CLOSE` 兩筆。
+- **v106（2026-09-25，使用者已確認）**：`scratch_test/cjk_display_staging_v106_status_lower`
+  - 使用者要求狀態字再往下 5px，離頭像框下緣 1px：y＝+26（`0x6BFB2` = `1A`），中文實際畫在 +28～+37。
+- **v105（2026-09-25，位置偏高，由 v106 微調）**：`scratch_test/cjk_display_staging_v105_status_in_frame`
+  - v104 的 HP 放在框內時，數字碰到頭像框、被框的顏色吃掉；三位數 HP 也會超出框。
+  - 改用使用者的第二個提議：
+    - HP 還原到 +38。
+    - 兩個字的狀態移進頭像框底部：y＝+21（`0x6BFB2`），中文實際畫在 +23～+32；
+      x 基準 1→5（`0x6BFB6`），往右 4px。
+- **v104（2026-09-25，HP 被框線吃掉，改為 v105 的做法）**：`scratch_test/cjk_display_staging_v104_portrait_rows`
+  - 背包畫面的單欄頭像列（overlay `0x6BEE6` 起）：
+    - 頭像 y＝si×48+6；HP 原本在 +38（立即值 `0x6BF7A`），狀態原本在 +44（`0x6BFB2`）。
+    - 兩行只差 6px，放不下 10px 高的中文字。
+  - 當時的做法：HP 移進頭像框內（+27），狀態移到原本 HP 那一行（+38）。已由 v105 取代。
+  - 其他三個畫面（USE／VIEW 等 2×2 頭像，呼叫 `0580:0066` 的 `0x7E725`、`0x87E65`、`0x89F86`）空間夠，沒有改。
+  - 頭像狀態由 overlay 第 25 段第 14 個入口 `0x71D8B` 繪製：先置中，再經 `191F:0A40` 畫出。
+- **v103（2026-09-25，VIEW 已確認；背包頭像空間不足，由 v104 處理）**：`scratch_test/cjk_display_staging_v103_status_layout`
+  - v102 的中文顯示正常，但有兩個位置問題：
+    - 背包的狀態只比 HP 低 7px，10px 高的中文字會蓋到 HP。
+    - VIEW 的置中位置偏左。
+  - 量寬度函式 `191F:0401`：`0x1E9F6～0x1EA06` 換成 tag `FF86` redirect，回到 IP `042A`；空指標回到 `0437`。
+    中文會先解碼成字形碼，迴圈量到的就是實際畫出來的寬度。
+  - `text_draw_entry`：中文的 y 座標 +2。
+  - v101 的其他部分已確認：USE 切換按鈕、靈能分類、等級按鈕。
+  - **待驗證**：學法術卷軸的「學習」「第3級」，使用者目前還沒有可以測試的存檔進度，之後遊玩時再確認。
+- **v102（2026-09-25，中文正常、位置偏移，已由 v103 修正）**：`scratch_test/cjk_display_staging_v102_draw_text`
+  - v101 實機測試時，頭像下方狀態顯示成亂碼。
+  - 狀態透過 `11DC` 表取得，取法是角色資料 +0x1C 當索引；有兩處使用：
+    - 背包：`0x5FD51` → `0090:0A40`，實際是常駐 `191F:0A40`（檔案 `0x1F030`）。
+    - VIEW／USE：`0x71DD4`，先 strncpy，再量寬度置中。
+  - `191F:0A40` 是 47 bytes 的 draw_text 包裝函式：用 `"%C%C%C%s"`（ds:0D8F）呼叫 339E:016D，不會解碼。
+  - 修補方式：
+    - `0x1F033～0x1F050` 換成 tag `FF84` redirect，回到 `0x1F051`。
+    - FONT 核心的 `text_draw_entry`：中文就解碼成 name-slot 字形碼，英文照原樣傳下去。
+  - 這個包裝函式是常駐的，其他呼叫者（`USEABLE BY:`、`HD: %d` 等）也能直接顯示中文。
+  - 待觀察：`0x71DD4` 那條路徑是用 Base94 原始 bytes 量寬度，中文的置中位置可能會偏。
+- **v101（2026-09-24，試驗版；頭像狀態亂碼，已由 v102 處理）**：`scratch_test/cjk_display_staging_v101_use_labels`
+  - DGROUP far pointer 表（段 `4356`）引用的字串：
+    - `11DC`（29 筆）指向頭像下方狀態（Okay…）、職業名、USE 切換按鈕（MAGE/CLERIC/PSlONlC）。
+      切換按鈕共用職業名的字串。
+    - `30FA`（4 筆）指向靈能分類（念動／精神／感應／傳送）。
+    - `3112`（Kinetics 結尾的 NUL）被 push 當空字串使用，所以保留原位。
+  - 學法術卷軸：LEVEL %d／選擇法術，／學習／已學會。USE 畫面也有一個 LEVEL %d。
+  - `exe_text_layer` 新增兩個功能：
+    - `pointer_tables`：字串搬動後，表裡的偏移跟著改（段值那個 word 有 MZ 重定位，不動）。
+    - 允許多筆指向同一個字串。
+  - 試驗目的：這些字串的繪製路徑還沒實機確認過（頭像狀態、切換按鈕、分類按鈕）。
+  - 卷軸的 EXIT 不在 EXE：v98 已經把 EXE 唯一的 EXIT 改成「離開」，卷軸上仍是英文，應該在視窗資源（WIND）裡。
+  - 已確認：USE 資訊列的「19✓ 8👢」分別是成功門檻（體質 22 − 3）和射程，
+    `^`、`|` 在 FONT-100 裡是打勾和靴子圖示，保留不翻。
+- **v100（2026-09-24，使用者已確認）**：`scratch_test/cjk_display_staging_v100_spell_names`
+  - 法術／靈能名稱（USE 畫面下方資訊列、學法術卷軸）。v99 試驗證實這兩處的繪製路徑會解碼。
+  - **譯名一律依詞彙表（智冠定名）**，使用者 2026-09-24 決定：
+    - 資訊卡（SPIN）原本另有一套譯名（如 迷霧牆、解離術），共 118 張已改成詞彙表定名。
+    - 其中 4 張的內文是一般用語（冰牆、魔法石、治療疾病），另外手動修正，不照替換結果。
+    - NAME-1 物品名在詞彙表裡本來就另外定名（如 Ego Whip 物品＝自我之鞭），所以不改。
+  - 名稱放在 DGROUP `254E～2EBA`，只由兩張資料表引用：
+    - 法術表：檔案 `0x4512E`，138 筆，每筆 7 bytes，名稱位址在 +3。
+    - 靈能表：檔案 `0x44F96`，34 筆，每筆 8 bytes，名稱位址在 +0。
+  - 連結器合併了一些字尾，例如 ARMOR＝FLESH ARMOR 的尾巴，INVISIBILITY、SHIELD、STRENGTH、POISON 也一樣。
+  - 做法：
+    - `exe_text_layer.spell_block_patch` 讀 `localization/catalog/exe_spell_names.csv`（168 條）。
+    - 整段重新排列，改寫 171 個表格位址，還剩 432 bytes 空間。
+  - mapping 新增 10 個字，所以重建了 bank v22、對話封包 v10、資訊卡包 v4。
+    舊字的 ID 和字元都沒有變。
+  - 詞彙表補上召喚小型風／火／土／水元素、召喚風／火／土／水元素。
+- **v98（2026-09-24，已確認）**：`scratch_test/cjk_display_staging_v98_combat_popup`
+  - 戰鬥「結束角色行動」彈出框（常駐 `0x1DB1F`）：
+    - 流程：先 `sprintf` 出 `END %Fs's MOVE`，再開啟 `41B4:0025` 確認框，按鈕是 GUARD／WAIT／END TURN。
+    - 44 bytes 要放進五條字串，所以譯成「%Fs回合／回合／防守／等待／結束回合」。
+  - 確認框的按鈕文字經 `2A1D:07FA` 設定（和對話選項相同，會解碼）。
+    `4211:00B1`／`00B6` 只是計算彈出框座標，盤點腳本的「後面最近的 far call」在這裡配錯了。
+  - sprintf 格式字串（`00A8:0002` = 常駐 `1D53:0002`）裡，結果會送進訊息框的 10 條也已翻譯，
+    例如「%Fs升級了」「%Fs被魅惑」「找到 %u$」。
 - **v97（2026-09-24，使用者已確認）**：`scratch_test/cjk_display_staging_v97_window_text`
   - v96 實機測試存檔時，提示框顯示成亂碼（Base94 bytes 被逐字畫出，`[` `{` 變成材質字形「木製」）。
   - 訊息框的文字都經過 overlay 第 25 段的 `0x7045D`（stub `0580:005C`，執行期段 `4272`）。它的流程是：
@@ -101,10 +177,21 @@
     - overlay 程式裡 far call 的段值不能用 `0x5400+段×16` 直接換算（例如 `0x140`→`2A1D`、`0x150`→`339E`），
       要到執行期確認實際函式。
 
-**下一輪目標（使用者指定）：翻譯寫在程式裡的字串**。選單標題已在 v91 處理，接下來是 EXE 內的字串（`YES`／`NO`／`CANCEL` 等）。右側直排的 `MORE` 是圖片，使用者說先不處理。
-使用者也注意到其他畫面還有英文字串。細節見 0.3 節。
+**下一輪目標：繼續翻譯程式內的字串**。已完成的部分見上方 v90～v106 與 re_103。建議順序：
 
-### 0.2 重建 v95（`scratch_test/` 在 `.gitignore` 裡）
+1. **視窗資源（WIND，在 RESOURCE.GFF）裡的按鈕**：
+   - 學法術卷軸的 EXIT、背包的 DROP／SPLIT 等。它們不在 EXE，要找出 WIND chunk 的文字格式。
+2. **尚未盤點的 EXE 字串**：遊戲選單（GAME MENU、MUSIC ON…）、商店（STORE、NO DEAL!、SOLD!）、
+   背包下方提示列（`SELECT K'RATCHEK`、`HIT POINTS: CURRENT/MAX`）。每一條都要先確認繪製路徑：
+   - 會解碼的路徑：直接加進 `exe_text_layer`。
+   - 經過 `191F:0A40` 或 `0580:005C` 的：已經會解碼。
+   - 其他不解碼的：用 FONT 核心 tag redirect，做法見 re_103 §6。
+3. **暫緩的字串**：`INACTIVE CHARACTER`、第二個 `CANCEL`（其他路徑也在用），以及 `LOAD`／`NEW`／`ADD`（原位放不下）。
+4. **待驗證**：學法術卷軸的「學習」「第3級」。使用者之後遊玩時確認。
+
+右側直排的 `MORE` 是圖片，使用者說先不處理。
+
+### 0.2 重建 v106（`scratch_test/` 在 `.gitignore` 裡）
 
 ```bash
 # 0) 舊的候選清單腳本：已改用編譯器的 --all-translated（步驟 3），這段不再需要
@@ -126,14 +213,15 @@ open('scratch_test/all_translated_unit_ids.txt', 'w', encoding='utf-8').write('\
 print(len(ok))   # 13194
 EOF
 
-# 1) mapping（已 commit；只有新增字元時才重跑，兩個 catalog 都要給）
+# 1) mapping（已 commit；只有新增字元時才重跑，三個 catalog 都要給）
 python tools/cjk_localization_pipeline.py inventory \
   --catalog localization/catalog/localization_manifest.csv \
-  --catalog localization/catalog/fixed_ui_labels.csv
+  --catalog localization/catalog/fixed_ui_labels.csv \
+  --catalog localization/catalog/exe_spell_names.csv
 
 # 2) 字型 bank（mapping 有新字時才重建）
 python tools/cjk_localization_pipeline.py build-banks --mapping localization/cjk_mapping.json \
-  --output scratch_test/formal_cjk_fusion_10x10_v21_fixed_ui --font Fonts/Fusion_Pixel_10px.ttf \
+  --output scratch_test/formal_cjk_fusion_10x10_v22_spell_names --font Fonts/Fusion_Pixel_10px.ttf \
   --font-size 10 --pixel-width 10 --height 10 --advance 10 --threshold 64 --fit-mode pixel-aligned
 
 # 3) 對話封包 → 疊上 NAME-1
@@ -141,17 +229,17 @@ python tools/compile_gpl_dialogue_patch.py \
   --all-translated \
   --fragment-overrides localization/catalog/dialogue_fragment_overrides.json \
   --translate-menu-titles \
-  --output scratch_test/gpl_full_from_pristine_v9_variable_reads
+  --output scratch_test/gpl_full_from_pristine_v10_spell_mapping
 python tools/compile_gff_name_records.py \
-  --prior-package scratch_test/gpl_full_from_pristine_v9_variable_reads/gpl-dialogue-patch.json \
-  --output scratch_test/gpl_full_v9_name_records
+  --prior-package scratch_test/gpl_full_from_pristine_v10_spell_mapping/gpl-dialogue-patch.json \
+  --output scratch_test/gpl_full_v10_name_records
 
 # 4) 組合包
 python tools/build_cjk_display_staging.py \
   --mapping localization/cjk_mapping.json \
-  --bank-package scratch_test/formal_cjk_fusion_10x10_v21_fixed_ui/cjk-bank-set.json \
-  --spin-package scratch_test/spin_gff_import_title_newline_v3_current/gff-text-replacements.json \
-  --gpl-package scratch_test/gpl_full_v9_name_records/gpl-dialogue-patch.json \
+  --bank-package scratch_test/formal_cjk_fusion_10x10_v22_spell_names/cjk-bank-set.json \
+  --spin-package scratch_test/spin_gff_import_title_newline_v4_glossary/gff-text-replacements.json \
+  --gpl-package scratch_test/gpl_full_v10_name_records/gpl-dialogue-patch.json \
   --ebox-line-gap 2 --menu-line-gap 2 --dialogue-option-pitch 11 --view-ui \
   --output scratch_test/cjk_display_staging_vNN_xxx
 ```
@@ -268,6 +356,7 @@ python tools/build_cjk_display_staging.py \
 | 背包／VIEW CHARACTER 併入主線 | `docs/re/re_100_v87_view_ui_merge.md` |
 | 材質字首、固定字元碼、天生攻擊括號 | `docs/re/re_101_v88_material_words.md` |
 | 職業顏色、行距、位址換算更正 | `docs/re/re_102_v89_class_colour_and_view_rows.md` |
+| 選單標題、漏抽片段、EXE 字串、FONT 核心 entry、overlay 段號查法 | `docs/re/re_103_v90_v106_menu_titles_and_exe_strings.md` |
 | 選單換頁／疊影 | `docs/re/re_96`～`re_98` |
 | `%s` 迴圈解碼失敗紀錄 | `docs/re/re_52`、`re_53`、`re_63` |
 
