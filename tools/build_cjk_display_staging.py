@@ -32,6 +32,7 @@ try:
     from .patch_dialogue_menu_wind import patch_dialogue_choice_paging, patch_dialogue_menu_wind
     from .patch_dsun_scratch_cache import patch_executable, patch_introduce_prefix
     from .view_ui_layer import apply_view_ui_exe_patches, build_view_ui_font
+    from .exe_text_layer import apply_exe_text_patches
 except ImportError:
     from cjk_localization_pipeline import (
         DEFAULT_GFF_CAT,
@@ -51,6 +52,7 @@ except ImportError:
     from patch_dialogue_menu_wind import patch_dialogue_choice_paging, patch_dialogue_menu_wind
     from patch_dsun_scratch_cache import patch_executable, patch_introduce_prefix
     from view_ui_layer import apply_view_ui_exe_patches, build_view_ui_font
+    from exe_text_layer import apply_exe_text_patches
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -312,6 +314,11 @@ def main() -> int:
         gpl_payload = gpl_file.read_bytes()
         if len(gpl_payload) != gpl_package.get("patched_bytes") or sha256(gpl_payload) != gpl_package.get("patched_sha256"):
             raise ValueError("GPL dialogue package payload does not match its manifest")
+        if gpl_package.get("menu_titles_translated") and not args.view_ui:
+            raise ValueError(
+                "GPL dialogue package translates menu titles; only --view-ui installs "
+                "the title decoder that draws them"
+            )
 
     mapping = load_mapping(args.mapping)
     bank_package = json.loads(args.bank_package.read_text(encoding="utf-8"))
@@ -401,6 +408,7 @@ def main() -> int:
         )
         if args.view_ui:
             patched_exe = apply_view_ui_exe_patches(patched_exe)
+            patched_exe = apply_exe_text_patches(patched_exe, mapping)
         (staged_game / "DSUN.EXE").write_bytes(patched_exe)
         for _, filename, payload in bank_files:
             (staged_game / filename).write_bytes(payload)

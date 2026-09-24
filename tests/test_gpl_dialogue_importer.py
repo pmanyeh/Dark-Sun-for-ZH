@@ -1,9 +1,17 @@
 from __future__ import annotations
 
+import json
+import tempfile
 import unittest
+from collections import defaultdict
+from pathlib import Path
+from unittest import mock
 
 from tools.compile_gpl_dialogue_patch import (
     escape_gpl_listing_string,
+    MenuTextTooLong,
+    all_translated_unit_ids,
+    load_fragment_overrides,
     parse_external_entry_listing,
     parse_fixed_entry_requirement,
     packed_string_bytes,
@@ -659,6 +667,76 @@ class GplDialogueImporterTests(unittest.TestCase):
             self.assertEqual(applied, [])
             self.assertEqual([item["reason"] for item in withheld], [reason])
 
+    def test_translate_menu_titles_rewrites_title_variables_and_inline_titles(self) -> None:
+        """With the view UI layer's title decoder installed, GSTR[1]/[4] and
+        inline prompts are translated; engine control strings still are not."""
+        for var_id, value, translated in (
+            (1, "What do you say?", True),
+            (4, "What do you do?", True),
+            (2, "END", False),
+        ):
+            withheld: list[dict[str, object]] = []
+            document = self._string_copy_document(var_id, value)
+            length = 3 + packed_string_bytes(value)
+            document["instructions"][0]["length"] = length
+            document["bytes_consumed"] = document["total_bytes"] = length
+            patched, applied = relocate_json_strings(document, [{
+                "unit_id": "DLG_x", "occurrence_id": "DLOC_x", "offset": 0,
+                "original": value, "translation_zh_tw": "中", "encoded": b"Z" * 2,
+            }], None, withheld, translate_menu_titles=True)
+            expected = "ZZ" if translated else value
+            self.assertEqual(patched["instructions"][0]["params"][1][0]["value"], expected)
+            self.assertEqual(len(applied), int(translated))
+            self.assertEqual(len(withheld), int(not translated))
+        document = self._menu_document(["Yes", "No"])
+        document["instructions"][0]["params"][0] = [
+            {"kind": "immediate_string", "sub_type": "compressed", "value": "Drink?"}
+        ]
+        withheld = []
+        patched, applied = relocate_json_strings(document, [{
+            "unit_id": "DLG_t", "occurrence_id": "DLOC_t", "offset": 0,
+            "original": "Drink?", "translation_zh_tw": "喝嗎？", "encoded": b"T" * 9,
+        }], None, withheld, translate_menu_titles=True)
+        self.assertEqual(patched["instructions"][0]["params"][0][0]["value"], "T" * 9)
+        self.assertEqual([item["unit_id"] for item in applied], ["DLG_t"])
+        self.assertEqual(withheld, [])
+
+    def test_variable_reads_do_not_exclude_a_unit_from_the_build(self) -> None:
+        """MAS-99 assigns GSTR[7] = "  Let's change the subject." and menus
+        read it back (text:lstring). Those reads used to exclude the unit, so
+        the option stayed English."""
+        with tempfile.TemporaryDirectory() as temporary:
+            units = Path(temporary) / "units.csv"
+            units.write_text(
+                "unit_id,translation_zh_tw\nDLG_a,甲\nDLG_b,乙\nDLG_c,\nDLG_d,丁\n", encoding="utf-8-sig"
+            )
+            inline = {"kind": "MAS ", "source": "inline", "sub_type": "compressed", "unresolved": False}
+            read = {"kind": "GPL ", "source": "text:lstring", "sub_type": None, "unresolved": False}
+            occurrences = Path(temporary) / "occurrences.json"
+            occurrences.write_text(json.dumps({"occurrences": [
+                {**inline, "unit_id": "DLG_a"}, {**read, "unit_id": "DLG_a"},
+                {**read, "unit_id": "DLG_b"},
+                {**inline, "unit_id": "DLG_c"},
+                {**inline, "unit_id": "DLG_d"}, {**inline, "unit_id": "DLG_d", "unresolved": True},
+            ]}), encoding="utf-8")
+            self.assertEqual(all_translated_unit_ids(units, occurrences), ["DLG_a"])
+
+    def test_menu_option_longer_than_the_engine_slot_stops_the_build(self) -> None:
+        """Options live in 51-byte slots and are drawn through a 50-byte
+        strncpy; 49 bytes fit, 50 drew stack garbage (GPL-4 0x03BC)."""
+        for length, fits in ((49, True), (50, False)):
+            document = self._menu_document(["Yes", "No"])
+            edit = {
+                "unit_id": "DLG_y", "occurrence_id": "DLOC_y", "offset": 0,
+                "original": "Yes", "translation_zh_tw": "是", "encoded": b"Y" * length,
+            }
+            if fits:
+                relocate_json_strings(document, [edit])
+            else:
+                with self.assertRaises(MenuTextTooLong):
+                    relocate_json_strings(document, [edit])
+                self.assertFalse(issubclass(MenuTextTooLong, ValueError))
+
 
     def test_cjk_join_spaces_are_dropped_only_next_to_wide_characters(self) -> None:
         """A split sentence's edge spaces showed as gaps ("我已經在 這裡")."""
@@ -698,6 +776,48 @@ class GplDialogueImporterTests(unittest.TestCase):
         }])
         self.assertEqual(patched["instructions"][0]["params"][1][0]["value"], "^!!^!\"")
         self.assertEqual(applied[0]["encoded_ascii"], "^!!^!\"")
+
+    def test_fragment_override_can_empty_a_print_string(self) -> None:
+        document = {
+            "instructions": [
+                {
+                    "offset": 0, "length": 8, "opcode": 0x4F,
+                    "params": [
+                        [{"kind": "immediate14", "value": 98}],
+                        [{"kind": "immediate_string", "sub_type": "compressed", "value": "wo"}],
+                    ],
+                },
+                {"offset": 8, "length": 1, "opcode": 0x67, "params": []},
+            ],
+            "bytes_consumed": 9, "total_bytes": 9, "aligned": True,
+            "cfg": {}, "cross_chunk_calls": [],
+        }
+        patched, applied = relocate_json_strings(document, [{
+            "unit_id": "FRAG_GPL-1_0000", "occurrence_id": "FRAG_GPL-1_0000", "offset": 0,
+            "original": "wo", "translation_zh_tw": "", "encoded": b"",
+        }])
+        self.assertEqual(patched["instructions"][0]["params"][1][0]["value"], "")
+        self.assertEqual(applied[0]["packed_length_delta"], -2)
+        self.assertEqual(patched["instructions"][1]["offset"], 6)
+
+    def test_fragment_overrides_are_keyed_by_site_and_reject_collisions(self) -> None:
+        mapping = {"version": 1, "entries": []}
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary) / "overrides.json"
+            path.write_text(json.dumps({"overrides": [
+                {"kind": "GPL", "chunk_id": 137, "offset": 7180, "original": "he ", "translation_zh_tw": ""},
+                {"kind": "GPL", "chunk_id": 137, "offset": 7192, "original": ".", "translation_zh_tw": ""},
+            ]}), encoding="utf-8")
+            grouped: dict[tuple[str, int], list[dict[str, object]]] = defaultdict(list)
+            with mock.patch("tools.compile_gpl_dialogue_patch.encode_text", return_value=b""):
+                self.assertEqual(load_fragment_overrides(path, mapping, grouped), 2)
+            self.assertEqual(
+                [(edit["unit_id"], edit["offset"]) for edit in grouped[("GPL", 137)]],
+                [("FRAG_GPL-137_1C0C", 7180), ("FRAG_GPL-137_1C18", 7192)],
+            )
+            with mock.patch("tools.compile_gpl_dialogue_patch.encode_text", return_value=b""):
+                with self.assertRaisesRegex(ValueError, "already has an edit"):
+                    load_fragment_overrides(path, mapping, grouped)
 
 if __name__ == "__main__":
     unittest.main()

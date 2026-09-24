@@ -9,7 +9,7 @@
 
 ### 0.1 現況
 
-- **可玩版本**：`scratch_test/cjk_display_staging_v89_view_rows`（使用者已實機確認）。
+- **可玩版本**：`scratch_test/cjk_display_staging_v97_window_text`（使用者已實機確認，2026-09-24）。
 - **已中文化**：
   - 全部對話（re_99）
   - 背包／VIEW CHARACTER 的標籤、性別、種族、陣營、職業（含多職業）
@@ -17,14 +17,97 @@
   - 物品材質字首（re_100、re_101）
 - **v89 的修正**：第三職業顏色、VIEW CHARACTER 下半部四行行距（re_102）。
 - **最新 commit**：`18c85ac`。
+- **v90（2026-09-24，已確認）**：`scratch_test/cjk_display_staging_v90_fragments`
+  - 對話裡殘留的 `he`、`is` 之類英文，原因是 opends 抽取時跳過了 3 字元以內的 print string，
+    這些字串從來沒進 catalog。
+  - 全部 250 個 GPL/MAS chunk 重新反組譯比對，漏網的共 155 處：
+    - 115 處寫進 `localization/catalog/dialogue_fragment_overrides.json`，以 chunk+offset 為鍵逐處翻譯，
+      空字串代表不印。
+    - 40 處保留英文：GPL-20 防拷問答的比對字母，以及排版用的空白。
+  - 編譯器新增 `--fragment-overrides` 選項。
+  - GPL-135 的「匕首 (不)佩服你的實力」兩條譯文改了詞序。
+- **v91／v92（2026-09-24，已確認）**：`scratch_test/cjk_display_staging_v92_title_y`（v91 實機顯示正常，但中文標題和第一個選項重疊 1～2px；v92 把中文標題改畫在 y=2，英文仍是 y=4，待確認）
+  - 對話選單標題（`WHAT DO YOU SAY?` 等 21 條）翻成中文。
+  - 標題繪製程式在 overlay `0x7D80A`：
+    - 先 `strupr(ds:5504)` 轉大寫。
+    - 再經 `0150:016D`（`339E:016D` formatter，`"%C%C%C%s"`）繪製，這個 formatter 不解碼 Base94。
+  - 修補方式（`view_ui_layer.VIEW_UI_EXE_PATCHES` 最後兩筆）：
+    - `strupr` 呼叫的 offset 改指向它自己的 `retf`（`0:39CF`）。
+    - `0x7D818～0x7D83A` 換成 tag `FF81` redirect。FONT 核心的 `menu_title_entry` 會先檢查標題：
+      - 含 `^`：解碼到 name-slot。
+      - 純英文：自己轉大寫，照原樣傳下去。
+    - 最後重新 push 原本的 formatter 參數。
+  - name-slot 只有 10 格，所以**標題的相異中文字（含全形標點）不能超過 10 個**。
+    本輪因此縮短了 5 條標題譯文。
+  - 編譯器新增 `--translate-menu-titles`，封包會記錄 `menu_titles_translated`。
+    組合包沒有 `--view-ui` 時會拒絕建置。
+  - withheld 只剩 `END`、`CLOSE` 兩筆。
+- **v97（2026-09-24，使用者已確認）**：`scratch_test/cjk_display_staging_v97_window_text`
+  - v96 實機測試存檔時，提示框顯示成亂碼（Base94 bytes 被逐字畫出，`[` `{` 變成材質字形「木製」）。
+  - 訊息框的文字都經過 overlay 第 25 段的 `0x7045D`（stub `0580:005C`，執行期段 `4272`）。它的流程是：
+    - 字串超過 30 bytes 就在第 30 byte 寫入 NUL。
+    - `strncpy(bp-28h, 字串, 31)`。
+    - `strupr`（`0:2FC4`）。
+    - 逐字繪製，不會解碼。
+  - 修補方式：
+    - `0x704AB～0x704BD` 換成 tag `FF82` redirect，回到 overlay IP `06EE` 那個沒動過的 strncpy。
+    - FONT 核心的 `status_text_entry` 把中文解碼成 name-slot 字形碼，字形碼都不是 a–z，strupr 不會改到。
+  - 限制：
+    - 每則訊息最多 10 個相異中文字，而且不能超過 30 bytes。
+    - 字形格和物品名稱共用，訊息顯示期間如果背包重畫，字形可能被換掉。
+- **v96（2026-09-24，實機亂碼，已由 v97 修正）**：`scratch_test/cjk_display_staging_v96_message_boxes`
+  - EXE 字串第二批：確認框與提示訊息，共 26 個區塊、約 55 條，全部寫在 `tools/exe_text_layer.py`。
+  - **overlay 段號怎麼查**：執行期讀記憶體最可靠。
+    - 例如 overlay 程式碼裡的 `04D0`，載入後變成執行期 `49D8`，減掉 `0x824` 就是 `41B4`。
+    - `41B4` 是 overlay 第 3 段的 stub 描述區，用 ovr-map 可以解出：
+      - `:0020` → `0x561D7`（請稍候）
+      - `:0025` → `0x54F21`（有按鈕的確認框）
+      - `:002A` → `0x5536E`（單行訊息）
+    - 訊息文字經 `0580:005C` 寫進控制項 `2C06`。
+    - 段號和檔案位置之間沒有固定換算關係（`0x140`→`2A1D` 只是巧合），不能直接套公式。
+  - `exe_text_layer` 會自動找出所有 `push ds; push <舊位址>` 並改寫。它也會拒絕兩種情況：
+    - 區塊中間有沒登記的引用。
+    - 碰到 MZ 或 overlay 重定位。
+  - `OKAY`（`1BD5`）的 push 被 overlay 重定位表登記，所以不搬移，只在原位譯成「好」。
+  - 暫緩處理：
+    - `INACTIVE CHARACTER`（`1AC1`）和 `CANCEL`（`1B7F`）也被其他路徑使用。
+    - `LOAD`（5 bytes）原位放不下，`NEW`／`ADD` 也還沒處理。
+  - 字型 mapping 沒有「刪」「磁」，改用「清除」「存檔空間」。
+- **v95（2026-09-24，已確認）**：`scratch_test/cjk_display_staging_v95_variable_reads`
+  - 使用者看到「Let's change the subject.」選項是英文。
+    - 它是 MAS-99 寫進 GSTR[7] 的字串，選單用變數讀取。
+    - 舊的候選清單條件把「有變數讀取引用」的單元整條排除，共 92 條（13,194 → 13,286 單元，共 13,996 處）。
+  - 編譯器新增 `--all-translated`，並略過 `text:*` 引用：這種引用沒有字串資料，字串在 `string copy` 那一處。
+  - 存檔改寫移到 `tools/patch_save_gstr.py`，並涵蓋 GSTR[7]。
+- **v93／v94（2026-09-24，使用者已確認選項長度與是非選單正常）**：`scratch_test/cjk_display_staging_v94_yes_no`
+  - **選項長度上限 49 bytes**：
+    - 對話處理程式把選項存在 DGROUP `0x5537 + n×0x33` 的 51 bytes 格子裡。
+      超過 50 bytes 的選項會在第 49 byte 截斷（`0x7CF1B`）。
+    - 繪製時用 `strncpy(buf, 選項, 50)`（`0x7D86E`），剛好 50 bytes 就沒有 NUL，會印出堆疊垃圾。
+    - 使用者看到「唾棄他」後面三個亂碼字，就是這個原因。
+    - 已把 278 條選項縮短到 ≤49 bytes，也就是 2 個空白加最多 15 個中文字。
+    - 編譯器遇到超長選項或標題會丟 `MenuTextTooLong`。它刻意不是 `ValueError`，
+      否則會被 main 當成「跳過 chunk」吞掉。
+  - **是非選單**（EXE 字串第一批）：新模組 `tools/exe_text_layer.py`。
+    - `0x6B7BD` 用 DGROUP `1600`（Answer Yes or No）、`1611`（Yes）、`160E`（No，和前一句共用尾巴）組選單。
+    - 對話處理程式用 `stricmp(ds:5504, ds:1F61 "answer yes or no")` 辨認是非選單，所以兩處要翻成相同的中文。
+    - 「否」搬到 `160D`，`push 160Eh` 改成 `push 160Dh`。
+  - **EXE 字串盤點**：
+    - 用 `push ds; push <偏移>` 找引用，再看後面最近的 far call，依呼叫目標分組。例如：
+      - `00A8:0002`：48 條，格式化訊息。
+      - `04D0:0020/0025/002A`：約 60 條，確認框、YES/NO/CANCEL、NO MEMORY 等。
+      - `0578:0070`：商店。
+      - `4211:00B1`：戰鬥。
+    - overlay 程式裡 far call 的段值不能用 `0x5400+段×16` 直接換算（例如 `0x140`→`2A1D`、`0x150`→`339E`），
+      要到執行期確認實際函式。
 
-**下一輪目標（使用者指定）：翻譯寫在程式裡的字串**，例如選單下方的「WHAT DO YOU SAY?」。
+**下一輪目標（使用者指定）：翻譯寫在程式裡的字串**。選單標題已在 v91 處理，接下來是 EXE 內的字串（`YES`／`NO`／`CANCEL` 等）。右側直排的 `MORE` 是圖片，使用者說先不處理。
 使用者也注意到其他畫面還有英文字串。細節見 0.3 節。
 
-### 0.2 重建 v89（`scratch_test/` 在 `.gitignore` 裡）
+### 0.2 重建 v95（`scratch_test/` 在 `.gitignore` 裡）
 
 ```bash
-# 0) 候選清單：所有出現位置都是 GPL/MAS、inline、compressed、非 unresolved 的已翻譯單元
+# 0) 舊的候選清單腳本：已改用編譯器的 --all-translated（步驟 3），這段不再需要
 python - <<'EOF'
 import json
 from collections import defaultdict
@@ -55,17 +138,20 @@ python tools/cjk_localization_pipeline.py build-banks --mapping localization/cjk
 
 # 3) 對話封包 → 疊上 NAME-1
 python tools/compile_gpl_dialogue_patch.py \
-  --unit-id-file scratch_test/all_translated_unit_ids.txt --output scratch_test/gpl_full_from_pristine_v5
+  --all-translated \
+  --fragment-overrides localization/catalog/dialogue_fragment_overrides.json \
+  --translate-menu-titles \
+  --output scratch_test/gpl_full_from_pristine_v9_variable_reads
 python tools/compile_gff_name_records.py \
-  --prior-package scratch_test/gpl_full_from_pristine_v5/gpl-dialogue-patch.json \
-  --output scratch_test/gpl_full_v5_name_records
+  --prior-package scratch_test/gpl_full_from_pristine_v9_variable_reads/gpl-dialogue-patch.json \
+  --output scratch_test/gpl_full_v9_name_records
 
 # 4) 組合包
 python tools/build_cjk_display_staging.py \
   --mapping localization/cjk_mapping.json \
   --bank-package scratch_test/formal_cjk_fusion_10x10_v21_fixed_ui/cjk-bank-set.json \
   --spin-package scratch_test/spin_gff_import_title_newline_v3_current/gff-text-replacements.json \
-  --gpl-package scratch_test/gpl_full_v5_name_records/gpl-dialogue-patch.json \
+  --gpl-package scratch_test/gpl_full_v9_name_records/gpl-dialogue-patch.json \
   --ebox-line-gap 2 --menu-line-gap 2 --dialogue-option-pitch 11 --view-ui \
   --output scratch_test/cjk_display_staging_vNN_xxx
 ```
@@ -73,18 +159,24 @@ python tools/build_cjk_display_staging.py \
 - 建好後，把 v86r6 的 `SAVE01～08.SAV` 與 `DARKRUN.GFF` 複製進去，讓使用者可以讀進度。
   存檔名稱另存在別的檔，所以讀檔清單上的名字會跟遊戲內不同，但 SAVE01 本身是同一份。
 - 只要對話封包改版，舊存檔記住的觸發器位址就可能失效（re_99）。
-- `tests/`：209 項全過，指令是 `python -m pytest tests -q`。
+- **全域字串 GSTR 會存進存檔**：
+  - 字串表每格 42 bytes，依序是 GSTR[1] What do you say?、[2] END、[3] CLOSE、[4] What do you do?……
+  - 讀舊存檔時，英文標題會被還原回來。
+  - 複製存檔之後，要執行 `python tools/patch_save_gstr.py <組合包>/GAME/DARKSUN <對話封包 json>`：
+    - 它會把 MAS-99 設定的 GSTR[1][4][5][6][7] 裡還是英文的改成中文。
+    - 原檔備份為 `*.orig`。
+    - 新開的遊戲不受影響。
+- `tests/`：226 項全過，指令是 `python -m pytest tests -q`。
 
 ### 0.3 下一輪：程式內字串翻譯——已知事實與限制
 
 **A. 字串從哪裡來**
 
-1. **「WHAT DO YOU SAY?」這類選單標題其實不在 EXE 裡**：
+1. **「WHAT DO YOU SAY?」這類選單標題不在 EXE 裡，已在 v91 處理**：
    - 它們是 GPLDATA 的 `GSTR[1]`（553 個選單）、`GSTR[4]`（12 個），另有 19 個內嵌標題。
-   - 目前刻意保留英文，記在對話封包的 `withheld`（re_99 §4）。
-   - 原因是下方選單標題的繪製程式沒有中文路徑，而且目前還不知道是哪一段程式。
-   - 要翻譯，得先找到這段繪製程式並補上 Base94 解碼，然後取消 withheld。可以從 WIND-3008
-     對話選單與 re_96～re_98 的選單繪製研究往下追。
+   - 繪製程式與修補方式見 0.1 的 v91 條目。
+   - 這個做法可以沿用到其他走 `339E:016D` 的畫面：先找到 push 字串指標的那一段，換成 tag redirect，
+     讓 FONT 核心解碼到 name-slot。限制是每次繪製最多 10 個相異中文字。
 2. **EXE 的畫面字串都在 DGROUP 裡**：
    - DGROUP 在檔案 `0x48960`，執行期段為 `4B7A`。
    - 用「以 NUL 結尾、主要是英文字母」的條件篩選，約有 570 條，內容包括：

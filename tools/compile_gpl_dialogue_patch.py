@@ -180,11 +180,38 @@ STRING_COPY_OPCODE = 0x0A
 # - DSUN.EXE compares printed text with "CLOSE" (0x4A871), "DEBUG" and "END"
 #   (0x4A87D); every dialogue ends with `print GSTR[2]` + `print GSTR[3]`.
 #   Translated, they print as text and the box never closes or clears.
-# - The bottom-panel menu title renderer has no CJK path: a translated title
-#   draws as ASCII garbage. Titles are GSTR[1] (553 menus), GSTR[4] (12) or
-#   one of 19 inline literals.
+# - The bottom-panel menu title renderer (overlay 0x7D80A) upper-cases the
+#   title and draws it through 339E:016D, which has no CJK path: a translated
+#   title draws as ASCII garbage unless the view UI layer's title redirect is
+#   installed (--translate-menu-titles). Titles are GSTR[1] (553 menus),
+#   GSTR[4] (12) or one of 19 inline literals.
 ENGINE_CONTROL_STRINGS = frozenset({"END", "CLOSE", "DEBUG"})
+# The dialogue handler keeps each menu option in a 51-byte DGROUP slot
+# (0x5537 + n*0x33) and cuts anything longer than 50 at byte 49 (overlay
+# 0x7CF1B); the title buffer 0x5504 gets strncpy(.., 50) (0x7CED9). Drawing
+# then strncpy's the option into a 50-byte stack buffer (0x7D86E) that is
+# only terminated when the text is shorter, so a 50-byte option drew stack
+# garbage and a longer one was cut mid-triple. Titles and options must
+# encode to at most 49 bytes.
+MENU_TEXT_MAX_BYTES = 49
 MENU_TITLE_VARIABLES = frozenset({("gstring", 1), ("gstring", 4)})
+
+
+class MenuTextTooLong(Exception):
+    """Not a ValueError: main() skips a chunk on ValueError, and an
+    over-long option must stop the build instead of silently leaving the
+    whole chunk English."""
+
+
+def check_menu_text_fits(
+    string_expression: dict[str, object], edit: dict[str, object], old_offset: int
+) -> None:
+    length = len(str(string_expression["value"]).encode("ascii"))
+    if length > MENU_TEXT_MAX_BYTES:
+        raise MenuTextTooLong(
+            f"{edit['unit_id']}: menu text at 0x{old_offset:04X} encodes to {length} bytes, "
+            f"over the engine's {MENU_TEXT_MAX_BYTES}-byte menu slot"
+        )
 
 
 def is_wide_text_character(character: str) -> bool:
@@ -484,11 +511,14 @@ def relocate_json_strings(
     edits: list[dict[str, object]],
     chunk_id: int | None = None,
     withheld: list[dict[str, object]] | None = None,
+    translate_menu_titles: bool = False,
 ) -> tuple[dict[str, object], list[dict[str, object]]]:
     """Replace strings and relocate every instruction and local branch target.
 
     Edits the engine cannot display are appended to `withheld` (when given)
-    with a reason and leave their English source in place.
+    with a reason and leave their English source in place. Menu titles are
+    withheld too unless `translate_menu_titles`: only the view UI layer's
+    title redirect (view_ui_layer.MENU_TITLE_PATCHES) can draw them.
     """
     withheld_offsets: set[int] = set()
 
@@ -576,7 +606,10 @@ def relocate_json_strings(
                 if strings[0].get("value") in ENGINE_CONTROL_STRINGS:
                     withhold(offset_edits[0], old_offset, "engine control string")
                     continue
-                if (destination.get("var_kind"), destination.get("id")) in MENU_TITLE_VARIABLES:
+                if (
+                    (destination.get("var_kind"), destination.get("id")) in MENU_TITLE_VARIABLES
+                    and not translate_menu_titles
+                ):
                     withhold(offset_edits[0], old_offset, "menu title variable")
                     continue
             delta = apply_string_edit(
@@ -623,7 +656,7 @@ def relocate_json_strings(
             # The leading parameter is usually a variable, but 19 menus (e.g.
             # GPL-29's "Do you drink the wine?") carry their prompt inline;
             # the catalog records it on the same offset as the options. It is
-            # matched only so it can be withheld (see MENU_TITLE_VARIABLES).
+            # withheld unless translate_menu_titles (see MENU_TITLE_VARIABLES).
             title_expressions = params[0]
             title_string = (
                 title_expressions[0]
@@ -641,7 +674,11 @@ def relocate_json_strings(
                     and title_string.get("value") == original
                 ):
                     title_claimed = True
-                    withhold(edit, old_offset, "inline menu title")
+                    if translate_menu_titles:
+                        total_delta += apply_string_edit(title_string, edit, old_offset)
+                        check_menu_text_fits(title_string, edit, old_offset)
+                    else:
+                        withhold(edit, old_offset, "inline menu title")
                     continue
                 candidates = [
                     index for index in range(num_entries)
@@ -657,6 +694,7 @@ def relocate_json_strings(
                 index = candidates[0]
                 claimed[index] = True
                 total_delta += apply_string_edit(entry_strings[index], edit, old_offset)
+                check_menu_text_fits(entry_strings[index], edit, old_offset)
             instruction["length"] = int(instruction["length"]) + total_delta
             if instruction["length"] <= 0:
                 raise ValueError(
@@ -792,6 +830,42 @@ def relocate_gpli_event_targets(
     return bytes(patched), relocated
 
 
+def is_variable_reference(occurrence: dict[str, object]) -> bool:
+    """A menu option or print that reads a string variable (text:lstring,
+    text:gstring). The catalog links it to the value's unit, but the bytes
+    live where the variable was assigned (a `string copy`), so there is
+    nothing to rewrite at this site."""
+    return str(occurrence.get("source", "")).startswith("text:")
+
+
+def is_compilable_occurrence(occurrence: dict[str, object]) -> bool:
+    return (
+        not occurrence.get("unresolved")
+        and str(occurrence.get("kind", "")).strip().upper() in {"GPL", "MAS"}
+        and occurrence.get("source") == "inline"
+        and occurrence.get("sub_type") == "compressed"
+    )
+
+
+def all_translated_unit_ids(units_path: Path, occurrences_path: Path) -> list[str]:
+    """Every translated unit with at least one inline compressed GPL/MAS
+    site whose other sites only read string variables."""
+    with units_path.open("r", encoding="utf-8-sig", newline="") as stream:
+        translated = {
+            row["unit_id"] for row in csv.DictReader(stream) if row.get("translation_zh_tw", "").strip()
+        }
+    by_unit: dict[str, list[dict[str, object]]] = defaultdict(list)
+    for occurrence in json.loads(occurrences_path.read_text(encoding="utf-8"))["occurrences"]:
+        if occurrence.get("unit_id") in translated:
+            by_unit[str(occurrence["unit_id"])].append(occurrence)
+    return sorted(
+        unit_id
+        for unit_id, occurrences in by_unit.items()
+        if any(is_compilable_occurrence(item) for item in occurrences)
+        and all(is_compilable_occurrence(item) or is_variable_reference(item) for item in occurrences)
+    )
+
+
 def load_selected_edits(
     units_path: Path,
     occurrences_path: Path,
@@ -820,6 +894,8 @@ def load_selected_edits(
         unit_id = occurrence.get("unit_id")
         if unit_id not in requested:
             continue
+        if is_variable_reference(occurrence):
+            continue
         if occurrence.get("unresolved"):
             raise ValueError(f"{occurrence.get('occurrence_id')}: unresolved occurrence")
         kind = str(occurrence.get("kind", "")).strip().upper()
@@ -845,6 +921,53 @@ def load_selected_edits(
     if absent:
         raise ValueError(f"selected unit(s) have no supported occurrence: {absent}")
     return grouped
+
+
+def load_fragment_overrides(
+    overrides_path: Path,
+    mapping: dict[str, object],
+    grouped: dict[tuple[str, int], list[dict[str, object]]],
+) -> int:
+    """Add per-site edits for short fragments the dialogue catalog never extracted.
+
+    opends skipped print strings of three characters or fewer ("he ", "is",
+    "wo", "."), so they are not dialogue units. They are keyed by their exact
+    instruction offset because one English fragment needs different Chinese
+    at different sites; an empty translation prints nothing.
+    """
+    document = json.loads(overrides_path.read_text(encoding="utf-8"))
+    overrides = document.get("overrides")
+    if not isinstance(overrides, list):
+        raise ValueError(f"{overrides_path}: no overrides list")
+    claimed = {
+        (kind, chunk_id, int(edit["offset"]))
+        for (kind, chunk_id), edits in grouped.items()
+        for edit in edits
+    }
+    for override in overrides:
+        kind = str(override["kind"]).strip().upper()
+        chunk_id = int(override["chunk_id"])
+        offset = int(override["offset"])
+        if kind not in {"GPL", "MAS"}:
+            raise ValueError(f"{kind}-{chunk_id}@0x{offset:04X}: unsupported kind")
+        if (kind, chunk_id, offset) in claimed:
+            raise ValueError(f"{kind}-{chunk_id}@0x{offset:04X}: site already has an edit")
+        claimed.add((kind, chunk_id, offset))
+        translation = override.get("translation_zh_tw")
+        if not isinstance(translation, str):
+            raise ValueError(f"{kind}-{chunk_id}@0x{offset:04X}: translation must be a string")
+        site = f"FRAG_{kind}-{chunk_id}_{offset:04X}"
+        grouped[(kind, chunk_id)].append(
+            {
+                "unit_id": site,
+                "occurrence_id": site,
+                "offset": offset,
+                "original": str(override["original"]),
+                "translation_zh_tw": translation,
+                "encoded": encode_text(translation, mapping),
+            }
+        )
+    return len(overrides)
 
 
 def string_values(disassembly: dict[str, object]) -> list[str]:
@@ -893,6 +1016,24 @@ def main() -> int:
         type=Path,
         help="text file with one dialogue unit id per line",
     )
+    parser.add_argument(
+        "--all-translated",
+        action="store_true",
+        help="select every translated unit that has an inline compressed GPL/MAS site",
+    )
+    parser.add_argument(
+        "--fragment-overrides",
+        type=Path,
+        help="per-site short-fragment translations (localization/catalog/dialogue_fragment_overrides.json)",
+    )
+    parser.add_argument(
+        "--translate-menu-titles",
+        action="store_true",
+        help=(
+            "translate the bottom-panel menu titles (GSTR[1], GSTR[4], inline); "
+            "the build must install the view UI layer's title redirect"
+        ),
+    )
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     if args.unit_id_file:
@@ -901,8 +1042,10 @@ def main() -> int:
             for line in args.unit_id_file.read_text(encoding="utf-8").splitlines()
             if line.strip()
         )
+    if args.all_translated:
+        args.unit_id.extend(all_translated_unit_ids(args.units, args.occurrences))
     if not args.unit_id:
-        raise ValueError("select dialogue units with --unit-id or --unit-id-file")
+        raise ValueError("select dialogue units with --unit-id, --unit-id-file or --all-translated")
 
     prior_package: dict[str, object] | None = None
     if args.prior_package:
@@ -925,6 +1068,8 @@ def main() -> int:
     grouped = load_selected_edits(
         args.units, args.occurrences, mapping, args.unit_id
     )
+    if args.fragment_overrides:
+        load_fragment_overrides(args.fragment_overrides, mapping, grouped)
     if prior_package:
         prior_targets = {
             (str(record["kind"]), int(record["chunk_id"]))
@@ -998,7 +1143,8 @@ def main() -> int:
             try:
                 chunk_withheld: list[dict[str, object]] = []
                 patched_document, applied = relocate_json_strings(
-                    source_document, edits, chunk_id, chunk_withheld
+                    source_document, edits, chunk_id, chunk_withheld,
+                    translate_menu_titles=args.translate_menu_titles,
                 )
             except ValueError as exc:
                 print(f"skip {stem}: {exc}", flush=True)
@@ -1229,6 +1375,10 @@ def main() -> int:
             "chunks": target_records,
             "edits": edit_records,
             "withheld": withheld_records,
+            "menu_titles_translated": bool(
+                args.translate_menu_titles
+                or (prior_package or {}).get("menu_titles_translated", False)
+            ),
             "verification": verification,
         }
         for inherited_key in ("name_records", "abi_constraint"):

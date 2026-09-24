@@ -40,6 +40,17 @@
 .endif
 
 .equ font_pointer, 0xA378
+# Dialogue menu title buffer (DGROUP:5504) and its private decode source id.
+.equ MENU_TITLE_BUFFER, 0x5504
+.equ MENU_TITLE_SOURCE_ID, 0xFF80
+# One-line window text (message boxes, "SAVING GAME"): its private source id.
+.equ STATUS_TEXT_SOURCE_ID, 0xFF83
+# The overlay draws the title at x=6, y=4. English capitals sit in the top
+# seven rows of FONT-100's nine-row cell, but a CJK glyph fills all ten, so
+# at y=4 it touched the first choice (y=13); Chinese titles draw 2px higher.
+.equ MENU_TITLE_X, 6
+.equ MENU_TITLE_ENGLISH_Y, 4
+.equ MENU_TITLE_CHINESE_Y, 2
 .equ name_table, 0x166D
 # The fixed 4-byte gap between [font_pointer]'s own runtime offset and
 # this payload's CS:0 (see plan_name_slot_consumers.py's
@@ -110,6 +121,14 @@ cjk_name_cache_start:
     cmp ax, 0xFFCD
     je gender_label_entry
 .endif
+.ifdef menu_titles
+    cmp ax, 0xFF81
+    je menu_title_entry
+.endif
+.ifdef status_texts
+    cmp ax, 0xFF82
+    je status_text_entry
+.endif
 .ifdef fixed_backpack
     # Only the new bottom-label wrapper has this continuation. The four
     # existing NAME callers use 2516, 2B93, 0FFD, and 102E instead.
@@ -131,6 +150,24 @@ name_cache_entry:
     mov cs:[pending_id], ax
     cmp ax, cs:[cached_id]
     je cache_return
+.ifdef menu_titles
+    # The dialogue menu title buffer DGROUP:5504 (GSTR[1], GSTR[4] or an
+    # inline prompt copied there by the menu opcode).
+    cmp ax, MENU_TITLE_SOURCE_ID
+    jne ordinary_title_source
+    push ds
+    pop es
+    mov si, MENU_TITLE_BUFFER
+    jmp decode_start
+ordinary_title_source:
+.endif
+.ifdef status_texts
+    cmp ax, STATUS_TEXT_SOURCE_ID
+    jne ordinary_status_source
+    les si, dword ptr cs:[status_source]
+    jmp decode_start
+ordinary_status_source:
+.endif
 .ifdef fixed_backpack
     cmp ax, 0xFFFE
     jne name_table_source
@@ -633,6 +670,153 @@ fixed_arguments:
     push bx
     push cx
     lret
+.endif
+.ifdef menu_titles
+# Replacement for overlay bytes 7D818..7D83A of the dialogue menu title draw:
+#     lcall strupr(ds:5504)          ; 7D813, now aimed at strupr's own retf
+#     add sp, 4                      ; \
+#     push ds; push 5504h            ;  | this span
+#     push the %C colour words, "%C%C%C%s" (ds:1F58) and x=6,y=4
+#                                    ; /
+#     push dword [3C8:0]; lcall 0150:016D   ; 7D83B, untouched
+# 339E:016D cannot decode Base94 and strupr would turn the triples' a-z into
+# other characters. A Chinese title is decoded into NAME glyph slots; an
+# English one is upper-cased here and drawn as before.
+menu_title_entry:
+    pop es
+    pop cx
+    pop dx
+    add sp, 4
+    push dx
+    push cx
+    push si
+    mov si, MENU_TITLE_BUFFER
+menu_title_scan:
+    mov al, byte ptr [si]
+    test al, al
+    jz menu_title_english
+    cmp al, 0x5E
+    je menu_title_chinese
+    inc si
+    jmp menu_title_scan
+menu_title_english:
+    mov si, MENU_TITLE_BUFFER
+menu_title_upper:
+    mov al, byte ptr [si]
+    test al, al
+    jz menu_title_upper_done
+    sub al, 0x61
+    cmp al, 0x19
+    ja menu_title_upper_next
+    add al, 0x41
+    mov byte ptr [si], al
+menu_title_upper_next:
+    inc si
+    jmp menu_title_upper
+menu_title_upper_done:
+    pop si
+    mov word ptr cs:[menu_title_y], MENU_TITLE_ENGLISH_Y
+    mov ax, MENU_TITLE_BUFFER
+    mov dx, ds
+    jmp menu_title_arguments
+menu_title_chinese:
+    pop si
+    mov word ptr cs:[menu_title_y], MENU_TITLE_CHINESE_Y
+    # Titles change from menu to menu; never reuse the previous decode.
+    mov word ptr cs:[cached_id], 0xFFFF
+    mov ax, MENU_TITLE_SOURCE_ID
+    push cs
+    push OFFSET menu_title_decoded
+    push es
+    jmp name_cache_entry
+menu_title_decoded:
+    pop ax
+    pop dx
+menu_title_arguments:
+    pop cx
+    pop bx
+    push dx
+    push ax
+    .byte 0x66, 0x68
+    .long 0x00110014
+    .byte 0x66, 0x68
+    .long 0x002F00FE
+    .byte 0x66, 0x68
+    .long 0x00FF0000
+    push ds
+    push 0x1F58
+    push word ptr cs:[menu_title_y]
+    push MENU_TITLE_X
+    push bx
+    push cx
+    lret
+menu_title_y: .word MENU_TITLE_ENGLISH_Y
+.endif
+.ifdef status_texts
+# Replacement for overlay bytes 704AB..704BD of the window text setter
+# (overlay segment 25, entry 0580:005C), which every message box uses:
+#     mov [5435], si                 ; \  this span
+#     mov byte [bp-28h], 0           ;  |
+#     push 1Fh; push dword [bp+0Ch]; push ss:bp-28h
+#     lcall strncpy                  ; 704BE, untouched
+#     lcall strupr(bp-28h)           ; then drawn one byte per glyph
+# The draw loop cannot decode Base94 and strupr would rewrite the triples'
+# a-z. A Chinese text is decoded into NAME glyph slots (whose codes strupr
+# leaves alone) and strncpy copies those instead; English passes through.
+status_text_entry:
+    pop es
+    pop cx
+    pop dx
+    push dx
+    push cx
+    mov word ptr [0x5435], si
+    mov byte ptr ss:[bp-0x28], 0
+    mov ax, word ptr ss:[bp+0x0C]
+    mov dx, word ptr ss:[bp+0x0E]
+    mov word ptr cs:[status_source], ax
+    mov word ptr cs:[status_source+2], dx
+    push es
+    push si
+    les si, dword ptr cs:[status_source]
+status_text_scan:
+    mov al, byte ptr es:[si]
+    test al, al
+    jz status_text_english
+    cmp al, 0x5E
+    je status_text_chinese
+    inc si
+    jmp status_text_scan
+status_text_english:
+    pop si
+    pop es
+    mov ax, word ptr cs:[status_source]
+    mov dx, word ptr cs:[status_source+2]
+    jmp status_text_arguments
+status_text_chinese:
+    pop si
+    pop es
+    mov word ptr cs:[cached_id], 0xFFFF
+    mov ax, STATUS_TEXT_SOURCE_ID
+    push cs
+    push OFFSET status_text_decoded
+    push es
+    jmp name_cache_entry
+status_text_decoded:
+    pop ax
+    pop dx
+status_text_arguments:
+    pop cx
+    pop bx
+    push 0x1F
+    push dx
+    push ax
+    push ss
+    lea ax, [bp-0x28]
+    push ax
+    push bx
+    push cx
+    lret
+status_source: .long 0
 .endif
 .ifdef fixed_abilities
 # Six fixed eight-byte strings: two Base94 triples, colon, NUL.

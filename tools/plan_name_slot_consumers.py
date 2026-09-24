@@ -330,6 +330,8 @@ def assemble_name_slot_cache(
     ui_text_ids: dict[str, tuple[int, ...]] | None = None,
     class_row: tuple[int, int] | None = None,
     stat_row_y: int | None = None,
+    menu_titles: bool = False,
+    status_texts: bool = False,
 ) -> bytes:
     """Assemble the self-contained decoder appended to FONT-100.
 
@@ -384,6 +386,10 @@ def assemble_name_slot_cache(
         extra_symbols += ["--defsym", "fixed_materials=1"]
     if class_names:
         extra_symbols += ["--defsym", "fixed_class_names=1"]
+    if menu_titles:
+        extra_symbols += ["--defsym", "menu_titles=1"]
+    if status_texts:
+        extra_symbols += ["--defsym", "status_texts=1"]
     if identity:
         extra_symbols += ["--defsym", "fixed_identity=1"]
         if gender_position is not None:

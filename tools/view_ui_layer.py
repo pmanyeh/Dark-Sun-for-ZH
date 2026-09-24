@@ -117,6 +117,22 @@ VIEW_UI_EXE_PATCHES = (
     (0x08C07F, "07", "0A", "v55/v57 inventory panel 10px line grid and 30px shift"),
     (0x08C0FD, "07", "0A", "v55/v57 inventory panel 10px line grid and 30px shift"),
     (0x08C134, "07", "0A", "v55/v57 inventory panel 10px line grid and 30px shift"),
+    # Dialogue menu title ("WHAT DO YOU SAY?"). The overlay upper-cases the
+    # DGROUP:5504 title with strupr (0:39AC) and draws it through
+    # 0150:016D, which cannot decode Base94. strupr's call now lands on its
+    # own retf at 0:39CF (only the offset word changes; the segment word is
+    # an overlay relocation), and the argument pushes after it become a
+    # tag-FF81 redirect whose decoder entry decodes Chinese titles into NAME
+    # glyph slots, upper-cases English ones itself, and re-pushes the same
+    # formatter arguments before returning to the untouched far call.
+    (0x07D814, "AC", "CF", "v91 menu title: strupr call returns at once"),
+    (0x07D818, "83 C4 04 1E 68 04 55 66 68 14 00 11 00 66 68 FE 00 2F 00 66 68 00 00 FF 00 1E 68 58 1F 66 68 06 00 04 00", "0E E8 00 00 58 05 1F 00 50 B8 81 FF 8C DB 80 EF 10 53 68 14 07 CB 90 90 90 90 90 90 90 90 90 90 90 90 90", "v91 menu title redirect"),
+    # One-line window text (message boxes, "SAVING GAME"): the setter at
+    # overlay 0x7045D (entry 0580:005C) strncpy's the text into a stack
+    # buffer, upper-cases it and draws it one byte per glyph. The argument
+    # setup before strncpy becomes a tag-FF82 redirect that returns to the
+    # untouched strncpy call at overlay IP 06EE (file 0x704BE).
+    (0x0704AB, "89 36 35 54 C6 46 D8 00 6A 1F 66 FF 76 0C 16 8D 46 D8 50", "B8 82 FF 0E 68 EE 06 8C DB 80 EF 10 53 68 14 07 CB 90 90", "v97 window text redirect"),
 )
 
 
@@ -248,6 +264,8 @@ def build_view_ui_font(
         ui_text_ids=ids,
         class_row=CLASS_ROW,
         stat_row_y=STAT_ROW_Y,
+        menu_titles=True,
+        status_texts=True,
     )
     result = bytearray(expanded + core)
     height = next(iter(banks.values()))["height"]

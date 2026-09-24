@@ -3625,7 +3625,7 @@
       "unit_id": "DLG_505dbe50a9fd",
       "category": "dialogue",
       "original": "  A'poss, I free you from your prison.",
-      "translation_zh_tw": "  阿波斯，我這就將你從牢籠中解放出來。",
+      "translation_zh_tw": "  阿波斯，我將你從牢籠中解放。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -4557,7 +4557,7 @@
       "unit_id": "DLG_ff82792c294a",
       "category": "dialogue",
       "original": "  You don't seem as benign as before.",
-      "translation_zh_tw": "  你看起來可不像之前那麼慈眉善目了。",
+      "translation_zh_tw": "  你看起來不像之前那麼和善了。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -4677,7 +4677,7 @@
       "unit_id": "DLG_9be8bea0479b",
       "category": "dialogue",
       "original": "  I've met him! He told me what you did!",
-      "translation_zh_tw": "  我見過他了！他把你做的好事全告訴我了！",
+      "translation_zh_tw": "  我見過他！他說了你幹的好事！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -5283,7 +5283,7 @@
       "unit_id": "DLG_700d1173609d",
       "category": "dialogue",
       "original": "  Do you know a hermit who used to live here?",
-      "translation_zh_tw": "  你認不認識以前住在這附近的隱士？",
+      "translation_zh_tw": "  你認識以前住這附近的隱士嗎？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -7714,7 +7714,7 @@
       "unit_id": "DLG_8b3e4b9e16c3",
       "category": "dialogue",
       "original": "  Well, the city IS destroyed....",
-      "translation_zh_tw": "  呃，這座城市「確實」被毀了啊……",
+      "translation_zh_tw": "  呃，這城市「確實」被毀了啊……",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -8750,7 +8750,7 @@
       "unit_id": "DLG_fe01859ec737",
       "category": "dialogue",
       "original": "  Your race IS and WILL remain extinct!",
-      "translation_zh_tw": "  你們的種族早就滅絕了，而且將永遠滅絕！",
+      "translation_zh_tw": "  你們的種族已經且將永遠滅絕！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -8765,7 +8765,7 @@
       "unit_id": "DLG_569901802e00",
       "category": "dialogue",
       "original": "  What good timing! Let me interfere some more!",
-      "translation_zh_tw": "  時間挑得真巧！那就讓我來多搗點亂吧！",
+      "translation_zh_tw": "  時機真巧！讓我再多搗點亂吧！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -8780,7 +8780,7 @@
       "unit_id": "DLG_d6fd043f51bc",
       "category": "dialogue",
       "original": "  Your evil ends here, psurlons!",
-      "translation_zh_tw": "  你們的罪惡在此終結了，蘇隆蟲人！",
+      "translation_zh_tw": "  你們的罪惡到此為止，蘇隆蟲人！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -8795,7 +8795,7 @@
       "unit_id": "DLG_afa3da0249b6",
       "category": "dialogue",
       "original": "  Die, you orange... uh... things!",
-      "translation_zh_tw": "  受死吧，你們這些橘色的……呃……怪東西！",
+      "translation_zh_tw": "  去死，橘色的……呃……東西！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -10584,7 +10584,7 @@
       "unit_id": "DLG_20de245df8d7",
       "category": "dialogue",
       "original": "  I took a secret tunnel in the sewer. ",
-      "translation_zh_tw": "  我從下水道的一條秘密地道逃出來的。 ",
+      "translation_zh_tw": "  我從下水道的秘密地道逃出來的。 ",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -10764,7 +10764,7 @@
       "unit_id": "DLG_bb64cdd2cae9",
       "category": "dialogue",
       "original": "  That's good, now give me all your money! ",
-      "translation_zh_tw": "  很好，現在把你身上所有的錢都交出來！ ",
+      "translation_zh_tw": "  很好，現在把錢全交出來！ ",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -10779,7 +10779,7 @@
       "unit_id": "DLG_b5d004de976f",
       "category": "dialogue",
       "original": "  Everything you have is payment enough. ",
-      "translation_zh_tw": "  只要把你擁有的全部東西交出來，就足以抵命了。 ",
+      "translation_zh_tw": "  交出你的全部家當，就足以抵命。 ",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -11532,7 +11532,7 @@
       "unit_id": "DLG_683a0143be14",
       "category": "dialogue",
       "original": "  No, the deed is its own reward.",
-      "translation_zh_tw": "  不必了，行善本身就是最好的回報。",
+      "translation_zh_tw": "  不必了，行善本身就是回報。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -11896,7 +11896,7 @@
       "unit_id": "DLG_115da2bfabe3",
       "category": "dialogue",
       "original": "  I'm ridding Athas of scum like you!",
-      "translation_zh_tw": "  我是來為亞薩斯除掉你們這些人渣的！",
+      "translation_zh_tw": "  我要為亞薩斯除掉你們這些人渣！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -12192,7 +12192,7 @@
       "unit_id": "DLG_02a1c98f5486",
       "category": "dialogue",
       "original": "  Help me and I'll get you a wyvern.",
-      "translation_zh_tw": "  幫我個忙，我就幫你弄一隻雙足飛龍。",
+      "translation_zh_tw": "  幫我的忙，我給你弄隻雙足飛龍。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -13319,7 +13319,7 @@
       "unit_id": "DLG_ffe2db4817ca",
       "category": "dialogue",
       "original": "  I won't tell anyone you let me pass.",
-      "translation_zh_tw": "  你放我過去，我絕不會告訴任何人。",
+      "translation_zh_tw": "  你放我過去，我不會告訴別人。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -13803,7 +13803,7 @@
       "unit_id": "DLG_ebc6b7faf1e0",
       "category": "dialogue",
       "original": "  I have grain. Maybe we can make a deal?",
-      "translation_zh_tw": "  我有糧食。也許我們可以做筆交易？",
+      "translation_zh_tw": "  我有糧食。也許能做筆交易？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -16206,7 +16206,7 @@
       "unit_id": "DLG_9bdd98680692",
       "category": "dialogue",
       "original": "Do you untie her anyway?",
-      "translation_zh_tw": "你依然要替她解開繩索嗎？",
+      "translation_zh_tw": "仍要替她解開繩索嗎？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -16532,7 +16532,7 @@
       "unit_id": "DLG_0188eafa1f66",
       "category": "dialogue",
       "original": "  Mikquetzl is dead. He won't attack anyone.",
-      "translation_zh_tw": "  米奎茲爾已經死了。他不會再襲擊任何人了。",
+      "translation_zh_tw": "  米奎茲爾已死，不會再襲擊人了。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -17816,7 +17816,7 @@
       "unit_id": "DLG_98c4b4a760e4",
       "category": "dialogue",
       "original": "  Friend. I seek escape from the sewers.",
-      "translation_zh_tw": "  是朋友。我正在尋找逃離下水道的出路。",
+      "translation_zh_tw": "  是朋友。我在找逃出下水道的路。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -18101,7 +18101,7 @@
       "unit_id": "DLG_7c177b279fad",
       "category": "dialogue",
       "original": "  I've news I can only reveal to your chief.",
-      "translation_zh_tw": "  我有只能透露給你們酋長的機密情報。",
+      "translation_zh_tw": "  我有情報只能告訴你們酋長。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -18311,7 +18311,7 @@
       "unit_id": "DLG_af3c681a9a27",
       "category": "dialogue",
       "original": "  I, too, revere the mighty Tectuktitlay.",
-      "translation_zh_tw": "  我也同樣崇敬偉大的特克圖克特雷。",
+      "translation_zh_tw": "  我也崇敬偉大的特克圖克特雷。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -18386,7 +18386,7 @@
       "unit_id": "DLG_30d461b8e9f0",
       "category": "dialogue",
       "original": "  Tectuktitlay is the son of a kank!",
-      "translation_zh_tw": "  特克圖克特雷是坎克巨蟻生的雜種！",
+      "translation_zh_tw": "  特克圖克特雷是坎克蟻生的雜種！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -18716,7 +18716,7 @@
       "unit_id": "DLG_d26338ce2c2c",
       "category": "dialogue",
       "original": "  I killed the unbelievers, great Mikquetzl!",
-      "translation_zh_tw": "  偉大的米奎茲爾，我已經把那些不信者全宰了！",
+      "translation_zh_tw": "  米奎茲爾大人，我殺光了不信者！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -18780,7 +18780,7 @@
       "unit_id": "DLG_e5f8cecb01bf",
       "category": "dialogue",
       "original": "  Is there no way to avoid this bloodbath?",
-      "translation_zh_tw": "  難道沒有任何辦法能避免這場血腥屠殺嗎？",
+      "translation_zh_tw": "  沒有辦法避免這場血腥屠殺嗎？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -20664,7 +20664,7 @@
       "unit_id": "DLG_10ce2a20f572",
       "category": "dialogue",
       "original": "  Tara and the bandits are unusual allies.",
-      "translation_zh_tw": "  塔拉和強盜們居然會是盟友，真不可思議。",
+      "translation_zh_tw": "  塔拉和強盜結盟，真不可思議。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -22158,7 +22158,7 @@
       "unit_id": "DLG_c2d82b713a4d",
       "category": "dialogue",
       "original": "  This is a crisis. May I see the Elders?",
-      "translation_zh_tw": "  現在正是危急時刻。我可以面見長老嗎？",
+      "translation_zh_tw": "  現在十分危急。我能見長老嗎？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -23076,7 +23076,7 @@
       "unit_id": "DLG_1ed886231d58",
       "category": "dialogue",
       "original": "  I beseech your sage wisdom, how is it found?",
-      "translation_zh_tw": "  我懇求您的睿智指引，該如何找到它？",
+      "translation_zh_tw": "  懇請賢者指點，該如何找到它？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -23091,7 +23091,7 @@
       "unit_id": "DLG_02f582d63511",
       "category": "dialogue",
       "original": "  Tell me how to find it you twice-dead rat!",
-      "translation_zh_tw": "  快告訴我怎麼找到它，你這隻死了兩次的老死鼠！",
+      "translation_zh_tw": "  快說在哪，你這死過兩次的鼠輩！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -23211,7 +23211,7 @@
       "unit_id": "DLG_9203d1099723",
       "category": "dialogue",
       "original": "  Please, tell me where to find this staff.",
-      "translation_zh_tw": "  請告訴我在哪裡可以找到這支法杖。",
+      "translation_zh_tw": "  請告訴我哪裡能找到這支法杖。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -23226,7 +23226,7 @@
       "unit_id": "DLG_857f9737e3c4",
       "category": "dialogue",
       "original": "  You mean Dagolar made the Tari?",
-      "translation_zh_tw": "  你的意思是，達戈拉爾創造了鼠人？",
+      "translation_zh_tw": "  你是說達戈拉爾創造了鼠人？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -24890,7 +24890,7 @@
       "unit_id": "DLG_fe6183b7e872",
       "category": "dialogue",
       "original": "  I must know before we attack her warren.",
-      "translation_zh_tw": "  在我們進攻她的巢穴前，我必須先弄清楚。",
+      "translation_zh_tw": "  進攻她的巢穴前，我必須弄清楚。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -26275,7 +26275,7 @@
       "unit_id": "DLG_c5ac23a1e262",
       "category": "dialogue",
       "original": "  Why do Mikquetzl's worshippers follow him?",
-      "translation_zh_tw": "  為什麼米奎茲爾的狂信徒會追隨他？",
+      "translation_zh_tw": "  米奎茲爾的狂信徒為何追隨他？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -26321,7 +26321,7 @@
       "unit_id": "DLG_0ff8a077f8f6",
       "category": "dialogue",
       "original": "  Give me the reward for all I've done.",
-      "translation_zh_tw": "  把應得的獎賞給我，我已經做了這麼多。",
+      "translation_zh_tw": "  我做了這麼多，把獎賞給我。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -26336,7 +26336,7 @@
       "unit_id": "DLG_9b4a3b922bae",
       "category": "dialogue",
       "original": "  I want a reward for all I've done.",
-      "translation_zh_tw": "  我為你做了這麼多事，我要拿到報酬。",
+      "translation_zh_tw": "  我做了這麼多，我要報酬。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -26367,7 +26367,7 @@
       "unit_id": "DLG_6411b805b9f8",
       "category": "dialogue",
       "original": "  Are you sure? With Mikquetzl dead?",
-      "translation_zh_tw": "  你確定嗎？在米奎茲爾已經死了的情況下？",
+      "translation_zh_tw": "  你確定？米奎茲爾都已經死了？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -27673,7 +27673,7 @@
       "unit_id": "DLG_1d3516b55840",
       "category": "dialogue",
       "original": "  What do you know about these worshippers?",
-      "translation_zh_tw": "  關於這群狂信徒，你都知道些什麼？",
+      "translation_zh_tw": "  關於這群狂信徒，你知道什麼？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -30700,7 +30700,7 @@
       "unit_id": "DLG_56dd33bb1fb8",
       "category": "dialogue",
       "original": "  Okay. Get your leader, he'll clear this up.",
-      "translation_zh_tw": "  好吧。把你們首領找來，他會把事情解釋清楚的。",
+      "translation_zh_tw": "  好吧。叫你們首領來說清楚。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -30880,7 +30880,7 @@
       "unit_id": "DLG_e9d43567bb5b",
       "category": "dialogue",
       "original": "  Dolt! I told you we're no one's slaves!",
-      "translation_zh_tw": "  蠢貨！我說過我們不是任何人的奴隸！",
+      "translation_zh_tw": "  蠢貨！說過了我們不是誰的奴隸！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -31045,7 +31045,7 @@
       "unit_id": "DLG_a4545b3e7170",
       "category": "dialogue",
       "original": "  I am a gladiator, here to see your leader.",
-      "translation_zh_tw": "  我是一名角鬥士，特來求見你們首領。",
+      "translation_zh_tw": "  我是角鬥士，特來求見你們首領。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -31393,7 +31393,7 @@
       "unit_id": "DLG_3f1ac8438f97",
       "category": "dialogue",
       "original": "  Yes, we finally meet, Hototo. Greetings.",
-      "translation_zh_tw": "  是的，我們終於見面了，霍托托。你好。",
+      "translation_zh_tw": "  是啊，我們終於見面了，霍托托。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -31408,7 +31408,7 @@
       "unit_id": "DLG_8cbaf815c8ee",
       "category": "dialogue",
       "original": "  What do you mean? I don't work for Dagger.",
-      "translation_zh_tw": "  你是什麼意思？我可不替匕首賣命。",
+      "translation_zh_tw": "  什麼意思？我可不替匕首賣命。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -32692,7 +32692,7 @@
       "unit_id": "DLG_a708b5a2286a",
       "category": "dialogue",
       "original": "  No, Dagger! You invade my territory!",
-      "translation_zh_tw": "  胡說，匕首！明明是你侵入了我的地盤！",
+      "translation_zh_tw": "  胡說，匕首！是你侵入我的地盤！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -33326,7 +33326,7 @@
       "unit_id": "DLG_37f366be0c15",
       "category": "dialogue",
       "original": "No! I am an enemy of slavery! Die!",
-      "translation_zh_tw": "不行！我是奴隸制度的死敵！受死吧！",
+      "translation_zh_tw": "不！我是奴隸制的死敵！受死吧！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -33404,7 +33404,7 @@
       "unit_id": "DLG_22588d78b155",
       "category": "dialogue",
       "original": "Dagger is ",
-      "translation_zh_tw": "匕首對 ",
+      "translation_zh_tw": "匕首 ",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -33419,7 +33419,7 @@
       "unit_id": "DLG_001aad38f80e",
       "category": "dialogue",
       "original": "impressed by your strength. ",
-      "translation_zh_tw": "你的實力深感佩服。 ",
+      "translation_zh_tw": "佩服你的實力。 ",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -36047,7 +36047,7 @@
       "unit_id": "DLG_395869929efe",
       "category": "dialogue",
       "original": "  I'll kill you too if you don't talk.",
-      "translation_zh_tw": "  你要是不老實交代，我也把你給宰了。",
+      "translation_zh_tw": "  不老實交代，我連你一起宰了。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -36077,7 +36077,7 @@
       "unit_id": "DLG_74e6002925e7",
       "category": "dialogue",
       "original": "  If she has info, why didn't you ask?",
-      "translation_zh_tw": "  如果她掌握情報，你為什麼沒去問她？",
+      "translation_zh_tw": "  她若有情報，你怎麼不去問？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -37757,7 +37757,7 @@
       "unit_id": "DLG_c65a8036e88b",
       "category": "dialogue",
       "original": "  It happens when she thinks about escaping.",
-      "translation_zh_tw": "  只要她一想到逃跑，頭痛就會發作。",
+      "translation_zh_tw": "  她一想到逃跑，頭痛就會發作。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -40879,7 +40879,7 @@
       "unit_id": "DLG_68d7827a6003",
       "category": "dialogue",
       "original": "  Yeah, I'm out of this filthy hole! ",
-      "translation_zh_tw": "  是啊，我要離開這骯髒的鬼地方了！ ",
+      "translation_zh_tw": "  是啊，我要離開這鬼地方了！ ",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -42142,7 +42142,7 @@
       "unit_id": "DLG_1374a03ce71e",
       "category": "dialogue",
       "original": "  Listen, slaad-bait! I'm in charge. ",
-      "translation_zh_tw": "  聽著，史拉蟾餌！這裡由我說了算。 ",
+      "translation_zh_tw": "  聽著，史拉蟾餌！這裡我說了算。 ",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -43377,7 +43377,7 @@
       "unit_id": "DLG_d55046f24888",
       "category": "dialogue",
       "original": "  We all have haystacks. They're to sleep on.",
-      "translation_zh_tw": "  我們都有乾草堆。那是用來睡覺的。",
+      "translation_zh_tw": "  我們都有乾草堆，是拿來睡的。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -43392,7 +43392,7 @@
       "unit_id": "DLG_0b4f26ea1a5e",
       "category": "dialogue",
       "original": "  Being a powerful magician, I scried it. ",
-      "translation_zh_tw": "  身為一名法力強大的法師，我用占卜術窺探到的。 ",
+      "translation_zh_tw": "  我是強大的法師，用占卜得知的。 ",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -44085,7 +44085,7 @@
       "unit_id": "DLG_39eb8971f26f",
       "category": "dialogue",
       "original": "  I must know more about this patron.",
-      "translation_zh_tw": "  我必須多了解一下這位庇護者的事。",
+      "translation_zh_tw": "  我得多了解這位庇護者。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -45469,7 +45469,7 @@
       "unit_id": "DLG_1fc7798b9e56",
       "category": "dialogue",
       "original": "  Let's jump the guards and hack our way out.",
-      "translation_zh_tw": "  我們一起突襲守衛，一路砍殺出去。",
+      "translation_zh_tw": "  我們突襲守衛，一路殺出去。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -45920,7 +45920,7 @@
       "unit_id": "DLG_64f78fd26c71",
       "category": "dialogue",
       "original": "  You're out, kank breath. I escape alone.",
-      "translation_zh_tw": "  你滾一邊去，滿嘴康克臭氣的傢伙。我自己一個人逃。",
+      "translation_zh_tw": "  滾開，坎克臭嘴。我自己逃。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -46340,7 +46340,7 @@
       "unit_id": "DLG_ee48de63584e",
       "category": "dialogue",
       "original": "  I've already paid to be free. ",
-      "translation_zh_tw": "  我已經付過贖身換取自由的代價了。 ",
+      "translation_zh_tw": "  我已經付過贖身的代價了。 ",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -46611,7 +46611,7 @@
       "unit_id": "DLG_be12a1644f89",
       "category": "dialogue",
       "original": "  All templars are liars. Die!",
-      "translation_zh_tw": "  所有的聖堂武士都是騙子。去死吧！",
+      "translation_zh_tw": "  聖堂武士都是騙子。去死吧！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -50651,7 +50651,7 @@
       "unit_id": "DLG_29ec068597c1",
       "category": "dialogue",
       "original": "  Why should I let you enslave me?",
-      "translation_zh_tw": "  我憑什麼要讓你們把我抓去當奴隸？",
+      "translation_zh_tw": "  我憑什麼讓你們抓去當奴隸？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -51746,7 +51746,7 @@
       "unit_id": "DLG_fce4b4511cef",
       "category": "dialogue",
       "original": "  Give me the wyvern hook or I'll kill you!",
-      "translation_zh_tw": "  把飛龍騎鉤交出來，否則我宰了你！",
+      "translation_zh_tw": "  交出飛龍騎鉤，否則我宰了你！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -51821,7 +51821,7 @@
       "unit_id": "DLG_20927361b7e3",
       "category": "dialogue",
       "original": "  Leave the castle, and stop your raids!",
-      "translation_zh_tw": "  滾出這座城堡，並停止你們的掠奪！",
+      "translation_zh_tw": "  滾出這座城堡，停止你們的掠奪！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -52106,7 +52106,7 @@
       "unit_id": "DLG_20e46a2973cf",
       "category": "dialogue",
       "original": "  Who lived in the castle before you came?",
-      "translation_zh_tw": "  在你們到來之前，這座城堡住了些什麼人？",
+      "translation_zh_tw": "  你們來之前，城堡裡住的是誰？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -53998,7 +53998,7 @@
       "unit_id": "DLG_e20e2ba80362",
       "category": "dialogue",
       "original": "  Watch your tongue lest I rend it out! ",
-      "translation_zh_tw": "  把你的嘴巴放乾淨點，否則我就把它扯出來！ ",
+      "translation_zh_tw": "  嘴巴放乾淨點，否則把它扯出來！ ",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -54073,7 +54073,7 @@
       "unit_id": "DLG_5308f6a6857e",
       "category": "dialogue",
       "original": "  What if I could prove there is no copper? ",
-      "translation_zh_tw": "  要是我能證明這裡根本沒有銅礦呢？ ",
+      "translation_zh_tw": "  要是我能證明這裡沒有銅礦呢？ ",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -54208,7 +54208,7 @@
       "unit_id": "DLG_d082b4e0a895",
       "category": "dialogue",
       "original": "Why destroy the spring, your righteousness?",
-      "translation_zh_tw": "您為何要毀壞這處溫泉呢，正義的大人？",
+      "translation_zh_tw": "正義的大人，您為何要毀壞溫泉？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -54223,7 +54223,7 @@
       "unit_id": "DLG_3b4b84418446",
       "category": "dialogue",
       "original": "I've killed more templars than I can count. ",
-      "translation_zh_tw": "我殺過的聖堂武士多得連我自己都數不清。 ",
+      "translation_zh_tw": "我殺過的聖堂武士多得數不清。 ",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -55676,7 +55676,7 @@
       "unit_id": "DLG_ce31c4153bba",
       "category": "dialogue",
       "original": "  Father Garyn sent me for the ranike pith.",
-      "translation_zh_tw": "  是加林神父派我來拿拉尼克樹髓的。",
+      "translation_zh_tw": "  加林神父派我來拿拉尼克樹髓。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -59490,7 +59490,7 @@
       "unit_id": "DLG_e42c27072d95",
       "category": "dialogue",
       "original": "  Don't talk to me, you lump of maggots!",
-      "translation_zh_tw": "  別跟我說話，你這團渾身長滿蛆蟲的爛肉！",
+      "translation_zh_tw": "  別跟我說話，你這團長蛆的爛肉！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -59835,7 +59835,7 @@
       "unit_id": "DLG_f58779d03095",
       "category": "dialogue",
       "original": "  You can stay here and rot for all I care.",
-      "translation_zh_tw": "  我才不管你，你就留在這裡發爛發臭吧。",
+      "translation_zh_tw": "  我才不管，你就留在這裡爛掉吧。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -59850,7 +59850,7 @@
       "unit_id": "DLG_10ecdbf8e149",
       "category": "dialogue",
       "original": "  I'm sorry if I disturbed you. Goodbye.",
-      "translation_zh_tw": "  如果我打擾了你，我很抱歉。再見。",
+      "translation_zh_tw": "  如果打擾了你，很抱歉。再見。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -60227,7 +60227,7 @@
       "unit_id": "DLG_f882e2d44ac2",
       "category": "dialogue",
       "original": "  No, you are better off staying here.",
-      "translation_zh_tw": "  不，你們還是老老實實待在這裡比較好。",
+      "translation_zh_tw": "  不，你們還是待在這裡比較好。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -60515,7 +60515,7 @@
       "unit_id": "DLG_2c45a23ceda3",
       "category": "dialogue",
       "original": "  You'll starve if you have no vision?",
-      "translation_zh_tw": "  如果你沒有得到幻象，就會餓死嗎？",
+      "translation_zh_tw": "  沒得到幻象，你就會餓死嗎？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -61896,7 +61896,7 @@
       "unit_id": "DLG_f97aa0297c88",
       "category": "dialogue",
       "original": "  Have you seen a ssurran named Laussa?",
-      "translation_zh_tw": "  你有見過一個名叫勞莎的蘇蘭蜥蜴人嗎？",
+      "translation_zh_tw": "  你見過名叫勞莎的蘇蘭蜥蜴人嗎？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -62451,7 +62451,7 @@
       "unit_id": "DLG_14b2490101b2",
       "category": "dialogue",
       "original": "  Tell me your story. I'm listening. ",
-      "translation_zh_tw": "  跟我說說你的故事吧。我洗耳恭聽。 ",
+      "translation_zh_tw": "  說說你的故事吧。我洗耳恭聽。 ",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -62886,7 +62886,7 @@
       "unit_id": "DLG_d5dbbd9f606b",
       "category": "dialogue",
       "original": "  What's the moral? I'm lost. ",
-      "translation_zh_tw": "  這當中的寓意是什麼？我被搞糊塗了。 ",
+      "translation_zh_tw": "  這寓意是什麼？我被搞糊塗了。 ",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -63141,7 +63141,7 @@
       "unit_id": "DLG_f51c34dcb457",
       "category": "dialogue",
       "original": "  Sure. Couldn't be worse than that story...",
-      "translation_zh_tw": "  行啊。總不可能比剛才那個故事更糟糕……",
+      "translation_zh_tw": "  行啊。總不會比那故事更糟吧……",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -63156,7 +63156,7 @@
       "unit_id": "DLG_12d4ea678be0",
       "category": "dialogue",
       "original": "  Very well, I'll help. Can you give me aid?",
-      "translation_zh_tw": "  很好，我願意幫忙。你能給我什麼協助嗎？",
+      "translation_zh_tw": "  好，我願意幫忙。你能協助我嗎？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -63186,7 +63186,7 @@
       "unit_id": "DLG_907a36a2704a",
       "category": "dialogue",
       "original": "  Great. Can you help me fight Balkazar?",
-      "translation_zh_tw": "  太好了。你能幫我對付巴爾卡札嗎？",
+      "translation_zh_tw": "  太好了，能幫我對付巴爾卡札嗎？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -64612,7 +64612,7 @@
       "unit_id": "DLG_4a3730d4133f",
       "category": "dialogue",
       "original": "  This is getting really old, Balkazar.",
-      "translation_zh_tw": "  這套把戲已經令人厭煩了，巴爾卡札。",
+      "translation_zh_tw": "  這套把戲膩了，巴爾卡札。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -64749,7 +64749,7 @@
       "unit_id": "DLG_2b796405d182",
       "category": "dialogue",
       "original": "  You?! I doubt you could summon a servant! ",
-      "translation_zh_tw": "  就憑你？！我懷疑你連個僕從都召喚不出來！ ",
+      "translation_zh_tw": "  就憑你？你連僕從都召喚不出來！ ",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -64854,7 +64854,7 @@
       "unit_id": "DLG_3d73df7758fe",
       "category": "dialogue",
       "original": "  What will you do now that you're free?",
-      "translation_zh_tw": "  既然重獲自由了，你們接下來打算做什麼？",
+      "translation_zh_tw": "  重獲自由了，你們有何打算？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -67532,7 +67532,7 @@
       "unit_id": "DLG_26595dc78a47",
       "category": "dialogue",
       "original": "  To release the palace from Cragg's curse.",
-      "translation_zh_tw": "  我是為了破除克拉格對宮殿施加的詛咒。",
+      "translation_zh_tw": "  為了破除克拉格對宮殿的詛咒。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -67652,7 +67652,7 @@
       "unit_id": "DLG_8eb6a32cf9e8",
       "category": "dialogue",
       "original": "  I need it to help defeat a powerful army.",
-      "translation_zh_tw": "  我需要藉其力量擊敗一支強大的軍隊。",
+      "translation_zh_tw": "  我需要它來擊敗一支強大的軍隊。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -67833,7 +67833,7 @@
       "unit_id": "DLG_e585d1b67720",
       "category": "dialogue",
       "original": "  Not well. He wants his body.",
-      "translation_zh_tw": "  不太順利。他想要找回自己的身軀。",
+      "translation_zh_tw": "  不太順利。他想要回他的身軀。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -67893,7 +67893,7 @@
       "unit_id": "DLG_26295d7c460f",
       "category": "dialogue",
       "original": "  I didn't kill Cragg, but I got the genie.",
-      "translation_zh_tw": "  我沒有殺克拉格，但我拿到了巨靈。",
+      "translation_zh_tw": "  我沒殺克拉格，但我拿到了巨靈。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -68629,7 +68629,7 @@
       "unit_id": "DLG_a7a39a5ffbd7",
       "category": "dialogue",
       "original": "  How do you know so much about the curse? ",
-      "translation_zh_tw": "  你怎麼會對這場詛咒瞭解得這麼清楚？ ",
+      "translation_zh_tw": "  你怎麼對這詛咒這麼瞭解？ ",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -70116,7 +70116,7 @@
       "unit_id": "DLG_a5e34b3d97f0",
       "category": "dialogue",
       "original": "  The psurlons told me you buried the city.",
-      "translation_zh_tw": "  蘇隆蟲人告訴我，是你把這座城市深埋地下的。",
+      "translation_zh_tw": "  蘇隆蟲人說，是你埋了這座城市。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -70358,7 +70358,7 @@
       "unit_id": "DLG_3ac3127b21cb",
       "category": "dialogue",
       "original": "  The psurlons tricked me. I know that now. ",
-      "translation_zh_tw": "  蘇隆蟲人誆騙了我。我現在已經明白了。 ",
+      "translation_zh_tw": "  蘇隆蟲人騙了我。我現在明白了。 ",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -71471,7 +71471,7 @@
       "unit_id": "DLG_51a337e2d1ff",
       "category": "dialogue",
       "original": "  Let me take something to show I found you.",
-      "translation_zh_tw": "  讓我帶走一件信物，以證明我找到了你。",
+      "translation_zh_tw": "  讓我帶件信物，證明我找到了你。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -71953,7 +71953,7 @@
       "unit_id": "DLG_8a83ce7907c7",
       "category": "dialogue",
       "original": "  Your commander will not want us dead.",
-      "translation_zh_tw": "  你們的指揮官絕不會希望我們死掉。",
+      "translation_zh_tw": "  你們的指揮官不會想要我們死。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -72733,7 +72733,7 @@
       "unit_id": "DLG_022fe6117951",
       "category": "dialogue",
       "original": "  My purse is heavy. I'll share it with you.",
-      "translation_zh_tw": "  我的錢袋沉甸甸的。我可以分你一份。",
+      "translation_zh_tw": "  我錢袋沉甸甸的，分你一份吧。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -73520,7 +73520,7 @@
       "unit_id": "DLG_03c0adbbafc7",
       "category": "dialogue",
       "original": "  Are you so busy? The village seems small.",
-      "translation_zh_tw": "  您真有那麼忙碌嗎？這個村子看起來並不大。",
+      "translation_zh_tw": "  真那麼忙嗎？這村子看來並不大。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -73640,7 +73640,7 @@
       "unit_id": "DLG_69360fc6991a",
       "category": "dialogue",
       "original": "  I'm just getting paid to give it to you.",
-      "translation_zh_tw": "  我只是拿錢辦事，把東西交給你就好。",
+      "translation_zh_tw": "  我只是拿錢辦事，把東西給你。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -74350,7 +74350,7 @@
       "unit_id": "DLG_4af1a4e2ccb8",
       "category": "dialogue",
       "original": "  Tell me about the templar who owned Chahl.",
-      "translation_zh_tw": "  跟我說說當年役使查爾的那位聖堂武士吧。",
+      "translation_zh_tw": "  說說當年役使查爾的聖堂武士吧。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -77123,7 +77123,7 @@
       "unit_id": "DLG_fa6beaa15b28",
       "category": "dialogue",
       "original": "  You must let me in. Troops are hunting me.",
-      "translation_zh_tw": "  你必須放我進去。官兵正在追捕我。",
+      "translation_zh_tw": "  讓我進去。官兵正在追捕我。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -77138,7 +77138,7 @@
       "unit_id": "DLG_cd7a7f17f2d5",
       "category": "dialogue",
       "original": "  I don't want trouble, just a place to rest.",
-      "translation_zh_tw": "  我不想惹麻煩，只想找個地方歇腳。",
+      "translation_zh_tw": "  我不想惹麻煩，只想找地方歇腳。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -78356,7 +78356,7 @@
       "unit_id": "DLG_ce8c6ff1a155",
       "category": "dialogue",
       "original": "  You are nothing but a disgusting old hag!",
-      "translation_zh_tw": "  你不過是個噁心至極的醜陋老太婆！",
+      "translation_zh_tw": "  你不過是個噁心的老太婆！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -79046,7 +79046,7 @@
       "unit_id": "DLG_51aa6ee1720d",
       "category": "dialogue",
       "original": "  You look pretty wholesome yourself, Katura.",
-      "translation_zh_tw": "  你自己看起來也相當楚楚動人，卡圖拉。",
+      "translation_zh_tw": "  你自己也楚楚動人啊，卡圖拉。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -79725,7 +79725,7 @@
       "unit_id": "DLG_3c9fba1e88a8",
       "category": "dialogue",
       "original": "  I can't tell you. Chahl wouldn't approve.",
-      "translation_zh_tw": "  我不能告訴你。查爾絕不會贊同的。",
+      "translation_zh_tw": "  我不能說。查爾不會贊同的。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -79755,7 +79755,7 @@
       "unit_id": "DLG_7622adab6d4d",
       "category": "dialogue",
       "original": "  They're connected to a templar in Nibenay.",
-      "translation_zh_tw": "  他們與尼波尼的一位聖堂武士有關聯。",
+      "translation_zh_tw": "  他們和尼波尼的聖堂武士有關聯。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -79981,7 +79981,7 @@
       "unit_id": "DLG_13fff30e886e",
       "category": "dialogue",
       "original": "  Magic is not a toy to play with, Katti.",
-      "translation_zh_tw": "  魔法可不是拿來兒戲的玩具，卡蒂。",
+      "translation_zh_tw": "  魔法不是兒戲的玩具，卡蒂。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -81158,7 +81158,7 @@
       "unit_id": "DLG_fa558d81c1ec",
       "category": "dialogue",
       "original": "  Who was the templar you were a slave to?",
-      "translation_zh_tw": "  你曾服侍過的那位聖堂武士主人是誰？",
+      "translation_zh_tw": "  你曾是哪位聖堂武士的奴隸？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -81398,7 +81398,7 @@
       "unit_id": "DLG_ad23f46a0b82",
       "category": "dialogue",
       "original": "  The templar only wanted the child you took.",
-      "translation_zh_tw": "  那位聖堂武士只是想要回你帶走的那個孩子。",
+      "translation_zh_tw": "  聖堂武士只想要回你帶走的孩子。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -81428,7 +81428,7 @@
       "unit_id": "DLG_191fad52c0a9",
       "category": "dialogue",
       "original": "  Is that how you got all the giant weapons?",
-      "translation_zh_tw": "  那就是你弄到這些巨人兵器的原因嗎？",
+      "translation_zh_tw": "  你就是這樣弄到巨人兵器的嗎？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -82434,7 +82434,7 @@
       "unit_id": "DLG_f40b561cea61",
       "category": "dialogue",
       "original": "  You have something to hide, don't you?",
-      "translation_zh_tw": "  你心裡有鬼，有事情瞞著大家，對吧？",
+      "translation_zh_tw": "  你心裡有鬼，有事瞞著大家吧？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -82494,7 +82494,7 @@
       "unit_id": "DLG_8bc3427af8ac",
       "category": "dialogue",
       "original": "  You talk as if you were Teaquetzl's leader.",
-      "translation_zh_tw": "  你口氣大得就像提奎茲爾的領袖一樣。",
+      "translation_zh_tw": "  你講得好像你是提奎茲爾的領袖。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -82659,7 +82659,7 @@
       "unit_id": "DLG_976ced39014d",
       "category": "dialogue",
       "original": "  The allies I've made will help.",
-      "translation_zh_tw": "  我爭取結盟的那些同盟會提供援手。",
+      "translation_zh_tw": "  我結交的盟友們會幫忙的。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -83199,7 +83199,7 @@
       "unit_id": "DLG_05cf9c98d5d5",
       "category": "dialogue",
       "original": "  Bring wealth to the villagers, or yourself?",
-      "translation_zh_tw": "  你是為村民帶來財富，還是為你自己？",
+      "translation_zh_tw": "  你是為村民謀財，還是為自己？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -84094,7 +84094,7 @@
       "unit_id": "DLG_70a5541ab7df",
       "category": "dialogue",
       "original": "  I need to know more before I decide.",
-      "translation_zh_tw": "  在我做出決定之前，我需要瞭解更多細節。",
+      "translation_zh_tw": "  做決定前，我需要瞭解更多。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -84518,7 +84518,7 @@
       "unit_id": "DLG_04be5dad59db",
       "category": "dialogue",
       "original": "  Hold your tongue while I talk to Chahl!",
-      "translation_zh_tw": "  我跟查爾說話的時候，你給我把嘴閉上！",
+      "translation_zh_tw": "  我跟查爾說話時，你給我閉嘴！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -88231,7 +88231,7 @@
       "unit_id": "DLG_786ae8770eb2",
       "category": "dialogue",
       "original": "  I'm sure you fought bravely as well.",
-      "translation_zh_tw": "  我相信你在戰鬥中也同樣作戰英勇。",
+      "translation_zh_tw": "  我相信你也作戰英勇。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -88263,7 +88263,7 @@
       "unit_id": "DLG_7aaea5570c25",
       "category": "dialogue",
       "original": "  What did you see of the shadow army?",
-      "translation_zh_tw": "  關於那支暗影大軍，你看到了什麼？",
+      "translation_zh_tw": "  關於暗影大軍，你看到了什麼？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -91494,7 +91494,7 @@
       "unit_id": "DLG_f52da14a4bb7",
       "category": "dialogue",
       "original": "  Your welcome is overwhelming!",
-      "translation_zh_tw": "  你們的熱情歡迎真是令我們受寵若驚！",
+      "translation_zh_tw": "  你們的熱情歡迎真令人受寵若驚！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -91644,7 +91644,7 @@
       "unit_id": "DLG_2f0246478f2b",
       "category": "dialogue",
       "original": "  I suppose Teaquetzl will need a new leader.",
-      "translation_zh_tw": "  看來提奎茲爾需要選出新的領袖了。",
+      "translation_zh_tw": "  看來提奎茲爾需要新領袖了。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -91659,7 +91659,7 @@
       "unit_id": "DLG_bb07ef2eb4af",
       "category": "dialogue",
       "original": "  He was too stupid to survive such a battle.",
-      "translation_zh_tw": "  他太過魯莽，根本不足以在這種大戰中存活。",
+      "translation_zh_tw": "  他太蠢了，這種大戰活不下來。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -92154,7 +92154,7 @@
       "unit_id": "DLG_d447a1708587",
       "category": "dialogue",
       "original": "  The thanks must go to all the warriors.",
-      "translation_zh_tw": "  這份功勳應當歸於所有英勇的戰士們。",
+      "translation_zh_tw": "  功勞應歸於所有的戰士們。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -92319,7 +92319,7 @@
       "unit_id": "DLG_54e0416985fb",
       "category": "dialogue",
       "original": "  Have you heard any rumors about the war?",
-      "translation_zh_tw": "  您聽說過關於這場戰爭的什麼傳言嗎？",
+      "translation_zh_tw": "  您聽過這場戰爭的什麼傳言嗎？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -94150,7 +94150,7 @@
       "unit_id": "DLG_d3d02dc89213",
       "category": "dialogue",
       "original": "  How can you live? It is so inhospitable.",
-      "translation_zh_tw": "  你們是怎麼活下來的？這裡如此險惡荒涼。",
+      "translation_zh_tw": "  這裡如此荒涼，你們怎麼活下來？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -94480,7 +94480,7 @@
       "unit_id": "DLG_13ea350044ec",
       "category": "dialogue",
       "original": "  The Great Spire is just an ordinary rock!",
-      "translation_zh_tw": "  大石尖塔不過是一塊普通的岩石罷了！",
+      "translation_zh_tw": "  大石尖塔不過是塊普通岩石！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -94570,7 +94570,7 @@
       "unit_id": "DLG_5c04eb00663a",
       "category": "dialogue",
       "original": "  The Great Spire made this 'paradise'?",
-      "translation_zh_tw": "  是大石尖塔創造了這處「人間天堂」？",
+      "translation_zh_tw": "  是大石尖塔造出這「天堂」的？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -94585,7 +94585,7 @@
       "unit_id": "DLG_b753ea16665a",
       "category": "dialogue",
       "original": "  This is no paradise! It is still a badland!",
-      "translation_zh_tw": "  這裡根本不是天堂！這裡依然是不毛的荒原惡地！",
+      "translation_zh_tw": "  這哪是天堂！這裡還是荒原惡地！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -94615,7 +94615,7 @@
       "unit_id": "DLG_f315e2357876",
       "category": "dialogue",
       "original": "  You're mad. That's why you hear it!",
-      "translation_zh_tw": "  是你瘋了，所以你才聽得見它說話！",
+      "translation_zh_tw": "  是你瘋了，才聽得見它說話！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -95860,7 +95860,7 @@
       "unit_id": "DLG_528948f59fd7",
       "category": "dialogue",
       "original": "  Does the name Tristram mean anything to you?",
-      "translation_zh_tw": "  崔斯特蘭這個名字對你有任何意義嗎？",
+      "translation_zh_tw": "  你聽過崔斯特蘭這個名字嗎？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -96700,7 +96700,7 @@
       "unit_id": "DLG_36b365ac3368",
       "category": "dialogue",
       "original": "  Are you sure Tristram is in the temple?",
-      "translation_zh_tw": "  你確定崔斯特蘭就在這座神殿裡嗎？",
+      "translation_zh_tw": "  你確定崔斯特蘭在這神殿裡嗎？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -99076,7 +99076,7 @@
       "unit_id": "DLG_ba63094039b3",
       "category": "dialogue",
       "original": "  I'm here to stop you from killing the folk!",
-      "translation_zh_tw": "  我來這裡是為了阻止你們殘殺部族民！",
+      "translation_zh_tw": "  我來阻止你們殘殺部族民！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -99121,7 +99121,7 @@
       "unit_id": "DLG_37a7422f3ed9",
       "category": "dialogue",
       "original": "  Enough talk. Pass your judgment now.",
-      "translation_zh_tw": "  廢話少說。立刻宣判你們的裁決吧。",
+      "translation_zh_tw": "  廢話少說。立刻宣判吧。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -99211,7 +99211,7 @@
       "unit_id": "DLG_54ad3831580b",
       "category": "dialogue",
       "original": "  I will hire my sword to prove my sincerity.",
-      "translation_zh_tw": "  我願受雇效勞，以利刃證明我的誠意。",
+      "translation_zh_tw": "  我願受雇效勞，以證明誠意。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -99556,7 +99556,7 @@
       "unit_id": "DLG_31d37daa8e5b",
       "category": "dialogue",
       "original": "  Is Queen Cheee-smak-tunk! a good ruler?",
-      "translation_zh_tw": "  琪-斯瑪克-通克女王是位英明的統治者嗎？",
+      "translation_zh_tw": "  琪-斯瑪克-通克女王是明君嗎？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -100537,7 +100537,7 @@
       "unit_id": "DLG_b39648c0c017",
       "category": "dialogue",
       "original": "  What is this mindhome business?",
-      "translation_zh_tw": "  你們所謂的心靈家園到底是怎麼回事？",
+      "translation_zh_tw": "  心靈家園到底是怎麼回事？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -100732,7 +100732,7 @@
       "unit_id": "DLG_01933cc30cf5",
       "category": "dialogue",
       "original": "  Why did the Rebel Mindhome break away?",
-      "translation_zh_tw": "  反叛心靈家園當初為何要分裂出去？",
+      "translation_zh_tw": "  反叛心靈家園為何要分裂出去？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -100927,7 +100927,7 @@
       "unit_id": "DLG_3f71c0ef77be",
       "category": "dialogue",
       "original": "  What's wrong with having possessions?",
-      "translation_zh_tw": "  擁有自己的私人物品有什麼不對嗎？",
+      "translation_zh_tw": "  擁有私人物品有什麼不對？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -101512,7 +101512,7 @@
       "unit_id": "DLG_31d65af11844",
       "category": "dialogue",
       "original": "  If you help me, I'll kill the spiders.",
-      "translation_zh_tw": "  如果你們幫我，我就替你們殺光那些蜘蛛。",
+      "translation_zh_tw": "  你們幫我，我就替你們殺光蜘蛛。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -101527,7 +101527,7 @@
       "unit_id": "DLG_3a8fedb6e873",
       "category": "dialogue",
       "original": "  I'll kill you if you don't help me!",
-      "translation_zh_tw": "  如果你們不幫我，我就把你們全宰了！",
+      "translation_zh_tw": "  你們不幫我，我就把你們全宰了！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -103923,7 +103923,7 @@
       "unit_id": "DLG_a85304bf83ae",
       "category": "dialogue",
       "original": "  Wounded rats, huh? Send out your worst! ",
-      "translation_zh_tw": "  被逼到絕境的老鼠？儘管放出你最強的傢伙！",
+      "translation_zh_tw": "  困獸之鼠是吧？儘管放馬過來！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -103938,7 +103938,7 @@
       "unit_id": "DLG_72e61360b5c7",
       "category": "dialogue",
       "original": "  Call me a rat again and you'll pay! ",
-      "translation_zh_tw": "  再叫我一次老鼠，你會付出代價的！",
+      "translation_zh_tw": "  再叫我老鼠，你會付出代價！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -103998,7 +103998,7 @@
       "unit_id": "DLG_07bfe6c2b168",
       "category": "dialogue",
       "original": "  I am a real warrior and I'll prove it!",
-      "translation_zh_tw": "  我是真正的戰士，我會證明給你看！",
+      "translation_zh_tw": "  我是真正的戰士，我會證明的！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -105308,7 +105308,7 @@
       "unit_id": "DLG_c416f16fd7f3",
       "category": "dialogue",
       "original": "  I'll cut your throat if you don't help me!",
-      "translation_zh_tw": "  如果你不幫我，我就割斷你的喉嚨！",
+      "translation_zh_tw": "  你不幫我，我就割斷你的喉嚨！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -105323,7 +105323,7 @@
       "unit_id": "DLG_497348f4f6e2",
       "category": "dialogue",
       "original": "  Yes. I appreciate your help in this.",
-      "translation_zh_tw": "  是的。我很感激你在這件事上的相助。",
+      "translation_zh_tw": "  是的。感謝你在這件事上相助。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -105479,7 +105479,7 @@
       "unit_id": "DLG_d36c1a84fc16",
       "category": "dialogue",
       "original": "  I'm sorry. I would rather be your friend.",
-      "translation_zh_tw": "  我很抱歉。我更希望成為你的朋友。",
+      "translation_zh_tw": "  抱歉。我更想當你的朋友。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -105494,7 +105494,7 @@
       "unit_id": "DLG_eb644305e6c7",
       "category": "dialogue",
       "original": "  This is your last chance! Talk or die!",
-      "translation_zh_tw": "  這是你最後的機會！開口，或者去死！",
+      "translation_zh_tw": "  這是最後的機會！開口，或者死！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -106097,7 +106097,7 @@
       "unit_id": "DLG_6a35e544727d",
       "category": "dialogue",
       "original": "  Why do you think Undermountain is cursed?",
-      "translation_zh_tw": "  你為什麼認為地底山脈遭到了詛咒？",
+      "translation_zh_tw": "  為何你認為地底山脈受了詛咒？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -107267,7 +107267,7 @@
       "unit_id": "DLG_9292fb0e3f66",
       "category": "dialogue",
       "original": "  Actually, I need help with the castle.",
-      "translation_zh_tw": "  實際上，我需要關於那座城堡的幫助。",
+      "translation_zh_tw": "  其實我需要城堡方面的協助。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -107838,7 +107838,7 @@
       "unit_id": "DLG_777c3c5ba439",
       "category": "dialogue",
       "original": "  I need more information before I decide.",
-      "translation_zh_tw": "  在做出決定之前，我需要更多情報。",
+      "translation_zh_tw": "  做決定前，我需要更多情報。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -108108,7 +108108,7 @@
       "unit_id": "DLG_5573ba06103a",
       "category": "dialogue",
       "original": "  How do the Mindhomes fit into your plans?",
-      "translation_zh_tw": "  心靈家園在你的計劃中扮演什麼角色？",
+      "translation_zh_tw": "  心靈家園在你計劃中是什麼角色？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -108845,7 +108845,7 @@
       "unit_id": "DLG_e1ede342d59c",
       "category": "dialogue",
       "original": "  Mind your manners, or I'll kill you!",
-      "translation_zh_tw": "  給我注意你的態度，否則我宰了你！",
+      "translation_zh_tw": "  注意你的態度，否則我宰了你！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -109794,7 +109794,7 @@
       "unit_id": "DLG_dfbed02c0afd",
       "category": "dialogue",
       "original": "  Wait! The prince is here to offer peace!",
-      "translation_zh_tw": "  等等！王子是為了帶來和平而來的！",
+      "translation_zh_tw": "  等等！王子是來求和的！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -109809,7 +109809,7 @@
       "unit_id": "DLG_58a223bebc87",
       "category": "dialogue",
       "original": "  I assure you, the prince is honorable.",
-      "translation_zh_tw": "  我向你們保證，王子是一位光明磊落的君子。",
+      "translation_zh_tw": "  我向你們保證，王子光明磊落。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -109824,7 +109824,7 @@
       "unit_id": "DLG_74de0facdd3f",
       "category": "dialogue",
       "original": "  No, the queen is dead at his urging.",
-      "translation_zh_tw": "  不，女王正是在他的敦促之下被處死的。",
+      "translation_zh_tw": "  不，女王是被他唆使處死的。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -109854,7 +109854,7 @@
       "unit_id": "DLG_c49d55de9fdc",
       "category": "dialogue",
       "original": "  He won't harm you, even if you won't trade.",
-      "translation_zh_tw": "  就算你們不願貿易，他也絕不會傷害你們。",
+      "translation_zh_tw": "  就算不貿易，他也不會傷害你們。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -109914,7 +109914,7 @@
       "unit_id": "DLG_1bfab8601147",
       "category": "dialogue",
       "original": "  You narrow-minded worms deserve to die!",
-      "translation_zh_tw": "  你們這群頑固不化的蠢貨死不足惜！",
+      "translation_zh_tw": "  你們這群頑固的蠢貨死不足惜！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -110229,7 +110229,7 @@
       "unit_id": "DLG_bbe3d4e27a02",
       "category": "dialogue",
       "original": "  The spiders are possessed by an evil force.",
-      "translation_zh_tw": "  那些蜘蛛被一股邪惡力量附身操縱了。",
+      "translation_zh_tw": "  那些蜘蛛被邪惡力量附身了。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -110634,7 +110634,7 @@
       "unit_id": "DLG_56ca3e335b9f",
       "category": "dialogue",
       "original": "  What can you tell me about the spiders?",
-      "translation_zh_tw": "  關於那些蜘蛛，你們能告訴我些什麼？",
+      "translation_zh_tw": "  關於那些蜘蛛，你們知道什麼？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -110949,7 +110949,7 @@
       "unit_id": "DLG_702bcbf3ab72",
       "category": "dialogue",
       "original": "  Why did you disagree with the First?",
-      "translation_zh_tw": "  你們當初為何會與最初群體產生分歧？",
+      "translation_zh_tw": "  你們為何與最初群體產生分歧？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -110964,7 +110964,7 @@
       "unit_id": "DLG_2668fea76a49",
       "category": "dialogue",
       "original": "  Why haven't you attacked the spiders yet?",
-      "translation_zh_tw": "  你們為什麼至今還沒對蜘蛛發動攻擊？",
+      "translation_zh_tw": "  你們為何還不攻擊那些蜘蛛？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -110979,7 +110979,7 @@
       "unit_id": "DLG_cf5b6dd3f76f",
       "category": "dialogue",
       "original": "  Do you get along with the First Mindhome?",
-      "translation_zh_tw": "  你們與最初心靈家園相處得融洽嗎？",
+      "translation_zh_tw": "  你們和最初心靈家園處得好嗎？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -111384,7 +111384,7 @@
       "unit_id": "DLG_d4cc41b2898f",
       "category": "dialogue",
       "original": "  I'm no bandit. I'm here to destroy them.",
-      "translation_zh_tw": "  我不是強盜。我來這裡是為了消滅他們。",
+      "translation_zh_tw": "  我不是強盜。我是來消滅他們的。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -111684,7 +111684,7 @@
       "unit_id": "DLG_6244abdf123a",
       "category": "dialogue",
       "original": "  An entity warped the fungus. It's gone now.",
-      "translation_zh_tw": "  有一隻邪靈扭曲了真菌。現在牠已經被消滅了。",
+      "translation_zh_tw": "  有邪靈扭曲了真菌。現已消滅。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -111714,7 +111714,7 @@
       "unit_id": "DLG_8d109432151e",
       "category": "dialogue",
       "original": "  You deserve to die for your actions!",
-      "translation_zh_tw": "  就憑你們犯下的惡行，你們死不足惜！",
+      "translation_zh_tw": "  憑你們的惡行，你們死有餘辜！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -113086,7 +113086,7 @@
       "unit_id": "DLG_662350bb455b",
       "category": "dialogue",
       "original": "  It was a big battle. I tried to save them. ",
-      "translation_zh_tw": "  那是一場慘烈的大戰。我曾竭盡全力想要救他們。 ",
+      "translation_zh_tw": "  那是場大戰。我盡力想救他們了。 ",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -113101,7 +113101,7 @@
       "unit_id": "DLG_f4c8f270a188",
       "category": "dialogue",
       "original": "  I killed them like I'm going to kill you! ",
-      "translation_zh_tw": "  我殺了他們，就像我現在要宰了你一樣！ ",
+      "translation_zh_tw": "  我殺了他們，現在就輪到你了！ ",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -113131,7 +113131,7 @@
       "unit_id": "DLG_62c329eb1bb9",
       "category": "dialogue",
       "original": "  The magera killed the men before we arrived. ",
-      "translation_zh_tw": "  在我們趕到之前，瑪格拉巨怪就已經把男人們殺害了。 ",
+      "translation_zh_tw": "  我們到時，瑪格拉已殺了男人們。 ",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -113146,7 +113146,7 @@
       "unit_id": "DLG_93eb3aaf85b2",
       "category": "dialogue",
       "original": "  I saved your people from bandits.",
-      "translation_zh_tw": "  我把你們的族人從強盜手中救了出來。",
+      "translation_zh_tw": "  我從強盜手中救了你們的族人。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -113314,7 +113314,7 @@
       "unit_id": "DLG_fe13df019525",
       "category": "dialogue",
       "original": "  Well, since you offered, what do you have? ",
-      "translation_zh_tw": "  既然你主動提出，你們有些什麼好東西？ ",
+      "translation_zh_tw": "  既然你提了，有什麼好東西？ ",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -113344,7 +113344,7 @@
       "unit_id": "DLG_abad5d180441",
       "category": "dialogue",
       "original": "  I'm allying against Draj's army.",
-      "translation_zh_tw": "  我正在召集同盟共同對抗德拉吉的大軍。",
+      "translation_zh_tw": "  我正召集同盟對抗德拉吉大軍。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -115105,7 +115105,7 @@
       "unit_id": "DLG_78fb595c4856",
       "category": "dialogue",
       "original": "What kind of magic item do you want to know about? ",
-      "translation_zh_tw": "你們想了解哪種魔法物品？ ",
+      "translation_zh_tw": "想了解哪種魔法物品？ ",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -115542,7 +115542,7 @@
       "unit_id": "DLG_7f17a33b7ad5",
       "category": "dialogue",
       "original": "What item do you show him?",
-      "translation_zh_tw": "你們向他展示哪件物品？",
+      "translation_zh_tw": "要向他展示哪件物品？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -118471,7 +118471,7 @@
       "unit_id": "DLG_d17c743de97b",
       "category": "dialogue",
       "original": "  Mastyrials hate all. They are untrainable.",
-      "translation_zh_tw": "  巨蠍獸痛恨一切生物。牠們根本不可能被馴服。",
+      "translation_zh_tw": "  巨蠍獸痛恨一切，根本馴服不了。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -118621,7 +118621,7 @@
       "unit_id": "DLG_a33fc37b0293",
       "category": "dialogue",
       "original": "  Were the thri-kreen headed this way?",
-      "translation_zh_tw": "  那些塞庫獵手是朝這個方向來的嗎？",
+      "translation_zh_tw": "  那些塞庫獵手是往這邊來的嗎？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -119446,7 +119446,7 @@
       "unit_id": "DLG_4b9f262d4584",
       "category": "dialogue",
       "original": "  Your mastyrial looks suspiciously like mine.",
-      "translation_zh_tw": "  你的巨蠍獸看起來跟我的那隻可疑地相像。",
+      "translation_zh_tw": "  你的巨蠍獸跟我的像得可疑。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -119476,7 +119476,7 @@
       "unit_id": "DLG_95e4436b3e7e",
       "category": "dialogue",
       "original": "  Not surprising! You've trained it already!",
-      "translation_zh_tw": "  一點也不意外！你居然已經把牠馴化好了！",
+      "translation_zh_tw": "  難怪！你早就把牠馴服了！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -119521,7 +119521,7 @@
       "unit_id": "DLG_9a42346b17e1",
       "category": "dialogue",
       "original": "  You would still have this other mastyrial.",
-      "translation_zh_tw": "  你手頭上不是還有另一隻巨蠍獸嘛。",
+      "translation_zh_tw": "  你不是還有另一隻巨蠍獸嘛。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -119551,7 +119551,7 @@
       "unit_id": "DLG_708d8c29ce9c",
       "category": "dialogue",
       "original": "  I heard you calling my mastyrial back!",
-      "translation_zh_tw": "  我親耳聽見你呼喚我的巨蠍獸回去！",
+      "translation_zh_tw": "  我聽見你把我的巨蠍獸叫回去！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -120077,7 +120077,7 @@
       "unit_id": "DLG_fcd7cd994b1d",
       "category": "dialogue",
       "original": "  I seek allies to help stop Draj.",
-      "translation_zh_tw": "  我正在尋求盟友，以協助阻止德拉吉。",
+      "translation_zh_tw": "  我在尋求盟友來阻止德拉吉。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -121520,7 +121520,7 @@
       "unit_id": "DLG_a56d25c23671",
       "category": "dialogue",
       "original": "  I need help in the war against Draj.",
-      "translation_zh_tw": "  我需要你們在對抗德拉吉的戰爭中提供援助。",
+      "translation_zh_tw": "  對抗德拉吉的戰爭需要你們援助。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -121970,7 +121970,7 @@
       "unit_id": "DLG_f7654b86781c",
       "category": "dialogue",
       "original": "  Show me your leader. I'll try to help.",
-      "translation_zh_tw": "  帶我去見你們的領袖。我會盡力幫忙。",
+      "translation_zh_tw": "  帶我見你們的領袖。我會盡力。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -122405,7 +122405,7 @@
       "unit_id": "DLG_28f3c778999a",
       "category": "dialogue",
       "original": "  We must talk about the recent raiding.",
-      "translation_zh_tw": "  我們必須談談最近的襲擊劫掠事件。",
+      "translation_zh_tw": "  我們得談談最近的劫掠事件。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -122661,7 +122661,7 @@
       "unit_id": "DLG_95319b36105b",
       "category": "dialogue",
       "original": "  Will you keep working now that Balkazar is dead?",
-      "translation_zh_tw": "  既然巴爾卡札已經死了，你們還會繼續幹活嗎？",
+      "translation_zh_tw": "  巴爾卡札死了，還要繼續幹活嗎？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -122676,7 +122676,7 @@
       "unit_id": "DLG_5d8e516d6ea8",
       "category": "dialogue",
       "original": "  Balkazar is dead -- why work?",
-      "translation_zh_tw": "  巴爾卡札已經死了——幹嘛還要幹活？",
+      "translation_zh_tw": "  巴爾卡札已死——還幹什麼活？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -124317,7 +124317,7 @@
       "unit_id": "DLG_26e0dbb68b02",
       "category": "dialogue",
       "original": "  It's good to see a friendly face again.",
-      "translation_zh_tw": "  能再次見到友善的面孔真是太好了。",
+      "translation_zh_tw": "  能再見到友善的面孔真好。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -124332,7 +124332,7 @@
       "unit_id": "DLG_17eb22a69fa5",
       "category": "dialogue",
       "original": "  You'll have no more trouble from Balkazar.",
-      "translation_zh_tw": "  巴卡扎再也不會給你們惹任何麻煩了。",
+      "translation_zh_tw": "  巴爾卡札再也不會找你們麻煩了。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -124827,7 +124827,7 @@
       "unit_id": "DLG_e05b1d9530a7",
       "category": "dialogue",
       "original": "  I may need all the luck you can spare.",
-      "translation_zh_tw": "  你們能給予的任何好運我都十分需要。",
+      "translation_zh_tw": "  我十分需要你們能給的好運。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -124857,7 +124857,7 @@
       "unit_id": "DLG_78b50413dac2",
       "category": "dialogue",
       "original": "  The magera won't trouble you for long!",
-      "translation_zh_tw": "  那些瑪格拉巨怪絕不會再困擾你們太久了！",
+      "translation_zh_tw": "  瑪格拉巨怪不會再困擾你們太久！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -124872,7 +124872,7 @@
       "unit_id": "DLG_2f6b6c837d16",
       "category": "dialogue",
       "original": "  The wyverns sound like deadly beasts.",
-      "translation_zh_tw": "  聽起來那些雙足飛龍是極其致命的凶獸。",
+      "translation_zh_tw": "  雙足飛龍聽來是致命的凶獸。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -124887,7 +124887,7 @@
       "unit_id": "DLG_d74ab67a885b",
       "category": "dialogue",
       "original": "  Wyverns or no, they'll not bother you again!",
-      "translation_zh_tw": "  不管牠們是不是飛龍，牠們絕不可能再來騷擾你們了！",
+      "translation_zh_tw": "  什麼飛龍都不會再來騷擾你們了！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -125054,7 +125054,7 @@
       "unit_id": "DLG_a81ffdb15966",
       "category": "dialogue",
       "original": "  Do you know where the magera come from?",
-      "translation_zh_tw": "  你知道那些瑪格拉巨怪是打哪裡來的嗎？",
+      "translation_zh_tw": "  你知道瑪格拉巨怪從哪來的嗎？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -125086,7 +125086,7 @@
       "unit_id": "DLG_542045a5c79e",
       "category": "dialogue",
       "original": "  What can you tell me about the wyverns?",
-      "translation_zh_tw": "  關於那些雙足飛龍，你能告訴我些什麼？",
+      "translation_zh_tw": "  關於雙足飛龍，你知道些什麼？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -125116,7 +125116,7 @@
       "unit_id": "DLG_43a1ca1c5818",
       "category": "dialogue",
       "original": "  What is this castle you spoke of?",
-      "translation_zh_tw": "  你剛才提到的那座城堡是怎麼回事？",
+      "translation_zh_tw": "  你提到的那座城堡是怎麼回事？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -125446,7 +125446,7 @@
       "unit_id": "DLG_af5379b15344",
       "category": "dialogue",
       "original": "  Have any rumors blown in from the desert?",
-      "translation_zh_tw": "  沙漠裡最近有吹來什麼傳聞流言嗎？",
+      "translation_zh_tw": "  沙漠最近有什麼傳聞嗎？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -126391,7 +126391,7 @@
       "unit_id": "DLG_f3295e4de068",
       "category": "dialogue",
       "original": "  This is a waste of time! I'll kill you all!",
-      "translation_zh_tw": "  這純粹是在浪費時間！我要把你們全都宰了！",
+      "translation_zh_tw": "  浪費時間！我要把你們全宰了！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -126826,7 +126826,7 @@
       "unit_id": "DLG_62a58c47aa36",
       "category": "dialogue",
       "original": "  You are a wise judge. I thank you.",
-      "translation_zh_tw": "  您真是一位公正明智的裁判。多謝您。",
+      "translation_zh_tw": "  您真是明智的裁判。多謝您。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -126886,7 +126886,7 @@
       "unit_id": "DLG_58c9c88648f9",
       "category": "dialogue",
       "original": "  You idiot! I'll kill you and Tobrian!",
-      "translation_zh_tw": "  你這個蠢貨！我要把你和托布里安一起宰了！",
+      "translation_zh_tw": "  蠢貨！我連你和托布里安一起宰！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -127321,7 +127321,7 @@
       "unit_id": "DLG_0c594e3fc2c4",
       "category": "dialogue",
       "original": "  I have items you may wish to buy.",
-      "translation_zh_tw": "  我有些東西，你或許會有興趣收購。",
+      "translation_zh_tw": "  我有些東西，你或許想買。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -127651,7 +127651,7 @@
       "unit_id": "DLG_ca1a90f75cf3",
       "category": "dialogue",
       "original": "  Just what is the Necklace of Crimson Sun?",
-      "translation_zh_tw": "  那條「緋紅烈日項鍊」究竟是什麼來頭？",
+      "translation_zh_tw": "  「緋紅烈日項鍊」究竟是什麼？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -129031,7 +129031,7 @@
       "unit_id": "DLG_59331e2e67b8",
       "category": "dialogue",
       "original": "  Can you repeat the fortune you gave me?",
-      "translation_zh_tw": "  妳能把剛才給我的預言再重複一遍嗎？",
+      "translation_zh_tw": "  妳能把那預言再說一遍嗎？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -130866,7 +130866,7 @@
       "unit_id": "DLG_0c43e07423d8",
       "category": "dialogue",
       "original": "  Have you heard any news out of Draj?",
-      "translation_zh_tw": "  妳有聽到關於德拉吉的任何消息嗎？",
+      "translation_zh_tw": "  妳有聽到德拉吉的什麼消息嗎？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -132413,7 +132413,7 @@
       "unit_id": "DLG_945fec965d06",
       "category": "dialogue",
       "original": "  First tell me who you were talking to.",
-      "translation_zh_tw": "  先告訴我剛才和你在說話的人是誰。",
+      "translation_zh_tw": "  先說剛才跟你說話的是誰。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -132593,7 +132593,7 @@
       "unit_id": "DLG_36987b1f09e4",
       "category": "dialogue",
       "original": "  Seref said something about city troops.",
-      "translation_zh_tw": "  塞雷夫剛才好像提到了城邦的軍隊。",
+      "translation_zh_tw": "  塞雷夫提到了城邦的軍隊。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -132668,7 +132668,7 @@
       "unit_id": "DLG_634cdbe6d036",
       "category": "dialogue",
       "original": "  Slavers should be driven into the Silt Sea!",
-      "translation_zh_tw": "  奴隸販子全該被丟進淤泥海裡淹死！",
+      "translation_zh_tw": "  奴隸販子都該丟進淤泥海！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -132849,7 +132849,7 @@
       "unit_id": "DLG_693d7a52aedd",
       "category": "dialogue",
       "original": "  It tastes like sewer water!",
-      "translation_zh_tw": "  喝起來簡直跟下水道的餿水沒兩樣！",
+      "translation_zh_tw": "  喝起來跟下水道的餿水一樣！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -133449,7 +133449,7 @@
       "unit_id": "DLG_66ed0de3bc8c",
       "category": "dialogue",
       "original": "  Liar! I heard what you said to that slaver!",
-      "translation_zh_tw": "  騙子！我聽見你和那個奴隸販子說的話了！",
+      "translation_zh_tw": "  騙子！我聽到你跟奴隸販子的話！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -135058,7 +135058,7 @@
       "unit_id": "DLG_7cbe7719b871",
       "category": "dialogue",
       "original": "  Talk, or you'll know the meaning of pain!",
-      "translation_zh_tw": "  開口說話，否則就讓你嘗嘗皮肉之苦！",
+      "translation_zh_tw": "  快說，否則讓你嘗嘗皮肉之苦！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -135073,7 +135073,7 @@
       "unit_id": "DLG_e32a4eebc2e8",
       "category": "dialogue",
       "original": "  You're too ugly to talk to, anyway!",
-      "translation_zh_tw": "  反正你長得這麼醜，我本來也不想跟你說話！",
+      "translation_zh_tw": "  反正你醜到我不想跟你說話！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -136544,7 +136544,7 @@
       "unit_id": "DLG_e18b721cb011",
       "category": "dialogue",
       "original": "How many ceramic pieces do you give her?",
-      "translation_zh_tw": "你要給她多少枚陶瓷幣？",
+      "translation_zh_tw": "你要給她多少陶幣？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -136769,7 +136769,7 @@
       "unit_id": "DLG_033e69dbcc69",
       "category": "dialogue",
       "original": "  Can you tell me about other templars?",
-      "translation_zh_tw": "  你能告訴我其他聖堂武士的情況嗎？",
+      "translation_zh_tw": "  能說說其他聖堂武士的情況嗎？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -136799,7 +136799,7 @@
       "unit_id": "DLG_33b518259dac",
       "category": "dialogue",
       "original": "  What do you know about Tectuktitlay?",
-      "translation_zh_tw": "  關於特克圖克特雷，你知道些什麼？",
+      "translation_zh_tw": "  你對特克圖克特雷了解多少？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -137971,7 +137971,7 @@
       "unit_id": "DLG_c33020a35449",
       "category": "dialogue",
       "original": "  What else did you hear about the troops?",
-      "translation_zh_tw": "  關於城邦軍隊，你還聽到了些什麼？",
+      "translation_zh_tw": "  關於那些軍隊，你還聽到什麼？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -140687,7 +140687,7 @@
       "unit_id": "DLG_5ad14332374f",
       "category": "dialogue",
       "original": "  Will you join our alliance against Draj?",
-      "translation_zh_tw": "  你們願意加入我們對抗德拉吉的同盟嗎？",
+      "translation_zh_tw": "  你們願加入對抗德拉吉的同盟嗎？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -140703,7 +140703,7 @@
       "unit_id": "DLG_f2ecbcf2b8ee",
       "category": "dialogue",
       "original": "  Drajian rule will crush your village!",
-      "translation_zh_tw": "  德拉吉的暴政會將你們的村莊徹底碾碎！",
+      "translation_zh_tw": "  德拉吉的暴政會碾碎你們的村莊！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -140718,7 +140718,7 @@
       "unit_id": "DLG_5ae3d16acd9d",
       "category": "dialogue",
       "original": "  Draj is out for destruction, not slaves.",
-      "translation_zh_tw": "  德拉吉要的是毀滅，而不是抓奴隸。",
+      "translation_zh_tw": "  德拉吉要的是毀滅，不是奴隸。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -141335,7 +141335,7 @@
       "unit_id": "DLG_b2bfbebd1ed4",
       "category": "dialogue",
       "original": "  I'm sorry. We should try to be friends.",
-      "translation_zh_tw": "  我很抱歉。我們應該試著成為朋友。",
+      "translation_zh_tw": "  抱歉。我們應該試著當朋友。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -141410,7 +141410,7 @@
       "unit_id": "DLG_092b8d24044c",
       "category": "dialogue",
       "original": "  Forget it. You can solve your own problems.",
-      "translation_zh_tw": "  算了。你們自己的麻煩自己解決吧。",
+      "translation_zh_tw": "  算了。你們的麻煩自己解決吧。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -141425,7 +141425,7 @@
       "unit_id": "DLG_7f8a04669c88",
       "category": "dialogue",
       "original": "  Join with me. Draj is the true threat.",
-      "translation_zh_tw": "  與我聯手吧。德拉吉才是真正的威脅。",
+      "translation_zh_tw": "  與我聯手吧。德拉吉才是真威脅。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -142491,7 +142491,7 @@
       "unit_id": "DLG_e625af9cd62d",
       "category": "dialogue",
       "original": "  I won't work on Tectuktitlay's sandcastle.",
-      "translation_zh_tw": "  我才不要去幫特克圖克特雷蓋沙堡。",
+      "translation_zh_tw": "  我才不幫特克圖克特雷蓋沙堡。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -142536,7 +142536,7 @@
       "unit_id": "DLG_7094919d7496",
       "category": "dialogue",
       "original": "  If you let me live, I'll reward you!",
-      "translation_zh_tw": "  如果你放我活命，我會好好報答你！",
+      "translation_zh_tw": "  放我一條生路，我會報答你！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -142551,7 +142551,7 @@
       "unit_id": "DLG_816ecd236162",
       "category": "dialogue",
       "original": "  I am prepared to die -- I hope you are too.",
-      "translation_zh_tw": "  我已經準備好赴死——希望你也是。",
+      "translation_zh_tw": "  我已準備赴死——希望你也是。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -142581,7 +142581,7 @@
       "unit_id": "DLG_3488c5b3098a",
       "category": "dialogue",
       "original": "  I spit in the face of Tectuktitlay himself!",
-      "translation_zh_tw": "  我要當著特克圖克特雷的面唾棄他！",
+      "translation_zh_tw": "  我要當面唾棄特克圖克特雷！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -142641,7 +142641,7 @@
       "unit_id": "DLG_f41244878992",
       "category": "dialogue",
       "original": "  Breed monsters quickly. You'll need them.",
-      "translation_zh_tw": "  快點繁殖你的怪物吧，你會需要的。",
+      "translation_zh_tw": "  快繁殖怪物吧，你會需要的。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -142686,7 +142686,7 @@
       "unit_id": "DLG_30eb07b2d566",
       "category": "dialogue",
       "original": "  Very funny. I'll laugh at your funeral. ",
-      "translation_zh_tw": "  真好笑。我會在你的葬禮上笑出來。",
+      "translation_zh_tw": "  真好笑。我會在你葬禮上笑的。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -143361,7 +143361,7 @@
       "unit_id": "DLG_42e5da78af9b",
       "category": "dialogue",
       "original": "  I'm breaking out. Get in my way and die!",
-      "translation_zh_tw": "  我要逃出去了。擋我的路就等死吧！",
+      "translation_zh_tw": "  我要逃出去了。擋路者死！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -143979,7 +143979,7 @@
       "unit_id": "DLG_bd3787542922",
       "category": "dialogue",
       "original": "  I barely survived, but they're gone.",
-      "translation_zh_tw": "  我九死一生才活了下來，但他們都被剷除了。",
+      "translation_zh_tw": "  我九死一生，但他們都被剷除了。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -144026,7 +144026,7 @@
       "unit_id": "DLG_ba5321f9d8c7",
       "category": "dialogue",
       "original": "  We can't win the war without help.",
-      "translation_zh_tw": "  沒有援助，我們無法贏得這場戰爭。",
+      "translation_zh_tw": "  沒有援助，我們贏不了這場戰爭。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -144073,7 +144073,7 @@
       "unit_id": "DLG_bd968c77ebf1",
       "category": "dialogue",
       "original": "  Your freedom is worth all that I suffered.",
-      "translation_zh_tw": "  為了換取你們的自由，我所受的一切苦難都是值得的。",
+      "translation_zh_tw": "  為你們的自由，我受苦也值得。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -144373,7 +144373,7 @@
       "unit_id": "DLG_a5370741173a",
       "category": "dialogue",
       "original": "  It's none of your business why I want it.",
-      "translation_zh_tw": "  我為什麼要找它，根本不關你的事。",
+      "translation_zh_tw": "  我為何要找它，不關你的事。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -145815,7 +145815,7 @@
       "unit_id": "DLG_1e6f06afc7cf",
       "category": "dialogue",
       "original": "  Your only chance against Draj is to fight.",
-      "translation_zh_tw": "  對抗德拉吉，你們唯一的活路就是奮起反抗。",
+      "translation_zh_tw": "  對抗德拉吉，你們唯有一戰。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -145830,7 +145830,7 @@
       "unit_id": "DLG_ac1143ac8492",
       "category": "dialogue",
       "original": "  I appreciate Cedrilte's pledge of warriors.",
-      "translation_zh_tw": "  我很感謝塞德里爾特承諾派出戰士支援。",
+      "translation_zh_tw": "  感謝塞德里爾特承諾派出戰士。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -147090,7 +147090,7 @@
       "unit_id": "DLG_f2eaebb9d892",
       "category": "dialogue",
       "original": "  You face a tough task defending Cedrilte.",
-      "translation_zh_tw": "  保衛塞德里爾特是一項艱鉅的任務。",
+      "translation_zh_tw": "  保衛塞德里爾特是項艱鉅任務。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -147180,7 +147180,7 @@
       "unit_id": "DLG_b42ff3d880e2",
       "category": "dialogue",
       "original": "  If I kill the bandits, there'd be no raids.",
-      "translation_zh_tw": "  如果我殺了強盜，就不會再有襲擊了。",
+      "translation_zh_tw": "  我殺了強盜，就不會再有襲擊了。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -148397,7 +148397,7 @@
       "unit_id": "DLG_8d14410219f2",
       "category": "dialogue",
       "original": "  Do you know if I can climb to the castle?",
-      "translation_zh_tw": "  你知道我能不能攀爬上那座城堡嗎？",
+      "translation_zh_tw": "  你知道我能不能爬上城堡嗎？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -148832,7 +148832,7 @@
       "unit_id": "DLG_ffa70332a1a6",
       "category": "dialogue",
       "original": "  Can I see them? A map is just what I need.",
-      "translation_zh_tw": "  我能看看嗎？地圖正是我所需要的。",
+      "translation_zh_tw": "  能給我看看嗎？我正需要地圖。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -148952,7 +148952,7 @@
       "unit_id": "DLG_96ee29640443",
       "category": "dialogue",
       "original": "  Thanks. You're a real fountain of knowledge.",
-      "translation_zh_tw": "  多謝了。你可真是一座知識的活泉啊。",
+      "translation_zh_tw": "  多謝。你真是知識的活泉啊。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -149973,7 +149973,7 @@
       "unit_id": "DLG_5c04de97b775",
       "category": "dialogue",
       "original": "  No! Kill the templar and side against Draj!",
-      "translation_zh_tw": "  不行！殺了聖堂武士，站在反抗德拉吉這一邊！",
+      "translation_zh_tw": "  不！殺了聖堂武士，對抗德拉吉！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -150534,7 +150534,7 @@
       "unit_id": "DLG_118ec1e8c1b0",
       "category": "dialogue",
       "original": "  Teaquetzl. But join me to seek more allies.",
-      "translation_zh_tw": "  特奎策爾。但請加入我，一同尋找更多盟友。",
+      "translation_zh_tw": "  提奎茲爾。請隨我去找更多盟友。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -153586,7 +153586,7 @@
       "unit_id": "DLG_7e317d27af06",
       "category": "dialogue",
       "original": "  Fine -- I'm in the Alliance, now shut up!",
-      "translation_zh_tw": "  好啦——我是聯盟的人，別再說了！",
+      "translation_zh_tw": "  好啦——我是聯盟的人，閉嘴吧！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -156638,7 +156638,7 @@
       "unit_id": "DLG_b7e083d57e18",
       "category": "dialogue",
       "original": "  Farther! Back off or die!",
-      "translation_zh_tw": "  再退後！滾開，否則休怪我不客氣！",
+      "translation_zh_tw": "  再退後！滾開，否則別怪我！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -159057,7 +159057,7 @@
       "unit_id": "DLG_2bd370bff524",
       "category": "dialogue",
       "original": "  Why don't you write your name in that book?",
-      "translation_zh_tw": "  你為何不在那本書裡寫上自己的名字？",
+      "translation_zh_tw": "  你為何不在書裡寫上你的名字？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -159162,7 +159162,7 @@
       "unit_id": "DLG_9bd5416fdbab",
       "category": "dialogue",
       "original": "  Oh. It does say that! My mistake. ",
-      "translation_zh_tw": "  噢。上面還真的這麼寫！我搞錯了。 ",
+      "translation_zh_tw": "  噢。上面真這麼寫！我搞錯了。 ",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -159207,7 +159207,7 @@
       "unit_id": "DLG_a499c4822ab0",
       "category": "dialogue",
       "original": "  Yes. I can kill you with a smile now.",
-      "translation_zh_tw": "  沒錯。我現在可以帶著微笑宰了你了。",
+      "translation_zh_tw": "  沒錯。現在我能笑著宰了你。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -159237,7 +159237,7 @@
       "unit_id": "DLG_de3ebd9dbfcc",
       "category": "dialogue",
       "original": "  Die, you crazy templar! DIE!",
-      "translation_zh_tw": "  受死吧，你這個瘋子聖堂武士！去死吧！",
+      "translation_zh_tw": "  受死吧，瘋狂的聖堂武士！去死！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -159837,7 +159837,7 @@
       "unit_id": "DLG_a2c47e81e45f",
       "category": "dialogue",
       "original": "  Really? No witty comments? Great! ",
-      "translation_zh_tw": "  真的嗎？不用聽你講俏皮話了？太棒了！ ",
+      "translation_zh_tw": "  真的？沒有俏皮話了？太棒了！ ",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -162447,7 +162447,7 @@
       "unit_id": "DLG_c4f17051ed13",
       "category": "dialogue",
       "original": "  Why are you part of this... thing?",
-      "translation_zh_tw": "  你為什麼會變成這個……怪物的一部分？",
+      "translation_zh_tw": "  你為何成了這……東西的一部分？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -163962,7 +163962,7 @@
       "unit_id": "DLG_5494d21f6d7e",
       "category": "dialogue",
       "original": "  Give me everything and I won't kill you.",
-      "translation_zh_tw": "  把所有東西都交出來，我就不殺你們。",
+      "translation_zh_tw": "  交出所有東西，我就不殺你們。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -165662,7 +165662,7 @@
       "unit_id": "DLG_2d67a3d16ac4",
       "category": "dialogue",
       "original": "  Aren't these crops for the city?",
-      "translation_zh_tw": "  這些作物難道不是供應給城裡的嗎？",
+      "translation_zh_tw": "  這些作物不是要供應城裡的嗎？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -167314,7 +167314,7 @@
       "unit_id": "DLG_fb348082be44",
       "category": "dialogue",
       "original": "  I saw them... rather, what was left of them.",
-      "translation_zh_tw": "  我見過他們……更確切地說，是他們的殘骸。",
+      "translation_zh_tw": "  我見過他們……或者說是殘骸。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -167525,7 +167525,7 @@
       "unit_id": "DLG_fcfdfeae58dd",
       "category": "dialogue",
       "original": "  Do you know anything about the campaign?",
-      "translation_zh_tw": "  你知道關於那場軍事征伐的任何消息嗎？",
+      "translation_zh_tw": "  你知道那場征伐的消息嗎？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -167570,7 +167570,7 @@
       "unit_id": "DLG_80868b01a51c",
       "category": "dialogue",
       "original": "  The campaign is against the slave villages. ",
-      "translation_zh_tw": "  這場軍事行動的目標就是那些奴隸村落。 ",
+      "translation_zh_tw": "  這場征伐的目標是那些奴隸村落。 ",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -167872,7 +167872,7 @@
       "unit_id": "DLG_6559683206b0",
       "category": "dialogue",
       "original": "  Wyrmias is gone. I got rid of him. ",
-      "translation_zh_tw": "  威米亞斯已經不在了。我收拾了他。 ",
+      "translation_zh_tw": "  威米亞斯不在了。我收拾了他。 ",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -167887,7 +167887,7 @@
       "unit_id": "DLG_4d75b2818ae9",
       "category": "dialogue",
       "original": "  Everyone is dead. Wyrmias killed them all.",
-      "translation_zh_tw": "  大家都死了。威米亞斯把他們全殺光了。",
+      "translation_zh_tw": "  大家都死了，全被威米亞斯殺了。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -167932,7 +167932,7 @@
       "unit_id": "DLG_2caf9be15c13",
       "category": "dialogue",
       "original": "  They are allied with Teaquetzl against Draj",
-      "translation_zh_tw": "  他們已與特奎策爾村結盟，共同對抗德拉吉",
+      "translation_zh_tw": "  他們已與提奎茲爾結盟對抗德拉吉",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -169433,7 +169433,7 @@
       "unit_id": "DLG_e12511a726cb",
       "category": "dialogue",
       "original": "  Salt is money near the Ringing Mountains?",
-      "translation_zh_tw": "  在鳴響山脈附近，鹽可以當錢用嗎？",
+      "translation_zh_tw": "  在鳴響山脈附近，鹽能當錢用？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -169448,7 +169448,7 @@
       "unit_id": "DLG_87b1032f9bb8",
       "category": "dialogue",
       "original": "  Why don't you send slaves to do the work?",
-      "translation_zh_tw": "  你為什麼不派奴隸來做這份苦差事？",
+      "translation_zh_tw": "  你為何不派奴隸來做這苦差事？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -172721,7 +172721,7 @@
       "unit_id": "DLG_c384580a44c9",
       "category": "dialogue",
       "original": "  I have some pith extract for you. Here. ",
-      "translation_zh_tw": "  我這裡有些木髓萃取液要給妳。拿去吧。 ",
+      "translation_zh_tw": "  我有些木髓萃取液給妳。拿去。 ",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -174014,7 +174014,7 @@
       "unit_id": "DLG_2f2236f4c53e",
       "category": "dialogue",
       "original": "  No, the people were teleported, not killed.",
-      "translation_zh_tw": "  不，大家是被傳送走了，並沒有被殺。",
+      "translation_zh_tw": "  不，大家是被傳送走，不是被殺。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -174899,7 +174899,7 @@
       "unit_id": "DLG_01143d96c93f",
       "category": "dialogue",
       "original": "  The villagers are babbling idiots!",
-      "translation_zh_tw": "  村民們全都胡言亂語成了一群白痴！",
+      "translation_zh_tw": "  村民們全是胡言亂語的白痴！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -176144,7 +176144,7 @@
       "unit_id": "DLG_a4fbc43b005a",
       "category": "dialogue",
       "original": "  I met Tanelyv in the temple. He can help.",
-      "translation_zh_tw": "  我在神廟遇見了泰內利夫。他能提供幫助。",
+      "translation_zh_tw": "  神廟裡的泰內利夫能幫上忙。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -176204,7 +176204,7 @@
       "unit_id": "DLG_b7144c5d708f",
       "category": "dialogue",
       "original": "  I need help, not advice!",
-      "translation_zh_tw": "  我需要的是實質幫助，不是空談忠告！",
+      "translation_zh_tw": "  我要的是幫助，不是忠告！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -177555,7 +177555,7 @@
       "unit_id": "DLG_5cbc3b97b54d",
       "category": "dialogue",
       "original": "  Blind One lies! He was transformed! ",
-      "translation_zh_tw": "  盲眼者在說謊！他是被成功轉化的！ ",
+      "translation_zh_tw": "  盲眼者說謊！他被轉化了！ ",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -178860,7 +178860,7 @@
       "unit_id": "DLG_aa8d3f4ddf62",
       "category": "dialogue",
       "original": "  Okay! I'll sell you my jun-- er, vases.",
-      "translation_zh_tw": "  好啊！我把這些破爛——呃，花瓶賣給你。",
+      "translation_zh_tw": "  好！我賣你破爛——呃，花瓶。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -178905,7 +178905,7 @@
       "unit_id": "DLG_9f0e53860f35",
       "category": "dialogue",
       "original": "  I don't see any carnival. Are you okay?",
-      "translation_zh_tw": "  我根本沒看見什麼嘉年華會。你還好嗎？",
+      "translation_zh_tw": "  我沒看見什麼嘉年華。你還好嗎？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -178920,7 +178920,7 @@
       "unit_id": "DLG_340f0671470e",
       "category": "dialogue",
       "original": "  There's nothing! What's wrong with you?",
-      "translation_zh_tw": "  這裡什麼都沒有！你到底有什麼毛病？",
+      "translation_zh_tw": "  這裡什麼都沒有！你有毛病嗎？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -178950,7 +178950,7 @@
       "unit_id": "DLG_349d8a230112",
       "category": "dialogue",
       "original": "  There's no one in that chair! Look!",
-      "translation_zh_tw": "  那張椅子上根本沒有人！你看清楚！",
+      "translation_zh_tw": "  那椅子上根本沒人！你看清楚！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -180495,7 +180495,7 @@
       "unit_id": "DLG_3981a1ba9af6",
       "category": "dialogue",
       "original": "  I was searching, and found this place.",
-      "translation_zh_tw": "  我們在四處搜查，便發現了這個地方。",
+      "translation_zh_tw": "  我們四處搜查，發現了這裡。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -180570,7 +180570,7 @@
       "unit_id": "DLG_ec254f06c35e",
       "category": "dialogue",
       "original": "  Gee, thanks for not being TOO busy.",
-      "translation_zh_tw": "  哎呀，多謝你百忙之中抽空搭理我們。",
+      "translation_zh_tw": "  哎呀，多謝你百忙中抽空理我們。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -180585,7 +180585,7 @@
       "unit_id": "DLG_26065dbde91d",
       "category": "dialogue",
       "original": "  Not as much as having your blood on my hands!",
-      "translation_zh_tw": "  遠不及親手讓你血債血償那麼有趣！",
+      "translation_zh_tw": "  遠不及親手讓你血債血償有趣！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -180600,7 +180600,7 @@
       "unit_id": "DLG_f8f0e8ca25b7",
       "category": "dialogue",
       "original": "  Oh, names like 'slime', for instance?",
-      "translation_zh_tw": "  噢，比如『軟泥怪』之類的綽號嗎？",
+      "translation_zh_tw": "  噢，比如『軟泥怪』之類的嗎？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -180705,7 +180705,7 @@
       "unit_id": "DLG_c9be87a8c00e",
       "category": "dialogue",
       "original": "  Release them or view your entrails!",
-      "translation_zh_tw": "  放了他們，否則就等著看你的內臟流滿地吧！",
+      "translation_zh_tw": "  放了他們，否則讓你開膛破肚！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -187344,7 +187344,7 @@
       "unit_id": "DLG_420ef67f523f",
       "category": "dialogue",
       "original": "  You said it was ruins. What's this rift?",
-      "translation_zh_tw": "  你剛才說是廢墟。那這條地裂是怎麼回事？",
+      "translation_zh_tw": "  你說是廢墟，那這道地裂是什麼？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -187660,7 +187660,7 @@
       "unit_id": "DLG_6ae4f7648541",
       "category": "dialogue",
       "original": "  Why don't more elementals attack you?",
-      "translation_zh_tw": "  為什麼沒有更多的元素生物來攻擊你？",
+      "translation_zh_tw": "  為何沒有更多元素生物攻擊你？",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -187690,7 +187690,7 @@
       "unit_id": "DLG_e871ac887da5",
       "category": "dialogue",
       "original": "  You're too cowardly to have such conviction.",
-      "translation_zh_tw": "  你這麼膽小懦弱，根本不可能有這種堅定信念。",
+      "translation_zh_tw": "  你這麼懦弱，不可能有這種信念。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -191773,7 +191773,7 @@
       "unit_id": "DLG_f4b7fd917042",
       "category": "dialogue",
       "original": "  Sell me the gladiators or you die!",
-      "translation_zh_tw": "  把角鬥士賣給我，否則你就死定了！",
+      "translation_zh_tw": "  把角鬥士賣我，否則你就死定了！",
       "status": "translated",
       "translate": true,
       "whitespace": {
@@ -191879,7 +191879,7 @@
       "unit_id": "DLG_fd3f3797f050",
       "category": "dialogue",
       "original": "  Forget it! We'll kill you instead.",
-      "translation_zh_tw": "  算了吧！我們還是直接殺了你比較快。",
+      "translation_zh_tw": "  算了！還是直接殺了你吧。",
       "status": "translated",
       "translate": true,
       "whitespace": {
@@ -193141,7 +193141,7 @@
       "unit_id": "DLG_f0bbfa6ca878",
       "category": "dialogue",
       "original": "What kind of metal do you look for?",
-      "translation_zh_tw": "你尋找什麼種類的金屬？",
+      "translation_zh_tw": "你要找哪種金屬？",
       "status": "translated",
       "translate": true,
       "whitespace": {
@@ -193955,7 +193955,7 @@
       "unit_id": "DLG_702efa1ef60b",
       "category": "dialogue",
       "original": "  I bought the gladiators from Arant.",
-      "translation_zh_tw": "  我從阿蘭特手裡把角鬥士買下來了。",
+      "translation_zh_tw": "  我從阿蘭特手裡買下了角鬥士。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -195712,7 +195712,7 @@
       "unit_id": "DLG_661839274ac1",
       "category": "dialogue",
       "original": "  Leave the oasis before you ruin it!",
-      "translation_zh_tw": "  在你們徹底毀掉這座綠洲之前，給我滾出去！",
+      "translation_zh_tw": "  趁你們還沒毀掉綠洲，滾出去！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -195802,7 +195802,7 @@
       "unit_id": "DLG_bfca5a6a5e5f",
       "category": "dialogue",
       "original": "  No, the message is from templar Drakath.",
-      "translation_zh_tw": "  不，口信是德拉卡斯聖堂武士傳來的。",
+      "translation_zh_tw": "  不，口信來自聖堂武士德拉卡斯。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -195817,7 +195817,7 @@
       "unit_id": "DLG_029214bbcaf8",
       "category": "dialogue",
       "original": "  I killed Dagolar! You're next! ",
-      "translation_zh_tw": "  是我宰了達戈拉爾！下一個就輪到你了！ ",
+      "translation_zh_tw": "  我宰了達戈拉爾！下一個就是你！ ",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -196540,7 +196540,7 @@
       "unit_id": "DLG_3d12d20580fa",
       "category": "dialogue",
       "original": "  Tectuktitlay has special plans for this oasis.",
-      "translation_zh_tw": "  特克圖克特雷對這座綠洲另有特殊規劃。",
+      "translation_zh_tw": "  特克圖克特雷對這綠洲另有打算。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -196600,7 +196600,7 @@
       "unit_id": "DLG_f30654d1cda9",
       "category": "dialogue",
       "original": "  There are no papers. I memorized the message.",
-      "translation_zh_tw": "  沒有紙本文件。我把口信記在腦子裡了。",
+      "translation_zh_tw": "  沒有文件。口信我記在腦子裡。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -196646,7 +196646,7 @@
       "unit_id": "DLG_2aa0ed23f9ee",
       "category": "dialogue",
       "original": "  Fine. Don't obey. It's your funeral.",
-      "translation_zh_tw": "  好啊。不服從拉倒，自掘墳墓的是你。",
+      "translation_zh_tw": "  好啊，不服從拉倒，自掘墳墓吧。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -201857,7 +201857,7 @@
       "unit_id": "DLG_feeafde6c1d8",
       "category": "dialogue",
       "original": "  Wyrmias is gone. I bargained with him. ",
-      "translation_zh_tw": "  威米亞斯已經走了。我和他達成了協議。 ",
+      "translation_zh_tw": "  威米亞斯走了。我跟他談妥了。 ",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -201872,7 +201872,7 @@
       "unit_id": "DLG_abb7cf7bcc5d",
       "category": "dialogue",
       "original": "  I have paid for you. You're free to go.",
-      "translation_zh_tw": "  我已經為你們贖身了。你們重獲自由，可以走了。",
+      "translation_zh_tw": "  我已為你們贖身。你們自由了。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -201887,7 +201887,7 @@
       "unit_id": "DLG_d70972233bcc",
       "category": "dialogue",
       "original": "  I killed the slavers. You're free now.",
-      "translation_zh_tw": "  我幹掉了那些奴隸販子。你們現在自由了。",
+      "translation_zh_tw": "  我殺了奴隸販子。你們自由了。",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -201917,7 +201917,7 @@
       "unit_id": "DLG_78649461a5ab",
       "category": "dialogue",
       "original": "  I own you. Wait here for me. ",
-      "translation_zh_tw": "  你們現在是我的財產。在這裡等我回來。 ",
+      "translation_zh_tw": "  你們是我的財產了。在這裡等我。 ",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -202097,7 +202097,7 @@
       "unit_id": "DLG_44d36ab9c35b",
       "category": "dialogue",
       "original": "  I'll destroy the camp after freeing you!",
-      "translation_zh_tw": "  等救出你們之後，我會把這座營地徹底摧毀！",
+      "translation_zh_tw": "  救出你們後，我會毀了這座營地！",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -203147,7 +203147,7 @@
       "unit_id": "DLG_fb856a9f8df9",
       "category": "dialogue",
       "original": "  Wyrmias is dead. You can't stop them. ",
-      "translation_zh_tw": "  威米亞斯已經死了。你阻止不了他們。 ",
+      "translation_zh_tw": "  威米亞斯死了。你阻止不了他們。 ",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
@@ -203192,7 +203192,7 @@
       "unit_id": "DLG_90d30c74b515",
       "category": "dialogue",
       "original": "  Oops! I'll put them back. Sorry. ",
-      "translation_zh_tw": "  哎呀！我會把他們放回去的。抱歉。 ",
+      "translation_zh_tw": "  哎呀！我會放回去的。抱歉。 ",
       "status": "translated_unreviewed",
       "translate": true,
       "whitespace": {
