@@ -238,6 +238,14 @@ SMART_CURSOR_EXE_PATCHES = (
     # core tail-jumps to 1C3C4 itself.
     (0x1B4F5, "3E B0 11 00 74 42", "B9 F0 BE E9 88 FF", "frame hook -> tag FF88"),
     (0x1C9DE, "E8 E3 F9", "E8 14 EB", "non-combat frame update -> frame hook"),
+    # Hover icon. F6 in the map key handler's table (cs:0FEB, target at
+    # +34h, index 12) only ran a debug command gated by [11B0]; it now
+    # leaves through the handler's exit, and its dead code at 1B81E holds
+    # "mov dx,ax; mov cx,BEF1h; jmp 1B483". icon_at's walk branch jumps
+    # there with find_object's result instead of testing it for -1.
+    (0x1BCA7, "AE 0B", "E5 0F", "F6 (debug only) -> key handler exit"),
+    (0x1B81E, "83 3E B0 11 00 75 03 E9", "89 C2 B9 F1 BE E9 5D FC", "dead F6 code -> hover hook"),
+    (0x1D86F, "3D FF FF", "E9 AC DF", "walk icon object test -> hover hook"),
 )
 
 

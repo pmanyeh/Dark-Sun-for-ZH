@@ -1146,6 +1146,9 @@ cursor_hotkey_far: .long 0
 #     on the stack.
 #   * CX = BEEFh: the look path's "NO LINE OF SIGHT" / "TOO FAR AWAY"
 #     branches; walk towards the clicked point (walk path 1B3CF).
+#   * CX = BEF1h: the walk icon of icon_at (1D86F), via "mov dx,ax;
+#     mov cx,BEF1h; jmp 1B483" in the map key handler's dead F6 debug code
+#     at 1B81E; see smart_hover.
 #   * anything else: the walk (mode 1) entry of the left-click mode table,
 #     frame BP of 1587:06D8 with the input event at [bp+6] (pointer x/y at
 #     [bp+12h]/[bp+14h]). Outside combat a map object that is not a party
@@ -1159,6 +1162,10 @@ cursor_hotkey_far: .long 0
 # object, no look on arrival.
 .equ SMART_WALK_TOWARDS_MAGIC, 0xBEEF
 .equ SMART_FRAME_MAGIC, 0xBEF0
+.equ SMART_HOVER_MAGIC, 0xBEF1
+.equ SMART_HOVER_NO_OBJECT_IP, 0x2C04
+.equ SMART_HOVER_DONE_IP, 0x2C26
+.equ SMART_LOOK_ICON, 0x1777
 .equ SMART_WALK_ENTRY_IP, 0x0726
 .equ SMART_WALK_PATH_IP, 0x075F
 .equ SMART_LOOK_PATH_IP, 0x0797
@@ -1173,6 +1180,11 @@ cursor_hotkey_far: .long 0
 .equ SMART_CAMERA_Y, 0x117A
 .equ SMART_OBJECT_X, 0x6697
 .equ SMART_OBJECT_Y, 0x6699
+.equ SMART_OBJECT_TILE_X, 0x669D
+.equ SMART_OBJECT_TILE_Y, 0x669F
+.equ SMART_LOOKER_SEGMENT, 0x3781
+.equ SMART_TOO_FAR_IP, 0x08CD
+.equ SMART_NO_SIGHT_IP, 0x09FF
 # Borland far functions: only SI, DI, BP and DS survive them.
 .macro smart_far_call segment, offset
     mov ax, si
@@ -1188,9 +1200,13 @@ cursor_hotkey_far: .long 0
     test byte ptr es:[0x17], 4
 .endm
 smart_click_entry:
+    # The hover caller passes its object index in DX, which the pops reuse.
+    mov ax, dx
     pop es
     pop bx
     pop dx
+    cmp cx, SMART_HOVER_MAGIC
+    je smart_hover
     push dx
     push si
     push di
@@ -1230,6 +1246,7 @@ smart_click_entry:
     mov word ptr cs:[smart_pending_walker], ax
     mov word ptr cs:[smart_pending_object], di
     mov word ptr cs:[smart_pending], 1
+    call smart_retarget
 smart_walk:
     mov cx, SMART_WALK_ENTRY_IP
     jmp smart_exit
@@ -1239,16 +1256,96 @@ smart_look:
 smart_towards:
     # The look path already stored its object in [496E].
     mov word ptr cs:[smart_pending], 0
+    mov di, word ptr [SMART_LOOK_OBJECT]
+    mov ax, si
+    add ax, SMART_COMBAT_SEGMENT
+    mov es, ax
+    cmp word ptr es:[0x19], 0
+    jne smart_towards_combat
     smart_ctrl_test
     jnz smart_towards_walk
     mov ax, word ptr [SMART_LEADER]
     mov word ptr cs:[smart_pending_walker], ax
-    mov ax, word ptr [SMART_LOOK_OBJECT]
-    mov word ptr cs:[smart_pending_object], ax
+    mov word ptr cs:[smart_pending_object], di
     mov word ptr cs:[smart_pending], 1
 smart_towards_walk:
+    cmp di, 4
+    jl smart_towards_go
+    call smart_retarget
+smart_towards_go:
     mov cx, SMART_WALK_PATH_IP
     jmp smart_exit
+smart_towards_combat:
+    # In combat a look never walks (it would spend the move): print the
+    # original message. Both branches share the BEEFh marker, so redo the
+    # look path's own range test (1B495..1B4E8): looker 3781:0369 to the
+    # object, 0898:000C > 20 means "TOO FAR AWAY", else "NO LINE OF SIGHT".
+    mov bx, di
+    shl bx, 5
+    mov ax, word ptr [bx+SMART_OBJECT_TILE_Y]
+    shr ax, 4
+    push ax
+    mov ax, word ptr [bx+SMART_OBJECT_TILE_X]
+    shr ax, 4
+    push ax
+    mov ax, si
+    add ax, SMART_LOOKER_SEGMENT
+    mov es, ax
+    mov bx, word ptr es:[0x369]
+    shl bx, 5
+    mov ax, word ptr [bx+SMART_OBJECT_TILE_Y]
+    shr ax, 4
+    push ax
+    mov ax, word ptr [bx+SMART_OBJECT_TILE_X]
+    shr ax, 4
+    push ax
+    smart_far_call 0x0898, 0x000C
+    add sp, 8
+    mov cx, SMART_TOO_FAR_IP
+    cmp ax, 0x14
+    jg smart_exit
+    mov cx, SMART_NO_SIGHT_IP
+    jmp smart_exit
+smart_retarget:
+    # DI = object, not a party member. find_object's walk path would aim
+    # at the object's own (blocked) tile; creatures are fine, since the
+    # walk path turns them into a follow order (13h), but static objects
+    # (sarcophagus, straw) made the walker refuse to move. Aim the click
+    # at the free tile next to the object nearest to the walker instead:
+    # 1A0A:2E99(object, &x, &y, walker) with near pointers (SS == DS).
+    mov ax, si
+    add ax, SMART_ORDER_SEGMENT
+    mov es, ax
+    mov bx, di
+    imul bx, bx, 3
+    cmp byte ptr es:[bx+0x0C36], 2
+    je smart_retarget_done
+    sub sp, 4
+    mov bx, sp
+    push word ptr [SMART_LEADER]
+    lea ax, [bx+2]
+    push ax
+    push bx
+    push di
+    smart_far_call 0x1A0A, 0x2E99
+    add sp, 8
+    or ax, ax
+    jz smart_retarget_drop
+    mov bx, sp
+    mov ax, word ptr ss:[bx]
+    shl ax, 4
+    add ax, 8
+    sub ax, word ptr [SMART_CAMERA_X]
+    mov word ptr ss:[bp+0x12], ax
+    mov ax, word ptr ss:[bx+2]
+    shl ax, 4
+    add ax, 8
+    sub ax, word ptr [SMART_CAMERA_Y]
+    mov word ptr ss:[bp+0x14], ax
+smart_retarget_drop:
+    add sp, 4
+smart_retarget_done:
+    ret
 smart_frame:
     cmp word ptr cs:[smart_pending], 0
     je smart_frame_done
@@ -1294,9 +1391,32 @@ smart_exit:
     pop di
     pop si
     pop dx
+smart_return:
     push dx
     push cx
     lret
+smart_hover:
+    # Walk icon of icon_at (1587:29FA): SI = 1771h (walk), DI = pointer x,
+    # [bp+8] = pointer y, AX = find_object's result. No object continues
+    # with the original can't-walk test; an object shows the look icon
+    # (1777h) when a click would look at it: outside combat, not a party
+    # member, Ctrl up. Otherwise the walk icon stays.
+    mov cx, SMART_HOVER_NO_OBJECT_IP
+    cmp ax, -1
+    je smart_return
+    mov cx, SMART_HOVER_DONE_IP
+    cmp ax, 4
+    jl smart_return
+    mov bx, ds
+    sub bx, SMART_DGROUP_LOAD_SEGMENT
+    add bx, SMART_COMBAT_SEGMENT
+    mov es, bx
+    cmp word ptr es:[0x19], 0
+    jne smart_return
+    smart_ctrl_test
+    jnz smart_return
+    mov si, SMART_LOOK_ICON
+    jmp smart_return
 smart_pending: .word 0
 smart_pending_walker: .word 0
 smart_pending_object: .word 0

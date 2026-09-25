@@ -9,15 +9,17 @@
 
 ### 0.1 現況
 
-- **可玩版本**：`scratch_test/cjk_display_staging_v113_smart_cursor_arrival`（使用者已實機確認，2026-09-25）。
-- **操作改良（v107～v113，re_104）**：
+- **可玩版本**：`scratch_test/cjk_display_staging_v115_static_objects`（使用者已實機確認，2026-09-25）。
+- **操作改良（v107～v115，re_104）**：
   - 遊標模式熱鍵：空白鍵＝行走、`A`＝攻擊、`S`＝觀察，`T`＝動畫開關（原本在 `A`）。
   - 智慧遊標（非戰鬥時）：
     - 行走遊標點物件（NPC、門、箱子，不含隊員）：相鄰就互動；不相鄰就走過去，走到之後自動互動。
     - 按住 Ctrl 點：只移動，不互動。
-    - 觀察遊標點太遠或視線被擋的東西：走過去，走到之後自動互動。
+    - 觀察遊標點太遠或視線被擋的東西：走過去，走到之後自動互動（戰鬥中維持原版訊息）。
+    - 靜態物件（石棺、草堆）會走到旁邊的空格。
+    - 懸停在可互動的物件上時，行走遊標會換成觀察圖示。
   - 建置選項：`--cursor-hotkeys`、`--smart-cursor`（都需要 `--view-ui`）。
-  - 下一步：滑鼠懸停時換成觀察圖示（re_104 §12）。
+  - 下一步：攻擊遊標非戰鬥時「先走過去再攻擊」，以及玩家用的操作說明。
 - **本輪總整理**：`docs/re/re_104_cursor_mode_hotkeys_investigation.md`（操作改良）、`docs/re/re_103_v90_v106_menu_titles_and_exe_strings.md`（字串翻譯）。
 - **已中文化**：
   - 全部對話（re_99）
@@ -27,7 +29,7 @@
   - 對話選單標題、漏抽的短片段、是非選單（re_103）
   - EXE 內的訊息框、存讀檔提示、戰鬥彈出框、法術／靈能名稱、頭像狀態、USE 按鈕（re_103）
 - **v89 的修正**：第三職業顏色、VIEW CHARACTER 下半部四行行距（re_102）。
-- **最新 commit**：見 `git log`。v90～v106 分兩次 commit，並已 push；v107～v113 另有一次 commit。
+- **最新 commit**：見 `git log`。v90～v106 分兩次 commit，並已 push；v107～v115 另有兩次 commit。
 - **v90（2026-09-24，已確認）**：`scratch_test/cjk_display_staging_v90_fragments`
   - 對話裡殘留的 `he`、`is` 之類英文，原因是 opends 抽取時跳過了 3 字元以內的 print string，
     這些字串從來沒進 catalog。
@@ -204,7 +206,7 @@
 
 右側直排的 `MORE` 是圖片，使用者說先不處理。
 
-### 0.2 重建 v113（`scratch_test/` 在 `.gitignore` 裡）
+### 0.2 重建 v115（`scratch_test/` 在 `.gitignore` 裡）
 
 ```bash
 # 0) 舊的候選清單腳本：已改用編譯器的 --all-translated（步驟 3），這段不再需要
