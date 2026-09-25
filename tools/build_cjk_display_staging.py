@@ -223,6 +223,41 @@ def write_launcher(path: Path, dosbox_x: Path) -> None:
     )
 
 
+PLAYER_GUIDE = ROOT / "docs" / "新操作說明.md"
+PLAYER_GUIDE_NAME = "新操作說明.txt"
+
+
+def player_guide_text(markdown: str) -> str:
+    """Plain-text rendering of the player guide for Windows Notepad.
+
+    Headings lose their '#', bold markers go, and each table row becomes
+    "cell：cell" (the header and divider rows are dropped).
+    """
+    lines: list[str] = []
+    table_header = False
+    for line in markdown.splitlines():
+        line = line.replace("**", "")
+        if line.startswith("|"):
+            cells = [cell.strip() for cell in line.strip("|").split("|")]
+            if not table_header:
+                table_header = True
+                continue
+            if all(set(cell) <= {"-", ":"} for cell in cells):
+                continue
+            lines.append("  " + "：".join(cells))
+            continue
+        table_header = False
+        if line.startswith("#"):
+            title = line.lstrip("#").strip()
+            if lines and lines[-1]:
+                lines.append("")
+            lines.append(title)
+            lines.append("=" * (len(title) * 2) if line.startswith("# ") else "-" * (len(title) * 2))
+            continue
+        lines.append(line)
+    return "\r\n".join(lines).rstrip() + "\r\n"
+
+
 def scale_graphics_config(payload: str, scale: int) -> str:
     """Set a 640x480 integer-scaled DOSBox-X window without touching the source config."""
     if scale not in (1, 2, 3):
@@ -401,6 +436,12 @@ def main() -> int:
             encoding="utf-8",
         )
         write_launcher(staging / "launch-dosbox-x.cmd", args.dosbox_x)
+        if args.cursor_hotkeys or args.smart_cursor:
+            (staging / PLAYER_GUIDE_NAME).write_text(
+                player_guide_text(PLAYER_GUIDE.read_text(encoding="utf-8")),
+                encoding="utf-8-sig",
+                newline="",
+            )
 
         original_exe = (game_dir / "DSUN.EXE").read_bytes()
         work = Path(temporary) / "work"

@@ -21,7 +21,8 @@
     - 攻擊遊標點搆不到的目標（沒有遠程手段）：走過去再攻擊。遠程攻擊照原版。
     - 從觀察／攻擊遊標開始「走過去」時，會先切回行走模式（非行走模式下世界是暫停的）。
   - 建置選項：`--cursor-hotkeys`、`--smart-cursor`（都需要 `--view-ui`）。
-  - 下一步：玩家用的操作說明。
+  - 玩家用的操作說明：`docs/新操作說明.md`。建置時如果有 `--cursor-hotkeys` 或 `--smart-cursor`，
+    會轉成純文字檔 `新操作說明.txt`（UTF-8 含 BOM），放在組合包根目錄。
 - **本輪總整理**：`docs/re/re_104_cursor_mode_hotkeys_investigation.md`（操作改良）、`docs/re/re_103_v90_v106_menu_titles_and_exe_strings.md`（字串翻譯）。
 - **已中文化**：
   - 全部對話（re_99）
