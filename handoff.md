@@ -9,8 +9,16 @@
 
 ### 0.1 現況
 
-- **可玩版本**：`scratch_test/cjk_display_staging_v106_status_lower`（使用者已實機確認，2026-09-25）。
-- **本輪總整理**：`docs/re/re_103_v90_v106_menu_titles_and_exe_strings.md`，下一輪建議先讀這份。
+- **可玩版本**：`scratch_test/cjk_display_staging_v113_smart_cursor_arrival`（使用者已實機確認，2026-09-25）。
+- **操作改良（v107～v113，re_104）**：
+  - 遊標模式熱鍵：空白鍵＝行走、`A`＝攻擊、`S`＝觀察，`T`＝動畫開關（原本在 `A`）。
+  - 智慧遊標（非戰鬥時）：
+    - 行走遊標點物件（NPC、門、箱子，不含隊員）：相鄰就互動；不相鄰就走過去，走到之後自動互動。
+    - 按住 Ctrl 點：只移動，不互動。
+    - 觀察遊標點太遠或視線被擋的東西：走過去，走到之後自動互動。
+  - 建置選項：`--cursor-hotkeys`、`--smart-cursor`（都需要 `--view-ui`）。
+  - 下一步：滑鼠懸停時換成觀察圖示（re_104 §12）。
+- **本輪總整理**：`docs/re/re_104_cursor_mode_hotkeys_investigation.md`（操作改良）、`docs/re/re_103_v90_v106_menu_titles_and_exe_strings.md`（字串翻譯）。
 - **已中文化**：
   - 全部對話（re_99）
   - 背包／VIEW CHARACTER 的標籤、性別、種族、陣營、職業（含多職業）
@@ -19,7 +27,7 @@
   - 對話選單標題、漏抽的短片段、是非選單（re_103）
   - EXE 內的訊息框、存讀檔提示、戰鬥彈出框、法術／靈能名稱、頭像狀態、USE 按鈕（re_103）
 - **v89 的修正**：第三職業顏色、VIEW CHARACTER 下半部四行行距（re_102）。
-- **最新 commit**：見 `git log`；v90～v106 已分兩次 commit，最後一次在 2026-09-25 並已 push。
+- **最新 commit**：見 `git log`。v90～v106 分兩次 commit，並已 push；v107～v113 另有一次 commit。
 - **v90（2026-09-24，已確認）**：`scratch_test/cjk_display_staging_v90_fragments`
   - 對話裡殘留的 `he`、`is` 之類英文，原因是 opends 抽取時跳過了 3 字元以內的 print string，
     這些字串從來沒進 catalog。
@@ -187,11 +195,16 @@
    - 經過 `191F:0A40` 或 `0580:005C` 的：已經會解碼。
    - 其他不解碼的：用 FONT 核心 tag redirect，做法見 re_103 §6。
 3. **暫緩的字串**：`INACTIVE CHARACTER`、第二個 `CANCEL`（其他路徑也在用），以及 `LOAD`／`NEW`／`ADD`（原位放不下）。
-4. **待驗證**：學法術卷軸的「學習」「第3級」。使用者之後遊玩時確認。
+4. **學法術卷軸（2026-09-25 v111 實機截圖，待處理）**：
+   - 下方兩行說明文字是亂碼：Base94 的 `^` 被畫成打勾、`[` 被畫成材質字形「木製」。這條路徑不會解碼。
+     要先找出繪製路徑，可能是 v101 的「選擇法術，」或法術名稱。
+   - 左下角的「第1級」有解碼，但顏色很淡。要確認原版的 `LEVEL 1` 是否也是這個顏色（可能是停用狀態的按鈕）。
+   - `EXIT` 仍是英文（在 WIND 裡，見第 1 項）。
+   - 使用者要求：操作改良（re_104）告一段落之後再處理。
 
 右側直排的 `MORE` 是圖片，使用者說先不處理。
 
-### 0.2 重建 v106（`scratch_test/` 在 `.gitignore` 裡）
+### 0.2 重建 v113（`scratch_test/` 在 `.gitignore` 裡）
 
 ```bash
 # 0) 舊的候選清單腳本：已改用編譯器的 --all-translated（步驟 3），這段不再需要
@@ -241,6 +254,7 @@ python tools/build_cjk_display_staging.py \
   --spin-package scratch_test/spin_gff_import_title_newline_v4_glossary/gff-text-replacements.json \
   --gpl-package scratch_test/gpl_full_v10_name_records/gpl-dialogue-patch.json \
   --ebox-line-gap 2 --menu-line-gap 2 --dialogue-option-pitch 11 --view-ui \
+  --cursor-hotkeys --smart-cursor \
   --output scratch_test/cjk_display_staging_vNN_xxx
 ```
 
@@ -254,7 +268,7 @@ python tools/build_cjk_display_staging.py \
     - 它會把 MAS-99 設定的 GSTR[1][4][5][6][7] 裡還是英文的改成中文。
     - 原檔備份為 `*.orig`。
     - 新開的遊戲不受影響。
-- `tests/`：226 項全過，指令是 `python -m pytest tests -q`。
+- `tests/`：247 項全過，指令是 `python -m pytest tests -q`。
 
 ### 0.3 下一輪：程式內字串翻譯——已知事實與限制
 
@@ -357,6 +371,7 @@ python tools/build_cjk_display_staging.py \
 | 材質字首、固定字元碼、天生攻擊括號 | `docs/re/re_101_v88_material_words.md` |
 | 職業顏色、行距、位址換算更正 | `docs/re/re_102_v89_class_colour_and_view_rows.md` |
 | 選單標題、漏抽片段、EXE 字串、FONT 核心 entry、overlay 段號查法 | `docs/re/re_103_v90_v106_menu_titles_and_exe_strings.md` |
+| 遊標模式、熱鍵分派、左鍵分派、移動指令、智慧遊標 | `docs/re/re_104_cursor_mode_hotkeys_investigation.md` |
 | 選單換頁／疊影 | `docs/re/re_96`～`re_98` |
 | `%s` 迴圈解碼失敗紀錄 | `docs/re/re_52`、`re_53`、`re_63` |
 

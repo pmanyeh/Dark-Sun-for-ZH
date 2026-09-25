@@ -137,6 +137,14 @@ cjk_name_cache_start:
     cmp ax, 0xFF86
     je text_width_entry
 .endif
+.ifdef cursor_hotkeys
+    cmp ax, 0xFF87
+    je cursor_hotkey_entry
+.endif
+.ifdef smart_cursor
+    cmp ax, 0xFF88
+    je smart_click_entry
+.endif
 .ifdef fixed_backpack
     # Only the new bottom-label wrapper has this continuation. The four
     # existing NAME callers use 2516, 2B93, 0FFD, and 102E instead.
@@ -962,6 +970,337 @@ text_width_decoded:
     lret
 text_draw_source: .long 0
 text_draw_dy: .word 0
+.endif
+.ifdef cursor_hotkeys
+# Cursor-mode hotkeys (re_104). The overlay hotkey dispatcher (overlay
+# segment 25, file 71153) sends Space, A/a and S/s to a tag-FF87 redirect at
+# file 711D0 (T's dead debug handler; T now shares A's animation toggle):
+#     Space = walk (1), A = attack (4), S = look (2)    ; DGROUP:11B8
+# The new mode is reached by calling the game's own right-click cycle
+# 1587:01C7 (1 -> 4 -> 2 [-> 3] -> 1) until it matches, so every side
+# effect, guard and cursor icon stays the game's. A call that leaves the
+# mode unchanged means the game refused (combat turn, no map input): stop.
+# Segments below are load-relative (file) values; runtime adds the load
+# base, which is DS minus DGROUP's own load-relative segment 4356.
+.equ CURSOR_MODE, 0x11B8
+.equ ACTIVE_WINDOW, 0x11A4
+.equ DGROUP_LOAD_SEGMENT, 0x4356
+.equ RIGHT_CLICK_CYCLE_SEGMENT, 0x1587
+.equ RIGHT_CLICK_CYCLE_OFFSET, 0x01C7
+.equ MOUSE_POSITION_SEGMENT, 0x3118
+.equ MOUSE_POSITION_OFFSET, 0x002E
+.equ ICON_AT_POINTER_OFFSET, 0x29FA
+.equ SET_CURSOR_ICON_SEGMENT, 0x4211
+.equ SET_CURSOR_ICON_OFFSET, 0x0061
+# Dispatcher IPs: its epilogue, and the original Space/1-4 handler.
+.equ HOTKEY_DONE_IP, 0x1DD0
+.equ HOTKEY_SPACE_IP, 0x150D
+cursor_hotkey_entry:
+    pop es
+    pop cx
+    pop dx
+    mov ax, word ptr ss:[bp+0x12]
+    mov bx, 1
+    cmp ax, 0x3920
+    je cursor_hotkey_space
+    mov bx, 4
+    cmp ax, 0x1E41
+    je cursor_hotkey_map_only
+    cmp ax, 0x1E61
+    je cursor_hotkey_map_only
+    mov bx, 2
+    cmp ax, 0x1F53
+    je cursor_hotkey_map_only
+    cmp ax, 0x1F73
+    je cursor_hotkey_map_only
+    jmp cursor_hotkey_return
+cursor_hotkey_space:
+    # With a window open ([11A4] != 0: inventory, VIEW...) Space keeps its
+    # original job there; on the map that handler did nothing.
+    mov ax, word ptr [ACTIVE_WINDOW]
+    or ax, word ptr [ACTIVE_WINDOW+2]
+    jz cursor_hotkey_cycle
+    mov cx, HOTKEY_SPACE_IP
+    jmp cursor_hotkey_return
+cursor_hotkey_map_only:
+    mov ax, word ptr [ACTIVE_WINDOW]
+    or ax, word ptr [ACTIVE_WINDOW+2]
+    jnz cursor_hotkey_return
+cursor_hotkey_cycle:
+    push cx
+    push dx
+    push si
+    push di
+    push es
+    mov word ptr cs:[cursor_hotkey_target], bx
+    mov si, ds
+    sub si, DGROUP_LOAD_SEGMENT
+    mov di, 4
+cursor_hotkey_step:
+    mov ax, word ptr [CURSOR_MODE]
+    cmp ax, word ptr cs:[cursor_hotkey_target]
+    je cursor_hotkey_finish
+    mov word ptr cs:[cursor_hotkey_previous], ax
+    # get_mouse_position(&x, &y), in 320x200 screen pixels
+    push cs
+    push OFFSET cursor_hotkey_y
+    push cs
+    push OFFSET cursor_hotkey_x
+    mov ax, si
+    add ax, MOUSE_POSITION_SEGMENT
+    mov word ptr cs:[cursor_hotkey_far+2], ax
+    mov word ptr cs:[cursor_hotkey_far], MOUSE_POSITION_OFFSET
+    .byte 0x2E, 0xFF, 0x1E
+    .word cursor_hotkey_far
+    add sp, 8
+    # The cycle takes a 24-byte input event by value and only reads the
+    # pointer position from it (event +0Ch x, +0Eh y) to pick the icon.
+    push 0
+    push 0
+    push 0
+    push 0
+    push word ptr cs:[cursor_hotkey_y]
+    push word ptr cs:[cursor_hotkey_x]
+    push 0
+    push 0
+    push 0
+    push 0
+    push 0
+    push 0
+    mov ax, si
+    add ax, RIGHT_CLICK_CYCLE_SEGMENT
+    mov word ptr cs:[cursor_hotkey_far+2], ax
+    mov word ptr cs:[cursor_hotkey_far], RIGHT_CLICK_CYCLE_OFFSET
+    .byte 0x2E, 0xFF, 0x1E
+    .word cursor_hotkey_far
+    add sp, 0x18
+    mov ax, word ptr [CURSOR_MODE]
+    cmp ax, word ptr cs:[cursor_hotkey_previous]
+    je cursor_hotkey_finish
+    dec di
+    jnz cursor_hotkey_step
+cursor_hotkey_finish:
+    # The cycle's attack -> look step hands an icon id (1777h) to the
+    # mode-indexed icon setter 191F:0A99, which falls back to the hourglass
+    # (177Ah); a right click never shows it because the next pointer move
+    # redraws the icon. A key press has no pointer move, so set the look icon
+    # the way the walk -> attack step sets its own: icon_at(x, y) (1587:29FA)
+    # then set_cursor_icon(icon, 1) (4211:0061).
+    cmp di, 4
+    je cursor_hotkey_restore
+    cmp word ptr [CURSOR_MODE], 2
+    jne cursor_hotkey_restore
+    push word ptr cs:[cursor_hotkey_y]
+    push word ptr cs:[cursor_hotkey_x]
+    mov ax, si
+    add ax, RIGHT_CLICK_CYCLE_SEGMENT
+    mov word ptr cs:[cursor_hotkey_far+2], ax
+    mov word ptr cs:[cursor_hotkey_far], ICON_AT_POINTER_OFFSET
+    .byte 0x2E, 0xFF, 0x1E
+    .word cursor_hotkey_far
+    add sp, 4
+    push 1
+    push ax
+    mov ax, si
+    add ax, SET_CURSOR_ICON_SEGMENT
+    mov word ptr cs:[cursor_hotkey_far+2], ax
+    mov word ptr cs:[cursor_hotkey_far], SET_CURSOR_ICON_OFFSET
+    .byte 0x2E, 0xFF, 0x1E
+    .word cursor_hotkey_far
+    add sp, 4
+cursor_hotkey_restore:
+    pop es
+    pop di
+    pop si
+    pop dx
+    pop cx
+    # Never return into overlay 25 after calling the game: the cycle and
+    # set_cursor_icon load overlays 15 and 26, which can evict or move the
+    # dispatcher's overlay, and the saved CS:IP (DX:CX) sits outside any BP
+    # frame, so the overlay manager cannot fix it up (v108 crashed now and
+    # then on quick A/S/Space). Run the dispatcher's own epilogue at IP 1DD0
+    # instead -- pop si ([bp-5Ch], saved after "sub sp,5Ah"); leave; retf --
+    # which returns straight to its resident caller.
+    mov si, word ptr ss:[bp-0x5C]
+    mov sp, bp
+    pop bp
+    lret
+cursor_hotkey_return:
+    push dx
+    push cx
+    lret
+cursor_hotkey_target: .word 0
+cursor_hotkey_previous: .word 0
+cursor_hotkey_x: .word 0
+cursor_hotkey_y: .word 0
+cursor_hotkey_far: .long 0
+.endif
+.ifdef smart_cursor
+# Smart walk cursor (re_104 §9-§11). One tag-FF88 redirect at file 1B483
+# (dead debug-only code in the left-click dispatcher 1587:06D8) serves three
+# callers, told apart by CX:
+#   * CX = BEF0h: the non-combat frame update. Its call at 1C9DE now goes
+#     through "mov cx,BEF0h; jmp 1B483" at 1B4F5 (dead bytes); this entry
+#     runs the arrival check and then tail-jumps to the original target
+#     1587:1754 (1C3C4) with the caller's return address and argument still
+#     on the stack.
+#   * CX = BEEFh: the look path's "NO LINE OF SIGHT" / "TOO FAR AWAY"
+#     branches; walk towards the clicked point (walk path 1B3CF).
+#   * anything else: the walk (mode 1) entry of the left-click mode table,
+#     frame BP of 1587:06D8 with the input event at [bp+6] (pointer x/y at
+#     [bp+12h]/[bp+14h]). Outside combat a map object that is not a party
+#     member (index >= 4) is looked at (look path 1B407) when it stands next
+#     to the leader, otherwise walked to (original walk entry 1B396).
+# A walk towards an object remembers it; once the walker's move order
+# (3972:08AA + walker*13h) is back to 0 and the walker stands next to the
+# object, the frame check runs the look path's own interaction (191F:0135,
+# 41F9:004D, then set_mode_save(3) if something was picked up). Holding
+# Ctrl (BIOS 0040:0017 bit 2) at the click only walks: no look next to the
+# object, no look on arrival.
+.equ SMART_WALK_TOWARDS_MAGIC, 0xBEEF
+.equ SMART_FRAME_MAGIC, 0xBEF0
+.equ SMART_WALK_ENTRY_IP, 0x0726
+.equ SMART_WALK_PATH_IP, 0x075F
+.equ SMART_LOOK_PATH_IP, 0x0797
+.equ SMART_FRAME_UPDATE_IP, 0x1754
+.equ SMART_DGROUP_LOAD_SEGMENT, 0x4356
+.equ SMART_COMBAT_SEGMENT, 0x377E
+.equ SMART_ORDER_SEGMENT, 0x3972
+.equ SMART_LEADER, 0x4979
+.equ SMART_LOOK_OBJECT, 0x496E
+.equ SMART_MAP_INPUT, 0x0BC9
+.equ SMART_CAMERA_X, 0x1178
+.equ SMART_CAMERA_Y, 0x117A
+.equ SMART_OBJECT_X, 0x6697
+.equ SMART_OBJECT_Y, 0x6699
+# Borland far functions: only SI, DI, BP and DS survive them.
+.macro smart_far_call segment, offset
+    mov ax, si
+    add ax, \segment
+    mov word ptr cs:[smart_click_far+2], ax
+    mov word ptr cs:[smart_click_far], \offset
+    .byte 0x2E, 0xFF, 0x1E
+    .word smart_click_far
+.endm
+.macro smart_ctrl_test
+    mov ax, 0x40
+    mov es, ax
+    test byte ptr es:[0x17], 4
+.endm
+smart_click_entry:
+    pop es
+    pop bx
+    pop dx
+    push dx
+    push si
+    push di
+    mov si, ds
+    sub si, SMART_DGROUP_LOAD_SEGMENT
+    cmp cx, SMART_FRAME_MAGIC
+    je smart_frame
+    cmp cx, SMART_WALK_TOWARDS_MAGIC
+    je smart_towards
+    mov word ptr cs:[smart_pending], 0
+    mov ax, si
+    add ax, SMART_COMBAT_SEGMENT
+    mov es, ax
+    cmp word ptr es:[0x19], 0
+    jne smart_walk
+    smart_ctrl_test
+    jnz smart_walk
+    # find_object(camera x, camera y, pointer x, pointer y), as 1B32F does
+    push word ptr ss:[bp+0x14]
+    push word ptr ss:[bp+0x12]
+    push word ptr [SMART_CAMERA_Y]
+    push word ptr [SMART_CAMERA_X]
+    smart_far_call 0x1DF3, 0x2822
+    add sp, 8
+    cmp ax, 4
+    jl smart_walk
+    mov di, ax
+    # "Next to" is the attack icon's melee test (1D7E5):
+    # distance(walker, object) = 1A0A:2BA5 <= 1.
+    push di
+    push word ptr [SMART_LEADER]
+    smart_far_call 0x1A0A, 0x2BA5
+    add sp, 4
+    cmp ax, 1
+    jle smart_look
+    mov ax, word ptr [SMART_LEADER]
+    mov word ptr cs:[smart_pending_walker], ax
+    mov word ptr cs:[smart_pending_object], di
+    mov word ptr cs:[smart_pending], 1
+smart_walk:
+    mov cx, SMART_WALK_ENTRY_IP
+    jmp smart_exit
+smart_look:
+    mov cx, SMART_LOOK_PATH_IP
+    jmp smart_exit
+smart_towards:
+    # The look path already stored its object in [496E].
+    mov word ptr cs:[smart_pending], 0
+    smart_ctrl_test
+    jnz smart_towards_walk
+    mov ax, word ptr [SMART_LEADER]
+    mov word ptr cs:[smart_pending_walker], ax
+    mov ax, word ptr [SMART_LOOK_OBJECT]
+    mov word ptr cs:[smart_pending_object], ax
+    mov word ptr cs:[smart_pending], 1
+smart_towards_walk:
+    mov cx, SMART_WALK_PATH_IP
+    jmp smart_exit
+smart_frame:
+    cmp word ptr cs:[smart_pending], 0
+    je smart_frame_done
+    mov bx, word ptr cs:[smart_pending_walker]
+    imul bx, bx, 0x13
+    mov ax, si
+    add ax, SMART_ORDER_SEGMENT
+    mov es, ax
+    cmp word ptr es:[bx+0x8AA], 0
+    jne smart_frame_done
+    mov word ptr cs:[smart_pending], 0
+    cmp word ptr [SMART_MAP_INPUT], 1
+    jne smart_frame_done
+    mov di, word ptr cs:[smart_pending_object]
+    push di
+    push word ptr cs:[smart_pending_walker]
+    smart_far_call 0x1A0A, 0x2BA5
+    add sp, 4
+    cmp ax, 1
+    jg smart_frame_done
+    # the look path's interaction, 1B4FB..1B53A
+    smart_far_call 0x191F, 0x0135
+    mov bx, di
+    shl bx, 5
+    mov ax, word ptr [bx+SMART_OBJECT_Y]
+    sub ax, word ptr [SMART_CAMERA_Y]
+    push ax
+    mov ax, word ptr [bx+SMART_OBJECT_X]
+    sub ax, word ptr [SMART_CAMERA_X]
+    push ax
+    push di
+    smart_far_call 0x41F9, 0x004D
+    add sp, 6
+    smart_far_call 0x4281, 0x0043
+    or ax, ax
+    jz smart_frame_done
+    push 3
+    smart_far_call 0x1587, 0x28DC
+    add sp, 2
+smart_frame_done:
+    mov cx, SMART_FRAME_UPDATE_IP
+smart_exit:
+    pop di
+    pop si
+    pop dx
+    push dx
+    push cx
+    lret
+smart_pending: .word 0
+smart_pending_walker: .word 0
+smart_pending_object: .word 0
+smart_click_far: .long 0
 .endif
 .ifdef fixed_abilities
 # Six fixed eight-byte strings: two Base94 triples, colon, NUL.

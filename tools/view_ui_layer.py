@@ -179,6 +179,95 @@ DAMAGE_MULTIPLIER_OFFSETS = tuple(
 )
 
 
+# Cursor-mode hotkeys (re_104), in the overlay hotkey dispatcher (overlay
+# segment 25, file 71153; its 33-key table at 71C1B, jump targets at 71C5D).
+# T's debug handler (dead: [11B0] is never set in play) becomes a tag-FF87
+# redirect back to the dispatcher epilogue (IP 1DD0), between the overlay
+# relocations at 711CD and 711FD. The FONT core then drives the game's own
+# right-click cycle: Space = walk, A = attack, S = look (S was a debug key
+# too). T takes over A's animation toggle, which F6 also still has.
+CURSOR_HOTKEY_STUB = 0x711D0
+CURSOR_HOTKEY_STUB_IP = CURSOR_HOTKEY_STUB - 0x6FDD0
+CURSOR_HOTKEY_TARGETS = 0x71C5D
+ANIMATION_TOGGLE_IP = 0x17FD
+CURSOR_HOTKEY_EXE_PATCHES = (
+    # The resident map key handler (file 1B7E0) keeps Space for itself: it
+    # calls 4251:00D9 (clears bit 20h of each party member's +21h byte) and
+    # returns. Its closing jump now continues to the forward-to-dispatcher
+    # path at 1BC36 instead of the exit at 1BC55, so Space still does that.
+    (0x1BB8F, "E9 C3 00", "E9 A4 00", "map Space handler -> hotkey dispatcher"),
+    (CURSOR_HOTKEY_STUB, "C0 26 8B 87 37 0C 6B C0 3A C4 1E 65 16 03 D8 26 8B",
+     "B8 87 FF 0E 68 D0 1D 8C DB 80 EF 10 53 68 14 07 CB", "T debug handler -> tag FF87"),
+    # (key index in the table, original target, new target)
+    *(
+        (CURSOR_HOTKEY_TARGETS + index * 2, f"{old & 0xFF:02X} {old >> 8:02X}", f"{new & 0xFF:02X} {new >> 8:02X}", key)
+        for index, old, new, key in (
+            (11, 0x13C8, ANIMATION_TOGGLE_IP, "T -> animation toggle"),
+            (12, 0x13C8, ANIMATION_TOGGLE_IP, "t -> animation toggle"),
+            (13, 0x17FD, CURSOR_HOTKEY_STUB_IP, "A -> attack cursor"),
+            (14, 0x17FD, CURSOR_HOTKEY_STUB_IP, "a -> attack cursor"),
+            (15, 0x13AC, CURSOR_HOTKEY_STUB_IP, "S -> look cursor"),
+            (16, 0x13AC, CURSOR_HOTKEY_STUB_IP, "s -> look cursor"),
+            (26, 0x150D, CURSOR_HOTKEY_STUB_IP, "Space -> walk cursor"),
+        )
+    ),
+)
+
+
+# Smart walk cursor, stage A (re_104 §9), in the resident left-click
+# dispatcher 1587:06D8 (file 1B348). Its look path's two random checks only
+# differ from "refuse" with the debug flag [11B0] set, so their tails are
+# dead code in play: the no-line-of-sight check now jumps straight on, and
+# its dead 18 bytes at 1B483 hold a tag-FF88 redirect (the relocated segment
+# words at 1B481/1B4ED stay untouched behind the new jumps).
+SMART_CURSOR_STUB = 0x1B483
+SMART_CURSOR_EXE_PATCHES = (
+    # line of sight blocked: "jmp 1B4EF" (walk towards) replaces "lcall 3015:000B"
+    (0x1B47E, "9A 0B 00", "E9 6E 00", "no line of sight -> walk towards"),
+    (SMART_CURSOR_STUB, "A9 03 00 75 03 E9 E4 01 83 3E B0 11 00 75 03 E9 DA",
+     "B8 88 FF 0E 68 26 07 8C DB 80 EF 10 53 68 14 07 CB", "dead debug check -> tag FF88"),
+    # too far: "jmp 1B4EF" replaces "lcall 3015:000B"
+    (0x1B4EA, "9A 0B 00", "E9 02 00", "too far -> walk towards"),
+    # mov cx, BEEFh; jmp 1B483
+    (0x1B4EF, "A9 03 00 74 49 83", "B9 EF BE E9 8E FF", "walk-towards marker"),
+    # left-click mode table cs:0B64, walk (mode 1): 1B396 -> the stub
+    (0x1B7D4, "26 07", "13 08", "walk click -> smart cursor"),
+    # Stage B arrival check. The rest of the dead debug check after the
+    # marker becomes "mov cx, BEF0h; jmp 1B483", and the non-combat frame
+    # update's near call (push cs; call 1C3C4) at 1C9DE calls it instead; the
+    # core tail-jumps to 1C3C4 itself.
+    (0x1B4F5, "3E B0 11 00 74 42", "B9 F0 BE E9 88 FF", "frame hook -> tag FF88"),
+    (0x1C9DE, "E8 E3 F9", "E8 14 EB", "non-combat frame update -> frame hook"),
+)
+
+
+def _apply_checked_patches(image: bytes, patches, label: str) -> bytes:
+    ranges = [(offset, offset + len(bytes.fromhex(original))) for offset, original, _, _ in patches]
+    for offset, original, _, origin in patches:
+        expected = bytes.fromhex(original)
+        if image[offset : offset + len(expected)] != expected:
+            raise ValueError(f"{label} patch 0x{offset:06X} ({origin}) found modified bytes")
+    relocations = mz_relocation_file_offsets(image)
+    if any(start < site + 2 and end > site for site in relocations for start, end in ranges):
+        raise ValueError(f"{label} patch overlaps an MZ relocation")
+    verify_overlay_relocations(image, ranges)
+    result = bytearray(image)
+    for offset, _, patched, _ in patches:
+        replacement = bytes.fromhex(patched)
+        result[offset : offset + len(replacement)] = replacement
+    return bytes(result)
+
+
+def apply_smart_cursor_exe_patches(image: bytes) -> bytes:
+    """Walk clicks on map objects look; too-far/no-sight looks walk there."""
+    return _apply_checked_patches(image, SMART_CURSOR_EXE_PATCHES, "smart cursor")
+
+
+def apply_cursor_hotkey_exe_patches(image: bytes) -> bytes:
+    """Point Space/A/S at the FONT core's cursor-mode entry and T at animations."""
+    return _apply_checked_patches(image, CURSOR_HOTKEY_EXE_PATCHES, "cursor hotkey")
+
+
 def material_table_bytes() -> bytes:
     """Each English word keeps its slot; it now holds one code and NULs."""
     result = bytearray()
@@ -252,7 +341,12 @@ def apply_view_ui_exe_patches(image: bytes) -> bytes:
 
 
 def build_view_ui_font(
-    font: bytes, mapping: dict[str, object], banks: dict[int, dict[str, object]]
+    font: bytes,
+    mapping: dict[str, object],
+    banks: dict[int, dict[str, object]],
+    *,
+    cursor_hotkeys: bool = False,
+    smart_cursor: bool = False,
 ) -> tuple[bytes, dict[str, object]]:
     """Append NAME slots, the decoder and material words to the main FONT-100."""
     bank_count = len(banks)
@@ -281,6 +375,8 @@ def build_view_ui_font(
         menu_titles=True,
         status_texts=True,
         text_draws=True,
+        cursor_hotkeys=cursor_hotkeys,
+        smart_cursor=smart_cursor,
     )
     result = bytearray(expanded + core)
     height = next(iter(banks.values()))["height"]
@@ -299,4 +395,6 @@ def build_view_ui_font(
         "decoder_bank_count": bank_count,
         "material_word_offsets": materials,
         "labels": "localization/catalog/fixed_ui_labels.csv",
+        "cursor_hotkeys": cursor_hotkeys,
+        "smart_cursor": smart_cursor,
     }

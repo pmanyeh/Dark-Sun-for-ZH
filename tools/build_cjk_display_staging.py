@@ -31,7 +31,12 @@ try:
     from .font100_tool import Font100
     from .patch_dialogue_menu_wind import patch_dialogue_choice_paging, patch_dialogue_menu_wind
     from .patch_dsun_scratch_cache import patch_executable, patch_introduce_prefix
-    from .view_ui_layer import apply_view_ui_exe_patches, build_view_ui_font
+    from .view_ui_layer import (
+        apply_cursor_hotkey_exe_patches,
+        apply_smart_cursor_exe_patches,
+        apply_view_ui_exe_patches,
+        build_view_ui_font,
+    )
     from .exe_text_layer import apply_exe_text_patches
 except ImportError:
     from cjk_localization_pipeline import (
@@ -51,7 +56,12 @@ except ImportError:
     from font100_tool import Font100
     from patch_dialogue_menu_wind import patch_dialogue_choice_paging, patch_dialogue_menu_wind
     from patch_dsun_scratch_cache import patch_executable, patch_introduce_prefix
-    from view_ui_layer import apply_view_ui_exe_patches, build_view_ui_font
+    from view_ui_layer import (
+        apply_cursor_hotkey_exe_patches,
+        apply_smart_cursor_exe_patches,
+        apply_view_ui_exe_patches,
+        build_view_ui_font,
+    )
     from exe_text_layer import apply_exe_text_patches
 
 
@@ -265,6 +275,16 @@ def main() -> int:
         help="add the inventory and VIEW CHARACTER Chinese UI layer (v75, see view_ui_layer.py)",
     )
     parser.add_argument(
+        "--cursor-hotkeys",
+        action="store_true",
+        help="Space/A/S set the walk/attack/look cursor, T toggles animations (re_104; needs --view-ui)",
+    )
+    parser.add_argument(
+        "--smart-cursor",
+        action="store_true",
+        help="walk clicks on map objects look, too-far looks walk there (re_104 stage A; needs --view-ui)",
+    )
+    parser.add_argument(
         "--experimental-item-text-fix",
         action="store_true",
         help="rejected v34 post-render %%Fs experiment (build is refused)",
@@ -293,6 +313,9 @@ def main() -> int:
             "the v35 stack-preserved %Fs experiment is rejected: the guest keeps "
             "running but the game enters a non-updating loop after loading"
         )
+
+    if (args.cursor_hotkeys or args.smart_cursor) and not args.view_ui:
+        raise ValueError("--cursor-hotkeys/--smart-cursor run in the FONT core that only --view-ui installs")
 
     game_dir = args.game_dir.resolve()
     output = args.output.resolve()
@@ -390,7 +413,13 @@ def main() -> int:
         )
         view_ui: dict[str, object] | None = None
         if args.view_ui:
-            font_payload, view_ui = build_view_ui_font(font_payload, mapping, banks)
+            font_payload, view_ui = build_view_ui_font(
+                font_payload,
+                mapping,
+                banks,
+                cursor_hotkeys=args.cursor_hotkeys,
+                smart_cursor=args.smart_cursor,
+            )
         patched_exe, cache = patch_executable(
             original_exe,
             scratch_offset,
@@ -409,6 +438,10 @@ def main() -> int:
         if args.view_ui:
             patched_exe = apply_view_ui_exe_patches(patched_exe)
             patched_exe = apply_exe_text_patches(patched_exe, mapping)
+            if args.cursor_hotkeys:
+                patched_exe = apply_cursor_hotkey_exe_patches(patched_exe)
+            if args.smart_cursor:
+                patched_exe = apply_smart_cursor_exe_patches(patched_exe)
         (staged_game / "DSUN.EXE").write_bytes(patched_exe)
         for _, filename, payload in bank_files:
             (staged_game / filename).write_bytes(payload)
