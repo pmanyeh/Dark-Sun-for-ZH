@@ -141,6 +141,10 @@ cjk_name_cache_start:
     cmp ax, 0xFF87
     je cursor_hotkey_entry
 .endif
+.ifdef scroll_texts
+    cmp ax, 0xFF89
+    je scroll_text_entry
+.endif
 .ifdef smart_cursor
     cmp ax, 0xFF88
     je smart_click_entry
@@ -970,6 +974,126 @@ text_width_decoded:
     lret
 text_draw_source: .long 0
 text_draw_dy: .word 0
+.endif
+.ifdef scroll_texts
+# The spell learning scroll's two centred lines (overlay segment 45,
+# function at file 85CC9, frame BP; re_104 §16):
+#   [bp+6] window, [bp+0Ah] y, [bp+0Eh]/[bp+10h] ink colours,
+#   [bp+12h] paper colour, [bp+14h]/[bp+18h] the new line 1/line 2.
+# It first redraws the previous lines ([9B7E]/[9B7A]) in paper colour to
+# erase them, then draws the new ones, each through 339E:016D with
+# "%C%C%C%s" (ds:3018), which does not decode Base94. Each of the four
+# 32..37-byte argument blocks becomes "push bx; <tag FF89 redirect to the
+# block's own lcall>" (BX = the centred x). The text is decoded into NAME
+# glyph slots right before its own draw, so an erase draws exactly the
+# glyphs of the text it erases.
+.equ SCROLL_ERASE_1_IP, 0x07E4
+.equ SCROLL_DRAW_1_IP, 0x084B
+.equ SCROLL_ERASE_2_IP, 0x08C0
+.equ SCROLL_DRAW_2_IP, 0x092B
+.equ SCROLL_OLD_LINE_1, 0x9B7E
+.equ SCROLL_OLD_LINE_2, 0x9B7A
+.equ SCROLL_FORMAT, 0x3018
+scroll_text_entry:
+    pop es
+    pop cx
+    pop dx
+    pop bx
+    mov word ptr cs:[scroll_return], cx
+    mov word ptr cs:[scroll_return+2], dx
+    mov word ptr cs:[scroll_x], bx
+    # SI/DI hold the function's running left/right edge of what it drew
+    mov word ptr cs:[scroll_si], si
+    mov ax, word ptr ss:[bp+0x0A]
+    mov word ptr cs:[scroll_y], ax
+    mov ax, word ptr ss:[bp+0x0E]
+    mov word ptr cs:[scroll_ink_1], ax
+    mov ax, word ptr ss:[bp+0x10]
+    mov word ptr cs:[scroll_ink_2], ax
+    cmp cx, SCROLL_DRAW_1_IP
+    je scroll_draw_1
+    cmp cx, SCROLL_DRAW_2_IP
+    je scroll_draw_2
+    # erases: paper colour for both colour arguments
+    mov ax, word ptr ss:[bp+0x12]
+    mov word ptr cs:[scroll_ink_1], ax
+    mov word ptr cs:[scroll_ink_2], ax
+    cmp cx, SCROLL_ERASE_1_IP
+    je scroll_erase_1
+    add word ptr cs:[scroll_y], 7
+    les si, dword ptr [SCROLL_OLD_LINE_2]
+    jmp scroll_text_source
+scroll_erase_1:
+    les si, dword ptr [SCROLL_OLD_LINE_1]
+    jmp scroll_text_source
+scroll_draw_2:
+    add word ptr cs:[scroll_y], 7
+    les si, dword ptr ss:[bp+0x18]
+    jmp scroll_text_source
+scroll_draw_1:
+    les si, dword ptr ss:[bp+0x14]
+scroll_text_source:
+    mov word ptr cs:[text_draw_source], si
+    mov word ptr cs:[text_draw_source+2], es
+scroll_text_scan:
+    mov al, byte ptr es:[si]
+    test al, al
+    jz scroll_text_english
+    cmp al, 0x5E
+    je scroll_text_chinese
+    inc si
+    jmp scroll_text_scan
+scroll_text_english:
+    mov ax, word ptr cs:[text_draw_source]
+    mov dx, word ptr cs:[text_draw_source+2]
+    jmp scroll_text_arguments
+scroll_text_chinese:
+    # The two lines are 7px apart, sized for seven-row capitals; CJK glyphs
+    # fill ten rows, so drawn at the same rows they overlapped by 3px (v118).
+    # A Chinese line 1 moves 3px up and a Chinese line 2 1px down: 11px
+    # apart, and a Chinese line never touches an English one.
+    mov ax, 1
+    cmp word ptr cs:[scroll_return], SCROLL_DRAW_2_IP
+    je scroll_text_shift
+    cmp word ptr cs:[scroll_return], SCROLL_ERASE_2_IP
+    je scroll_text_shift
+    mov ax, -3
+scroll_text_shift:
+    add word ptr cs:[scroll_y], ax
+    mov word ptr cs:[cached_id], 0xFFFF
+    mov ax, TEXT_DRAW_SOURCE_ID
+    push cs
+    push OFFSET scroll_text_decoded
+    push es
+    jmp name_cache_entry
+scroll_text_decoded:
+    pop ax
+    pop dx
+scroll_text_arguments:
+    mov si, word ptr cs:[scroll_si]
+    push dx
+    push ax
+    push word ptr cs:[scroll_ink_2]
+    push 0x14
+    push word ptr cs:[scroll_ink_1]
+    .byte 0x66, 0x68
+    .long 0x00FE00FF
+    push 0
+    push ds
+    push SCROLL_FORMAT
+    push word ptr cs:[scroll_y]
+    push word ptr cs:[scroll_x]
+    push word ptr ss:[bp+0x08]
+    push word ptr ss:[bp+0x06]
+    push word ptr cs:[scroll_return+2]
+    push word ptr cs:[scroll_return]
+    lret
+scroll_return: .long 0
+scroll_x: .word 0
+scroll_y: .word 0
+scroll_ink_1: .word 0
+scroll_ink_2: .word 0
+scroll_si: .word 0
 .endif
 .ifdef cursor_hotkeys
 # Cursor-mode hotkeys (re_104). The overlay hotkey dispatcher (overlay

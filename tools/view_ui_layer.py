@@ -147,6 +147,20 @@ VIEW_UI_EXE_PATCHES = (
     # tag-FF86 redirect back to its loop test at IP 042A.
     (0x01E9F6, "66 83 7E 06 00 75 04 33 C0 EB 26 33 F6 33 FF EB 13", "B8 86 FF 0E 68 2A 04 8C DB 80 EF 10 53 68 14 07 CB", "v102 text width redirect"),
     (0x01F033, "66 FF 76 0A FF 76 14 6A 14 FF 76 12 66 68 FF 00 FE 00 6A 00 1E 68 8F 0D FF 76 10 FF 76 0E", "0E E8 00 00 58 05 1A 00 50 B8 84 FF 8C DB 80 EF 10 53 68 14 07 CB 90 90 90 90 90 90 90 90", "v102 draw_text wrapper redirect"),
+    # Spell learning scroll (overlay segment 45, function 0x85CC9, re_104 §16):
+    # its two centred lines, and the erases of the previous two, draw through
+    # 339E:016D without decoding Base94. Each argument block becomes
+    # "push bx; tag-FF89 redirect" returning to the block's own lcall.
+    (0x085D23, "66 FF 36 7E 9B FF 76 12 6A 14 FF 76 12 66 68 FF 00 FE 00 6A 00 1E 68 18 30 FF 76 0A 53 66 FF 76 06", "53 B8 89 FF 0E 68 E4 07 8C DB 80 EF 10 53 68 14 07 CB 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90", "v118 spell scroll erase line 1 redirect"),
+    (0x085D8B, "66 FF 76 14 FF 76 10 6A 14 FF 76 0E 66 68 FF 00 FE 00 6A 00 1E 68 18 30 FF 76 0A 53 66 FF 76 06", "53 B8 89 FF 0E 68 4B 08 8C DB 80 EF 10 53 68 14 07 CB 90 90 90 90 90 90 90 90 90 90 90 90 90 90", "v118 spell scroll draw line 1 redirect"),
+    (0x085DFB, "66 FF 36 7A 9B FF 76 12 6A 14 FF 76 12 66 68 FF 00 FE 00 6A 00 1E 68 18 30 8B 46 0A 05 07 00 50 53 66 FF 76 06", "53 B8 89 FF 0E 68 C0 08 8C DB 80 EF 10 53 68 14 07 CB 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90", "v118 spell scroll erase line 2 redirect"),
+    (0x085E67, "66 FF 76 18 FF 76 10 6A 14 FF 76 0E 66 68 FF 00 FE 00 6A 00 1E 68 18 30 8B 46 0A 05 07 00 50 53 66 FF 76 06", "53 B8 89 FF 0E 68 2B 09 8C DB 80 EF 10 53 68 14 07 CB 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90", "v118 spell scroll draw line 2 redirect"),
+    # The function then copies only rows y+2..y+16 of its buffer to the
+    # screen (0188:0BE0(x0, y0, x1, y1) at 0x85ED4), sized for two seven-row
+    # English lines. Chinese lines span y-3..y+17 (see scroll_text_entry),
+    # so the rows above y+2 kept the previous text's top on screen (v119).
+    (0x085EB4, "05 10 00", "05 12 00", "v120 spell scroll screen update: bottom y+16 -> y+18"),
+    (0x085EC8, "05 02 00", "05 FD FF", "v120 spell scroll screen update: top y+2 -> y-3"),
 )
 
 
@@ -386,6 +400,7 @@ def build_view_ui_font(
         menu_titles=True,
         status_texts=True,
         text_draws=True,
+        scroll_texts=True,
         cursor_hotkeys=cursor_hotkeys,
         smart_cursor=smart_cursor,
     )

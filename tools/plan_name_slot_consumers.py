@@ -333,6 +333,7 @@ def assemble_name_slot_cache(
     menu_titles: bool = False,
     status_texts: bool = False,
     text_draws: bool = False,
+    scroll_texts: bool = False,
     cursor_hotkeys: bool = False,
     smart_cursor: bool = False,
 ) -> bytes:
@@ -395,6 +396,10 @@ def assemble_name_slot_cache(
         extra_symbols += ["--defsym", "status_texts=1"]
     if text_draws:
         extra_symbols += ["--defsym", "text_draws=1"]
+    if scroll_texts:
+        if not text_draws:
+            raise ValueError("scroll texts reuse the draw_text decoder")
+        extra_symbols += ["--defsym", "scroll_texts=1"]
     if cursor_hotkeys:
         extra_symbols += ["--defsym", "cursor_hotkeys=1"]
     if smart_cursor:
