@@ -232,6 +232,9 @@ SMART_CURSOR_EXE_PATCHES = (
     (0x1B4EF, "A9 03 00 74 49 83", "B9 EF BE E9 8E FF", "walk-towards marker"),
     # left-click mode table cs:0B64, walk (mode 1): 1B396 -> the stub
     (0x1B7D4, "26 07", "13 08", "walk click -> smart cursor"),
+    # attack (mode 4): 1B67B -> the stub; the core tells the modes apart by
+    # [11B8] and resumes 1B67B unless the target is out of reach
+    (0x1B7DA, "0B 0A", "13 08", "attack click -> smart cursor"),
     # Stage B arrival check. The rest of the dead debug check after the
     # marker becomes "mov cx, BEF0h; jmp 1B483", and the non-combat frame
     # update's near call (push cs; call 1C3C4) at 1C9DE calls it instead; the

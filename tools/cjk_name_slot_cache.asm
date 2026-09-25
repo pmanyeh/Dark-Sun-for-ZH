@@ -1184,6 +1184,13 @@ cursor_hotkey_far: .long 0
 .equ SMART_OBJECT_TILE_Y, 0x669F
 .equ SMART_LOOKER_SEGMENT, 0x3781
 .equ SMART_TOO_FAR_IP, 0x08CD
+.equ SMART_ATTACK_ENTRY_IP, 0x0A0B
+.equ SMART_ATTACK_INVALID_ICON, 0x1776
+.equ SMART_ATTACK_DISTANCE, 0x496C
+.equ SMART_CURSOR_MODE, 0x11B8
+.equ SMART_CHARACTERS, 0x1665
+.equ SMART_KIND_LOOK, 0
+.equ SMART_KIND_ATTACK, 1
 .equ SMART_NO_SIGHT_IP, 0x09FF
 # Borland far functions: only SI, DI, BP and DS survive them.
 .macro smart_far_call segment, offset
@@ -1217,6 +1224,8 @@ smart_click_entry:
     cmp cx, SMART_WALK_TOWARDS_MAGIC
     je smart_towards
     mov word ptr cs:[smart_pending], 0
+    cmp word ptr [SMART_CURSOR_MODE], 4
+    je smart_attack
     mov ax, si
     add ax, SMART_COMBAT_SEGMENT
     mov es, ax
@@ -1245,6 +1254,7 @@ smart_click_entry:
     mov ax, word ptr [SMART_LEADER]
     mov word ptr cs:[smart_pending_walker], ax
     mov word ptr cs:[smart_pending_object], di
+    mov word ptr cs:[smart_pending_kind], SMART_KIND_LOOK
     mov word ptr cs:[smart_pending], 1
     call smart_retarget
 smart_walk:
@@ -1253,6 +1263,57 @@ smart_walk:
 smart_look:
     mov cx, SMART_LOOK_PATH_IP
     jmp smart_exit
+smart_attack:
+    # Attack cursor (mode 4). Outside combat, a map object that the attack
+    # icon marks as out of reach (1776h: no melee, no ranged shot) is
+    # walked to; the attack runs on arrival. Everything else, including a
+    # valid ranged shot, takes the original attack path (1B67B).
+    mov cx, SMART_ATTACK_ENTRY_IP
+    mov ax, si
+    add ax, SMART_COMBAT_SEGMENT
+    mov es, ax
+    cmp word ptr es:[0x19], 0
+    jne smart_exit
+    push word ptr ss:[bp+0x14]
+    push word ptr ss:[bp+0x12]
+    push word ptr [SMART_CAMERA_Y]
+    push word ptr [SMART_CAMERA_X]
+    smart_far_call 0x1DF3, 0x2822
+    add sp, 8
+    mov cx, SMART_ATTACK_ENTRY_IP
+    cmp ax, 4
+    jl smart_exit
+    mov di, ax
+    # icon_at(pointer x, pointer y) in attack mode
+    push word ptr ss:[bp+0x14]
+    push word ptr ss:[bp+0x12]
+    smart_far_call 0x1587, 0x29FA
+    add sp, 4
+    mov cx, SMART_ATTACK_ENTRY_IP
+    cmp ax, SMART_ATTACK_INVALID_ICON
+    jne smart_exit
+    mov ax, word ptr [SMART_LEADER]
+    mov word ptr cs:[smart_pending_walker], ax
+    mov word ptr cs:[smart_pending_object], di
+    mov word ptr cs:[smart_pending_kind], SMART_KIND_ATTACK
+    mov word ptr cs:[smart_pending], 1
+    call smart_retarget
+    call smart_walk_mode
+    mov cx, SMART_WALK_PATH_IP
+    jmp smart_exit
+smart_walk_mode:
+    # The world, the party's own moves included, only runs with the walk
+    # cursor (manual p.5; v116 set the move order in attack mode and the
+    # walker stood still until the player switched to walk). A walk
+    # started from the look or attack cursor switches to walk first:
+    # set_mode(1) (1587:2927), which also sets the walk icon.
+    cmp word ptr [SMART_CURSOR_MODE], 1
+    je smart_walk_mode_done
+    push 1
+    smart_far_call 0x1587, 0x2927
+    add sp, 2
+smart_walk_mode_done:
+    ret
 smart_towards:
     # The look path already stored its object in [496E].
     mov word ptr cs:[smart_pending], 0
@@ -1267,12 +1328,14 @@ smart_towards:
     mov ax, word ptr [SMART_LEADER]
     mov word ptr cs:[smart_pending_walker], ax
     mov word ptr cs:[smart_pending_object], di
+    mov word ptr cs:[smart_pending_kind], SMART_KIND_LOOK
     mov word ptr cs:[smart_pending], 1
 smart_towards_walk:
     cmp di, 4
     jl smart_towards_go
     call smart_retarget
 smart_towards_go:
+    call smart_walk_mode
     mov cx, SMART_WALK_PATH_IP
     jmp smart_exit
 smart_towards_combat:
@@ -1366,6 +1429,8 @@ smart_frame:
     add sp, 4
     cmp ax, 1
     jg smart_frame_done
+    cmp word ptr cs:[smart_pending_kind], SMART_KIND_ATTACK
+    je smart_frame_attack
     # the look path's interaction, 1B4FB..1B53A
     smart_far_call 0x191F, 0x0135
     mov bx, di
@@ -1385,6 +1450,36 @@ smart_frame:
     push 3
     smart_far_call 0x1587, 0x28DC
     add sp, 2
+    jmp smart_frame_done
+smart_frame_attack:
+    # the attack path's action, 1B728..1B7A1 (AX = distance): start combat,
+    # mark a creature target hostile, then attack(walker, object, distance)
+    mov word ptr [SMART_LOOK_OBJECT], di
+    mov word ptr [SMART_ATTACK_DISTANCE], ax
+    push 2
+    push word ptr cs:[smart_pending_walker]
+    smart_far_call 0x41BE, 0x009D
+    add sp, 4
+    cmp di, 4
+    jl smart_frame_attack_go
+    mov ax, si
+    add ax, SMART_ORDER_SEGMENT
+    mov es, ax
+    mov bx, di
+    imul bx, bx, 3
+    cmp byte ptr es:[bx+0x0C36], 2
+    jne smart_frame_attack_go
+    mov ax, word ptr es:[bx+0x0C37]
+    imul ax, ax, 0x3A
+    les bx, dword ptr [SMART_CHARACTERS]
+    add bx, ax
+    mov byte ptr es:[bx+0x1D], 2
+smart_frame_attack_go:
+    push word ptr [SMART_ATTACK_DISTANCE]
+    push di
+    push word ptr cs:[smart_pending_walker]
+    smart_far_call 0x1587, 0x3382
+    add sp, 6
 smart_frame_done:
     mov cx, SMART_FRAME_UPDATE_IP
 smart_exit:
@@ -1420,6 +1515,7 @@ smart_hover:
 smart_pending: .word 0
 smart_pending_walker: .word 0
 smart_pending_object: .word 0
+smart_pending_kind: .word 0
 smart_click_far: .long 0
 .endif
 .ifdef fixed_abilities
