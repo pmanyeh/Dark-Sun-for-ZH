@@ -137,10 +137,6 @@ cjk_name_cache_start:
     cmp ax, 0xFF86
     je text_width_entry
 .endif
-.ifdef cursor_hotkeys
-    cmp ax, 0xFF87
-    je cursor_hotkey_entry
-.endif
 .ifdef scroll_texts
     cmp ax, 0xFF89
     je scroll_text_entry
@@ -1096,10 +1092,14 @@ scroll_ink_2: .word 0
 scroll_si: .word 0
 .endif
 .ifdef cursor_hotkeys
-# Cursor-mode hotkeys (re_104). The overlay hotkey dispatcher (overlay
-# segment 25, file 71153) sends Space, A/a and S/s to a tag-FF87 redirect at
-# file 711D0 (T's dead debug handler; T now shares A's animation toggle):
-#     Space = walk (1), A = attack (4), S = look (2)    ; DGROUP:11B8
+# Cursor-mode hotkeys (re_104 §18): Z = attack (4), X = look (2), D = walk
+# (1), DGROUP:11B8. No original key moves: the manual's hotkeys and the
+# -k911 debug keys keep their code, and neither the map key handler's table
+# nor the overlay dispatcher's two tables use Z, X or D. The map key handler
+# (1587:0B70) sends a key missing from its own table to smart_click_entry
+# (CX = BEF2h, see view_ui_layer.SMART_CURSOR_EXE_PATCHES), which calls this
+# with SI = load base and BP = the handler's frame (key at [bp+12h]); CX
+# comes back as the handler IP to resume at.
 # The new mode is reached by calling the game's own right-click cycle
 # 1587:01C7 (1 -> 4 -> 2 [-> 3] -> 1) until it matches, so every side
 # effect, guard and cursor icon stays the game's. A call that leaves the
@@ -1108,7 +1108,7 @@ scroll_si: .word 0
 # base, which is DS minus DGROUP's own load-relative segment 4356.
 .equ CURSOR_MODE, 0x11B8
 .equ ACTIVE_WINDOW, 0x11A4
-.equ DGROUP_LOAD_SEGMENT, 0x4356
+.equ CURSOR_MAP_INPUT, 0x0BC9
 .equ RIGHT_CLICK_CYCLE_SEGMENT, 0x1587
 .equ RIGHT_CLICK_CYCLE_OFFSET, 0x01C7
 .equ MOUSE_POSITION_SEGMENT, 0x3118
@@ -1116,49 +1116,39 @@ scroll_si: .word 0
 .equ ICON_AT_POINTER_OFFSET, 0x29FA
 .equ SET_CURSOR_ICON_SEGMENT, 0x4211
 .equ SET_CURSOR_ICON_OFFSET, 0x0061
-# Dispatcher IPs: its epilogue, and the original Space/1-4 handler.
-.equ HOTKEY_DONE_IP, 0x1DD0
-.equ HOTKEY_SPACE_IP, 0x150D
-cursor_hotkey_entry:
-    pop es
-    pop cx
-    pop dx
+# Map key handler IPs: its fallback for keys missing from the table (which
+# forwards them to the overlay dispatcher, where Z/X/D do nothing), and its
+# exit.
+.equ HOTKEY_FALLBACK_IP, 0x0F22
+.equ HOTKEY_DONE_IP, 0x0FE5
+cursor_hotkey_key:
+    mov cx, HOTKEY_FALLBACK_IP
     mov ax, word ptr ss:[bp+0x12]
-    mov bx, 1
-    cmp ax, 0x3920
-    je cursor_hotkey_space
     mov bx, 4
-    cmp ax, 0x1E41
+    cmp ax, 0x2C5A
     je cursor_hotkey_map_only
-    cmp ax, 0x1E61
+    cmp ax, 0x2C7A
     je cursor_hotkey_map_only
     mov bx, 2
-    cmp ax, 0x1F53
+    cmp ax, 0x2D58
     je cursor_hotkey_map_only
-    cmp ax, 0x1F73
+    cmp ax, 0x2D78
     je cursor_hotkey_map_only
-    jmp cursor_hotkey_return
-cursor_hotkey_space:
-    # With a window open ([11A4] != 0: inventory, VIEW...) Space keeps its
-    # original job there; on the map that handler did nothing.
-    mov ax, word ptr [ACTIVE_WINDOW]
-    or ax, word ptr [ACTIVE_WINDOW+2]
-    jz cursor_hotkey_cycle
-    mov cx, HOTKEY_SPACE_IP
-    jmp cursor_hotkey_return
+    mov bx, 1
+    cmp ax, 0x2044
+    je cursor_hotkey_map_only
+    cmp ax, 0x2064
+    je cursor_hotkey_map_only
+    ret
 cursor_hotkey_map_only:
+    # Only where the handler would forward the key to the overlay
+    # dispatcher ([0BC9] == 1), and with no window open ([11A4] == 0).
+    cmp word ptr [CURSOR_MAP_INPUT], 1
+    jne cursor_hotkey_return
     mov ax, word ptr [ACTIVE_WINDOW]
     or ax, word ptr [ACTIVE_WINDOW+2]
     jnz cursor_hotkey_return
-cursor_hotkey_cycle:
-    push cx
-    push dx
-    push si
-    push di
-    push es
     mov word ptr cs:[cursor_hotkey_target], bx
-    mov si, ds
-    sub si, DGROUP_LOAD_SEGMENT
     mov di, 4
 cursor_hotkey_step:
     mov ax, word ptr [CURSOR_MODE]
@@ -1233,26 +1223,9 @@ cursor_hotkey_finish:
     .word cursor_hotkey_far
     add sp, 4
 cursor_hotkey_restore:
-    pop es
-    pop di
-    pop si
-    pop dx
-    pop cx
-    # Never return into overlay 25 after calling the game: the cycle and
-    # set_cursor_icon load overlays 15 and 26, which can evict or move the
-    # dispatcher's overlay, and the saved CS:IP (DX:CX) sits outside any BP
-    # frame, so the overlay manager cannot fix it up (v108 crashed now and
-    # then on quick A/S/Space). Run the dispatcher's own epilogue at IP 1DD0
-    # instead -- pop si ([bp-5Ch], saved after "sub sp,5Ah"); leave; retf --
-    # which returns straight to its resident caller.
-    mov si, word ptr ss:[bp-0x5C]
-    mov sp, bp
-    pop bp
-    lret
+    mov cx, HOTKEY_DONE_IP
 cursor_hotkey_return:
-    push dx
-    push cx
-    lret
+    ret
 cursor_hotkey_target: .word 0
 cursor_hotkey_previous: .word 0
 cursor_hotkey_x: .word 0
@@ -1260,19 +1233,22 @@ cursor_hotkey_y: .word 0
 cursor_hotkey_far: .long 0
 .endif
 .ifdef smart_cursor
-# Smart walk cursor (re_104 §9-§11). One tag-FF88 redirect at file 1B483
-# (dead debug-only code in the left-click dispatcher 1587:06D8) serves three
-# callers, told apart by CX:
+# Smart walk cursor (re_104 §9-§11, §18). One tag-FF88 redirect at file
+# 1B483 (the look path's debug check in the left-click dispatcher
+# 1587:06D8, now run here) serves these callers, told apart by CX:
 #   * CX = BEF0h: the non-combat frame update. Its call at 1C9DE now goes
 #     through "mov cx,BEF0h; jmp 1B483" at 1B4F5 (dead bytes); this entry
 #     runs the arrival check and then tail-jumps to the original target
 #     1587:1754 (1C3C4) with the caller's return address and argument still
 #     on the stack.
-#   * CX = BEEFh: the look path's "NO LINE OF SIGHT" / "TOO FAR AWAY"
-#     branches; walk towards the clicked point (walk path 1B3CF).
-#   * CX = BEF1h: the walk icon of icon_at (1D86F), via "mov dx,ax;
-#     mov cx,BEF1h; jmp 1B483" in the map key handler's dead F6 debug code
-#     at 1B81E; see smart_hover.
+#   * CX = BEF3h / BEEFh: the look path's "NO LINE OF SIGHT" / "TOO FAR
+#     AWAY" branches (markers at 1B80B / 1B4EF). With the debug flag set
+#     they run the original tail; otherwise walk towards the clicked point
+#     (walk path 1B3CF).
+#   * CX = BEF1h: the walk icon of icon_at, via "mov dx,ax; mov cx,BEF1h;
+#     jmp 1B483" right after its find_object call (1D86C); see smart_hover.
+#   * CX = BEF2h: a key missing from the map key handler's table (marker
+#     inside the rewritten table search at 1B801); see cursor_hotkey_key.
 #   * anything else: the walk (mode 1) entry of the left-click mode table,
 #     frame BP of 1587:06D8 with the input event at [bp+6] (pointer x/y at
 #     [bp+12h]/[bp+14h]). Outside combat a map object that is not a party
@@ -1287,6 +1263,14 @@ cursor_hotkey_far: .long 0
 .equ SMART_WALK_TOWARDS_MAGIC, 0xBEEF
 .equ SMART_FRAME_MAGIC, 0xBEF0
 .equ SMART_HOVER_MAGIC, 0xBEF1
+.equ SMART_KEY_MAGIC, 0xBEF2
+.equ SMART_NO_SIGHT_MAGIC, 0xBEF3
+.equ SMART_KEY_FALLBACK_IP, 0x0F22
+# The look path's two checks: where each continues when the look goes
+# through (debug mode with a Shift key held), and where it refuses.
+.equ SMART_SIGHT_PASS_IP, 0x0825
+.equ SMART_NEAR_PASS_IP, 0x088B
+.equ SMART_DEBUG, 0x11B0
 .equ SMART_HOVER_NO_OBJECT_IP, 0x2C04
 .equ SMART_HOVER_DONE_IP, 0x2C26
 .equ SMART_LOOK_ICON, 0x1777
@@ -1346,7 +1330,11 @@ smart_click_entry:
     cmp cx, SMART_FRAME_MAGIC
     je smart_frame
     cmp cx, SMART_WALK_TOWARDS_MAGIC
-    je smart_towards
+    je smart_towards_far
+    cmp cx, SMART_NO_SIGHT_MAGIC
+    je smart_towards_sight
+    cmp cx, SMART_KEY_MAGIC
+    je smart_key
     mov word ptr cs:[smart_pending], 0
     cmp word ptr [SMART_CURSOR_MODE], 4
     je smart_attack
@@ -1438,7 +1426,33 @@ smart_walk_mode:
     add sp, 2
 smart_walk_mode_done:
     ret
+smart_key:
+.ifdef cursor_hotkeys
+    call cursor_hotkey_key
+.else
+    mov cx, SMART_KEY_FALLBACK_IP
+.endif
+    jmp smart_exit
+smart_towards_sight:
+    mov word ptr cs:[smart_refuse_ip], SMART_NO_SIGHT_IP
+    mov word ptr cs:[smart_pass_ip], SMART_SIGHT_PASS_IP
+    jmp smart_towards
+smart_towards_far:
+    mov word ptr cs:[smart_refuse_ip], SMART_TOO_FAR_IP
+    mov word ptr cs:[smart_pass_ip], SMART_NEAR_PASS_IP
 smart_towards:
+    # Debug mode (-k911) keeps the original tail: 3015:000B returns the
+    # BIOS shift flags (int 16h, AH=2); holding either Shift (AL & 3)
+    # lets the look through, else the refusal.
+    cmp word ptr [SMART_DEBUG], 0
+    je smart_towards_play
+    smart_far_call 0x3015, 0x000B
+    mov cx, word ptr cs:[smart_pass_ip]
+    test al, 3
+    jnz smart_exit
+    mov cx, word ptr cs:[smart_refuse_ip]
+    jmp smart_exit
+smart_towards_play:
     # The look path already stored its object in [496E].
     mov word ptr cs:[smart_pending], 0
     mov di, word ptr [SMART_LOOK_OBJECT]
@@ -1464,34 +1478,8 @@ smart_towards_go:
     jmp smart_exit
 smart_towards_combat:
     # In combat a look never walks (it would spend the move): print the
-    # original message. Both branches share the BEEFh marker, so redo the
-    # look path's own range test (1B495..1B4E8): looker 3781:0369 to the
-    # object, 0898:000C > 20 means "TOO FAR AWAY", else "NO LINE OF SIGHT".
-    mov bx, di
-    shl bx, 5
-    mov ax, word ptr [bx+SMART_OBJECT_TILE_Y]
-    shr ax, 4
-    push ax
-    mov ax, word ptr [bx+SMART_OBJECT_TILE_X]
-    shr ax, 4
-    push ax
-    mov ax, si
-    add ax, SMART_LOOKER_SEGMENT
-    mov es, ax
-    mov bx, word ptr es:[0x369]
-    shl bx, 5
-    mov ax, word ptr [bx+SMART_OBJECT_TILE_Y]
-    shr ax, 4
-    push ax
-    mov ax, word ptr [bx+SMART_OBJECT_TILE_X]
-    shr ax, 4
-    push ax
-    smart_far_call 0x0898, 0x000C
-    add sp, 8
-    mov cx, SMART_TOO_FAR_IP
-    cmp ax, 0x14
-    jg smart_exit
-    mov cx, SMART_NO_SIGHT_IP
+    # original message of the branch that got here.
+    mov cx, word ptr cs:[smart_refuse_ip]
     jmp smart_exit
 smart_retarget:
     # DI = object, not a party member. find_object's walk path would aim
@@ -1619,7 +1607,9 @@ smart_hover:
     # [bp+8] = pointer y, AX = find_object's result. No object continues
     # with the original can't-walk test; an object shows the look icon
     # (1777h) when a click would look at it: outside combat, not a party
-    # member, Ctrl up. Otherwise the walk icon stays.
+    # member, Ctrl up. Otherwise the walk icon stays. The hook replaced the
+    # find_object call's own "add sp,8", so drop its arguments here.
+    add sp, 8
     mov cx, SMART_HOVER_NO_OBJECT_IP
     cmp ax, -1
     je smart_return
@@ -1640,6 +1630,8 @@ smart_pending: .word 0
 smart_pending_walker: .word 0
 smart_pending_object: .word 0
 smart_pending_kind: .word 0
+smart_refuse_ip: .word 0
+smart_pass_ip: .word 0
 smart_click_far: .long 0
 .endif
 .ifdef fixed_abilities

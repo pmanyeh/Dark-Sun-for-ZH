@@ -32,7 +32,6 @@ try:
     from .patch_dialogue_menu_wind import patch_dialogue_choice_paging, patch_dialogue_menu_wind
     from .patch_dsun_scratch_cache import patch_executable, patch_introduce_prefix
     from .view_ui_layer import (
-        apply_cursor_hotkey_exe_patches,
         apply_smart_cursor_exe_patches,
         apply_view_ui_exe_patches,
         build_view_ui_font,
@@ -57,7 +56,6 @@ except ImportError:
     from patch_dialogue_menu_wind import patch_dialogue_choice_paging, patch_dialogue_menu_wind
     from patch_dsun_scratch_cache import patch_executable, patch_introduce_prefix
     from view_ui_layer import (
-        apply_cursor_hotkey_exe_patches,
         apply_smart_cursor_exe_patches,
         apply_view_ui_exe_patches,
         build_view_ui_font,
@@ -312,7 +310,7 @@ def main() -> int:
     parser.add_argument(
         "--cursor-hotkeys",
         action="store_true",
-        help="Space/A/S set the walk/attack/look cursor, T toggles animations (re_104; needs --view-ui)",
+        help="Z/X/D set the attack/look/walk cursor on the map (re_104 §18; needs --smart-cursor)",
     )
     parser.add_argument(
         "--smart-cursor",
@@ -351,6 +349,8 @@ def main() -> int:
 
     if (args.cursor_hotkeys or args.smart_cursor) and not args.view_ui:
         raise ValueError("--cursor-hotkeys/--smart-cursor run in the FONT core that only --view-ui installs")
+    if args.cursor_hotkeys and not args.smart_cursor:
+        raise ValueError("--cursor-hotkeys reaches the FONT core through --smart-cursor's key handler redirect")
 
     game_dir = args.game_dir.resolve()
     output = args.output.resolve()
@@ -479,8 +479,6 @@ def main() -> int:
         if args.view_ui:
             patched_exe = apply_view_ui_exe_patches(patched_exe)
             patched_exe = apply_exe_text_patches(patched_exe, mapping)
-            if args.cursor_hotkeys:
-                patched_exe = apply_cursor_hotkey_exe_patches(patched_exe)
             if args.smart_cursor:
                 patched_exe = apply_smart_cursor_exe_patches(patched_exe)
         (staged_game / "DSUN.EXE").write_bytes(patched_exe)
