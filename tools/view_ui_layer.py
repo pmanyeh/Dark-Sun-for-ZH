@@ -19,8 +19,11 @@ build. This module applies the same result to any build from
 
 from __future__ import annotations
 
+import hashlib
+
 try:
     from .cjk_localization_pipeline import glyph_record_for_id
+    from .creation_icon_layer import CLASS_LIST_BUTTONS
     from .patch_dsun_scratch_cache import mz_relocation_file_offsets
     from .plan_name_slot_consumers import (
         ABILITY_UNITS,
@@ -34,6 +37,7 @@ try:
     )
 except ImportError:
     from cjk_localization_pipeline import glyph_record_for_id
+    from creation_icon_layer import CLASS_LIST_BUTTONS
     from patch_dsun_scratch_cache import mz_relocation_file_offsets
     from plan_name_slot_consumers import (
         ABILITY_UNITS,
@@ -243,6 +247,118 @@ SMART_CURSOR_EXE_PATCHES = (
 )
 
 
+# Character creation (CREATE CHARACTERS -> NEW, re_105). DGROUP:0F62 holds
+# the lower-left panel's ten field rectangles (x0, y0, x1, y1); the screen
+# erases a field with its rectangle, draws it at (x0, y0 - 2) and places the
+# alignment/HP boxes at x0 - 7 and the ability boxes at x0 - 30. The English
+# rows are 7px apart; the Chinese layout uses 10px rows, draws Chinese at y0
+# (the decoder's char_creation entries) and puts HP and PSP on one row.
+CREATION_RECTS_OFFSET = DGROUP_FILE_BASE + 0x0F62
+CREATION_RECTS_ORIGINAL = (
+    (33, 137, 48, 178),    # ability values
+    (86, 137, 190, 143),   # gender and race
+    (86, 144, 180, 150),   # alignment
+    (86, 151, 250, 157),   # class
+    (86, 158, 121, 164),   # level
+    (122, 158, 258, 164),  # EXP
+    (86, 172, 140, 178),   # HP
+    (86, 179, 140, 185),   # PSP
+    (86, 165, 121, 171),   # AC
+    (122, 165, 243, 171),  # DAM
+)
+CREATION_RECTS = (
+    (41, 138, 56, 194),
+    (86, 133, 190, 142),
+    (86, 144, 180, 153),
+    (86, 155, 250, 164),
+    (86, 166, 121, 172),
+    (122, 166, 258, 172),
+    (86, 185, 150, 194),
+    (158, 185, 240, 194),
+    (86, 174, 127, 183),
+    (130, 176, 243, 182),
+)
+CREATION_ABILITY_PITCH = 10
+
+
+def _rects_hex(rects) -> str:
+    return b"".join(value.to_bytes(2, "little") for rect in rects for value in rect).hex(" ").upper()
+
+
+# The HP/PSP helpers' pushes after the sprintf'd buffer pointer (whose
+# segment word is relocated) become tag-FF8A/FF8B redirects back to the far call.
+_STAT_ARGUMENTS = "FF 36 70 32 6A 14 FF 36 6E 32 68 FE 00 A0 58 1A B4 00 50 6A 00 1E 68 11 0E FF 76 14 56 66 FF 76 06"
+
+
+def _stat_redirect(tag: int) -> str:
+    return f"0E E8 00 00 58 05 1D 00 50 B8 {tag:02X} FF 8C DB 80 EF 10 53 68 14 07 CB" + " 90" * 11
+
+
+CREATION_EXE_PATCHES = (
+    (CREATION_RECTS_OFFSET, _rects_hex(CREATION_RECTS_ORIGINAL), _rects_hex(CREATION_RECTS), "v122 character creation field rectangles"),
+    (0x065001, "07", "0A", "v122 character creation ability boxes: 10px rows"),
+    (0x065015, "07", "0A", "v122 character creation ability boxes: 10px rows"),
+    (0x065030, "07", "0A", "v122 character creation ability box shadows: 10px rows"),
+    (0x06504A, "07", "0A", "v122 character creation ability box shadows: 10px rows"),
+    (0x0651C2, "07", "0A", "v122 character creation ability values: 10px rows"),
+    (0x064CC1, _STAT_ARGUMENTS, _stat_redirect(0x8A), "v122 HP numbers redirect (character creation label)"),
+    (0x064D44, _STAT_ARGUMENTS, _stat_redirect(0x8B), "v122 PSP numbers redirect (character creation label)"),
+    # WIND-3012/3013 titles: the pushes after the window's surface was
+    # returned in DX:AX become tag-FF8C/FF8D redirects to the far call.
+    # Selection diamond rows of the PSI/sphere lists (far data 0338:01AB,
+    # window y 88 + 15 + 8i): the list rows are 10px apart now.
+    # "NAME:" (overlay 0x65FD9, push dword 007D0004h) moves up with the
+    # name box (WIND-3011 EBOX 4003) to give the 10px ability rows room.
+    (0x065FDD, "7D", "7A", "v128 character creation NAME row 3px higher"),
+    # Class list selection diamond rows (far data 0338:019B), the class
+    # buttons' y: 10 + 8i in English, 4 + 10i with the Chinese ICONs.
+    (0x03E2DB, "0A 00 12 00 1A 00 22 00 2A 00 32 00 3A 00 42 00",
+     "04 00 0E 00 18 00 22 00 2C 00 36 00 40 00 4A 00", "v129 class list diamond rows: 10px"),
+    (0x03E2EB, "67 00 6F 00 77 00 7F 00", "67 00 71 00 7B 00 85 00", "v127 PSI/sphere list diamond rows: 10px"),
+    (0x067C0D, "1E 68 DB 10 66 68 14 00 3C 00 66 68 FE 00 FE 00 66 68 00 00 FF 00 1E 68 D2 10 66 68 0E 00 06 00 52 50",
+     "0E E8 00 00 58 05 1E 00 50 B8 8C FF 8C DB 80 EF 10 53 68 14 07 CB" + " 90" * 12, "v127 PSI DISCIPLINES title redirect"),
+    (0x06414D, "1E 68 1A 0E 66 68 14 00 3C 00 66 68 FE 00 FE 00 66 68 00 00 FF 00 1E 68 11 0E 66 68 0E 00 06 00 52 50",
+     "0E E8 00 00 58 05 1E 00 50 B8 8D FF 8C DB 80 EF 10 53 68 14 07 CB" + " 90" * 12, "v127 CLERICAL SPHERE title redirect"),
+)
+VIEW_UI_EXE_PATCHES = VIEW_UI_EXE_PATCHES + CREATION_EXE_PATCHES
+
+# WIND-3011 is the character creation window. Its buttons store only their
+# top-left corner; the size (ability 50x5, alignment 82x7, HP 58x5) comes
+# with the button, so moving the corner moves the clickable area.
+CREATION_WIND_SHA256 = "9b623e841703b2ef4ea4b81abf43d07cd146ea85293f597a3872db3ac617077b"
+CREATION_WIND_BUTTONS = {
+    0x07DB: ((79, 145), (79, 146)),  # alignment
+    **{0x07DC + row: ((4, 139 + 7 * row), (11, 138 + CREATION_ABILITY_PITCH * row)) for row in range(6)},
+    0x07E2: ((79, 174), (79, 187)),  # HP
+    **CLASS_LIST_BUTTONS,  # the Chinese class ICONs are 10px tall
+}
+
+
+# The player name box (EBOX 4003, 95x8) and the NAME: label sit 3px higher.
+CREATION_NAME_BOX = ((40, 125), (40, 122))
+CREATION_WIND_CHILDREN = {
+    **{(b"BUTN", button_id): corners for button_id, corners in CREATION_WIND_BUTTONS.items()},
+    (b"EBOX", 0x0FA3): CREATION_NAME_BOX,
+}
+
+
+def patch_creation_wind(source: bytes) -> bytes:
+    """Move the ability, alignment and HP buttons onto the new rows."""
+    if hashlib.sha256(source).hexdigest() != CREATION_WIND_SHA256:
+        raise ValueError("WIND-3011 source fingerprint does not match the verified layout")
+    patched = bytearray(source)
+    for (kind, button_id), (old, new) in CREATION_WIND_CHILDREN.items():
+        marker = kind + button_id.to_bytes(4, "little")
+        if source.count(marker) != 1:
+            raise ValueError(f"WIND-3011 needs exactly one {kind.decode()} {button_id:#06x}")
+        offset = source.index(marker) + 8
+        if (int.from_bytes(source[offset:offset + 2], "little"), int.from_bytes(source[offset + 2:offset + 4], "little")) != old:
+            raise ValueError(f"WIND-3011 {kind.decode()} {button_id:#06x} is not at its original position")
+        patched[offset:offset + 2] = new[0].to_bytes(2, "little")
+        patched[offset + 2:offset + 4] = new[1].to_bytes(2, "little")
+    return bytes(patched)
+
+
 def _apply_checked_patches(image: bytes, patches, label: str) -> bytes:
     ranges = [(offset, offset + len(bytes.fromhex(original))) for offset, original, _, _ in patches]
     for offset, original, _, origin in patches:
@@ -379,6 +495,7 @@ def build_view_ui_font(
         scroll_texts=True,
         cursor_hotkeys=cursor_hotkeys,
         smart_cursor=smart_cursor,
+        char_creation=True,
     )
     result = bytearray(expanded + core)
     height = next(iter(banks.values()))["height"]

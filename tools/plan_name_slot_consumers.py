@@ -99,6 +99,10 @@ UI_TEXT_TABLES = {
         ("class_preserver", "UI_class_preserver"), ("class_psionic", "UI_class_psionicist"),
         ("class_ranger", "UI_class_ranger"), ("class_thief", "UI_class_thief"),
     )),
+    "ui_text_creation_titles": ("label", None, None, (
+        ("creation_psi_title", "UI_creation_psi_title"),
+        ("creation_sphere_title", "UI_creation_sphere_title"),
+    )),
 }
 # name_buffer holds 24 decoded bytes and the pool has ten glyph slots.
 UI_TEXT_MAX_CHARACTERS = 8
@@ -144,6 +148,10 @@ def name_slot_ui_text_include(ids: dict[str, tuple[int, ...]]) -> str:
 
     lines: list[str] = []
     for macro, (style, stride_label, length, rows) in UI_TEXT_TABLES.items():
+        # Older label sets (e.g. the v57 IDs) predate some tables entirely;
+        # only the decoder options that use such a table need it.
+        if all(unit not in ids for _, unit in rows):
+            continue
         lines.append(f".macro {macro}")
         if stride_label:
             lines.append(f"{stride_label}:")
@@ -336,6 +344,7 @@ def assemble_name_slot_cache(
     scroll_texts: bool = False,
     cursor_hotkeys: bool = False,
     smart_cursor: bool = False,
+    char_creation: bool = False,
 ) -> bytes:
     """Assemble the self-contained decoder appended to FONT-100.
 
@@ -404,6 +413,10 @@ def assemble_name_slot_cache(
         extra_symbols += ["--defsym", "cursor_hotkeys=1"]
     if smart_cursor:
         extra_symbols += ["--defsym", "smart_cursor=1"]
+    if char_creation:
+        if label_ids is None or not identity or not class_names:
+            raise ValueError("character creation needs the fixed labels, identity and class names")
+        extra_symbols += ["--defsym", "char_creation=1"]
     if identity:
         extra_symbols += ["--defsym", "fixed_identity=1"]
         if gender_position is not None:

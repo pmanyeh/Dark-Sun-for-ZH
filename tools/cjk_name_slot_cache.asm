@@ -39,6 +39,23 @@
 .include "name_slot_ui_text.inc"
 .endif
 
+# Character creation (CREATE CHARACTERS -> NEW, re_105): DGROUP:0F62 holds
+# ten (x0, y0, x1, y1) rectangles, one per field of the lower-left panel.
+# The screen erases each field with its rectangle before redrawing it, and
+# passes (x0, y0 - 2) to the same draw helpers VIEW CHARACTER and the
+# inventory use. A helper call is a character-creation call when its
+# position matches that rectangle; Chinese is then drawn at y0 so the
+# ten-pixel glyphs stay inside the erased area.
+.equ CREATION_RECTS, 0x0F62
+.equ CREATION_ABILITIES, CREATION_RECTS
+.equ CREATION_IDENTITY, CREATION_RECTS + 8
+.equ CREATION_ALIGNMENT, CREATION_RECTS + 16
+.equ CREATION_HP, CREATION_RECTS + 48
+.equ CREATION_PSP, CREATION_RECTS + 56
+.equ CREATION_AC, CREATION_RECTS + 64
+# Character creation passes its own 8-entry class-name table (Cleric..Thief,
+# IDs 1-8) to the class-name draw; VIEW CHARACTER passes the 17-entry one.
+.equ CREATION_CLASS_TABLE, 0x0ED2
 .equ font_pointer, 0xA378
 # Dialogue menu title buffer (DGROUP:5504) and its private decode source id.
 .equ MENU_TITLE_BUFFER, 0x5504
@@ -144,6 +161,16 @@ cjk_name_cache_start:
 .ifdef smart_cursor
     cmp ax, 0xFF88
     je smart_click_entry
+.endif
+.ifdef char_creation
+    cmp ax, 0xFF8A
+    je creation_hp_entry
+    cmp ax, 0xFF8B
+    je creation_psp_entry
+    cmp ax, 0xFF8C
+    je creation_psi_title_entry
+    cmp ax, 0xFF8D
+    je creation_sphere_title_entry
 .endif
 .ifdef fixed_backpack
     # Only the new bottom-label wrapper has this continuation. The four
@@ -265,6 +292,21 @@ ordinary_material_source:
     pop es
     jmp decode_start
 ordinary_class_source:
+.endif
+.ifdef char_creation
+    # Character creation's PSI DISCIPLINES / CLERICAL SPHERE titles.
+    cmp ax, 0xFFB8
+    jb ordinary_creation_source
+    cmp ax, 0xFFBA
+    jae ordinary_creation_source
+    sub ax, 0xFFB8
+    shl ax, 1
+    mov si, ax
+    mov si, word ptr cs:[creation_title_offsets + si]
+    push cs
+    pop es
+    jmp decode_start
+ordinary_creation_source:
 .endif
 .ifdef fixed_identity
     # Alignment (e.g. 混亂善良) is fixed four-character text, one constant
@@ -1659,9 +1701,17 @@ ability_ui_entry:
     push dx
     push cx
     cmp word ptr ss:[bp+0x0A], 236
-    jne ability_passthrough
+    jne ability_other_screen
     cmp word ptr ss:[bp+0x0C], 8
+    je ability_decode
+ability_other_screen:
+.ifdef char_creation
+    call creation_ability_call
     jne ability_passthrough
+.else
+    jmp ability_passthrough
+.endif
+ability_decode:
     mov ax, si
     add ax, 0xFFF0
     push cs
@@ -1690,6 +1740,22 @@ ability_arguments:
     push 0
     push ds
     push 0x0E11
+.ifdef char_creation
+    # Character creation: 10px rows, each label 3px above its value row so
+    # the value box sits on the label's centre line, and 1px further left
+    # to fit the wider Chinese label between the box and the value.
+    call creation_ability_call
+    jne ability_seven_rows
+    imul ax, si, 10
+    add ax, word ptr ss:[bp+0x0C]
+    dec ax
+    push ax
+    mov ax, word ptr ss:[bp+0x0A]
+    dec ax
+    push ax
+    jmp ability_push_surface
+ability_seven_rows:
+.endif
     imul ax, si, 7
     cmp word ptr ss:[bp+0x0A], 236
     jne ability_y_ready
@@ -1700,10 +1766,25 @@ ability_y_ready:
     add ax, word ptr ss:[bp+0x0C]
     push ax
     push word ptr ss:[bp+0x0A]
+ability_push_surface:
     push dword ptr ss:[bp+6]
     push bx
     push cx
     lret
+.ifdef char_creation
+# ZF=1 when the label loop was called from character creation, which passes
+# (values x0 - 23, values y0 - 2). Only AX changes.
+creation_ability_call:
+    mov ax, word ptr ds:[CREATION_ABILITIES]
+    sub ax, 23
+    cmp ax, word ptr ss:[bp+0x0A]
+    jne creation_ability_done
+    mov ax, word ptr ds:[CREATION_ABILITIES + 2]
+    sub ax, 2
+    cmp ax, word ptr ss:[bp+0x0C]
+creation_ability_done:
+    ret
+.endif
 .endif
 .ifdef fixed_labels
 label_sources:
@@ -1751,7 +1832,21 @@ ac_decoded:
     push 0
     push ds
     push 0x0E11
+.ifdef char_creation
+    mov ax, word ptr ds:[CREATION_AC]
+    cmp ax, word ptr ss:[bp + 0x0c]
+    jne ac_original_row
+    mov ax, word ptr ds:[CREATION_AC + 2]
+    sub ax, 2
+    cmp ax, word ptr ss:[bp + 0x0e]
+    jne ac_original_row
+    add ax, 2
+    push ax
+    jmp ac_push_x
+ac_original_row:
+.endif
     push word ptr ss:[bp + 0x0e]
+ac_push_x:
     push word ptr ss:[bp + 0x0c]
     push dword ptr ss:[bp + 6]
     push bx
@@ -1894,6 +1989,185 @@ view_psi_decoded:
     push bx
     push cx
     lret
+.ifdef char_creation
+# Character creation shows HP and PSP as bare "cur/max" numbers. The shared
+# helpers (overlay 0x64C6B HP, 0x64CED PSP; VIEW CHARACTER and the inventory
+# call them too) sprintf the numbers into 0348:004B and centre them on x.
+# Their argument pushes after that buffer pointer become tag FF8A/FF8B
+# redirects that return to the untouched far call. On character creation
+# the label (生命: / 靈能:) is decoded and put in front of the numbers, and
+# the line starts at the field's x0, y0; every other caller gets the
+# original arguments back unchanged.
+creation_stat_rect: .word 0
+creation_stat_ret_ip: .word 0
+creation_stat_ret_cs: .word 0
+creation_stat_buffer: .space 24, 0
+creation_hp_entry:
+    mov word ptr cs:[creation_stat_rect], CREATION_HP
+    mov ax, 0xFFF8
+    jmp creation_stat_entry
+creation_psp_entry:
+    mov word ptr cs:[creation_stat_rect], CREATION_PSP
+    mov ax, 0xFFF9
+creation_stat_entry:
+    pop es
+    pop cx
+    pop dx
+    # The caller's BX is dead here (it only held the record pointer).
+    mov bx, word ptr cs:[creation_stat_rect]
+    push ax
+    mov ax, word ptr ds:[bx]
+    add ax, 0x15
+    cmp ax, word ptr ss:[bp + 0x12]
+    jne creation_stat_original
+    mov ax, word ptr ds:[bx + 2]
+    sub ax, 2
+    cmp ax, word ptr ss:[bp + 0x14]
+    jne creation_stat_original
+    pop ax
+    push dx
+    push cx
+    push cs
+    push OFFSET creation_stat_decoded
+    push es
+    jmp name_cache_entry
+creation_stat_original:
+    pop ax
+    # The original pushes; 0348:004B is already on the stack.
+    push word ptr ds:[0x3270]
+    push 0x14
+    push word ptr ds:[0x326E]
+    push 0xFE
+    mov al, byte ptr ds:[0x1A58]
+    mov ah, 0
+    push ax
+    push 0
+    push ds
+    push 0x0E11
+    push word ptr ss:[bp + 0x14]
+    push si
+    push dword ptr ss:[bp + 6]
+    push dx
+    push cx
+    lret
+creation_stat_decoded:
+    pop ax
+    pop dx
+    pop cx
+    pop bx
+    mov cs:[creation_stat_ret_ip], cx
+    mov cs:[creation_stat_ret_cs], bx
+    # The sprintf'd numbers' far pointer, pushed by the untouched caller.
+    pop bx
+    pop cx
+    push si
+    push di
+    push es
+    mov si, ax
+    mov di, OFFSET creation_stat_buffer
+    mov al, byte ptr cs:[si]
+    mov byte ptr cs:[di], al
+    mov al, byte ptr cs:[si + 1]
+    mov byte ptr cs:[di + 1], al
+    mov al, byte ptr cs:[si + 2]
+    mov byte ptr cs:[di + 2], al
+    mov byte ptr cs:[di + 3], 0x20
+    add di, 4
+    mov es, cx
+creation_stat_copy:
+    mov al, byte ptr es:[bx]
+    mov byte ptr cs:[di], al
+    test al, al
+    jz creation_stat_copied
+    inc bx
+    inc di
+    cmp di, OFFSET creation_stat_buffer + 23
+    jb creation_stat_copy
+    mov byte ptr cs:[di], 0
+creation_stat_copied:
+    pop es
+    pop di
+    pop si
+    push cs
+    push OFFSET creation_stat_buffer
+    push word ptr ds:[0x3270]
+    push 0x14
+    push word ptr ds:[0x326E]
+    push 0xFE
+    mov al, byte ptr ds:[0x1A58]
+    mov ah, 0
+    push ax
+    push 0
+    push ds
+    push 0x0E11
+    mov bx, word ptr cs:[creation_stat_rect]
+    push word ptr ds:[bx + 2]
+    push word ptr ds:[bx]
+    push dword ptr ss:[bp + 6]
+    push word ptr cs:[creation_stat_ret_cs]
+    push word ptr cs:[creation_stat_ret_ip]
+    lret
+# The PSI DISCIPLINES / CLERICAL SPHERE titles: overlay 0x67BD7 / 0x640E4
+# create WIND-3012 / 3013 at (210, 88), keep its surface in DGROUP:0EA2 /
+# 0EA6, and draw the title at (14, 6) through 339E:016D, which cannot
+# decode Base94. The argument pushes become tag-FF8C/FF8D redirects that
+# return to the untouched far call; the redirect stub overwrote the
+# surface offset in AX, so it is read back from DGROUP. The Chinese title
+# sits 3px higher so the 10px list rows below it fit the box, and 8px
+# further left to leave room for the toggle button beside it.
+.equ CREATION_TITLE_X, 6
+.equ CREATION_TITLE_Y, 3
+creation_title_surface: .word 0
+creation_title_offsets: .word creation_psi_title, creation_sphere_title
+.ifdef generated_ui_text
+    ui_text_creation_titles
+.else
+creation_psi_title: .byte 0
+creation_sphere_title: .byte 0
+.endif
+creation_psi_title_entry:
+    mov word ptr cs:[creation_title_surface], 0x0EA2
+    mov ax, 0xFFB8
+    jmp creation_title_entry
+creation_sphere_title_entry:
+    mov word ptr cs:[creation_title_surface], 0x0EA6
+    mov ax, 0xFFB9
+creation_title_entry:
+    pop es
+    pop cx
+    pop dx
+    push dx
+    push cx
+    push cs
+    push OFFSET creation_title_decoded
+    push es
+    jmp name_cache_entry
+creation_title_decoded:
+    pop ax
+    pop dx
+    pop cx
+    pop bx
+    push dx
+    push ax
+    # push dword 003C0014h, 00FE00FEh, 00FF0000h (the three %C pairs)
+    push 0x3C
+    push 0x14
+    push 0xFE
+    push 0xFE
+    push 0xFF
+    push 0
+    push ds
+    push 0x0E11
+    push CREATION_TITLE_Y
+    push CREATION_TITLE_X
+    mov ax, bx
+    mov bx, word ptr cs:[creation_title_surface]
+    push word ptr ds:[bx + 2]
+    push word ptr ds:[bx]
+    push ax
+    push cx
+    lret
+.endif
 .endif
 .ifdef fixed_materials
 # Weapon/armor material adjective ("Bone", "Wooden", ...), prefixed onto the
@@ -2026,6 +2300,18 @@ gender_decoded:
     pop bx
     push dx
     push ax
+.ifdef char_creation
+    # The helper keeps x in SI and y in DI for both gender and race.
+    mov ax, word ptr ds:[CREATION_IDENTITY]
+    cmp ax, si
+    jne gender_row_ready
+    mov ax, word ptr ds:[CREATION_IDENTITY + 2]
+    sub ax, 2
+    cmp ax, di
+    jne gender_row_ready
+    add di, 2
+gender_row_ready:
+.endif
     push word ptr ds:[0x3270]
     push bx
     push cx
@@ -2115,8 +2401,23 @@ alignment_decoded:
     push 0
     push ds
     push 0x0E11
+.ifdef char_creation
+    mov ax, word ptr ds:[CREATION_ALIGNMENT]
+    cmp ax, word ptr ss:[bp + 0x0E]
+    jne alignment_view_position
+    mov ax, word ptr ds:[CREATION_ALIGNMENT + 2]
+    sub ax, 2
+    cmp ax, word ptr ss:[bp + 0x10]
+    jne alignment_view_position
+    add ax, 2
+    push ax
+    push word ptr ss:[bp + 0x0E]
+    jmp alignment_push_surface
+alignment_view_position:
+.endif
     push ALIGNMENT_Y
     push ALIGNMENT_X
+alignment_push_surface:
     push dword ptr ss:[bp + 6]
     push bx
     push cx
@@ -2192,10 +2493,20 @@ class_slot1_label_entry:
     mov word ptr ss:[bp + 0x10], CLASS_ROW_TO
 class_row_ready:
 .endif
+.ifdef char_creation
+    # Character creation's class row: Chinese at y0 (see CREATION_RECTS).
+    cmp word ptr ss:[bp + 0x14], CREATION_CLASS_TABLE
+    jne creation_class_row_ready
+    add word ptr ss:[bp + 0x10], 2
+creation_class_row_ready:
+.endif
     les bx, [bp + 0x0A]
     mov al, es:[bx + 0x21]
     dec al
     cbw
+.ifdef char_creation
+    call creation_class_index
+.endif
     push ax
     mov al, es:[bx + 0x22]
     mov cl, es:[bx + 0x23]
@@ -2222,6 +2533,9 @@ class_slot2_label_entry:
     mov al, es:[bx + 0x22]
     dec al
     cbw
+.ifdef char_creation
+    call creation_class_index
+.endif
     push ax
     mov al, es:[bx + 0x23]
     or al, al
@@ -2253,6 +2567,9 @@ class_slot3_label_entry:
     mov al, es:[bx + 0x23]
     dec al
     cbw
+.ifdef char_creation
+    call creation_class_index
+.endif
     # slot3 (when its record field is populated at all) always decodes
     # before slot2/slot1 in both the two- and three-class draw paths, so
     # it never needs to check for an earlier sibling -- it always forces
@@ -2348,6 +2665,24 @@ class_slot3_copy_done:
     mov dx, cs:[class3_saved_dx]
     lret
 class3_saved_dx: .word 0
+.ifdef char_creation
+# AX = 0-based class ID. The class-name draw keeps the name table in
+# [bp+0x14]; with character creation's 8-entry table (Cleric, Druid,
+# Fighter, Gladiator, Preserver, Psionicist, Ranger, Thief) the ID is
+# turned into the matching class_offsets index. Only AX changes.
+creation_class_index:
+    cmp word ptr ss:[bp + 0x14], CREATION_CLASS_TABLE
+    jne creation_class_index_done
+    push bx
+    mov bx, ax
+    and bx, 7
+    mov al, byte ptr cs:[creation_class_map + bx]
+    cbw
+    pop bx
+creation_class_index_done:
+    ret
+creation_class_map: .byte 0, 4, 8, 9, 10, 11, 12, 16
+.endif
 .endif
 cjk_name_cache_end:
 .ifdef view_character

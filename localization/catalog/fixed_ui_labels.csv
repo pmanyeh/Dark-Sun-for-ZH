@@ -43,3 +43,15 @@ UI_class_preserver,fixed_ui,PRESERVER,保護者,translated,True,1,
 UI_class_psionicist,fixed_ui,PSIONICIST,靈能師,translated,True,1,
 UI_class_ranger,fixed_ui,RANGER,遊俠,translated,True,1,
 UI_class_thief,fixed_ui,THIEF,小偷,translated,True,1,re_95 2.1: 盜賊 was a stand-in until 偷 had a glyph
+UI_creation_psi_title,fixed_ui,PSI DISCIPLINES,靈能分類,translated,True,1,character creation title (re_105)
+UI_creation_sphere_title,fixed_ui,CLERICAL SPHERE,神術領域,translated,True,1,character creation title (re_105)
+UI_creation_kinesis,fixed_ui,P-KINESIS,念動,translated,True,1,character creation ICON 2038; USE button form
+UI_creation_metab,fixed_ui,P-METAB,精神,translated,True,1,character creation ICON 2039; USE button form
+UI_creation_telepathy,fixed_ui,TELEPATHY,感應,translated,True,1,character creation ICON 2040; USE button form
+UI_creation_portation,fixed_ui,P-PORTATION,傳送,translated,True,1,character creation ICON 2041; USE button form
+UI_creation_air,fixed_ui,AIR,風元素,translated,True,1,character creation ICON 2042
+UI_creation_earth,fixed_ui,EARTH,土元素,translated,True,1,character creation ICON 2043
+UI_creation_fire,fixed_ui,FIRE,火元素,translated,True,1,character creation ICON 2044
+UI_creation_water,fixed_ui,WATER,水元素,translated,True,1,character creation ICON 2045
+UI_creation_view_spheres,fixed_ui,VIEW SPHERES,神術領域,translated,True,1,character creation ICON 2046; shares the title row
+UI_creation_view_psionics,fixed_ui,VIEW PSIONICS,靈能分類,translated,True,1,character creation ICON 2047; shares the title row

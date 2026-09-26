@@ -31,10 +31,13 @@ try:
     from .font100_tool import Font100
     from .patch_dialogue_menu_wind import patch_dialogue_choice_paging, patch_dialogue_menu_wind
     from .patch_dsun_scratch_cache import patch_executable, patch_introduce_prefix
+    from .creation_icon_layer import CREATION_LIST_WINDS, build_creation_icons, move_wind_buttons
+    from .plan_name_slot_consumers import load_fixed_ui_ids
     from .view_ui_layer import (
         apply_smart_cursor_exe_patches,
         apply_view_ui_exe_patches,
         build_view_ui_font,
+        patch_creation_wind,
     )
     from .exe_text_layer import apply_exe_text_patches
 except ImportError:
@@ -55,10 +58,13 @@ except ImportError:
     from font100_tool import Font100
     from patch_dialogue_menu_wind import patch_dialogue_choice_paging, patch_dialogue_menu_wind
     from patch_dsun_scratch_cache import patch_executable, patch_introduce_prefix
+    from creation_icon_layer import CREATION_LIST_WINDS, build_creation_icons, move_wind_buttons
+    from plan_name_slot_consumers import load_fixed_ui_ids
     from view_ui_layer import (
         apply_smart_cursor_exe_patches,
         apply_view_ui_exe_patches,
         build_view_ui_font,
+        patch_creation_wind,
     )
     from exe_text_layer import apply_exe_text_patches
 
@@ -535,7 +541,7 @@ def main() -> int:
             )
         resource_after_font = (
             work / "RESOURCE.font.GFF"
-            if args.dialogue_option_pitch is not None
+            if args.dialogue_option_pitch is not None or args.view_ui
             else staged_game / "RESOURCE.GFF"
         )
         run(
@@ -550,6 +556,7 @@ def main() -> int:
         )
         dialogue_wind: bytes | None = None
         final_resource = staged_game / "RESOURCE.GFF"
+        current_resource = resource_after_font
         if args.dialogue_option_pitch is not None:
             original_wind = work / "WIND-3008.original.bin"
             run(args.gff_cat, "extract", game_dir / "RESOURCE.GFF", "WIND", "3008", "-o", original_wind)
@@ -558,16 +565,52 @@ def main() -> int:
             )
             patched_wind = work / "WIND-3008.dialogue-options.bin"
             patched_wind.write_bytes(dialogue_wind)
+            next_resource = work / "RESOURCE.dialogue.GFF" if args.view_ui else final_resource
             run(
                 args.gff_cat,
                 "replace",
-                resource_after_font,
+                current_resource,
                 "WIND",
                 "3008",
                 patched_wind,
                 "-o",
-                final_resource,
+                next_resource,
             )
+            current_resource = next_resource
+        creation_chunks: list[tuple[str, int, bytes]] = []
+        if args.view_ui:
+            # Character creation (re_105): the lower-left fields' buttons
+            # and the class/PSI/sphere lists move onto 10px rows, and the
+            # list ICONs are redrawn in Chinese.
+            def extract_original(kind: str, chunk_id: int) -> bytes:
+                target = work / f"{kind.strip()}-{chunk_id}.original.bin"
+                run(args.gff_cat, "extract", game_dir / "RESOURCE.GFF", kind, str(chunk_id), "-o", target)
+                return target.read_bytes()
+
+            creation_chunks.append(("WIND", 3011, patch_creation_wind(extract_original("WIND", 3011))))
+            for wind_id, fingerprint, buttons in CREATION_LIST_WINDS:
+                creation_chunks.append(
+                    ("WIND", wind_id, move_wind_buttons(extract_original("WIND", wind_id), fingerprint, f"WIND-{wind_id}", buttons))
+                )
+            icons = build_creation_icons(extract_original, load_fixed_ui_ids(mapping), banks)
+            creation_chunks += [("ICON", icon_id, payload) for icon_id, payload in icons.items()]
+            for index, (kind, chunk_id, payload) in enumerate(creation_chunks):
+                patched_chunk = work / f"{kind}-{chunk_id}.character-creation.bin"
+                patched_chunk.write_bytes(payload)
+                next_resource = (
+                    final_resource if index == len(creation_chunks) - 1 else work / f"RESOURCE.creation{index}.GFF"
+                )
+                run(
+                    args.gff_cat,
+                    "replace",
+                    current_resource,
+                    kind,
+                    str(chunk_id),
+                    patched_chunk,
+                    "-o",
+                    next_resource,
+                )
+                current_resource = next_resource
 
         original_chunks, final_chunks = work / "original-chunks", work / "final-chunks"
         run(args.gff_cat, "extract", game_dir / "RESOURCE.GFF", "--all", "-o", original_chunks)
@@ -589,7 +632,21 @@ def main() -> int:
                     "encoded_byte_length": len(dialogue_wind),
                 }
             )
-        resource_verification = verify_extracted_gff_chunks(original_chunks, final_chunks, records)
+        records += [
+            {
+                "kind": kind,
+                "chunk_id": chunk_id,
+                "sha256": sha256(payload),
+                "encoded_byte_length": len(payload),
+            }
+            for kind, chunk_id, payload in creation_chunks
+        ]
+        # GFFI-2 indexes the ICON chunks, whose lengths change with the
+        # Chinese character creation lists.
+        allowed_metadata = {"GFFI-1.bin", "GFFI-2.bin"} if creation_chunks else None
+        resource_verification = verify_extracted_gff_chunks(
+            original_chunks, final_chunks, records, allowed_metadata
+        )
 
         unchanged_files = 0
         for source in game_dir.iterdir():
