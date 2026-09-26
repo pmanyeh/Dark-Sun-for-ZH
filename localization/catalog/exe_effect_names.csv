@@ -1,0 +1,71 @@
+﻿unit_id,category,original,translation_zh_tw,status,translate,location_count,notes
+EXE_effect_1FEC,exe_effect_name,Acid,酸液,translated,True,1,DGROUP:1FEC; combat card status (effect table file 0x44CD0); Melf's Acid Arrow 酸液之箭
+EXE_effect_1FF1,exe_effect_name,Improved AC,防禦提升,translated,True,1,DGROUP:1FF1; combat card status (effect table file 0x44CD0)
+EXE_effect_1FFD,exe_effect_name,Berserk,狂暴,translated,True,1,DGROUP:1FFD; combat card status (effect table file 0x44CD0)
+EXE_effect_2005,exe_effect_name,Biofeedback,生體反饋,translated,True,1,DGROUP:2005; combat card status (effect table file 0x44CD0); glossary
+EXE_effect_2011,exe_effect_name,Blink,閃光術,translated,True,1,DGROUP:2011; combat card status (effect table file 0x44CD0); glossary
+EXE_effect_2017,exe_effect_name,Blessed,祝福術,translated,True,1,DGROUP:2017; combat card status (effect table file 0x44CD0); Bless 祝福術
+EXE_effect_201F,exe_effect_name,Blind,失明,translated,True,1,DGROUP:201F; combat card status (effect table file 0x44CD0)
+EXE_effect_2025,exe_effect_name,Brave,勇氣,translated,True,1,DGROUP:2025; combat card status (effect table file 0x44CD0); Cloak of Bravery 勇氣之袍 / Remove Fear
+EXE_effect_202B,exe_effect_name,Charmed,被迷惑,translated,True,1,DGROUP:202B; combat card status (effect table file 0x44CD0); Charm 迷惑術
+EXE_effect_2033,exe_effect_name,Confused,混淆,translated,True,1,DGROUP:2033; combat card status (effect table file 0x44CD0); Confusion 混淆術
+EXE_effect_203C,exe_effect_name,Cursed,詛咒,translated,True,1,DGROUP:203C; combat card status (effect table file 0x44CD0); Curse 詛咒術
+EXE_effect_2043,exe_effect_name,Diseased,染病,translated,True,1,DGROUP:2043; combat card status (effect table file 0x44CD0)
+EXE_effect_204C,exe_effect_name,Detect Traps,偵測陷阱,translated,True,1,DGROUP:204C; combat card status (effect table file 0x44CD0)
+EXE_effect_2059,exe_effect_name,Detect Invis,偵測隱形,translated,True,1,DGROUP:2059; combat card status (effect table file 0x44CD0); glossary
+EXE_effect_2066,exe_effect_name,Enlarged,巨大術,translated,True,1,DGROUP:2066; combat card status (effect table file 0x44CD0); Enlarge 巨大術
+EXE_effect_206F,exe_effect_name,Afraid,恐懼,translated,True,1,DGROUP:206F; combat card status (effect table file 0x44CD0); Fear 恐懼術
+EXE_effect_2076,exe_effect_name,Cloak of Fear,恐懼之袍,translated,True,1,DGROUP:2076; combat card status (effect table file 0x44CD0); glossary
+EXE_effect_2084,exe_effect_name,Feeblemind,弱智術,translated,True,1,DGROUP:2084; combat card status (effect table file 0x44CD0); glossary
+EXE_effect_208F,exe_effect_name,Fire Shield,火焰之盾,translated,True,1,DGROUP:208F; combat card status (effect table file 0x44CD0); glossary
+EXE_effect_209B,exe_effect_name,Free Action,自由移動,translated,True,1,DGROUP:209B; combat card status (effect table file 0x44CD0); glossary
+EXE_effect_20A7,exe_effect_name,Hasted,迅捷術,translated,True,1,DGROUP:20A7; combat card status (effect table file 0x44CD0); Haste 迅捷術
+EXE_effect_20AE,exe_effect_name,Invisible,隱形術,translated,True,1,DGROUP:20AE; combat card status (effect table file 0x44CD0); Invisibility 隱形術
+EXE_effect_20B8,exe_effect_name,Invis to Undead,對不死隱形,translated,True,1,DGROUP:20B8; combat card status (effect table file 0x44CD0); glossary
+EXE_effect_20C8,exe_effect_name,Mirror Images,幻影術,translated,True,1,DGROUP:20C8; combat card status (effect table file 0x44CD0); Mirror Image 幻影術
+EXE_effect_20D6,exe_effect_name,Englobed,小防護法,translated,True,1,DGROUP:20D6; combat card status (effect table file 0x44CD0); Minor Globe of Invulnerability 小防護法
+EXE_effect_20DF,exe_effect_name,Prot Missile,免受飛彈攻擊,translated,True,1,DGROUP:20DF; combat card status (effect table file 0x44CD0); Protection from Normal Missiles
+EXE_effect_20EC,exe_effect_name,Prot Paralysis,防禦麻痺,translated,True,1,DGROUP:20EC; combat card status (effect table file 0x44CD0); glossary
+EXE_effect_20FB,exe_effect_name,Synaptic Static,凝神術,translated,True,1,DGROUP:20FB; combat card status (effect table file 0x44CD0); glossary
+EXE_effect_210B,exe_effect_name,Low Resistance,降低抗力,translated,True,1,DGROUP:210B; combat card status (effect table file 0x44CD0); Lower Resistance
+EXE_effect_211A,exe_effect_name,Mind Bar,意志欄柵,translated,True,1,DGROUP:211A; combat card status (effect table file 0x44CD0); glossary
+EXE_effect_2123,exe_effect_name,Can't Attack,無法攻擊,translated,True,1,DGROUP:2123; combat card status (effect table file 0x44CD0)
+EXE_effect_2130,exe_effect_name,Paralyzed,麻痺,translated,True,1,DGROUP:2130; combat card status (effect table file 0x44CD0)
+EXE_effect_213A,exe_effect_name,Poisoned,中毒,translated,True,1,DGROUP:213A; combat card status (effect table file 0x44CD0)
+EXE_effect_2143,exe_effect_name,Prot Cold,抗冰術,translated,True,1,DGROUP:2143; combat card status (effect table file 0x44CD0); Resist Cold 抗冰術
+EXE_effect_214D,exe_effect_name,Prot Energy,能量封鎖,translated,True,1,DGROUP:214D; combat card status (effect table file 0x44CD0); Energy Containment 能量封鎖
+EXE_effect_2159,exe_effect_name,Prot Evil,百邪不侵,translated,True,1,DGROUP:2159; combat card status (effect table file 0x44CD0); Protection from Evil
+EXE_effect_2163,exe_effect_name,Prot Evil 10',辟邪十呎,translated,True,1,"DGROUP:2163; combat card status (effect table file 0x44CD0); Protection from Evil, 10' Radius"
+EXE_effect_2171,exe_effect_name,Prot Fire,抗火術,translated,True,1,DGROUP:2171; combat card status (effect table file 0x44CD0); Resist Fire 抗火術
+EXE_effect_217B,exe_effect_name,Prot Lightning,免受電擊,translated,True,1,DGROUP:217B; combat card status (effect table file 0x44CD0); Protection from Lightning
+EXE_effect_218A,exe_effect_name,Neg Plane Prot,負界防護,translated,True,1,DGROUP:218A; combat card status (effect table file 0x44CD0); glossary
+EXE_effect_2199,exe_effect_name,Gaze Reflection,反射術,translated,True,1,DGROUP:2199; combat card status (effect table file 0x44CD0); glossary
+EXE_effect_21A9,exe_effect_name,Spell Turning,小反轉術,translated,True,1,DGROUP:21A9; combat card status (effect table file 0x44CD0); Minor Spell Turning
+EXE_effect_21B7,exe_effect_name,Save penalty,豁免減值,translated,True,1,DGROUP:21B7; combat card status (effect table file 0x44CD0)
+EXE_effect_21C4,exe_effect_name,Shielded,護盾術,translated,True,1,DGROUP:21C4; combat card status (effect table file 0x44CD0); Shield spell
+EXE_effect_21CD,exe_effect_name,Slowed,遲緩術,translated,True,1,DGROUP:21CD; combat card status (effect table file 0x44CD0); Slow 遲緩術
+EXE_effect_21D4,exe_effect_name,Stoneskin,石膚術,translated,True,1,DGROUP:21D4; combat card status (effect table file 0x44CD0); glossary
+EXE_effect_21DE,exe_effect_name,Graft Weapon,接木術,translated,True,1,"DGROUP:21DE; combat card status (effect table file 0x44CD0); psionic, glossary"
+EXE_effect_21EB,exe_effect_name,No spell use,無法施法,translated,True,1,DGROUP:21EB; combat card status (effect table file 0x44CD0)
+EXE_effect_21F8,exe_effect_name,Stuck,受困,translated,True,1,DGROUP:21F8; combat card status (effect table file 0x44CD0); Web and similar
+EXE_effect_21FE,exe_effect_name,Dispelling evil,怯除邪惡,translated,True,1,DGROUP:21FE; combat card status (effect table file 0x44CD0); Dispel Evil
+EXE_effect_220E,exe_effect_name,Ironskin,鐵皮術,translated,True,1,DGROUP:220E; combat card status (effect table file 0x44CD0); glossary
+EXE_effect_2217,exe_effect_name,Blur,朦朧化身,translated,True,1,DGROUP:2217; combat card status (effect table file 0x44CD0); glossary
+EXE_effect_221C,exe_effect_name,Spirit Armor,心靈護甲,translated,True,1,DGROUP:221C; combat card status (effect table file 0x44CD0); glossary
+EXE_effect_2229,exe_effect_name,Barkskin,樹皮術,translated,True,1,DGROUP:2229; combat card status (effect table file 0x44CD0); glossary
+EXE_effect_2232,exe_effect_name,Displacement,移置術,translated,True,1,DGROUP:2232; combat card status (effect table file 0x44CD0); glossary
+EXE_effect_223F,exe_effect_name,Flesh Armor,肉體盔甲,translated,True,1,DGROUP:223F; combat card status (effect table file 0x44CD0); glossary
+EXE_effect_224B,exe_effect_name,Magical Vestments,魔法之袍,translated,True,1,DGROUP:224B; combat card status (effect table file 0x44CD0); Magical Vestment
+EXE_effect_225D,exe_effect_name,Animal Affinity,類獸術,translated,True,1,DGROUP:225D; combat card status (effect table file 0x44CD0); glossary
+EXE_effect_226D,exe_effect_name,Body Weaponry,武體術,translated,True,1,DGROUP:226D; combat card status (effect table file 0x44CD0); glossary
+EXE_effect_227B,exe_effect_name,Strength Enhanced,強力術,translated,True,1,DGROUP:227B; combat card status (effect table file 0x44CD0); Enhanced Strength
+EXE_effect_228D,exe_effect_name,Strength Borrowed,借力,translated,True,1,"DGROUP:228D; combat card status (effect table file 0x44CD0); Share Strength 分力術, receiving side"
+EXE_effect_229F,exe_effect_name,Strength Lent,分力,translated,True,1,"DGROUP:229F; combat card status (effect table file 0x44CD0); Share Strength 分力術, giving side"
+EXE_effect_22AD,exe_effect_name,Adrenalin Control,控力術,translated,True,1,DGROUP:22AD; combat card status (effect table file 0x44CD0); glossary
+EXE_effect_22BF,exe_effect_name,Strength,強力術,translated,True,1,DGROUP:22BF; combat card status (effect table file 0x44CD0); Strength (preserver)
+EXE_effect_22C8,exe_effect_name,Weakened,虛弱,translated,True,1,DGROUP:22C8; combat card status (effect table file 0x44CD0)
+EXE_effect_22D1,exe_effect_name,Extra Hitpoints,強化生命,translated,True,1,DGROUP:22D1; combat card status (effect table file 0x44CD0); Aid 強化生命
+EXE_effect_22E1,exe_effect_name,Flame Blade,火燄之刃,translated,True,1,DGROUP:22E1; combat card status (effect table file 0x44CD0); glossary
+EXE_effect_22ED,exe_effect_name,Spirit. Hammer,心靈之鎚,translated,True,1,DGROUP:22ED; combat card status (effect table file 0x44CD0); Spiritual Hammer
+EXE_effect_22FC,exe_effect_name,Shillelagh,橡木術,translated,True,1,DGROUP:22FC; combat card status (effect table file 0x44CD0); glossary
+EXE_effect_2307,exe_effect_name,Prayer,祈禱術,translated,True,1,DGROUP:2307; combat card status (effect table file 0x44CD0); glossary

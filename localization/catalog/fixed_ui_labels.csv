@@ -55,3 +55,9 @@ UI_creation_fire,fixed_ui,FIRE,火元素,translated,True,1,character creation IC
 UI_creation_water,fixed_ui,WATER,水元素,translated,True,1,character creation ICON 2045
 UI_creation_view_spheres,fixed_ui,VIEW SPHERES,神術領域,translated,True,1,character creation ICON 2046; shares the title row
 UI_creation_view_psionics,fixed_ui,VIEW PSIONICS,靈能分類,translated,True,1,character creation ICON 2047; shares the title row
+UI_button_drop,fixed_ui,DROP,丟棄,translated,True,1,BUTN 13300 text (inventory)
+UI_button_split,fixed_ui,SPLIT,拆分,translated,True,1,BUTN 13302 text (inventory)
+UI_button_more,fixed_ui,MORE,更多,translated,True,1,BUTN 13303 text
+UI_button_sell,fixed_ui,SELL,賣出,translated,True,1,BUTN 13304 text (store)
+UI_button_info,fixed_ui,INFO,資訊,translated,True,1,BUTN 15304 text
+UI_button_exit,fixed_ui,EXIT,離開,translated,True,1,BUTN 17301/17302 text (spell learning)

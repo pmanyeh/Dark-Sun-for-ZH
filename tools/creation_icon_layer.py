@@ -242,3 +242,40 @@ def move_wind_buttons(source: bytes, sha256: str, label: str, buttons) -> bytes:
             raise ValueError(f"{label} button {button_id:#06x} is not at its original position")
         struct.pack_into("<2H", patched, offset, *new)
     return bytes(patched)
+
+
+# Text buttons keep their label in the BUTN chunk itself: byte 109 of the
+# 110-byte button record is the label length and the label follows (no NUL).
+# BUTN id -> fixed_ui_labels.csv unit.
+BUTTON_TEXT_UNITS = {
+    13300: "UI_button_drop",
+    13302: "UI_button_split",
+    13303: "UI_button_more",
+    13304: "UI_button_sell",
+    15304: "UI_button_info",
+    17301: "UI_button_exit",
+    17302: "UI_button_exit",
+}
+BUTTON_RECORD_BYTES = 110
+
+
+def base94(ids: tuple[int, ...]) -> bytes:
+    return b"".join(bytes((0x5E, 0x21 + value // 94, 0x21 + value % 94)) for value in ids)
+
+
+def button_text_chunk(original: bytes, ids: tuple[int, ...]) -> bytes:
+    """Replace a text button's label with Base94 Chinese."""
+    label = original[BUTTON_RECORD_BYTES:]
+    if not label or not label.isascii() or original[BUTTON_RECORD_BYTES - 1] != len(label):
+        raise ValueError("BUTN chunk has no length-prefixed ASCII label after its record")
+    text = base94(ids)
+    if len(text) > 0xFF:
+        raise ValueError("button label is too long")
+    return original[:BUTTON_RECORD_BYTES - 1] + bytes((len(text),)) + text
+
+
+def build_button_texts(extract, ui_ids: dict[str, tuple[int, ...]]) -> dict[int, bytes]:
+    return {
+        button_id: button_text_chunk(extract("BUTN", button_id), ui_ids[unit])
+        for button_id, unit in BUTTON_TEXT_UNITS.items()
+    }

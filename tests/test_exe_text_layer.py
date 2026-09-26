@@ -54,9 +54,13 @@ class ExeTextLayerTests(unittest.TestCase):
     def test_every_moved_string_keeps_all_its_references(self):
         image = PRISTINE.read_bytes()
         patched = apply_exe_text_patches(image, self.mapping)
+        redirected = {}
+        for region in TEXT_REGIONS:
+            for old, target in region.redirects:
+                redirected.setdefault(target, []).extend(string_push_sites(image, old))
         for region in TEXT_REGIONS:
             for old, new, _ in region.strings:
-                before = string_push_sites(image, old)
+                before = sorted(string_push_sites(image, old) + redirected.get(new, []))
                 after = string_push_sites(patched, new)
                 self.assertEqual(before, after, f"DGROUP:{old:04X}")
 

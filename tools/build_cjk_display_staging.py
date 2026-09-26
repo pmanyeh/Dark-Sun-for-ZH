@@ -31,7 +31,7 @@ try:
     from .font100_tool import Font100
     from .patch_dialogue_menu_wind import patch_dialogue_choice_paging, patch_dialogue_menu_wind
     from .patch_dsun_scratch_cache import patch_executable, patch_introduce_prefix
-    from .creation_icon_layer import CREATION_LIST_WINDS, build_creation_icons, move_wind_buttons
+    from .creation_icon_layer import CREATION_LIST_WINDS, build_button_texts, build_creation_icons, move_wind_buttons
     from .plan_name_slot_consumers import load_fixed_ui_ids
     from .view_ui_layer import (
         apply_smart_cursor_exe_patches,
@@ -58,7 +58,7 @@ except ImportError:
     from font100_tool import Font100
     from patch_dialogue_menu_wind import patch_dialogue_choice_paging, patch_dialogue_menu_wind
     from patch_dsun_scratch_cache import patch_executable, patch_introduce_prefix
-    from creation_icon_layer import CREATION_LIST_WINDS, build_creation_icons, move_wind_buttons
+    from creation_icon_layer import CREATION_LIST_WINDS, build_button_texts, build_creation_icons, move_wind_buttons
     from plan_name_slot_consumers import load_fixed_ui_ids
     from view_ui_layer import (
         apply_smart_cursor_exe_patches,
@@ -592,8 +592,12 @@ def main() -> int:
                 creation_chunks.append(
                     ("WIND", wind_id, move_wind_buttons(extract_original("WIND", wind_id), fingerprint, f"WIND-{wind_id}", buttons))
                 )
-            icons = build_creation_icons(extract_original, load_fixed_ui_ids(mapping), banks)
+            ui_ids = load_fixed_ui_ids(mapping)
+            icons = build_creation_icons(extract_original, ui_ids, banks)
             creation_chunks += [("ICON", icon_id, payload) for icon_id, payload in icons.items()]
+            # Text buttons (DROP, SPLIT, EXIT...) carry their label in the BUTN chunk.
+            buttons = build_button_texts(extract_original, ui_ids)
+            creation_chunks += [("BUTN", button_id, payload) for button_id, payload in buttons.items()]
             for index, (kind, chunk_id, payload) in enumerate(creation_chunks):
                 patched_chunk = work / f"{kind}-{chunk_id}.character-creation.bin"
                 patched_chunk.write_bytes(payload)
@@ -641,9 +645,9 @@ def main() -> int:
             }
             for kind, chunk_id, payload in creation_chunks
         ]
-        # GFFI-2 indexes the ICON chunks, whose lengths change with the
-        # Chinese character creation lists.
-        allowed_metadata = {"GFFI-1.bin", "GFFI-2.bin"} if creation_chunks else None
+        # GFFI-2 indexes the ICON chunks and GFFI-7 the BUTN chunks; both
+        # change with the Chinese ICONs and button labels.
+        allowed_metadata = {"GFFI-1.bin", "GFFI-2.bin", "GFFI-7.bin"} if creation_chunks else None
         resource_verification = verify_extracted_gff_chunks(
             original_chunks, final_chunks, records, allowed_metadata
         )

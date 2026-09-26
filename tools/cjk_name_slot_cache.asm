@@ -153,6 +153,8 @@ cjk_name_cache_start:
     je text_draw_entry
     cmp ax, 0xFF86
     je text_width_entry
+    cmp ax, 0xFF8E
+    je text_width2_entry
 .endif
 .ifdef scroll_texts
     cmp ax, 0xFF89
@@ -1010,6 +1012,43 @@ text_width_decoded:
     mov word ptr ss:[bp+0x08], dx
     xor si, si
     lret
+# 2847:00B9 is the same per-byte width sum as 191F:0401; the text button
+# layout (resident 0x2F8C0) centres labels with it. Its twin 2847:00ED now
+# holds "push bp; mov bp,sp; push si; tag FF8E" and returns into 00B9's
+# loop test (IP 00DF) with SI = 0, like FF86 but without touching DI,
+# which 00B9's callers keep live and 00B9 never saves.
+text_width2_entry:
+    pop es
+    pop cx
+    pop dx
+    push dx
+    push cx
+    mov ax, word ptr ss:[bp+0x06]
+    mov dx, word ptr ss:[bp+0x08]
+    mov word ptr cs:[text_draw_source], ax
+    mov word ptr cs:[text_draw_source+2], dx
+    push es
+    les si, dword ptr cs:[text_draw_source]
+text_width2_scan:
+    mov al, byte ptr es:[si]
+    test al, al
+    jz text_width2_english
+    cmp al, 0x5E
+    je text_width2_chinese
+    inc si
+    jmp text_width2_scan
+text_width2_english:
+    pop es
+    xor si, si
+    lret
+text_width2_chinese:
+    pop es
+    mov word ptr cs:[cached_id], 0xFFFF
+    mov ax, TEXT_DRAW_SOURCE_ID
+    push cs
+    push OFFSET text_width_decoded
+    push es
+    jmp name_cache_entry
 text_draw_source: .long 0
 text_draw_dy: .word 0
 .endif

@@ -310,6 +310,34 @@ CREATION_EXE_PATCHES = (
     # "NAME:" (overlay 0x65FD9, push dword 007D0004h) moves up with the
     # name box (WIND-3011 EBOX 4003) to give the 10px ability rows room.
     (0x065FDD, "7D", "7A", "v128 character creation NAME row 3px higher"),
+    # Text button labels (DROP, SPLIT, EXIT... in BUTN chunks) are centred
+    # by the layout at resident 0x2F8C0 with the width sum 2847:00B9, which
+    # counts a Base94 triple as three characters. Its identical twin 2847:00ED
+    # (one caller, 0x30441, moved to 00B9) becomes a tag-FF8E entry that
+    # measures the decoded label and returns into 00B9's loop; the layout's
+    # two width calls then use 00ED. The relocated words at 0x2D96A and
+    # 0x2D97B stay untouched: a short jump skips the first, the second lies
+    # in the now unused tail.
+    (0x030442, "ED", "B9", "v138 2847:00ED's only caller uses the identical 00B9"),
+    (0x02D95D, "55 8B EC 56 39 26 9C 00 72 05 9A", "55 8B EC 56 B8 8E FF 0E 68 DF 00", "v138 decoding label width entry (2847:00ED)"),
+    (0x02D968, "0B 23", "EB 02", "v138 decoding label width entry: skip the relocated word"),
+    (0x02D96C, "33 F6 EB 13 C4 5E 06 26 8A 07", "8C DB 80 EF 10 53 68 14 07 CB", "v138 decoding label width entry: FONT trampoline"),
+    (0x02F969, "B9", "ED", "v138 text button label centring uses the decoding width"),
+    (0x02F97E, "B9", "ED", "v138 text button label right-alignment uses the decoding width"),
+    # VIEW CHARACTER HP numbers are centred on x (push dword 007F00BDh); a
+    # three-digit "106/106" centred on 189 reached back over the 生命: label
+    # (149..174). Centred on 196 it starts at 175 and still ends before 靈能:.
+    (0x08A2D1, "BD", "C4", "v134 VIEW CHARACTER HP numbers centred 7px right"),
+    # Combat info card (resident 0x1EA9A): name, HP, status and move were
+    # centred 6px apart at y 6/12/18/24 inside a 26px-tall panel. Chinese
+    # status and "移動:%d" need 10px rows (drawn 2px low by the FF84 path),
+    # so the move count joins the HP row (HP centred 23px left of the card's
+    # centre, move 21px right) and the status gets the last row alone.
+    (0x01EAEE, "06", "04", "v130 combat card: name row y 6 -> 4"),
+    (0x01EB8C, "D7 00", "C0 00", "v130 combat card: HP centred 23px left"),
+    (0x01EC13, "12", "16", "v130 combat card: status row y 18 -> 22"),
+    (0x01EC7B, "18", "0B", "v130 combat card: move shares the HP row"),
+    (0x01EC7F, "D7 00", "EC 00", "v130 combat card: move centred 21px right"),
     # Class list selection diamond rows (far data 0338:019B), the class
     # buttons' y: 10 + 8i in English, 4 + 10i with the Chinese ICONs.
     (0x03E2DB, "0A 00 12 00 1A 00 22 00 2A 00 32 00 3A 00 42 00",
