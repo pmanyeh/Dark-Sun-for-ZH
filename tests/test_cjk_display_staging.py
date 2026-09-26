@@ -12,6 +12,7 @@ from tools.build_cjk_display_staging import (
     predecode_name_to_dynamic_slots,
     scale_graphics_config,
     set_mouse_autolock,
+    disable_ime,
 )
 from tools.cjk_localization_pipeline import encode_text, load_mapping, transport_for_id
 from tools.build_name_slot_candidate_from_v33 import expand_v33_font
@@ -320,6 +321,16 @@ class CjkDisplayStagingTests(unittest.TestCase):
         source = "[sdl]\nautolock=true\nsensitivity=100\n"
         self.assertIn("autolock=false", set_mouse_autolock(source, False))
         self.assertIn("autolock=true", set_mouse_autolock(source, True))
+
+    def test_ime_is_disabled_in_dosbox_section(self) -> None:
+        source = "[sdl]\nautolock=false\n\n[dosbox]\nlanguage=\nmemsize=32\n"
+        result = disable_ime(source)
+        self.assertIn("[dosbox]\nime=false\nlanguage=", result)
+        self.assertEqual(result, disable_ime(result))
+        self.assertIn("ime=false", disable_ime("[dosbox]\nime=auto\n"))
+        self.assertNotIn("ime=auto", disable_ime("[dosbox]\nime=auto\n"))
+        with self.assertRaises(ValueError):
+            disable_ime("[sdl]\nautolock=false\n")
 
 
 if __name__ == "__main__":

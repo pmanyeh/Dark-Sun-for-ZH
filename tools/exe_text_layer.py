@@ -57,6 +57,9 @@ class TextRegion:
     immediate_prefixes: tuple[bytes, ...] = ()
     # Far-pointer tables given by file offset (for tables outside DGROUP).
     file_pointer_tables: tuple[tuple[int, int], ...] = ()
+    # (original DGROUP offset, new offset in SPELL_TAIL, Chinese text): strings
+    # too long for the region, placed in the free tail of the spell name block.
+    spilled: tuple[tuple[int, int, str], ...] = ()
 
 
 def _same(*items: tuple[int, str]) -> tuple[tuple[int, int, str], ...]:
@@ -150,6 +153,22 @@ TEXT_REGIONS = (
                 (0x30BC, 0x30BA, "水")), "cleric sphere choice"),
     TextRegion(0x3195, b"ONLY ACTIVE CHAR CAN CAST\0", _same((0x3195, "僅限當前角色施法")), "casting"),
     TextRegion(0x3440, b"CANNOT LEARN FROM THIS ITEM\0", _same((0x3440, "無法從此物品學習")), "scroll learning"),
+    # --- item and creature cards ---------------------------------------------
+    # Every line below is drawn by the decoding 191F:0A40 wrapper, the two
+    # %d formats after sprintf into a stack buffer. The ground item card
+    # (0x5F5DC) and the look card (0x5FBEC) use the 086B copies.
+    TextRegion(0x086B, b"USEABLE BY:\0NO ONE\0HD: %d\0LEVEL: %d\0",
+               ((0x086B, 0x086B, "可使用者:"), (0x0877, 0x0879, "無"), (0x087E, 0x087D, "生命骰: %d")),
+               "look card and ground item card",
+               spilled=((0x0885, 0x2E1D, "等級: %d"),)),
+    # Inventory item card (0x8BDxx..0x8C27x): "2 handed %Fs" (%Fs is the
+    # material word) and its tail "%Fs" at 3469 are sprintf formats.
+    TextRegion(0x3460, b"2 handed %Fs\0" b"2 handed\0",
+               ((0x3460, 0x3460, "雙手 %Fs"), (0x3469, 0x346B, "%Fs"), (0x346D, 0x346F, "雙手")),
+               "item card two-handed line"),
+    TextRegion(0x3481, b"HEAVY\0AC BONUS:%d\0USEABLE BY:\0NO ONE\0",
+               ((0x3481, 0x3481, "沉重"), (0x3487, 0x3488, "防禦加成:%d")),
+               "item card", redirects=((0x3493, 0x086B), (0x349F, 0x0879))),
     # --- combat: end of a character's move ---------------------------------
     # Resident 0x1DB1F sprintf's "END %Fs's MOVE" (or "END MOVE" for names
     # over 20 characters) and pops up 41B4:0025 with three buttons, which
@@ -178,9 +197,12 @@ TEXT_REGIONS = (
                ((0x1C58, 0x1C58, "戰鬥中無法存檔"), (0x1C71, 0x1C6E, "音樂:開"), (0x1C7A, 0x1C79, "音樂:關")),
                "music toggle"),
     # 0x7170D/0x71712 load these with mov ax for the 41B4:0025 message box.
+    # ESC's dialog: SAVE opens the save screen with DS:54FE set, and the save
+    # screen then ends the game (0x74D33), so the text has to say it exits.
     TextRegion(0x1CC4, b"EXIT GAME?\0EXIT: SAVE GAME?\0SAVE\0QUIT\0",
-               ((0x1CC4, 0x1CC4, "離開遊戲?"), (0x1CCF, 0x1CD2, "要存檔嗎?"), (0x1CE0, 0x1CE0, "存檔")),
-               "exit game dialog", redirects=((0x1CE5, 0x3009),), immediate_prefixes=(b"\xb8",)),
+               ((0x1CC4, 0x1CC4, "離開遊戲?"), (0x1CCF, 0x1CD2, "離開前要存檔嗎?")),
+               "exit game dialog", immediate_prefixes=(b"\xb8",),
+               spilled=((0x1CE0, 0x2E00, "存檔並離開"), (0x1CE5, 0x2E10, "直接離開"))),
     # The game menu's icon descriptions: 0x7FAD8 stores one in [bp-4] and
     # sets it through 0580:005C, which decodes Base94.
     TextRegion(0x2391, b"MUSIC TOGGLE ON/OFF\0MUSIC VOLUME\0SOUND EFFECTS ON/OFF\0SOUND EFFECT VOLUME\0"
@@ -283,6 +305,9 @@ TEXT_REGIONS = (
 # tables are rewritten to the new offsets. The names are drawn by the decoding
 # window text paths (USE bar, learn scroll).
 SPELL_BLOCK = (0x254E, 0x2EBB)
+# The repacked spell names end near 2D0B; from here on the block holds the
+# TextRegion.spilled strings instead.
+SPELL_TAIL = 0x2E00
 NAME_TABLES = ((0x4512E, 138, 7, 3), (0x44F96, 34, 8, 0))  # file start, count, stride, field
 SPELL_CATALOG = Path(__file__).resolve().parents[1] / "localization/catalog/exe_spell_names.csv"
 
@@ -323,8 +348,8 @@ def spell_block_patch(
         if block[offset - first : stop].decode("ascii") != english:
             raise ValueError(f"DGROUP:{offset:04X} is not {english!r}")
         encoded = encode_text(chinese, mapping) + b"\0"
-        if cursor + len(encoded) > end:
-            raise ValueError("Chinese spell names overflow the original name block")
+        if cursor + len(encoded) > SPELL_TAIL:
+            raise ValueError("Chinese spell names overflow into the spilled strings")
         payload[cursor - first : cursor - first + len(encoded)] = encoded
         moved[offset] = cursor
         cursor += len(encoded)
@@ -479,9 +504,9 @@ def pointer_table_patches(image: bytes) -> list[tuple[int, bytes, bytes, str]]:
 def code_patches(image: bytes) -> list[tuple[int, bytes, bytes, str]]:
     """Rewrite the push of every moved string; refuse references into a region's interior."""
     patches = []
-    placed = {new: text for region in TEXT_REGIONS for _, new, text in region.strings}
+    placed = {new: text for region in TEXT_REGIONS for _, new, text in region.strings + region.spilled}
     for region in TEXT_REGIONS:
-        originals = {old for old, _, _ in region.strings} | {old for old, _ in region.redirects}
+        originals = {old for old, _, _ in region.strings + region.spilled} | {old for old, _ in region.redirects}
         for old, target in region.redirects:
             if target not in placed:
                 raise ValueError(f"DGROUP:{old:04X} ({region.note}) redirects to an unplaced string")
@@ -496,7 +521,7 @@ def code_patches(image: bytes) -> list[tuple[int, bytes, bytes, str]]:
         for inner in range(region.start, region.start + len(region.original)):
             if inner not in originals and string_push_sites(image, inner):
                 raise ValueError(f"DGROUP:{inner:04X} inside {region.note} is referenced but not placed")
-        for old, new, _ in region.strings:
+        for old, new, _ in region.strings + region.spilled:
             immediate = string_immediate_sites(image, old, region.immediate_prefixes)
             if old != new:
                 patches += [
@@ -559,7 +584,7 @@ def apply_exe_text_patches(image: bytes, mapping: dict[str, object]) -> bytes:
         if image[start : start + len(region.original)] != region.original:
             raise ValueError(f"DGROUP:{region.start:04X} ({region.note}) found modified bytes")
         result[start : start + len(region.original)] = region_bytes(region, mapping)
-        texts.update({old: text for old, _, text in region.strings})
+        texts.update({old: text for old, _, text in region.strings + region.spilled})
     for first, second in MATCHED_STRINGS:
         if texts[first] != texts[second]:
             raise ValueError(f"DGROUP:{first:04X} and {second:04X} are compared and must match")
@@ -571,6 +596,13 @@ def apply_exe_text_patches(image: bytes, mapping: dict[str, object]) -> bytes:
             raise ValueError(f"push ds at 0x{match.start():X} points into the spell name block")
     block, _, table_patches = spell_block_patch(image, mapping)
     result[DGROUP_FILE_BASE + first : DGROUP_FILE_BASE + end] = block
+    cursor = SPELL_TAIL
+    for offset, text in sorted((new, text) for region in TEXT_REGIONS for _, new, text in region.spilled):
+        encoded = encode_region_text(text, mapping) + b"\0"
+        if offset < cursor or offset + len(encoded) > end:
+            raise ValueError(f"spilled DGROUP:{offset:04X} {text!r} does not fit the spell block tail")
+        result[DGROUP_FILE_BASE + offset : DGROUP_FILE_BASE + offset + len(encoded)] = encoded
+        cursor = offset + len(encoded)
     effect_first, effect_end = EFFECT_BLOCK
     for match in re.finditer(rb"h(..)", image, re.S):
         if DGROUP_FILE_BASE <= match.start() < DGROUP_FILE_END:

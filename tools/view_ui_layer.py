@@ -334,10 +334,26 @@ CREATION_EXE_PATCHES = (
     # so the move count joins the HP row (HP centred 23px left of the card's
     # centre, move 21px right) and the status gets the last row alone.
     (0x01EAEE, "06", "04", "v130 combat card: name row y 6 -> 4"),
+    (0x01EB88, "0C", "10", "v147 combat card: HP row y 12 -> 16, below the Chinese name (drawn 6..15)"),
     (0x01EB8C, "D7 00", "C0 00", "v130 combat card: HP centred 23px left"),
-    (0x01EC13, "12", "16", "v130 combat card: status row y 18 -> 22"),
-    (0x01EC7B, "18", "0B", "v130 combat card: move shares the HP row"),
+    (0x01EC13, "12", "18", "v130/v147 combat card: status row y 18 -> 24 (drawn 26..35, on the bottom edge)"),
+    (0x01EC7B, "18", "0E", "v130/v147 combat card: move shares the HP row (y 14, drawn 16..25)"),
     (0x01EC7F, "D7 00", "EC 00", "v130 combat card: move centred 21px right"),
+    # Look card (overlay 0x5FBEC): name y 16, "LEVEL: %d"/"HD: %d" y 23, the
+    # 0580:0070 lines from y 30 and the status rows at (n+2)*7+16. The Chinese
+    # level line is drawn 2px low, so it moves 4px down and everything after
+    # it 10px, keeping the 7px steps below.
+    (0x05FCAC, "17", "1B", "v143 look card: level row y 23 -> 27"),
+    (0x05FCC9, "1E", "28", "v143 look card: lines after the level y 30 -> 40"),
+    (0x05FD15, "10", "1A", "v143 look card: status rows 10px lower"),
+    (0x05FD3F, "10", "1A", "v143 look card: status rows 10px lower"),
+    # USEABLE BY: lists (ground item card 0x5F5DC, inventory item card
+    # 0x8C1B8): title y 11, names 8px below it and 8px apart. The Chinese
+    # title needs 12px, and 10px steps leave room for Chinese names.
+    (0x05F606, "08", "0C", "v143 ground item card: first user 12px below the title"),
+    (0x05F685, "08", "0A", "v143 ground item card: users 10px apart"),
+    (0x08C1F2, "08", "0C", "v143 item card: first user 12px below the title"),
+    (0x08C25C, "08", "0A", "v143 item card: users 10px apart"),
     # Class list selection diamond rows (far data 0338:019B), the class
     # buttons' y: 10 + 8i in English, 4 + 10i with the Chinese ICONs.
     (0x03E2DB, "0A 00 12 00 1A 00 22 00 2A 00 32 00 3A 00 42 00",

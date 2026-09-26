@@ -19,7 +19,7 @@ values = {}
 for edit in package["edits"]:
     if edit["kind"] == "MAS" and edit["chunk_id"] == 99:
         values[edit["original_offset"]] = (edit["original"].encode("ascii"), edit["encoded_ascii"].encode("ascii"))
-for path in sorted(game.glob("SAVE0*.SAV")) + [game / "DARKRUN.GFF"]:
+for path in sorted(game.glob("SAVE*.SAV")) + [game / "DARKRUN.GFF"]:
     data = bytearray(path.read_bytes())
     base = -1
     for index, source in GSTR_SOURCES.items():

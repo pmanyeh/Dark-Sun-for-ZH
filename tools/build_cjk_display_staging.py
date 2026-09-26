@@ -41,6 +41,7 @@ try:
     )
     from .exe_text_layer import apply_exe_text_patches
     from .intro_scroll_layer import build_intro_scrolls
+    from .creature_name_layer import changed_ranges_are_names, gff_chunks, load_creature_names, patch_segobjex
 except ImportError:
     from cjk_localization_pipeline import (
         DEFAULT_GFF_CAT,
@@ -69,6 +70,7 @@ except ImportError:
     )
     from exe_text_layer import apply_exe_text_patches
     from intro_scroll_layer import build_intro_scrolls
+    from creature_name_layer import changed_ranges_are_names, gff_chunks, load_creature_names, patch_segobjex
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -294,6 +296,25 @@ def set_mouse_autolock(payload: str, enabled: bool) -> str:
     return result
 
 
+def disable_ime(payload: str) -> str:
+    """Turn off the Windows input method inside DOSBox-X.
+
+    With ime=auto, DOSBox-X enables the IME whenever the Windows keyboard
+    layout is Chinese/Japanese/Korean, so hotkeys such as Z/X/D land in the
+    IME composition window instead of the game. ime=false makes DOSBox-X call
+    ImmDisableIME at start-up.
+    """
+    result, count = re.subn(r"(?m)^ime\s*=\s*[^\r\n]*$", "ime=false", payload)
+    if count > 1:
+        raise ValueError("base.conf contains more than one ime setting")
+    if count == 1:
+        return result
+    result, count = re.subn(r"(?m)^\[dosbox\][^\r\n]*$", r"\g<0>\nime=false", payload, count=1)
+    if count != 1:
+        raise ValueError("base.conf does not contain a [dosbox] section")
+    return result
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--game-dir", type=Path, default=DEFAULT_GAME_DIR)
@@ -339,6 +360,11 @@ def main() -> int:
         "--intro-scrolls",
         action="store_true",
         help="Chinese text on the two opening parchment scrolls (CINE.GFF BMA 8/9, intro_scroll_layer.py)",
+    )
+    parser.add_argument(
+        "--creature-names",
+        action="store_true",
+        help="Chinese NPC and monster names in SEGOBJEX.GFF (creature_name_layer.py, creature_names.csv)",
     )
     parser.add_argument("--window-scale", type=int, choices=(1, 2, 3), default=2)
     parser.add_argument(
@@ -438,8 +464,10 @@ def main() -> int:
             shutil.copyfile(config, staging / config.name)
         base_path = staging / "base.conf"
         base_path.write_text(
-            set_mouse_autolock(
-                base_path.read_text(encoding="utf-8"), args.mouse_autolock
+            disable_ime(
+                set_mouse_autolock(
+                    base_path.read_text(encoding="utf-8"), args.mouse_autolock
+                )
             ),
             encoding="utf-8",
         )
@@ -690,6 +718,23 @@ def main() -> int:
                 ),
             }
 
+        creature_verification: dict[str, object] | None = None
+        if args.creature_names:
+            segobjex = game_dir / "SEGOBJEX.GFF"
+            source_segobjex = segobjex.read_bytes()
+            patched_segobjex, renamed = patch_segobjex(
+                source_segobjex, gff_chunks(args.gff_cat, segobjex), load_creature_names(), mapping
+            )
+            if not changed_ranges_are_names(source_segobjex, patched_segobjex, [start for start, *_ in renamed]):
+                raise ValueError("SEGOBJEX.GFF changed outside the creature name fields")
+            (staged_game / "SEGOBJEX.GFF").write_bytes(patched_segobjex)
+            creature_verification = {
+                "source_sha256": sha256(source_segobjex),
+                "patched_sha256": sha256(patched_segobjex),
+                "renamed_records": len(renamed),
+                "distinct_names": len({english for _, _, english, _ in renamed}),
+            }
+
         unchanged_files = 0
         for source in game_dir.iterdir():
             mutable_files = {"DSUN.EXE", "RESOURCE.GFF"}
@@ -697,6 +742,8 @@ def main() -> int:
                 mutable_files.add("GPLDATA.GFF")
             if args.intro_scrolls:
                 mutable_files.add("CINE.GFF")
+            if args.creature_names:
+                mutable_files.add("SEGOBJEX.GFF")
             if not source.is_file() or source.name in mutable_files:
                 continue
             target = staged_game / source.name
@@ -779,6 +826,7 @@ def main() -> int:
                 else None
             ),
             "intro_scrolls": cine_verification,
+            "creature_names": creature_verification,
             "banks": [
                 {"file": filename, "bytes": len(payload), "sha256": sha256(payload)}
                 for _, filename, payload in bank_files

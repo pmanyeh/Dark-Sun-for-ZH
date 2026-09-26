@@ -1,7 +1,7 @@
 import unittest
 from pathlib import Path
 
-from tools.cjk_localization_pipeline import DEFAULT_MAPPING, load_mapping
+from tools.cjk_localization_pipeline import DEFAULT_MAPPING, encode_text, load_mapping
 from tools.exe_text_layer import (
     DGROUP_FILE_BASE,
     MATCHED_STRINGS,
@@ -63,6 +63,28 @@ class ExeTextLayerTests(unittest.TestCase):
                 before = sorted(string_push_sites(image, old) + redirected.get(new, []))
                 after = string_push_sites(patched, new)
                 self.assertEqual(before, after, f"DGROUP:{old:04X}")
+
+    @unittest.skipUnless(PRISTINE.exists(), "requires the original DSUN.EXE")
+    def test_exit_dialog_buttons_point_at_spilled_strings(self):
+        image = PRISTINE.read_bytes()
+        patched = apply_exe_text_patches(image, self.mapping)
+
+        def string_at(offset):
+            start = DGROUP_FILE_BASE + offset
+            return patched[start : patched.index(0, start)]
+
+        # 0x716E4 push ds; push QUIT, 0x716F9 mov ax, SAVE, 0x71711 mov ax, EXIT: SAVE GAME?
+        for site, text in ((0x716E5, "直接離開"), (0x716FA, "存檔並離開"), (0x71713, "離開前要存檔嗎?")):
+            offset = int.from_bytes(patched[site : site + 2], "little")
+            self.assertEqual(string_at(offset), encode_text(text, self.mapping))
+        # Item and look cards: the pushes of USEABLE BY:/NO ONE/LEVEL/2 handed.
+        for site, text in ((0x5F5EE, "可使用者:"), (0x5F69F, "無"), (0x8C1E2, "可使用者:"),
+                           (0x8C274, "無"), (0x5FC93, "等級: %d"), (0x8BE52, "雙手")):
+            offset = int.from_bytes(patched[site : site + 2], "little")
+            self.assertEqual(string_at(offset), encode_text(text, self.mapping), hex(site))
+        # The game menu's own exit/save dialog still uses its untouched copy.
+        self.assertEqual(patched[DGROUP_FILE_BASE + 0xCF0 : DGROUP_FILE_BASE + 0xD1D],
+                         image[DGROUP_FILE_BASE + 0xCF0 : DGROUP_FILE_BASE + 0xD1D])
 
 
 if __name__ == "__main__":
