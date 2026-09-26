@@ -20,10 +20,11 @@
   "sources": [
     "localization\\catalog\\localization_manifest.csv",
     "localization\\catalog\\fixed_ui_labels.csv",
-    "localization\\catalog\\exe_spell_names.csv"
+    "localization\\catalog\\exe_spell_names.csv",
+    "localization\\catalog\\creature_names.csv"
   ],
-  "active_character_count": 3008,
-  "entry_count": 3013,
+  "active_character_count": 3012,
+  "entry_count": 3017,
   "entries": [
     {
       "id": 0,
@@ -102,7 +103,7 @@
       "bank": 0,
       "index": 7,
       "transport_hex": "5E2128",
-      "occurrences": 615,
+      "occurrences": 625,
       "active": true
     },
     {
@@ -142,7 +143,7 @@
       "bank": 0,
       "index": 11,
       "transport_hex": "5E212C",
-      "occurrences": 519,
+      "occurrences": 520,
       "active": true
     },
     {
@@ -152,7 +153,7 @@
       "bank": 0,
       "index": 12,
       "transport_hex": "5E212D",
-      "occurrences": 166,
+      "occurrences": 171,
       "active": true
     },
     {
@@ -172,7 +173,7 @@
       "bank": 0,
       "index": 14,
       "transport_hex": "5E212F",
-      "occurrences": 925,
+      "occurrences": 934,
       "active": true
     },
     {
@@ -212,7 +213,7 @@
       "bank": 0,
       "index": 18,
       "transport_hex": "5E2133",
-      "occurrences": 66,
+      "occurrences": 67,
       "active": true
     },
     {
@@ -262,7 +263,7 @@
       "bank": 0,
       "index": 23,
       "transport_hex": "5E2138",
-      "occurrences": 662,
+      "occurrences": 661,
       "active": true
     },
     {
@@ -272,7 +273,7 @@
       "bank": 0,
       "index": 24,
       "transport_hex": "5E2139",
-      "occurrences": 150,
+      "occurrences": 152,
       "active": true
     },
     {
@@ -302,7 +303,7 @@
       "bank": 0,
       "index": 27,
       "transport_hex": "5E213C",
-      "occurrences": 1342,
+      "occurrences": 1350,
       "active": true
     },
     {
@@ -312,7 +313,7 @@
       "bank": 0,
       "index": 28,
       "transport_hex": "5E213D",
-      "occurrences": 946,
+      "occurrences": 945,
       "active": true
     },
     {
@@ -392,7 +393,7 @@
       "bank": 0,
       "index": 36,
       "transport_hex": "5E2145",
-      "occurrences": 44,
+      "occurrences": 47,
       "active": true
     },
     {
@@ -452,7 +453,7 @@
       "bank": 0,
       "index": 42,
       "transport_hex": "5E214B",
-      "occurrences": 32,
+      "occurrences": 33,
       "active": true
     },
     {
@@ -462,7 +463,7 @@
       "bank": 0,
       "index": 43,
       "transport_hex": "5E214C",
-      "occurrences": 528,
+      "occurrences": 529,
       "active": true
     },
     {
@@ -482,7 +483,7 @@
       "bank": 0,
       "index": 45,
       "transport_hex": "5E214E",
-      "occurrences": 174,
+      "occurrences": 175,
       "active": true
     },
     {
@@ -512,7 +513,7 @@
       "bank": 0,
       "index": 48,
       "transport_hex": "5E2151",
-      "occurrences": 74,
+      "occurrences": 75,
       "active": true
     },
     {
@@ -552,7 +553,7 @@
       "bank": 0,
       "index": 52,
       "transport_hex": "5E2155",
-      "occurrences": 275,
+      "occurrences": 278,
       "active": true
     },
     {
@@ -662,7 +663,7 @@
       "bank": 0,
       "index": 63,
       "transport_hex": "5E2160",
-      "occurrences": 262,
+      "occurrences": 263,
       "active": true
     },
     {
@@ -672,7 +673,7 @@
       "bank": 0,
       "index": 64,
       "transport_hex": "5E2161",
-      "occurrences": 57,
+      "occurrences": 69,
       "active": true
     },
     {
@@ -682,7 +683,7 @@
       "bank": 0,
       "index": 65,
       "transport_hex": "5E2162",
-      "occurrences": 131,
+      "occurrences": 123,
       "active": true
     },
     {
@@ -702,7 +703,7 @@
       "bank": 0,
       "index": 67,
       "transport_hex": "5E2164",
-      "occurrences": 462,
+      "occurrences": 445,
       "active": true
     },
     {
@@ -732,7 +733,7 @@
       "bank": 0,
       "index": 70,
       "transport_hex": "5E2167",
-      "occurrences": 105,
+      "occurrences": 107,
       "active": true
     },
     {
@@ -772,7 +773,7 @@
       "bank": 0,
       "index": 74,
       "transport_hex": "5E216B",
-      "occurrences": 66,
+      "occurrences": 67,
       "active": true
     },
     {
@@ -822,7 +823,7 @@
       "bank": 0,
       "index": 79,
       "transport_hex": "5E2170",
-      "occurrences": 38,
+      "occurrences": 40,
       "active": true
     },
     {
@@ -832,7 +833,7 @@
       "bank": 0,
       "index": 80,
       "transport_hex": "5E2171",
-      "occurrences": 678,
+      "occurrences": 679,
       "active": true
     },
     {
@@ -852,7 +853,7 @@
       "bank": 0,
       "index": 82,
       "transport_hex": "5E2173",
-      "occurrences": 148,
+      "occurrences": 151,
       "active": true
     },
     {
@@ -862,7 +863,7 @@
       "bank": 0,
       "index": 83,
       "transport_hex": "5E2174",
-      "occurrences": 182,
+      "occurrences": 183,
       "active": true
     },
     {
@@ -982,7 +983,7 @@
       "bank": 0,
       "index": 95,
       "transport_hex": "5E2222",
-      "occurrences": 165,
+      "occurrences": 166,
       "active": true
     },
     {
@@ -1012,7 +1013,7 @@
       "bank": 0,
       "index": 98,
       "transport_hex": "5E2225",
-      "occurrences": 259,
+      "occurrences": 261,
       "active": true
     },
     {
@@ -1042,7 +1043,7 @@
       "bank": 0,
       "index": 101,
       "transport_hex": "5E2228",
-      "occurrences": 29,
+      "occurrences": 30,
       "active": true
     },
     {
@@ -1112,7 +1113,7 @@
       "bank": 0,
       "index": 108,
       "transport_hex": "5E222F",
-      "occurrences": 110,
+      "occurrences": 112,
       "active": true
     },
     {
@@ -1122,7 +1123,7 @@
       "bank": 0,
       "index": 109,
       "transport_hex": "5E2230",
-      "occurrences": 188,
+      "occurrences": 195,
       "active": true
     },
     {
@@ -1322,7 +1323,7 @@
       "bank": 0,
       "index": 129,
       "transport_hex": "5E2244",
-      "occurrences": 341,
+      "occurrences": 342,
       "active": true
     },
     {
@@ -1472,7 +1473,7 @@
       "bank": 0,
       "index": 144,
       "transport_hex": "5E2253",
-      "occurrences": 15,
+      "occurrences": 12,
       "active": true
     },
     {
@@ -1502,7 +1503,7 @@
       "bank": 0,
       "index": 147,
       "transport_hex": "5E2256",
-      "occurrences": 86,
+      "occurrences": 87,
       "active": true
     },
     {
@@ -1532,7 +1533,7 @@
       "bank": 0,
       "index": 150,
       "transport_hex": "5E2259",
-      "occurrences": 10,
+      "occurrences": 11,
       "active": true
     },
     {
@@ -1542,7 +1543,7 @@
       "bank": 0,
       "index": 151,
       "transport_hex": "5E225A",
-      "occurrences": 24,
+      "occurrences": 27,
       "active": true
     },
     {
@@ -1622,7 +1623,7 @@
       "bank": 0,
       "index": 159,
       "transport_hex": "5E2262",
-      "occurrences": 212,
+      "occurrences": 214,
       "active": true
     },
     {
@@ -1632,7 +1633,7 @@
       "bank": 0,
       "index": 160,
       "transport_hex": "5E2263",
-      "occurrences": 57,
+      "occurrences": 60,
       "active": true
     },
     {
@@ -1652,7 +1653,7 @@
       "bank": 0,
       "index": 162,
       "transport_hex": "5E2265",
-      "occurrences": 571,
+      "occurrences": 563,
       "active": true
     },
     {
@@ -1702,7 +1703,7 @@
       "bank": 0,
       "index": 167,
       "transport_hex": "5E226A",
-      "occurrences": 32,
+      "occurrences": 40,
       "active": true
     },
     {
@@ -1712,7 +1713,7 @@
       "bank": 0,
       "index": 168,
       "transport_hex": "5E226B",
-      "occurrences": 52,
+      "occurrences": 54,
       "active": true
     },
     {
@@ -1732,7 +1733,7 @@
       "bank": 0,
       "index": 170,
       "transport_hex": "5E226D",
-      "occurrences": 154,
+      "occurrences": 155,
       "active": true
     },
     {
@@ -1742,7 +1743,7 @@
       "bank": 0,
       "index": 171,
       "transport_hex": "5E226E",
-      "occurrences": 273,
+      "occurrences": 274,
       "active": true
     },
     {
@@ -1752,7 +1753,7 @@
       "bank": 0,
       "index": 172,
       "transport_hex": "5E226F",
-      "occurrences": 182,
+      "occurrences": 227,
       "active": true
     },
     {
@@ -1762,7 +1763,7 @@
       "bank": 0,
       "index": 173,
       "transport_hex": "5E2270",
-      "occurrences": 53,
+      "occurrences": 54,
       "active": true
     },
     {
@@ -1842,7 +1843,7 @@
       "bank": 0,
       "index": 181,
       "transport_hex": "5E2278",
-      "occurrences": 541,
+      "occurrences": 542,
       "active": true
     },
     {
@@ -1862,7 +1863,7 @@
       "bank": 0,
       "index": 183,
       "transport_hex": "5E227A",
-      "occurrences": 851,
+      "occurrences": 852,
       "active": true
     },
     {
@@ -1872,7 +1873,7 @@
       "bank": 0,
       "index": 184,
       "transport_hex": "5E227B",
-      "occurrences": 52,
+      "occurrences": 54,
       "active": true
     },
     {
@@ -1902,7 +1903,7 @@
       "bank": 0,
       "index": 187,
       "transport_hex": "5E227E",
-      "occurrences": 9,
+      "occurrences": 8,
       "active": true
     },
     {
@@ -1922,7 +1923,7 @@
       "bank": 0,
       "index": 189,
       "transport_hex": "5E2322",
-      "occurrences": 141,
+      "occurrences": 142,
       "active": true
     },
     {
@@ -1932,7 +1933,7 @@
       "bank": 0,
       "index": 190,
       "transport_hex": "5E2323",
-      "occurrences": 398,
+      "occurrences": 403,
       "active": true
     },
     {
@@ -1952,7 +1953,7 @@
       "bank": 0,
       "index": 192,
       "transport_hex": "5E2325",
-      "occurrences": 31,
+      "occurrences": 26,
       "active": true
     },
     {
@@ -1962,7 +1963,7 @@
       "bank": 0,
       "index": 193,
       "transport_hex": "5E2326",
-      "occurrences": 167,
+      "occurrences": 188,
       "active": true
     },
     {
@@ -1982,7 +1983,7 @@
       "bank": 0,
       "index": 195,
       "transport_hex": "5E2328",
-      "occurrences": 380,
+      "occurrences": 381,
       "active": true
     },
     {
@@ -2012,7 +2013,7 @@
       "bank": 0,
       "index": 198,
       "transport_hex": "5E232B",
-      "occurrences": 186,
+      "occurrences": 313,
       "active": true
     },
     {
@@ -2032,7 +2033,7 @@
       "bank": 0,
       "index": 200,
       "transport_hex": "5E232D",
-      "occurrences": 54,
+      "occurrences": 53,
       "active": true
     },
     {
@@ -2172,7 +2173,7 @@
       "bank": 0,
       "index": 214,
       "transport_hex": "5E233B",
-      "occurrences": 153,
+      "occurrences": 161,
       "active": true
     },
     {
@@ -2192,7 +2193,7 @@
       "bank": 0,
       "index": 216,
       "transport_hex": "5E233D",
-      "occurrences": 73,
+      "occurrences": 74,
       "active": true
     },
     {
@@ -2202,7 +2203,7 @@
       "bank": 0,
       "index": 217,
       "transport_hex": "5E233E",
-      "occurrences": 97,
+      "occurrences": 90,
       "active": true
     },
     {
@@ -2212,7 +2213,7 @@
       "bank": 0,
       "index": 218,
       "transport_hex": "5E233F",
-      "occurrences": 49,
+      "occurrences": 50,
       "active": true
     },
     {
@@ -2272,7 +2273,7 @@
       "bank": 0,
       "index": 224,
       "transport_hex": "5E2345",
-      "occurrences": 29,
+      "occurrences": 30,
       "active": true
     },
     {
@@ -2292,7 +2293,7 @@
       "bank": 0,
       "index": 226,
       "transport_hex": "5E2347",
-      "occurrences": 68,
+      "occurrences": 70,
       "active": true
     },
     {
@@ -2302,7 +2303,7 @@
       "bank": 0,
       "index": 227,
       "transport_hex": "5E2348",
-      "occurrences": 241,
+      "occurrences": 233,
       "active": true
     },
     {
@@ -2332,7 +2333,7 @@
       "bank": 0,
       "index": 230,
       "transport_hex": "5E234B",
-      "occurrences": 166,
+      "occurrences": 169,
       "active": true
     },
     {
@@ -2352,7 +2353,7 @@
       "bank": 0,
       "index": 232,
       "transport_hex": "5E234D",
-      "occurrences": 152,
+      "occurrences": 155,
       "active": true
     },
     {
@@ -2392,7 +2393,7 @@
       "bank": 0,
       "index": 236,
       "transport_hex": "5E2351",
-      "occurrences": 5,
+      "occurrences": 4,
       "active": true
     },
     {
@@ -2472,7 +2473,7 @@
       "bank": 0,
       "index": 244,
       "transport_hex": "5E2359",
-      "occurrences": 14,
+      "occurrences": 15,
       "active": true
     },
     {
@@ -2492,7 +2493,7 @@
       "bank": 0,
       "index": 246,
       "transport_hex": "5E235B",
-      "occurrences": 13,
+      "occurrences": 35,
       "active": true
     },
     {
@@ -2552,7 +2553,7 @@
       "bank": 0,
       "index": 252,
       "transport_hex": "5E2361",
-      "occurrences": 145,
+      "occurrences": 151,
       "active": true
     },
     {
@@ -2582,7 +2583,7 @@
       "bank": 0,
       "index": 255,
       "transport_hex": "5E2364",
-      "occurrences": 92,
+      "occurrences": 96,
       "active": true
     },
     {
@@ -2642,7 +2643,7 @@
       "bank": 1,
       "index": 5,
       "transport_hex": "5E236A",
-      "occurrences": 508,
+      "occurrences": 514,
       "active": true
     },
     {
@@ -2652,7 +2653,7 @@
       "bank": 1,
       "index": 6,
       "transport_hex": "5E236B",
-      "occurrences": 510,
+      "occurrences": 487,
       "active": true
     },
     {
@@ -2702,7 +2703,7 @@
       "bank": 1,
       "index": 11,
       "transport_hex": "5E2370",
-      "occurrences": 19,
+      "occurrences": 20,
       "active": true
     },
     {
@@ -2732,7 +2733,7 @@
       "bank": 1,
       "index": 14,
       "transport_hex": "5E2373",
-      "occurrences": 141,
+      "occurrences": 127,
       "active": true
     },
     {
@@ -2742,7 +2743,7 @@
       "bank": 1,
       "index": 15,
       "transport_hex": "5E2374",
-      "occurrences": 104,
+      "occurrences": 103,
       "active": true
     },
     {
@@ -2762,7 +2763,7 @@
       "bank": 1,
       "index": 17,
       "transport_hex": "5E2376",
-      "occurrences": 55,
+      "occurrences": 78,
       "active": true
     },
     {
@@ -2812,7 +2813,7 @@
       "bank": 1,
       "index": 22,
       "transport_hex": "5E237B",
-      "occurrences": 245,
+      "occurrences": 246,
       "active": true
     },
     {
@@ -2882,7 +2883,7 @@
       "bank": 1,
       "index": 29,
       "transport_hex": "5E2424",
-      "occurrences": 349,
+      "occurrences": 350,
       "active": true
     },
     {
@@ -2922,7 +2923,7 @@
       "bank": 1,
       "index": 33,
       "transport_hex": "5E2428",
-      "occurrences": 459,
+      "occurrences": 458,
       "active": true
     },
     {
@@ -2952,7 +2953,7 @@
       "bank": 1,
       "index": 36,
       "transport_hex": "5E242B",
-      "occurrences": 436,
+      "occurrences": 434,
       "active": true
     },
     {
@@ -3062,7 +3063,7 @@
       "bank": 1,
       "index": 47,
       "transport_hex": "5E2436",
-      "occurrences": 770,
+      "occurrences": 784,
       "active": true
     },
     {
@@ -3072,7 +3073,7 @@
       "bank": 1,
       "index": 48,
       "transport_hex": "5E2437",
-      "occurrences": 60,
+      "occurrences": 64,
       "active": true
     },
     {
@@ -3082,7 +3083,7 @@
       "bank": 1,
       "index": 49,
       "transport_hex": "5E2438",
-      "occurrences": 129,
+      "occurrences": 130,
       "active": true
     },
     {
@@ -3172,7 +3173,7 @@
       "bank": 1,
       "index": 58,
       "transport_hex": "5E2441",
-      "occurrences": 301,
+      "occurrences": 303,
       "active": true
     },
     {
@@ -3292,7 +3293,7 @@
       "bank": 1,
       "index": 70,
       "transport_hex": "5E244D",
-      "occurrences": 96,
+      "occurrences": 97,
       "active": true
     },
     {
@@ -3322,7 +3323,7 @@
       "bank": 1,
       "index": 73,
       "transport_hex": "5E2450",
-      "occurrences": 165,
+      "occurrences": 166,
       "active": true
     },
     {
@@ -3352,7 +3353,7 @@
       "bank": 1,
       "index": 76,
       "transport_hex": "5E2453",
-      "occurrences": 65,
+      "occurrences": 66,
       "active": true
     },
     {
@@ -3432,7 +3433,7 @@
       "bank": 1,
       "index": 84,
       "transport_hex": "5E245B",
-      "occurrences": 355,
+      "occurrences": 343,
       "active": true
     },
     {
@@ -3572,7 +3573,7 @@
       "bank": 1,
       "index": 98,
       "transport_hex": "5E2469",
-      "occurrences": 124,
+      "occurrences": 125,
       "active": true
     },
     {
@@ -3592,7 +3593,7 @@
       "bank": 1,
       "index": 100,
       "transport_hex": "5E246B",
-      "occurrences": 136,
+      "occurrences": 129,
       "active": true
     },
     {
@@ -3612,7 +3613,7 @@
       "bank": 1,
       "index": 102,
       "transport_hex": "5E246D",
-      "occurrences": 118,
+      "occurrences": 120,
       "active": true
     },
     {
@@ -3632,7 +3633,7 @@
       "bank": 1,
       "index": 104,
       "transport_hex": "5E246F",
-      "occurrences": 224,
+      "occurrences": 225,
       "active": true
     },
     {
@@ -3652,7 +3653,7 @@
       "bank": 1,
       "index": 106,
       "transport_hex": "5E2471",
-      "occurrences": 259,
+      "occurrences": 260,
       "active": true
     },
     {
@@ -3682,7 +3683,7 @@
       "bank": 1,
       "index": 109,
       "transport_hex": "5E2474",
-      "occurrences": 8,
+      "occurrences": 7,
       "active": true
     },
     {
@@ -3742,7 +3743,7 @@
       "bank": 1,
       "index": 115,
       "transport_hex": "5E247A",
-      "occurrences": 438,
+      "occurrences": 441,
       "active": true
     },
     {
@@ -3842,7 +3843,7 @@
       "bank": 1,
       "index": 125,
       "transport_hex": "5E2526",
-      "occurrences": 94,
+      "occurrences": 101,
       "active": true
     },
     {
@@ -3882,7 +3883,7 @@
       "bank": 1,
       "index": 129,
       "transport_hex": "5E252A",
-      "occurrences": 156,
+      "occurrences": 164,
       "active": true
     },
     {
@@ -3912,7 +3913,7 @@
       "bank": 1,
       "index": 132,
       "transport_hex": "5E252D",
-      "occurrences": 25,
+      "occurrences": 28,
       "active": true
     },
     {
@@ -4142,7 +4143,7 @@
       "bank": 1,
       "index": 155,
       "transport_hex": "5E2544",
-      "occurrences": 172,
+      "occurrences": 168,
       "active": true
     },
     {
@@ -4202,7 +4203,7 @@
       "bank": 1,
       "index": 161,
       "transport_hex": "5E254A",
-      "occurrences": 207,
+      "occurrences": 210,
       "active": true
     },
     {
@@ -4302,7 +4303,7 @@
       "bank": 1,
       "index": 171,
       "transport_hex": "5E2554",
-      "occurrences": 159,
+      "occurrences": 169,
       "active": true
     },
     {
@@ -4322,7 +4323,7 @@
       "bank": 1,
       "index": 173,
       "transport_hex": "5E2556",
-      "occurrences": 269,
+      "occurrences": 273,
       "active": true
     },
     {
@@ -4392,7 +4393,7 @@
       "bank": 1,
       "index": 180,
       "transport_hex": "5E255D",
-      "occurrences": 146,
+      "occurrences": 148,
       "active": true
     },
     {
@@ -4442,7 +4443,7 @@
       "bank": 1,
       "index": 185,
       "transport_hex": "5E2562",
-      "occurrences": 559,
+      "occurrences": 558,
       "active": true
     },
     {
@@ -4452,7 +4453,7 @@
       "bank": 1,
       "index": 186,
       "transport_hex": "5E2563",
-      "occurrences": 25,
+      "occurrences": 26,
       "active": true
     },
     {
@@ -4462,7 +4463,7 @@
       "bank": 1,
       "index": 187,
       "transport_hex": "5E2564",
-      "occurrences": 65,
+      "occurrences": 69,
       "active": true
     },
     {
@@ -4482,7 +4483,7 @@
       "bank": 1,
       "index": 189,
       "transport_hex": "5E2566",
-      "occurrences": 40,
+      "occurrences": 43,
       "active": true
     },
     {
@@ -4492,7 +4493,7 @@
       "bank": 1,
       "index": 190,
       "transport_hex": "5E2567",
-      "occurrences": 25,
+      "occurrences": 27,
       "active": true
     },
     {
@@ -4512,7 +4513,7 @@
       "bank": 1,
       "index": 192,
       "transport_hex": "5E2569",
-      "occurrences": 250,
+      "occurrences": 251,
       "active": true
     },
     {
@@ -4522,7 +4523,7 @@
       "bank": 1,
       "index": 193,
       "transport_hex": "5E256A",
-      "occurrences": 91,
+      "occurrences": 92,
       "active": true
     },
     {
@@ -4622,7 +4623,7 @@
       "bank": 1,
       "index": 203,
       "transport_hex": "5E2574",
-      "occurrences": 150,
+      "occurrences": 145,
       "active": true
     },
     {
@@ -4662,7 +4663,7 @@
       "bank": 1,
       "index": 207,
       "transport_hex": "5E2578",
-      "occurrences": 123,
+      "occurrences": 127,
       "active": true
     },
     {
@@ -4872,7 +4873,7 @@
       "bank": 1,
       "index": 228,
       "transport_hex": "5E262F",
-      "occurrences": 775,
+      "occurrences": 832,
       "active": true
     },
     {
@@ -4932,7 +4933,7 @@
       "bank": 1,
       "index": 234,
       "transport_hex": "5E2635",
-      "occurrences": 346,
+      "occurrences": 353,
       "active": true
     },
     {
@@ -4962,7 +4963,7 @@
       "bank": 1,
       "index": 237,
       "transport_hex": "5E2638",
-      "occurrences": 110,
+      "occurrences": 112,
       "active": true
     },
     {
@@ -4992,7 +4993,7 @@
       "bank": 1,
       "index": 240,
       "transport_hex": "5E263B",
-      "occurrences": 75,
+      "occurrences": 72,
       "active": true
     },
     {
@@ -5002,7 +5003,7 @@
       "bank": 1,
       "index": 241,
       "transport_hex": "5E263C",
-      "occurrences": 140,
+      "occurrences": 144,
       "active": true
     },
     {
@@ -5142,7 +5143,7 @@
       "bank": 1,
       "index": 255,
       "transport_hex": "5E264A",
-      "occurrences": 98,
+      "occurrences": 99,
       "active": true
     },
     {
@@ -5302,7 +5303,7 @@
       "bank": 2,
       "index": 15,
       "transport_hex": "5E265A",
-      "occurrences": 7494,
+      "occurrences": 7487,
       "active": true
     },
     {
@@ -5352,7 +5353,7 @@
       "bank": 2,
       "index": 20,
       "transport_hex": "5E265F",
-      "occurrences": 26,
+      "occurrences": 27,
       "active": true
     },
     {
@@ -5402,7 +5403,7 @@
       "bank": 2,
       "index": 25,
       "transport_hex": "5E2664",
-      "occurrences": 180,
+      "occurrences": 182,
       "active": true
     },
     {
@@ -5442,7 +5443,7 @@
       "bank": 2,
       "index": 29,
       "transport_hex": "5E2668",
-      "occurrences": 478,
+      "occurrences": 470,
       "active": true
     },
     {
@@ -5472,7 +5473,7 @@
       "bank": 2,
       "index": 32,
       "transport_hex": "5E266B",
-      "occurrences": 189,
+      "occurrences": 190,
       "active": true
     },
     {
@@ -5512,7 +5513,7 @@
       "bank": 2,
       "index": 36,
       "transport_hex": "5E266F",
-      "occurrences": 130,
+      "occurrences": 131,
       "active": true
     },
     {
@@ -5592,7 +5593,7 @@
       "bank": 2,
       "index": 44,
       "transport_hex": "5E2677",
-      "occurrences": 288,
+      "occurrences": 293,
       "active": true
     },
     {
@@ -5672,7 +5673,7 @@
       "bank": 2,
       "index": 52,
       "transport_hex": "5E2721",
-      "occurrences": 18,
+      "occurrences": 20,
       "active": true
     },
     {
@@ -5722,7 +5723,7 @@
       "bank": 2,
       "index": 57,
       "transport_hex": "5E2726",
-      "occurrences": 115,
+      "occurrences": 116,
       "active": true
     },
     {
@@ -5832,7 +5833,7 @@
       "bank": 2,
       "index": 68,
       "transport_hex": "5E2731",
-      "occurrences": 43,
+      "occurrences": 44,
       "active": true
     },
     {
@@ -5862,7 +5863,7 @@
       "bank": 2,
       "index": 71,
       "transport_hex": "5E2734",
-      "occurrences": 171,
+      "occurrences": 174,
       "active": true
     },
     {
@@ -5892,7 +5893,7 @@
       "bank": 2,
       "index": 74,
       "transport_hex": "5E2737",
-      "occurrences": 102,
+      "occurrences": 105,
       "active": true
     },
     {
@@ -5942,7 +5943,7 @@
       "bank": 2,
       "index": 79,
       "transport_hex": "5E273C",
-      "occurrences": 47,
+      "occurrences": 43,
       "active": true
     },
     {
@@ -5952,7 +5953,7 @@
       "bank": 2,
       "index": 80,
       "transport_hex": "5E273D",
-      "occurrences": 63,
+      "occurrences": 75,
       "active": true
     },
     {
@@ -5962,7 +5963,7 @@
       "bank": 2,
       "index": 81,
       "transport_hex": "5E273E",
-      "occurrences": 44,
+      "occurrences": 45,
       "active": true
     },
     {
@@ -6012,7 +6013,7 @@
       "bank": 2,
       "index": 86,
       "transport_hex": "5E2743",
-      "occurrences": 35,
+      "occurrences": 59,
       "active": true
     },
     {
@@ -6042,7 +6043,7 @@
       "bank": 2,
       "index": 89,
       "transport_hex": "5E2746",
-      "occurrences": 31,
+      "occurrences": 29,
       "active": true
     },
     {
@@ -6162,7 +6163,7 @@
       "bank": 2,
       "index": 101,
       "transport_hex": "5E2752",
-      "occurrences": 111,
+      "occurrences": 112,
       "active": true
     },
     {
@@ -6192,7 +6193,7 @@
       "bank": 2,
       "index": 104,
       "transport_hex": "5E2755",
-      "occurrences": 154,
+      "occurrences": 157,
       "active": true
     },
     {
@@ -6202,7 +6203,7 @@
       "bank": 2,
       "index": 105,
       "transport_hex": "5E2756",
-      "occurrences": 385,
+      "occurrences": 400,
       "active": true
     },
     {
@@ -6242,7 +6243,7 @@
       "bank": 2,
       "index": 109,
       "transport_hex": "5E275A",
-      "occurrences": 180,
+      "occurrences": 181,
       "active": true
     },
     {
@@ -6262,7 +6263,7 @@
       "bank": 2,
       "index": 111,
       "transport_hex": "5E275C",
-      "occurrences": 26,
+      "occurrences": 25,
       "active": true
     },
     {
@@ -6322,7 +6323,7 @@
       "bank": 2,
       "index": 117,
       "transport_hex": "5E2762",
-      "occurrences": 1300,
+      "occurrences": 1328,
       "active": true
     },
     {
@@ -6382,7 +6383,7 @@
       "bank": 2,
       "index": 123,
       "transport_hex": "5E2768",
-      "occurrences": 15,
+      "occurrences": 16,
       "active": true
     },
     {
@@ -6492,7 +6493,7 @@
       "bank": 2,
       "index": 134,
       "transport_hex": "5E2773",
-      "occurrences": 73,
+      "occurrences": 74,
       "active": true
     },
     {
@@ -6552,7 +6553,7 @@
       "bank": 2,
       "index": 140,
       "transport_hex": "5E2779",
-      "occurrences": 98,
+      "occurrences": 100,
       "active": true
     },
     {
@@ -6562,7 +6563,7 @@
       "bank": 2,
       "index": 141,
       "transport_hex": "5E277A",
-      "occurrences": 11,
+      "occurrences": 12,
       "active": true
     },
     {
@@ -6572,7 +6573,7 @@
       "bank": 2,
       "index": 142,
       "transport_hex": "5E277B",
-      "occurrences": 37,
+      "occurrences": 40,
       "active": true
     },
     {
@@ -6752,7 +6753,7 @@
       "bank": 2,
       "index": 160,
       "transport_hex": "5E282F",
-      "occurrences": 23,
+      "occurrences": 22,
       "active": true
     },
     {
@@ -6762,7 +6763,7 @@
       "bank": 2,
       "index": 161,
       "transport_hex": "5E2830",
-      "occurrences": 113,
+      "occurrences": 115,
       "active": true
     },
     {
@@ -6772,7 +6773,7 @@
       "bank": 2,
       "index": 162,
       "transport_hex": "5E2831",
-      "occurrences": 103,
+      "occurrences": 105,
       "active": true
     },
     {
@@ -6792,7 +6793,7 @@
       "bank": 2,
       "index": 164,
       "transport_hex": "5E2833",
-      "occurrences": 25,
+      "occurrences": 26,
       "active": true
     },
     {
@@ -6842,7 +6843,7 @@
       "bank": 2,
       "index": 169,
       "transport_hex": "5E2838",
-      "occurrences": 128,
+      "occurrences": 133,
       "active": true
     },
     {
@@ -6882,7 +6883,7 @@
       "bank": 2,
       "index": 173,
       "transport_hex": "5E283C",
-      "occurrences": 320,
+      "occurrences": 329,
       "active": true
     },
     {
@@ -6892,7 +6893,7 @@
       "bank": 2,
       "index": 174,
       "transport_hex": "5E283D",
-      "occurrences": 240,
+      "occurrences": 252,
       "active": true
     },
     {
@@ -6922,7 +6923,7 @@
       "bank": 2,
       "index": 177,
       "transport_hex": "5E2840",
-      "occurrences": 404,
+      "occurrences": 405,
       "active": true
     },
     {
@@ -7002,7 +7003,7 @@
       "bank": 2,
       "index": 185,
       "transport_hex": "5E2848",
-      "occurrences": 181,
+      "occurrences": 183,
       "active": true
     },
     {
@@ -7022,7 +7023,7 @@
       "bank": 2,
       "index": 187,
       "transport_hex": "5E284A",
-      "occurrences": 25,
+      "occurrences": 26,
       "active": true
     },
     {
@@ -7122,7 +7123,7 @@
       "bank": 2,
       "index": 197,
       "transport_hex": "5E2854",
-      "occurrences": 210,
+      "occurrences": 212,
       "active": true
     },
     {
@@ -7162,7 +7163,7 @@
       "bank": 2,
       "index": 201,
       "transport_hex": "5E2858",
-      "occurrences": 27,
+      "occurrences": 28,
       "active": true
     },
     {
@@ -7222,7 +7223,7 @@
       "bank": 2,
       "index": 207,
       "transport_hex": "5E285E",
-      "occurrences": 221,
+      "occurrences": 214,
       "active": true
     },
     {
@@ -7262,7 +7263,7 @@
       "bank": 2,
       "index": 211,
       "transport_hex": "5E2862",
-      "occurrences": 30,
+      "occurrences": 31,
       "active": true
     },
     {
@@ -7372,7 +7373,7 @@
       "bank": 2,
       "index": 222,
       "transport_hex": "5E286D",
-      "occurrences": 37,
+      "occurrences": 39,
       "active": true
     },
     {
@@ -7392,7 +7393,7 @@
       "bank": 2,
       "index": 224,
       "transport_hex": "5E286F",
-      "occurrences": 58,
+      "occurrences": 60,
       "active": true
     },
     {
@@ -7432,7 +7433,7 @@
       "bank": 2,
       "index": 228,
       "transport_hex": "5E2873",
-      "occurrences": 2400,
+      "occurrences": 2399,
       "active": true
     },
     {
@@ -7442,7 +7443,7 @@
       "bank": 2,
       "index": 229,
       "transport_hex": "5E2874",
-      "occurrences": 166,
+      "occurrences": 169,
       "active": true
     },
     {
@@ -7502,7 +7503,7 @@
       "bank": 2,
       "index": 235,
       "transport_hex": "5E287A",
-      "occurrences": 245,
+      "occurrences": 252,
       "active": true
     },
     {
@@ -7622,7 +7623,7 @@
       "bank": 2,
       "index": 247,
       "transport_hex": "5E2928",
-      "occurrences": 73,
+      "occurrences": 117,
       "active": true
     },
     {
@@ -7752,7 +7753,7 @@
       "bank": 3,
       "index": 4,
       "transport_hex": "5E2935",
-      "occurrences": 137,
+      "occurrences": 138,
       "active": true
     },
     {
@@ -7812,7 +7813,7 @@
       "bank": 3,
       "index": 10,
       "transport_hex": "5E293B",
-      "occurrences": 35,
+      "occurrences": 28,
       "active": true
     },
     {
@@ -7892,7 +7893,7 @@
       "bank": 3,
       "index": 18,
       "transport_hex": "5E2943",
-      "occurrences": 242,
+      "occurrences": 246,
       "active": true
     },
     {
@@ -7922,7 +7923,7 @@
       "bank": 3,
       "index": 21,
       "transport_hex": "5E2946",
-      "occurrences": 528,
+      "occurrences": 529,
       "active": true
     },
     {
@@ -7972,7 +7973,7 @@
       "bank": 3,
       "index": 26,
       "transport_hex": "5E294B",
-      "occurrences": 47,
+      "occurrences": 48,
       "active": true
     },
     {
@@ -7992,7 +7993,7 @@
       "bank": 3,
       "index": 28,
       "transport_hex": "5E294D",
-      "occurrences": 113,
+      "occurrences": 117,
       "active": true
     },
     {
@@ -8062,7 +8063,7 @@
       "bank": 3,
       "index": 35,
       "transport_hex": "5E2954",
-      "occurrences": 142,
+      "occurrences": 147,
       "active": true
     },
     {
@@ -8072,7 +8073,7 @@
       "bank": 3,
       "index": 36,
       "transport_hex": "5E2955",
-      "occurrences": 219,
+      "occurrences": 224,
       "active": true
     },
     {
@@ -8102,7 +8103,7 @@
       "bank": 3,
       "index": 39,
       "transport_hex": "5E2958",
-      "occurrences": 190,
+      "occurrences": 191,
       "active": true
     },
     {
@@ -8112,7 +8113,7 @@
       "bank": 3,
       "index": 40,
       "transport_hex": "5E2959",
-      "occurrences": 56,
+      "occurrences": 57,
       "active": true
     },
     {
@@ -8122,7 +8123,7 @@
       "bank": 3,
       "index": 41,
       "transport_hex": "5E295A",
-      "occurrences": 351,
+      "occurrences": 355,
       "active": true
     },
     {
@@ -8142,7 +8143,7 @@
       "bank": 3,
       "index": 43,
       "transport_hex": "5E295C",
-      "occurrences": 62,
+      "occurrences": 63,
       "active": true
     },
     {
@@ -8162,7 +8163,7 @@
       "bank": 3,
       "index": 45,
       "transport_hex": "5E295E",
-      "occurrences": 71,
+      "occurrences": 72,
       "active": true
     },
     {
@@ -8172,7 +8173,7 @@
       "bank": 3,
       "index": 46,
       "transport_hex": "5E295F",
-      "occurrences": 175,
+      "occurrences": 168,
       "active": true
     },
     {
@@ -8182,7 +8183,7 @@
       "bank": 3,
       "index": 47,
       "transport_hex": "5E2960",
-      "occurrences": 291,
+      "occurrences": 292,
       "active": true
     },
     {
@@ -8212,7 +8213,7 @@
       "bank": 3,
       "index": 50,
       "transport_hex": "5E2963",
-      "occurrences": 91,
+      "occurrences": 92,
       "active": true
     },
     {
@@ -8252,7 +8253,7 @@
       "bank": 3,
       "index": 54,
       "transport_hex": "5E2967",
-      "occurrences": 394,
+      "occurrences": 406,
       "active": true
     },
     {
@@ -8282,7 +8283,7 @@
       "bank": 3,
       "index": 57,
       "transport_hex": "5E296A",
-      "occurrences": 305,
+      "occurrences": 313,
       "active": true
     },
     {
@@ -8372,7 +8373,7 @@
       "bank": 3,
       "index": 66,
       "transport_hex": "5E2973",
-      "occurrences": 179,
+      "occurrences": 185,
       "active": true
     },
     {
@@ -8382,7 +8383,7 @@
       "bank": 3,
       "index": 67,
       "transport_hex": "5E2974",
-      "occurrences": 285,
+      "occurrences": 287,
       "active": true
     },
     {
@@ -8412,7 +8413,7 @@
       "bank": 3,
       "index": 70,
       "transport_hex": "5E2977",
-      "occurrences": 83,
+      "occurrences": 85,
       "active": true
     },
     {
@@ -8432,7 +8433,7 @@
       "bank": 3,
       "index": 72,
       "transport_hex": "5E2979",
-      "occurrences": 141,
+      "occurrences": 146,
       "active": true
     },
     {
@@ -8442,7 +8443,7 @@
       "bank": 3,
       "index": 73,
       "transport_hex": "5E297A",
-      "occurrences": 146,
+      "occurrences": 128,
       "active": true
     },
     {
@@ -8482,7 +8483,7 @@
       "bank": 3,
       "index": 77,
       "transport_hex": "5E297E",
-      "occurrences": 92,
+      "occurrences": 97,
       "active": true
     },
     {
@@ -8522,7 +8523,7 @@
       "bank": 3,
       "index": 81,
       "transport_hex": "5E2A24",
-      "occurrences": 99,
+      "occurrences": 101,
       "active": true
     },
     {
@@ -8602,7 +8603,7 @@
       "bank": 3,
       "index": 89,
       "transport_hex": "5E2A2C",
-      "occurrences": 266,
+      "occurrences": 267,
       "active": true
     },
     {
@@ -8642,7 +8643,7 @@
       "bank": 3,
       "index": 93,
       "transport_hex": "5E2A30",
-      "occurrences": 215,
+      "occurrences": 216,
       "active": true
     },
     {
@@ -8652,7 +8653,7 @@
       "bank": 3,
       "index": 94,
       "transport_hex": "5E2A31",
-      "occurrences": 8,
+      "occurrences": 9,
       "active": true
     },
     {
@@ -8742,7 +8743,7 @@
       "bank": 3,
       "index": 103,
       "transport_hex": "5E2A3A",
-      "occurrences": 57,
+      "occurrences": 94,
       "active": true
     },
     {
@@ -8762,7 +8763,7 @@
       "bank": 3,
       "index": 105,
       "transport_hex": "5E2A3C",
-      "occurrences": 20,
+      "occurrences": 21,
       "active": true
     },
     {
@@ -8772,7 +8773,7 @@
       "bank": 3,
       "index": 106,
       "transport_hex": "5E2A3D",
-      "occurrences": 74,
+      "occurrences": 75,
       "active": true
     },
     {
@@ -8782,7 +8783,7 @@
       "bank": 3,
       "index": 107,
       "transport_hex": "5E2A3E",
-      "occurrences": 154,
+      "occurrences": 136,
       "active": true
     },
     {
@@ -8932,7 +8933,7 @@
       "bank": 3,
       "index": 122,
       "transport_hex": "5E2A4D",
-      "occurrences": 203,
+      "occurrences": 210,
       "active": true
     },
     {
@@ -9012,7 +9013,7 @@
       "bank": 3,
       "index": 130,
       "transport_hex": "5E2A55",
-      "occurrences": 8,
+      "occurrences": 9,
       "active": true
     },
     {
@@ -9292,7 +9293,7 @@
       "bank": 3,
       "index": 158,
       "transport_hex": "5E2A71",
-      "occurrences": 16,
+      "occurrences": 17,
       "active": true
     },
     {
@@ -9302,7 +9303,7 @@
       "bank": 3,
       "index": 159,
       "transport_hex": "5E2A72",
-      "occurrences": 533,
+      "occurrences": 534,
       "active": true
     },
     {
@@ -9392,7 +9393,7 @@
       "bank": 3,
       "index": 168,
       "transport_hex": "5E2A7B",
-      "occurrences": 5834,
+      "occurrences": 5833,
       "active": true
     },
     {
@@ -9462,7 +9463,7 @@
       "bank": 3,
       "index": 175,
       "transport_hex": "5E2B24",
-      "occurrences": 116,
+      "occurrences": 117,
       "active": true
     },
     {
@@ -9492,7 +9493,7 @@
       "bank": 3,
       "index": 178,
       "transport_hex": "5E2B27",
-      "occurrences": 20,
+      "occurrences": 18,
       "active": true
     },
     {
@@ -9542,7 +9543,7 @@
       "bank": 3,
       "index": 183,
       "transport_hex": "5E2B2C",
-      "occurrences": 202,
+      "occurrences": 88,
       "active": true
     },
     {
@@ -9592,7 +9593,7 @@
       "bank": 3,
       "index": 188,
       "transport_hex": "5E2B31",
-      "occurrences": 22,
+      "occurrences": 23,
       "active": true
     },
     {
@@ -9702,7 +9703,7 @@
       "bank": 3,
       "index": 199,
       "transport_hex": "5E2B3C",
-      "occurrences": 116,
+      "occurrences": 117,
       "active": true
     },
     {
@@ -9712,7 +9713,7 @@
       "bank": 3,
       "index": 200,
       "transport_hex": "5E2B3D",
-      "occurrences": 12,
+      "occurrences": 10,
       "active": true
     },
     {
@@ -9812,7 +9813,7 @@
       "bank": 3,
       "index": 210,
       "transport_hex": "5E2B47",
-      "occurrences": 23,
+      "occurrences": 24,
       "active": true
     },
     {
@@ -10052,7 +10053,7 @@
       "bank": 3,
       "index": 234,
       "transport_hex": "5E2B5F",
-      "occurrences": 265,
+      "occurrences": 266,
       "active": true
     },
     {
@@ -10062,7 +10063,7 @@
       "bank": 3,
       "index": 235,
       "transport_hex": "5E2B60",
-      "occurrences": 131,
+      "occurrences": 130,
       "active": true
     },
     {
@@ -10072,7 +10073,7 @@
       "bank": 3,
       "index": 236,
       "transport_hex": "5E2B61",
-      "occurrences": 443,
+      "occurrences": 453,
       "active": true
     },
     {
@@ -10222,7 +10223,7 @@
       "bank": 3,
       "index": 251,
       "transport_hex": "5E2B70",
-      "occurrences": 150,
+      "occurrences": 151,
       "active": true
     },
     {
@@ -10312,7 +10313,7 @@
       "bank": 4,
       "index": 4,
       "transport_hex": "5E2B79",
-      "occurrences": 61,
+      "occurrences": 63,
       "active": true
     },
     {
@@ -10392,7 +10393,7 @@
       "bank": 4,
       "index": 12,
       "transport_hex": "5E2C23",
-      "occurrences": 44,
+      "occurrences": 43,
       "active": true
     },
     {
@@ -10652,7 +10653,7 @@
       "bank": 4,
       "index": 38,
       "transport_hex": "5E2C3D",
-      "occurrences": 66,
+      "occurrences": 31,
       "active": true
     },
     {
@@ -10662,7 +10663,7 @@
       "bank": 4,
       "index": 39,
       "transport_hex": "5E2C3E",
-      "occurrences": 66,
+      "occurrences": 67,
       "active": true
     },
     {
@@ -11012,7 +11013,7 @@
       "bank": 4,
       "index": 74,
       "transport_hex": "5E2C61",
-      "occurrences": 28,
+      "occurrences": 29,
       "active": true
     },
     {
@@ -11032,7 +11033,7 @@
       "bank": 4,
       "index": 76,
       "transport_hex": "5E2C63",
-      "occurrences": 40,
+      "occurrences": 41,
       "active": true
     },
     {
@@ -11272,7 +11273,7 @@
       "bank": 4,
       "index": 100,
       "transport_hex": "5E2C7B",
-      "occurrences": 79,
+      "occurrences": 81,
       "active": true
     },
     {
@@ -11352,7 +11353,7 @@
       "bank": 4,
       "index": 108,
       "transport_hex": "5E2D25",
-      "occurrences": 35,
+      "occurrences": 38,
       "active": true
     },
     {
@@ -11392,7 +11393,7 @@
       "bank": 4,
       "index": 112,
       "transport_hex": "5E2D29",
-      "occurrences": 204,
+      "occurrences": 206,
       "active": true
     },
     {
@@ -11402,7 +11403,7 @@
       "bank": 4,
       "index": 113,
       "transport_hex": "5E2D2A",
-      "occurrences": 84,
+      "occurrences": 87,
       "active": true
     },
     {
@@ -11612,7 +11613,7 @@
       "bank": 4,
       "index": 134,
       "transport_hex": "5E2D3F",
-      "occurrences": 61,
+      "occurrences": 62,
       "active": true
     },
     {
@@ -11662,7 +11663,7 @@
       "bank": 4,
       "index": 139,
       "transport_hex": "5E2D44",
-      "occurrences": 135,
+      "occurrences": 136,
       "active": true
     },
     {
@@ -11682,7 +11683,7 @@
       "bank": 4,
       "index": 141,
       "transport_hex": "5E2D46",
-      "occurrences": 19,
+      "occurrences": 20,
       "active": true
     },
     {
@@ -11712,7 +11713,7 @@
       "bank": 4,
       "index": 144,
       "transport_hex": "5E2D49",
-      "occurrences": 280,
+      "occurrences": 275,
       "active": true
     },
     {
@@ -11732,7 +11733,7 @@
       "bank": 4,
       "index": 146,
       "transport_hex": "5E2D4B",
-      "occurrences": 19,
+      "occurrences": 20,
       "active": true
     },
     {
@@ -11932,7 +11933,7 @@
       "bank": 4,
       "index": 166,
       "transport_hex": "5E2D5F",
-      "occurrences": 88,
+      "occurrences": 89,
       "active": true
     },
     {
@@ -11972,7 +11973,7 @@
       "bank": 4,
       "index": 170,
       "transport_hex": "5E2D63",
-      "occurrences": 25,
+      "occurrences": 26,
       "active": true
     },
     {
@@ -11982,7 +11983,7 @@
       "bank": 4,
       "index": 171,
       "transport_hex": "5E2D64",
-      "occurrences": 60,
+      "occurrences": 61,
       "active": true
     },
     {
@@ -11992,7 +11993,7 @@
       "bank": 4,
       "index": 172,
       "transport_hex": "5E2D65",
-      "occurrences": 63,
+      "occurrences": 65,
       "active": true
     },
     {
@@ -12062,7 +12063,7 @@
       "bank": 4,
       "index": 179,
       "transport_hex": "5E2D6C",
-      "occurrences": 241,
+      "occurrences": 242,
       "active": true
     },
     {
@@ -12222,7 +12223,7 @@
       "bank": 4,
       "index": 195,
       "transport_hex": "5E2D7C",
-      "occurrences": 74,
+      "occurrences": 75,
       "active": true
     },
     {
@@ -12282,7 +12283,7 @@
       "bank": 4,
       "index": 201,
       "transport_hex": "5E2E24",
-      "occurrences": 109,
+      "occurrences": 110,
       "active": true
     },
     {
@@ -12382,7 +12383,7 @@
       "bank": 4,
       "index": 211,
       "transport_hex": "5E2E2E",
-      "occurrences": 220,
+      "occurrences": 221,
       "active": true
     },
     {
@@ -12392,7 +12393,7 @@
       "bank": 4,
       "index": 212,
       "transport_hex": "5E2E2F",
-      "occurrences": 94,
+      "occurrences": 95,
       "active": true
     },
     {
@@ -12432,7 +12433,7 @@
       "bank": 4,
       "index": 216,
       "transport_hex": "5E2E33",
-      "occurrences": 17,
+      "occurrences": 19,
       "active": true
     },
     {
@@ -12502,7 +12503,7 @@
       "bank": 4,
       "index": 223,
       "transport_hex": "5E2E3A",
-      "occurrences": 46,
+      "occurrences": 47,
       "active": true
     },
     {
@@ -12612,7 +12613,7 @@
       "bank": 4,
       "index": 234,
       "transport_hex": "5E2E45",
-      "occurrences": 102,
+      "occurrences": 111,
       "active": true
     },
     {
@@ -12762,7 +12763,7 @@
       "bank": 4,
       "index": 249,
       "transport_hex": "5E2E54",
-      "occurrences": 1368,
+      "occurrences": 1367,
       "active": true
     },
     {
@@ -12822,7 +12823,7 @@
       "bank": 4,
       "index": 255,
       "transport_hex": "5E2E5A",
-      "occurrences": 49,
+      "occurrences": 51,
       "active": true
     },
     {
@@ -12882,7 +12883,7 @@
       "bank": 5,
       "index": 5,
       "transport_hex": "5E2E60",
-      "occurrences": 63,
+      "occurrences": 65,
       "active": true
     },
     {
@@ -12992,7 +12993,7 @@
       "bank": 5,
       "index": 16,
       "transport_hex": "5E2E6B",
-      "occurrences": 86,
+      "occurrences": 124,
       "active": true
     },
     {
@@ -13122,7 +13123,7 @@
       "bank": 5,
       "index": 29,
       "transport_hex": "5E2E78",
-      "occurrences": 27,
+      "occurrences": 29,
       "active": true
     },
     {
@@ -13242,7 +13243,7 @@
       "bank": 5,
       "index": 41,
       "transport_hex": "5E2F26",
-      "occurrences": 19,
+      "occurrences": 20,
       "active": true
     },
     {
@@ -13262,7 +13263,7 @@
       "bank": 5,
       "index": 43,
       "transport_hex": "5E2F28",
-      "occurrences": 61,
+      "occurrences": 58,
       "active": true
     },
     {
@@ -13272,7 +13273,7 @@
       "bank": 5,
       "index": 44,
       "transport_hex": "5E2F29",
-      "occurrences": 4,
+      "occurrences": 5,
       "active": true
     },
     {
@@ -13282,7 +13283,7 @@
       "bank": 5,
       "index": 45,
       "transport_hex": "5E2F2A",
-      "occurrences": 30,
+      "occurrences": 31,
       "active": true
     },
     {
@@ -13312,7 +13313,7 @@
       "bank": 5,
       "index": 48,
       "transport_hex": "5E2F2D",
-      "occurrences": 57,
+      "occurrences": 59,
       "active": true
     },
     {
@@ -13352,7 +13353,7 @@
       "bank": 5,
       "index": 52,
       "transport_hex": "5E2F31",
-      "occurrences": 80,
+      "occurrences": 81,
       "active": true
     },
     {
@@ -13382,7 +13383,7 @@
       "bank": 5,
       "index": 55,
       "transport_hex": "5E2F34",
-      "occurrences": 23,
+      "occurrences": 25,
       "active": true
     },
     {
@@ -13492,7 +13493,7 @@
       "bank": 5,
       "index": 66,
       "transport_hex": "5E2F3F",
-      "occurrences": 29,
+      "occurrences": 30,
       "active": true
     },
     {
@@ -13542,7 +13543,7 @@
       "bank": 5,
       "index": 71,
       "transport_hex": "5E2F44",
-      "occurrences": 162,
+      "occurrences": 163,
       "active": true
     },
     {
@@ -13552,7 +13553,7 @@
       "bank": 5,
       "index": 72,
       "transport_hex": "5E2F45",
-      "occurrences": 35,
+      "occurrences": 38,
       "active": true
     },
     {
@@ -13562,7 +13563,7 @@
       "bank": 5,
       "index": 73,
       "transport_hex": "5E2F46",
-      "occurrences": 28,
+      "occurrences": 30,
       "active": true
     },
     {
@@ -13572,7 +13573,7 @@
       "bank": 5,
       "index": 74,
       "transport_hex": "5E2F47",
-      "occurrences": 80,
+      "occurrences": 92,
       "active": true
     },
     {
@@ -13582,7 +13583,7 @@
       "bank": 5,
       "index": 75,
       "transport_hex": "5E2F48",
-      "occurrences": 20,
+      "occurrences": 21,
       "active": true
     },
     {
@@ -13602,7 +13603,7 @@
       "bank": 5,
       "index": 77,
       "transport_hex": "5E2F4A",
-      "occurrences": 13,
+      "occurrences": 14,
       "active": true
     },
     {
@@ -13612,7 +13613,7 @@
       "bank": 5,
       "index": 78,
       "transport_hex": "5E2F4B",
-      "occurrences": 46,
+      "occurrences": 50,
       "active": true
     },
     {
@@ -13682,7 +13683,7 @@
       "bank": 5,
       "index": 85,
       "transport_hex": "5E2F52",
-      "occurrences": 88,
+      "occurrences": 90,
       "active": true
     },
     {
@@ -13802,7 +13803,7 @@
       "bank": 5,
       "index": 97,
       "transport_hex": "5E2F5E",
-      "occurrences": 209,
+      "occurrences": 201,
       "active": true
     },
     {
@@ -14082,7 +14083,7 @@
       "bank": 5,
       "index": 125,
       "transport_hex": "5E2F7A",
-      "occurrences": 42,
+      "occurrences": 43,
       "active": true
     },
     {
@@ -14262,7 +14263,7 @@
       "bank": 5,
       "index": 143,
       "transport_hex": "5E302E",
-      "occurrences": 8,
+      "occurrences": 10,
       "active": true
     },
     {
@@ -14342,7 +14343,7 @@
       "bank": 5,
       "index": 151,
       "transport_hex": "5E3036",
-      "occurrences": 39,
+      "occurrences": 42,
       "active": true
     },
     {
@@ -14372,7 +14373,7 @@
       "bank": 5,
       "index": 154,
       "transport_hex": "5E3039",
-      "occurrences": 6,
+      "occurrences": 7,
       "active": true
     },
     {
@@ -14552,7 +14553,7 @@
       "bank": 5,
       "index": 172,
       "transport_hex": "5E304B",
-      "occurrences": 40,
+      "occurrences": 32,
       "active": true
     },
     {
@@ -14762,7 +14763,7 @@
       "bank": 5,
       "index": 193,
       "transport_hex": "5E3060",
-      "occurrences": 125,
+      "occurrences": 126,
       "active": true
     },
     {
@@ -14792,7 +14793,7 @@
       "bank": 5,
       "index": 196,
       "transport_hex": "5E3063",
-      "occurrences": 23,
+      "occurrences": 24,
       "active": true
     },
     {
@@ -14982,7 +14983,7 @@
       "bank": 5,
       "index": 215,
       "transport_hex": "5E3076",
-      "occurrences": 55,
+      "occurrences": 64,
       "active": true
     },
     {
@@ -15022,7 +15023,7 @@
       "bank": 5,
       "index": 219,
       "transport_hex": "5E307A",
-      "occurrences": 40,
+      "occurrences": 42,
       "active": true
     },
     {
@@ -15082,7 +15083,7 @@
       "bank": 5,
       "index": 225,
       "transport_hex": "5E3122",
-      "occurrences": 53,
+      "occurrences": 54,
       "active": true
     },
     {
@@ -15102,7 +15103,7 @@
       "bank": 5,
       "index": 227,
       "transport_hex": "5E3124",
-      "occurrences": 18,
+      "occurrences": 19,
       "active": true
     },
     {
@@ -15132,7 +15133,7 @@
       "bank": 5,
       "index": 230,
       "transport_hex": "5E3127",
-      "occurrences": 105,
+      "occurrences": 109,
       "active": true
     },
     {
@@ -15232,7 +15233,7 @@
       "bank": 5,
       "index": 240,
       "transport_hex": "5E3131",
-      "occurrences": 85,
+      "occurrences": 87,
       "active": true
     },
     {
@@ -15432,7 +15433,7 @@
       "bank": 6,
       "index": 4,
       "transport_hex": "5E3145",
-      "occurrences": 48,
+      "occurrences": 51,
       "active": true
     },
     {
@@ -15612,7 +15613,7 @@
       "bank": 6,
       "index": 22,
       "transport_hex": "5E3157",
-      "occurrences": 120,
+      "occurrences": 126,
       "active": true
     },
     {
@@ -15632,7 +15633,7 @@
       "bank": 6,
       "index": 24,
       "transport_hex": "5E3159",
-      "occurrences": 176,
+      "occurrences": 185,
       "active": true
     },
     {
@@ -15962,7 +15963,7 @@
       "bank": 6,
       "index": 57,
       "transport_hex": "5E317A",
-      "occurrences": 25,
+      "occurrences": 26,
       "active": true
     },
     {
@@ -16022,7 +16023,7 @@
       "bank": 6,
       "index": 63,
       "transport_hex": "5E3222",
-      "occurrences": 38,
+      "occurrences": 39,
       "active": true
     },
     {
@@ -16662,7 +16663,7 @@
       "bank": 6,
       "index": 127,
       "transport_hex": "5E3262",
-      "occurrences": 26,
+      "occurrences": 27,
       "active": true
     },
     {
@@ -16702,7 +16703,7 @@
       "bank": 6,
       "index": 131,
       "transport_hex": "5E3266",
-      "occurrences": 74,
+      "occurrences": 28,
       "active": true
     },
     {
@@ -16822,7 +16823,7 @@
       "bank": 6,
       "index": 143,
       "transport_hex": "5E3272",
-      "occurrences": 12,
+      "occurrences": 11,
       "active": true
     },
     {
@@ -16952,7 +16953,7 @@
       "bank": 6,
       "index": 156,
       "transport_hex": "5E3321",
-      "occurrences": 30,
+      "occurrences": 31,
       "active": true
     },
     {
@@ -17032,7 +17033,7 @@
       "bank": 6,
       "index": 164,
       "transport_hex": "5E3329",
-      "occurrences": 14,
+      "occurrences": 13,
       "active": true
     },
     {
@@ -17162,7 +17163,7 @@
       "bank": 6,
       "index": 177,
       "transport_hex": "5E3336",
-      "occurrences": 10,
+      "occurrences": 11,
       "active": true
     },
     {
@@ -17402,7 +17403,7 @@
       "bank": 6,
       "index": 201,
       "transport_hex": "5E334E",
-      "occurrences": 16,
+      "occurrences": 17,
       "active": true
     },
     {
@@ -17692,7 +17693,7 @@
       "bank": 6,
       "index": 230,
       "transport_hex": "5E336B",
-      "occurrences": 28,
+      "occurrences": 29,
       "active": true
     },
     {
@@ -18062,7 +18063,7 @@
       "bank": 7,
       "index": 11,
       "transport_hex": "5E3432",
-      "occurrences": 158,
+      "occurrences": 160,
       "active": true
     },
     {
@@ -18262,7 +18263,7 @@
       "bank": 7,
       "index": 31,
       "transport_hex": "5E3446",
-      "occurrences": 4,
+      "occurrences": 5,
       "active": true
     },
     {
@@ -18542,7 +18543,7 @@
       "bank": 7,
       "index": 59,
       "transport_hex": "5E3462",
-      "occurrences": 24,
+      "occurrences": 30,
       "active": true
     },
     {
@@ -18552,7 +18553,7 @@
       "bank": 7,
       "index": 60,
       "transport_hex": "5E3463",
-      "occurrences": 83,
+      "occurrences": 87,
       "active": true
     },
     {
@@ -18562,7 +18563,7 @@
       "bank": 7,
       "index": 61,
       "transport_hex": "5E3464",
-      "occurrences": 25,
+      "occurrences": 26,
       "active": true
     },
     {
@@ -18612,7 +18613,7 @@
       "bank": 7,
       "index": 66,
       "transport_hex": "5E3469",
-      "occurrences": 20,
+      "occurrences": 21,
       "active": true
     },
     {
@@ -18862,7 +18863,7 @@
       "bank": 7,
       "index": 91,
       "transport_hex": "5E3524",
-      "occurrences": 6,
+      "occurrences": 7,
       "active": true
     },
     {
@@ -18872,7 +18873,7 @@
       "bank": 7,
       "index": 92,
       "transport_hex": "5E3525",
-      "occurrences": 55,
+      "occurrences": 56,
       "active": true
     },
     {
@@ -18902,7 +18903,7 @@
       "bank": 7,
       "index": 95,
       "transport_hex": "5E3528",
-      "occurrences": 46,
+      "occurrences": 48,
       "active": true
     },
     {
@@ -19162,7 +19163,7 @@
       "bank": 7,
       "index": 121,
       "transport_hex": "5E3542",
-      "occurrences": 194,
+      "occurrences": 198,
       "active": true
     },
     {
@@ -19362,7 +19363,7 @@
       "bank": 7,
       "index": 141,
       "transport_hex": "5E3556",
-      "occurrences": 175,
+      "occurrences": 218,
       "active": true
     },
     {
@@ -19492,7 +19493,7 @@
       "bank": 7,
       "index": 154,
       "transport_hex": "5E3563",
-      "occurrences": 2,
+      "occurrences": 4,
       "active": true
     },
     {
@@ -19502,7 +19503,7 @@
       "bank": 7,
       "index": 155,
       "transport_hex": "5E3564",
-      "occurrences": 55,
+      "occurrences": 56,
       "active": true
     },
     {
@@ -19532,7 +19533,7 @@
       "bank": 7,
       "index": 158,
       "transport_hex": "5E3567",
-      "occurrences": 26,
+      "occurrences": 28,
       "active": true
     },
     {
@@ -20102,7 +20103,7 @@
       "bank": 7,
       "index": 215,
       "transport_hex": "5E3642",
-      "occurrences": 24,
+      "occurrences": 53,
       "active": true
     },
     {
@@ -20252,7 +20253,7 @@
       "bank": 7,
       "index": 230,
       "transport_hex": "5E3651",
-      "occurrences": 27,
+      "occurrences": 28,
       "active": true
     },
     {
@@ -20432,7 +20433,7 @@
       "bank": 7,
       "index": 248,
       "transport_hex": "5E3663",
-      "occurrences": 36,
+      "occurrences": 37,
       "active": true
     },
     {
@@ -20492,7 +20493,7 @@
       "bank": 7,
       "index": 254,
       "transport_hex": "5E3669",
-      "occurrences": 49,
+      "occurrences": 42,
       "active": true
     },
     {
@@ -20522,7 +20523,7 @@
       "bank": 8,
       "index": 1,
       "transport_hex": "5E366C",
-      "occurrences": 152,
+      "occurrences": 153,
       "active": true
     },
     {
@@ -21192,7 +21193,7 @@
       "bank": 8,
       "index": 68,
       "transport_hex": "5E3751",
-      "occurrences": 18,
+      "occurrences": 12,
       "active": true
     },
     {
@@ -21212,7 +21213,7 @@
       "bank": 8,
       "index": 70,
       "transport_hex": "5E3753",
-      "occurrences": 4,
+      "occurrences": 5,
       "active": true
     },
     {
@@ -21452,7 +21453,7 @@
       "bank": 8,
       "index": 94,
       "transport_hex": "5E376B",
-      "occurrences": 48,
+      "occurrences": 50,
       "active": true
     },
     {
@@ -22072,7 +22073,7 @@
       "bank": 8,
       "index": 156,
       "transport_hex": "5E384B",
-      "occurrences": 10,
+      "occurrences": 11,
       "active": true
     },
     {
@@ -22102,7 +22103,7 @@
       "bank": 8,
       "index": 159,
       "transport_hex": "5E384E",
-      "occurrences": 10,
+      "occurrences": 16,
       "active": true
     },
     {
@@ -22112,7 +22113,7 @@
       "bank": 8,
       "index": 160,
       "transport_hex": "5E384F",
-      "occurrences": 10,
+      "occurrences": 16,
       "active": true
     },
     {
@@ -22282,7 +22283,7 @@
       "bank": 8,
       "index": 177,
       "transport_hex": "5E3860",
-      "occurrences": 26,
+      "occurrences": 27,
       "active": true
     },
     {
@@ -22312,7 +22313,7 @@
       "bank": 8,
       "index": 180,
       "transport_hex": "5E3863",
-      "occurrences": 6,
+      "occurrences": 7,
       "active": true
     },
     {
@@ -22352,7 +22353,7 @@
       "bank": 8,
       "index": 184,
       "transport_hex": "5E3867",
-      "occurrences": 15,
+      "occurrences": 14,
       "active": true
     },
     {
@@ -22842,7 +22843,7 @@
       "bank": 8,
       "index": 233,
       "transport_hex": "5E393A",
-      "occurrences": 12,
+      "occurrences": 13,
       "active": true
     },
     {
@@ -22862,7 +22863,7 @@
       "bank": 8,
       "index": 235,
       "transport_hex": "5E393C",
-      "occurrences": 10,
+      "occurrences": 11,
       "active": true
     },
     {
@@ -23152,7 +23153,7 @@
       "bank": 9,
       "index": 8,
       "transport_hex": "5E3959",
-      "occurrences": 7,
+      "occurrences": 8,
       "active": true
     },
     {
@@ -24512,7 +24513,7 @@
       "bank": 9,
       "index": 144,
       "transport_hex": "5E3B25",
-      "occurrences": 15,
+      "occurrences": 16,
       "active": true
     },
     {
@@ -26122,7 +26123,7 @@
       "bank": 10,
       "index": 49,
       "transport_hex": "5E3C68",
-      "occurrences": 5,
+      "occurrences": 1,
       "active": true
     },
     {
@@ -26552,7 +26553,7 @@
       "bank": 10,
       "index": 92,
       "transport_hex": "5E3D35",
-      "occurrences": 44,
+      "occurrences": 45,
       "active": true
     },
     {
@@ -27132,7 +27133,7 @@
       "bank": 10,
       "index": 150,
       "transport_hex": "5E3D6F",
-      "occurrences": 5,
+      "occurrences": 6,
       "active": true
     },
     {
@@ -27452,7 +27453,7 @@
       "bank": 10,
       "index": 182,
       "transport_hex": "5E3E31",
-      "occurrences": 16,
+      "occurrences": 18,
       "active": true
     },
     {
@@ -27812,7 +27813,7 @@
       "bank": 10,
       "index": 218,
       "transport_hex": "5E3E55",
-      "occurrences": 4,
+      "occurrences": 5,
       "active": true
     },
     {
@@ -29982,7 +29983,7 @@
       "bank": 11,
       "index": 179,
       "transport_hex": "5E4072",
-      "occurrences": 2,
+      "occurrences": 3,
       "active": true
     },
     {
@@ -30052,7 +30053,7 @@
       "bank": 11,
       "index": 186,
       "transport_hex": "5E4079",
-      "occurrences": 1,
+      "occurrences": 3,
       "active": true
     },
     {
@@ -30153,6 +30154,46 @@
       "index": 196,
       "transport_hex": "5E4125",
       "occurrences": 2,
+      "active": true
+    },
+    {
+      "id": 3013,
+      "character": "尉",
+      "unicode": "U+5C09",
+      "bank": 11,
+      "index": 197,
+      "transport_hex": "5E4126",
+      "occurrences": 1,
+      "active": true
+    },
+    {
+      "id": 3014,
+      "character": "歐",
+      "unicode": "U+6B50",
+      "bank": 11,
+      "index": 198,
+      "transport_hex": "5E4127",
+      "occurrences": 1,
+      "active": true
+    },
+    {
+      "id": 3015,
+      "character": "翠",
+      "unicode": "U+7FE0",
+      "bank": 11,
+      "index": 199,
+      "transport_hex": "5E4128",
+      "occurrences": 1,
+      "active": true
+    },
+    {
+      "id": 3016,
+      "character": "皈",
+      "unicode": "U+7688",
+      "bank": 11,
+      "index": 200,
+      "transport_hex": "5E4129",
+      "occurrences": 1,
       "active": true
     }
   ]

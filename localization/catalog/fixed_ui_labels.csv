@@ -25,7 +25,7 @@ UI_race_half_elf,fixed_ui,HALF-ELF,半精靈,translated,True,1,
 UI_race_half_giant,fixed_ui,HALF-GIANT,半巨人,translated,True,1,
 UI_race_halfling,fixed_ui,HALFLING,半身人,translated,True,1,
 UI_race_mul,fixed_ui,MUL,穆爾人,translated,True,1,
-UI_race_thri_kreen,fixed_ui,THRI-KREEN,螳螂戰士,translated,True,1,
+UI_race_thri_kreen,fixed_ui,THRI-KREEN,螳螂人,translated,True,1,
 UI_alignment_lg,fixed_ui,LAWFUL GOOD,守序善良,translated,True,1,exactly 4 characters
 UI_alignment_ln,fixed_ui,LAWFUL NEUTRAL,守序中立,translated,True,1,exactly 4 characters
 UI_alignment_le,fixed_ui,LAWFUL EVIL,守序邪惡,translated,True,1,exactly 4 characters
