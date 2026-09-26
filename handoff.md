@@ -1,13 +1,22 @@
 # 《浩劫殘陽：破碎大地》(Dark Sun: Shattered Lands) 繁中化交接指南 (handoff.md)
 
-> **更新時間**：2026-09-26（v139～v140 片頭兩張羊皮紙中文化完成）
+> **更新時間**：2026-09-27（v146 補齊漏掉的 44 個生物名字、戰鬥資訊卡下移 1px）
 > **用途**：新 Session 的 AI 助手先讀這份文件，就能接手工作。依序讀第 0、1 節，其餘各節需要時再查。
 
 ---
 
 ## 0. 現況
 
-- **最新版本**：`scratch_test/cjk_display_staging_v140_intro_scrolls_fixed`（2026-09-26）：v138 ＋ 片頭兩張羊皮紙中文化
+- **最新版本**：`scratch_test/cjk_display_staging_v147_combat_card`（2026-09-27）：v146 ＋ 戰鬥資訊卡再下移（v146 實測 4 字名字仍與第二行重疊）：生命 y 16、移動 y 14（中文畫在 16～25）、狀態 y 24（26～35，壓到下緣，使用者同意）。名字已貼上緣不能再上移。戰鬥資訊卡已實機確認不再重疊（使用者 2026-09-27）；v141～v146 的其他項目仍待確認（見 1.1）。
+- v146：`scratch_test/cjk_display_staging_v146_creature_names2`（2026-09-27）：v145 ＋ 補齊 44 個生物名字（v145 只認 `47 00 3a 00` 標頭，漏掉 `00 00`／`01 00` 的，例如 Slig；共 261 筆、184 個名字）、Magera＝瑪格拉族、女王＝琪斯瑪通克、巴爾卡札影（使用者 2026-09-27 決定），對話另統一 84 條；戰鬥資訊卡生命／移動列 y 12→13、狀態列 22→23（使用者要求，避免與中文名字重疊）。字型 bank v24（新增「皈」）、對話封包 v13，**還沒實機測試**。
+- v145：`scratch_test/cjk_display_staging_v145_creature_names`（2026-09-27）：v144 ＋ 生物／NPC 名字（SEGOBJEX.GFF 186 筆、140 個名字，`--creature-names`，`tools/creature_name_layer.py`），字型 bank v23（新增尉、歐、翠）、對話封包 v12，**還沒實機測試**。存檔已用 `patch_save_creature_names.py` 改好。
+- v144：`scratch_test/cjk_display_staging_v144_unified_terms`（2026-09-26）：v143 ＋ 全資源名詞統一（399 個條目依權威檔 v5.5 改寫，`tools/unify_glossary_terms.py`；對話封包 v11、SPIN 封包 v5），**還沒實機測試**。
+  要特別確認：用舊存檔讀檔後，跟目前區域的 NPC 對話、進出區域都正常（驗證存檔不存觸發器位址，見 3.8）。
+- v143：`scratch_test/cjk_display_staging_v143_info_cards`：v142 ＋ 物品卡與觀察卡的 EXE 文字（可使用者:／無／生命骰／等級／雙手／沉重／防禦加成）與行距，**還沒實機測試**。生物名字還是英文，見 1.2.2。
+- v142：`scratch_test/cjk_display_staging_v142_exit_dialog_text`：v141 ＋ ESC 離開對話框譯文改成「離開前要存檔嗎?」／「存檔並離開」／「直接離開」，**還沒實機測試**。
+  - 使用者回報「ESC → 存檔後閃退」：原版設計就是存檔後離開（`0x7173A` 設 `DS:54FE`，存檔畫面 `0x74D33` 看到就結束遊戲），autoexec 的 `exit` 再把 DOSBox 關掉。v134 把 `EXIT: SAVE GAME?` 譯成「要存檔嗎?」才造成誤會。使用者決定只改譯文、不改行為（2026-09-26）。平常存檔用 `F1` 或遊戲選單。
+- v141：`scratch_test/cjk_display_staging_v141_no_ime`：v140 ＋ 啟動時停用中文輸入法（`base.conf` 的 `[dosbox]` 加 `ime=false`），**還沒實機測試**。
+- v140：`scratch_test/cjk_display_staging_v140_intro_scrolls_fixed`（2026-09-26）：v138 ＋ 片頭兩張羊皮紙中文化
   （CINE.GFF `BMA 8`／`BMA 9`，`--intro-scrolls`，re_107），已實機確認（使用者 2026-09-26）。
   v139 會在第一張羊皮紙後當掉（影格 0 變長），可以刪掉。
 - v138：v136 ＋ BUTN 按鈕文字（丟棄／拆分／更多／賣出／資訊／離開，
@@ -38,7 +47,7 @@
   - 創角畫面（CREATE CHARACTERS → NEW）左下的資料區：屬性、性別種族、陣營、職業、防禦，並新增生命／靈能標籤（v123，re_105）。
   - 創角畫面右側的職業清單、靈能分類、神術領域與切換鈕（ICON 圖片重畫，v127，re_105 §6）。
   - 戰鬥右上角資訊卡：狀態（正常／70 種效果名稱）、「移動:%d」，並重新排版（v130，re_106）。
-  - 遊戲選單、提示列、離開對話框、頭像選單、裝備欄、背包按鈕文字（v133～v138）。
+  - 遊戲選單、提示列、離開對話框、頭像選單、裝備欄、背包按鈕文字（v133～v138）。ESC 離開對話框譯文 v142 修正。
   - 片頭兩張羊皮紙（圖片重畫，微軟正黑體粗體反鋸齒，v140，re_107）。
 - **操作改良（v107～v117，re_104）**：
   - 遊標模式熱鍵（v121 起）：`Z`＝攻擊、`X`＝觀察、`D`＝行走。原版的 `A`（動畫開關）、空白鍵、除錯鍵都已還原。
@@ -70,6 +79,16 @@
 
 ### 1.1 下次開遊戲先確認
 
+- v145：觀察卡上 NPC／敵人的中文名字；戰鬥右上資訊卡的名字；「%Fs被魅惑」等訊息；舊存檔讀進來後，目前區域和去過的區域的生物是否都是中文。入隊角色（Gerakis 等）應維持英文。
+  靜態分析：EXE 35 處讀名字的地方，一般生物只會經過觀察卡、戰鬥資訊卡、訊息框（都會解碼）；其餘都是隊員專用（`[0x25B]`、`[0x369]`，背包／VIEW／提示列／升級），入隊角色不翻所以不受影響。`191F:1547`（依物件編號取名字）找不到呼叫者。若出現亂碼，先查是哪個畫面。
+
+- v143：觀察卡（觀察遊標點 NPC／敵人）的「等級: 3」有沒有和名字重疊、狀態列位置；物品卡的「雙手 木製」、「可使用者:」名單（第一個名字下移 12px、每行 10px）；地上物品的觀察卡同樣有可使用者名單。
+  觀察卡 `0580:0070` 畫的內容（y 30→40）還不知道是什麼，要實際看。
+
+- v142：ESC 離開對話框的按鈕「存檔並離開」（5 字）有沒有被切掉或超出框；戰鬥中按 ESC 應該只有「離開遊戲?」和兩個按鈕。
+  遊戲選單「離開遊戲」圖示叫出的是另一份同樣的對話框（DGROUP `0CF0`），仍是英文；它的 `SAVE`（`0D0C`）和讀取/儲存對話框共用，要翻就得逐位址改引用。
+- v141：注音輸入法開著時，`Z`／`X`／`D` 等熱鍵應該直接進遊戲。
+
 - v133：遊戲選單圖示的說明文字、音樂開關訊息、離開遊戲的兩個問句、戰鬥中存檔的訊息。
   商店的「商店／不成交!／成交!／錢不夠」走 `0578:0070`，**繪製路徑沒追到**，若出現亂碼要在商店開著時追 stub（re_106 附近的做法：執行期掃 `cd 3f 00 00` 表頭）。
 - 戰鬥資訊卡：HP 三位數時與「移動」是否太擠、身上有法術效果時的名稱（譯名在 `localization/catalog/exe_effect_names.csv`）。
@@ -84,6 +103,22 @@
 - 已完成：遊戲選單、商店（未實測）、提示列、離開對話框、頭像選單、裝備欄、背包按鈕文字（v133～v138）。
 - 創角與 VIEW CHARACTER 的 `NAME:`、`EXP`、`DAM` 仍是英文。
 - 剩下的零星字串：`INACTIVE CHARACTER`（`1AC1`，VIEW 名稱欄那份）、`LOAD` 等，遇到再處理。
+
+### 1.2.2 生物／NPC 名字（v145 已完成，待實機確認）
+
+- 全部在 `SEGOBJEX.GFF` 的 RDFF chunk：位移 8 的 word 是戰鬥記錄長度 0x3A（位移 6 是另一段記錄的長度，0x47、0 或 1 都有，**不能拿來篩選**），位移 10 是 0x3A bytes 的戰鬥記錄（執行期 `[0x1665]` 表同格式），名字在位移 50～65，**16 bytes**，16 字元時沒有 NUL（下一欄位 `04 00` 收尾）。中文上限 5 字＋NUL。
+- 188 個相異名字（`creature_names.csv` 188 列，含 4 個不翻的入隊角色），GPL 腳本不比對這些名字。
+- 風險：EXE 有約 35 處讀名字（`[0x1665]`＋0x28），要逐一確認繪製路徑；背包名字列會轉大寫（`CERMAK`），Base94 含小寫字母，轉大寫會壞。已入隊的 NPC（K'ratchek 等）名字存在存檔裡，需要像 GSTR 那樣修補存檔。
+- 已確認會解碼的讀取點：觀察卡 `0x5FC5F`、可使用者名單 `0x5F661`／`0x8C240`、戰鬥資訊卡（v130）。
+- 譯名依詞彙表；詞彙表沒有的要先列清單給使用者確認。
+- **對照表草稿**：`localization/catalog/creature_names.csv`（2026-09-26，144 列，`needs_decision=是` 的剩 3 列）。
+  入隊角色 Gerakis／Cermak／Cilla／K'ratchek **不翻**（使用者 2026-09-26 決定），它們在 SEGOBJEX `0x4A4Cxx` 一帶另有一份，兩份都不動。
+  尉、翠不在 mapping 裡（鯊已不需要：Bulette＝怖怪），實作時 inventory 要加上這個 catalog 並重建 bank。
+- **使用者：前後一致最優先**（2026-09-26）。全資源一致性檢查見 `docs/名稱一致性檢查.md`：
+  現有譯文本身就有不一致（巴卡扎 35 處、SPIN「心靈師」19 處、幽暗蜘蛛／暗黑蜘蛛、鼠人／塔里鼠人……），
+  使用者決定：B 類一律依權威檔；權威檔自相矛盾的，取遊戲中用得最多的那個，並把權威檔修成單一譯名（v5.5）；C 類拿掉連字號（楚爾特通克、克利克通克）；Wyvern Master 音譯「威弗恩大師」。v144 已套用。
+  最後 3 個（達戈軟泥怪、達戈拉爾衛、低巢暴徒）使用者 2026-09-27 採用草稿，已補進權威檔。
+- **實作（v145）**：`--creature-names` 只改 SEGOBJEX 的 16 bytes 名字欄（建置驗證其餘 bytes 不變）。存檔裡 `SAVE` chunk 若長度是 0x3A 的倍數，就逐筆檢查 +0x28 的名字欄；`tools/patch_save_creature_names.py <GAME/DARKSUN>` 會改 SAVE*.SAV 和 DARKRUN.GFF，備份 `*.names.orig`，可重複執行。
 
 ### 1.2.1 WIND／ICON 按鈕的技術筆記
 
@@ -133,35 +168,40 @@
 ## 2. 重建與交付（`scratch_test/` 在 `.gitignore` 裡）
 
 ```bash
-# 1) mapping（已 commit；只有新增字元時才重跑，三個 catalog 都要給）
+# 1) mapping（已 commit；只有新增字元時才重跑，四個 catalog 都要給）
 python tools/cjk_localization_pipeline.py inventory \
   --catalog localization/catalog/localization_manifest.csv \
   --catalog localization/catalog/fixed_ui_labels.csv \
-  --catalog localization/catalog/exe_spell_names.csv
+  --catalog localization/catalog/exe_spell_names.csv \
+  --catalog localization/catalog/creature_names.csv
 
 # 2) 字型 bank（mapping 有新字時才重建）
 python tools/cjk_localization_pipeline.py build-banks --mapping localization/cjk_mapping.json \
-  --output scratch_test/formal_cjk_fusion_10x10_v22_spell_names --font Fonts/Fusion_Pixel_10px.ttf \
+  --output scratch_test/formal_cjk_fusion_10x10_v24_creature_names2 --font Fonts/Fusion_Pixel_10px.ttf \
   --font-size 10 --pixel-width 10 --height 10 --advance 10 --threshold 64 --fit-mode pixel-aligned
 
-# 3) 對話封包 → 疊上 NAME-1
+# 2.5) SPIN 封包（manifest 的 spin 譯文改了才重建）
+python tools/cjk_localization_pipeline.py compile-gff-text --title-newline \
+  --output scratch_test/spin_gff_import_title_newline_v5_unified
+
+# 3) 對話封包 → 疊上 NAME-1（NAME-1 讀 localization/NAME_objects_translated.json）
 python tools/compile_gpl_dialogue_patch.py \
   --all-translated \
   --fragment-overrides localization/catalog/dialogue_fragment_overrides.json \
   --translate-menu-titles \
-  --output scratch_test/gpl_full_from_pristine_v10_spell_mapping
+  --output scratch_test/gpl_full_from_pristine_v13_creatures2
 python tools/compile_gff_name_records.py \
-  --prior-package scratch_test/gpl_full_from_pristine_v10_spell_mapping/gpl-dialogue-patch.json \
-  --output scratch_test/gpl_full_v10_name_records
+  --prior-package scratch_test/gpl_full_from_pristine_v13_creatures2/gpl-dialogue-patch.json \
+  --output scratch_test/gpl_full_v13_name_records
 
 # 4) 組合包
 python tools/build_cjk_display_staging.py \
   --mapping localization/cjk_mapping.json \
-  --bank-package scratch_test/formal_cjk_fusion_10x10_v22_spell_names/cjk-bank-set.json \
-  --spin-package scratch_test/spin_gff_import_title_newline_v4_glossary/gff-text-replacements.json \
-  --gpl-package scratch_test/gpl_full_v10_name_records/gpl-dialogue-patch.json \
+  --bank-package scratch_test/formal_cjk_fusion_10x10_v24_creature_names2/cjk-bank-set.json \
+  --spin-package scratch_test/spin_gff_import_title_newline_v5_unified/gff-text-replacements.json \
+  --gpl-package scratch_test/gpl_full_v13_name_records/gpl-dialogue-patch.json \
   --ebox-line-gap 2 --menu-line-gap 2 --dialogue-option-pitch 11 --view-ui \
-  --cursor-hotkeys --smart-cursor --intro-scrolls \
+  --cursor-hotkeys --smart-cursor --intro-scrolls --creature-names \
   --output scratch_test/cjk_display_staging_vNN_xxx
 ```
 
@@ -169,18 +209,21 @@ python tools/build_cjk_display_staging.py \
   `DARKRUN.GFF`、`CHARSAVE.GFF`。
   - v107～v116 只複製了 `SAVE0?.SAV` 和 `DARKRUN.GFF`，漏掉 v109 的 `SAVE10.SAV` 和 `CHARSAVE.GFF`，後來才補進 v117。
   - 存檔名稱另存在別的檔，所以讀檔清單上的名字會跟遊戲內不同，但 SAVE01 本身是同一份。
+- **生物名字**：複製存檔、做完 GSTR 修補之後，再執行 `python tools/patch_save_creature_names.py <組合包>/GAME/DARKSUN`。
 - **GSTR 修補**：全域字串 GSTR 會存進存檔，讀舊存檔時英文標題會被還原。
   - 字串表每格 42 bytes，依序是 GSTR[1] What do you say?、[2] END、[3] CLOSE、[4] What do you do?……
-  - 複製存檔之後，執行 `python tools/patch_save_gstr.py <組合包>/GAME/DARKSUN scratch_test/gpl_full_from_pristine_v10_spell_mapping/gpl-dialogue-patch.json`
+  - 複製存檔之後，執行 `python tools/patch_save_gstr.py <組合包>/GAME/DARKSUN scratch_test/gpl_full_from_pristine_v13_creatures2/gpl-dialogue-patch.json`
     （要給步驟 3 第一個指令的封包；疊上 NAME-1 的那一份格式不同，會出現 `KeyError: 'kind'`）：
     - 它會把 MAS-99 設定的 GSTR[1][4][5][6][7] 裡還是英文的改成中文。
     - 原檔備份為 `*.orig`。新開的遊戲不受影響。
-- 只要對話封包改版，舊存檔記住的觸發器位址就可能失效（re_99）。
+- 對話封包改版與舊存檔：見 3.8。目前的結論是存檔不存觸發器位址，但 v144 還要實機確認。
 - **`--view-ui` 另外會替換的 RESOURCE.GFF 內容**（re_105）：WIND-3011／3012／3013 的按鈕位置，
   以及 18 張創角 ICON（2002～2009、2038～2047）。ICON 長度改變會連帶更新 `GFFI-2`，建置驗證已允許。
+- **輸入法**：建置時一律在 `base.conf` 的 `[dosbox]` 寫入 `ime=false`（`disable_ime`）。
+  原因：DOSBox-X 的 `ime=auto` 在 Windows 鍵盤配置是中日韓（例如繁中 1028）時會啟用輸入法，`Z`／`X`／`D` 等熱鍵會被輸入法吃掉；`ime=false` 會讓 DOSBox-X 啟動時呼叫 `ImmDisableIME`。
 - **`--intro-scrolls`**：替換 CINE.GFF 的 `BMA 8`／`BMA 9`（片頭羊皮紙），驗證只有這兩個 chunk 不同。
   需要 Pillow 與系統字型 `C:/Windows/Fonts/msjhbd.ttc`（re_107 §5）。
-- **測試**：`python -m pytest tests -q`，目前 250 項全過。
+- **測試**：`python -m pytest tests -q`，目前 256 項全過。
 - **英文原版參考**：`scratch_test/english_reference` 是 Steam 英文版的副本（設定檔沿用組合包的），要對照原版畫面時用它，不要動 `from Steam`。
 
 ---
@@ -222,7 +265,7 @@ python tools/build_cjk_display_staging.py \
 - 字串可以搬走，再改引用它的立即值（`exe_text_layer` 會自動處理）。但 DGROUP 沒有現成的空地：
   - re_56 已證明 DGROUP 尾端不能用。
   - 可能的來源：`38D7～3B97` 的 GUI 錯誤訊息、`1FA5～1FDD` 的除錯字串。必須先證明沒有其他引用才能用。
-  - 法術名稱區重新排列後還剩 432 bytes（v100）。
+  - 法術名稱區重新排列後，名稱結束在 `2D0B` 附近。`SPELL_TAIL`（v143 起 `2E00`）之後放 `TextRegion.spilled` 的字串（原區域放不下的，新位址手動指定，目前用到 `2E28`），法術名稱不能超過 `SPELL_TAIL`；`2E28～2EBB` 還有約 145 bytes。
 - 對話選項上限 49 bytes（2 個空白加最多 15 個中文字）。超過會丟 `MenuTextTooLong`。
 - **格式字串**：中文的 Base94 編碼可能含 `%`（例如「動」＝`^"%`），經過 sprintf 會被當成格式符號。
   `exe_text_layer` 已自動把含 `%` 譯文裡的 `%` 寫成 `%%`；其他會進 sprintf 的新路徑也要比照（re_106 §4）。
@@ -242,6 +285,12 @@ python tools/build_cjk_display_staging.py \
 - **會被引擎比對的字串不能翻**：`END`、`CLOSE`、`DEBUG`、玩家打字比對的關鍵字、`string compare` 的對象（re_99）。
   DGROUP 的 `CLOSE`（`1F11`）、`DEBUG`（`1F17`）就是其中之一。
 - 是非選單要和 `ds:1F61 "answer yes or no"` 的比對結果一致（re_103 §3）。
+
+### 3.8 存檔與觸發器位址（2026-09-26 調查）
+
+- 觸發器指令（`0x1B`～`0x70`）帶「位移, chunk」。在 SAVE06 所有 chunk 裡搜尋目前 GPLDATA 全部 1,030 個觸發器目標（連續、對調、chunk 為 1 byte、相隔 4 bytes 內），只有雜訊，找不到觸發器表。
+- 歷史旁證：對話封包從英文原版 → v1 → v4 → v10，長度大改，使用者一路沿用舊存檔，對話觸發都正常。
+- 推論：讀檔時由區域腳本重新註冊觸發器，存檔不存位址。萬一實機發現問題，可以做位址換算：編譯器保證每個 GPL chunk 的指令數不變，兩版 GPLDATA 用 `gpl-disasm --all --json` 反組譯後，第 i 條指令的位移一一對應。
 
 ### 3.7 已知風險（目前沒有症狀）
 
@@ -294,6 +343,8 @@ python tools/build_cjk_display_staging.py \
   - 選項開頭通常有 2 個空白：`"  Yes, I agree."` → `"  是的，我同意。"`。
   - 句子拼接前半段通常有結尾空白：`"I saw him "` → `"我看見了他 "`。
   - 句子拼接後半段通常有開頭空白：`" in the city."` → `" 在城鎮裡。"`。
+- **名詞統一**：權威檔改了譯名之後，在 `tools/unify_glossary_terms.py` 的 `RULES` 加規則，先不帶 `--write` 看清單，再 `--write`；它會同步 4 個對話檔、`NAME_objects_translated.json`、`fixed_ui_labels.csv`。英文不同的詞各自統一（例如 `Tari`＝塔里鼠人，罵人的 `ratman` 仍是鼠人）。
+  改完之後，選項可能超過 49 bytes（編譯器一次只報一個），先用腳本把改過的選項全部量一遍。
 - 對話裡的短片段（3 字元以內）另外放在 `localization/catalog/dialogue_fragment_overrides.json`，
   以 chunk+offset 為鍵，空字串代表不印（re_103 §1）。
 
