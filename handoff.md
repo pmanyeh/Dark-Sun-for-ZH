@@ -1,13 +1,16 @@
 # 《浩劫殘陽：破碎大地》(Dark Sun: Shattered Lands) 繁中化交接指南 (handoff.md)
 
-> **更新時間**：2026-09-26（v122～v129 創角畫面中文化完成，重整待辦）
+> **更新時間**：2026-09-26（v139～v140 片頭兩張羊皮紙中文化完成）
 > **用途**：新 Session 的 AI 助手先讀這份文件，就能接手工作。依序讀第 0、1 節，其餘各節需要時再查。
 
 ---
 
 ## 0. 現況
 
-- **最新版本**：`scratch_test/cjk_display_staging_v138_button_centre`（2026-09-26）：v136 ＋ BUTN 按鈕文字（丟棄／拆分／更多／賣出／資訊／離開，
+- **最新版本**：`scratch_test/cjk_display_staging_v140_intro_scrolls_fixed`（2026-09-26）：v138 ＋ 片頭兩張羊皮紙中文化
+  （CINE.GFF `BMA 8`／`BMA 9`，`--intro-scrolls`，re_107），已實機確認（使用者 2026-09-26）。
+  v139 會在第一張羊皮紙後當掉（影格 0 變長），可以刪掉。
+- v138：v136 ＋ BUTN 按鈕文字（丟棄／拆分／更多／賣出／資訊／離開，
   `creation_icon_layer.build_button_texts`；標籤是 BUTN chunk 第 109 byte 的長度＋文字）。v137 實測會解碼但置中偏左；
   v138 讓按鈕排版（常駐 `0x2F8C0`）改用會解碼的寬度函式（`2847:00ED` 改成 tag `FF8E` 入口），已實機確認（使用者 2026-09-26）。
 - v136：v135 ＋ 背包底部標籤（裝備欄名稱、空位、箱子／袋子／商店），
@@ -35,6 +38,8 @@
   - 創角畫面（CREATE CHARACTERS → NEW）左下的資料區：屬性、性別種族、陣營、職業、防禦，並新增生命／靈能標籤（v123，re_105）。
   - 創角畫面右側的職業清單、靈能分類、神術領域與切換鈕（ICON 圖片重畫，v127，re_105 §6）。
   - 戰鬥右上角資訊卡：狀態（正常／70 種效果名稱）、「移動:%d」，並重新排版（v130，re_106）。
+  - 遊戲選單、提示列、離開對話框、頭像選單、裝備欄、背包按鈕文字（v133～v138）。
+  - 片頭兩張羊皮紙（圖片重畫，微軟正黑體粗體反鋸齒，v140，re_107）。
 - **操作改良（v107～v117，re_104）**：
   - 遊標模式熱鍵（v121 起）：`Z`＝攻擊、`X`＝觀察、`D`＝行走。原版的 `A`（動畫開關）、空白鍵、除錯鍵都已還原。
   - 智慧遊標（非戰鬥時）：
@@ -54,23 +59,14 @@
 
 ## 1. 下一步（依優先順序）
 
-### 1.0 剛完成：創角畫面（v122～v129，re_105）
+### 1.0 剛完成：片頭兩張羊皮紙（v139～v140，re_107）
 
-CREATE CHARACTERS → 右鍵頭像格 → NEW 的畫面已全部中文化，並依中文字高重新排版：
-
-- **左下資料區**：屬性（力量…魅力）、性別種族、陣營、職業、防禦都是中文；HP／PSP 新增「生命:」「靈能:」標籤（原版沒有標籤）。
-  - 版面由 DGROUP `0F62` 的 10 個矩形決定（也是重畫時的擦除範圍），改成 10px 行距。
-  - 點擊範圍是 WIND-3011 的按鈕左上角，屬性、陣營、HP 按鈕跟著移動。
-  - 修正舊 bug：創角畫面用 8 格職業表（`DS:0ED2`），解碼器以前一律用 VIEW CHARACTER 的 17 格編號，戰士會顯示成牧師。
-  - 繪製函式和 VIEW CHARACTER、背包共用，解碼器用「座標是否等於版面表」判斷是不是創角畫面。已確認另外兩個畫面沒變。
-  - NAME 列（`NAME:` 標籤與名字輸入框 EBOX 4003）上移 3px。
-- **右側清單**：職業、靈能分類（念動／精神／感應／傳送）、神術領域（風元素…水元素）、切換鈕（神術領域／靈能分類）。
-  - 這些字原本是 7px 高的 **ICON 圖片**，建置時用中文字形重畫成 10px（`tools/creation_icon_layer.py`）。
-  - ◆ 標記的 y 來自兩張表（職業 `0338:019B`、靈能／神術 `0338:01AB`），x 固定 218，所以清單只能單欄。
-  - 小標題「靈能分類」「神術領域」是 EXE 字串，改走解碼器（tag `FF8C`／`FF8D`）。
-- 詞彙：新增的標籤都在 `localization/catalog/fixed_ui_labels.csv`（`UI_creation_*`）。
-- 還沒處理：`NAME:`、`EXP`、`DAM` 仍是英文（VIEW CHARACTER 也是英文）。
-- 使用者常問的「遊俠選不到」是原版規則，見 re_105 §7。
+- 第一張（The once lush…）是 CINE.GFF `BMA 8` 影格 0，要在標題畫面不按鍵、等很久才會出現；第二張（By order of…）是 `BMA 9` 影格 0，START GAME 後出現。
+- 英文字只用一個色號；擦掉後用微軟正黑體粗體 20px 重寫，邊緣用羊皮紙本身的「墨色→紙色」漸層做反鋸齒。
+- 顏色要用**執行期調色盤**（緩衝區 `490F:0000`），CINE 的 PAL chunk 只有片段（re_107 §2）。
+- **教訓**：v139 的影格 0 變長，後面的動畫影格全部移位，第一張之後就當掉。
+  v140 改用最短 RLE 並補零到原長度，整個 BMA 除了影格 0 都逐位元組不變（re_107 §4）。
+- 上一波的創角畫面（v122～v129）細節見 re_105；使用者常問的「遊俠選不到」是原版規則，見 re_105 §7。
 
 ### 1.1 下次開遊戲先確認
 
@@ -83,8 +79,10 @@ CREATE CHARACTERS → 右鍵頭像格 → NEW 的畫面已全部中文化，並�
 
 - **使用者決定不翻（2026-09-26）**：難度名稱（EASY…HIDEOUS）、圖片按鈕（存讀檔的 SAVE／EXIT／DELETE、創角 DONE、職業小圖 17101～17108）、
   主選單火焰藝術字。維持英文當原版美術。
-- **下一步：片頭、片尾的文字**（使用者指定優先）。推測是圖片或動畫（CINE.GFF？），要先查格式。
+- **片頭**：兩張羊皮紙已完成（v140）。工作人員名單、SSI、AD&D、公司標誌都**不翻**（使用者 2026-09-26 決定）。
+- **下一步：片尾的兩首詩**（CINE.GFF `BMP 10`／`BMP 11`），做法照 re_107 §6；「龍之剋星」這個譯名使用者已同意。
 - 已完成：遊戲選單、商店（未實測）、提示列、離開對話框、頭像選單、裝備欄、背包按鈕文字（v133～v138）。
+- 創角與 VIEW CHARACTER 的 `NAME:`、`EXP`、`DAM` 仍是英文。
 - 剩下的零星字串：`INACTIVE CHARACTER`（`1AC1`，VIEW 名稱欄那份）、`LOAD` 等，遇到再處理。
 
 ### 1.2.1 WIND／ICON 按鈕的技術筆記
@@ -163,7 +161,7 @@ python tools/build_cjk_display_staging.py \
   --spin-package scratch_test/spin_gff_import_title_newline_v4_glossary/gff-text-replacements.json \
   --gpl-package scratch_test/gpl_full_v10_name_records/gpl-dialogue-patch.json \
   --ebox-line-gap 2 --menu-line-gap 2 --dialogue-option-pitch 11 --view-ui \
-  --cursor-hotkeys --smart-cursor \
+  --cursor-hotkeys --smart-cursor --intro-scrolls \
   --output scratch_test/cjk_display_staging_vNN_xxx
 ```
 
@@ -180,7 +178,9 @@ python tools/build_cjk_display_staging.py \
 - 只要對話封包改版，舊存檔記住的觸發器位址就可能失效（re_99）。
 - **`--view-ui` 另外會替換的 RESOURCE.GFF 內容**（re_105）：WIND-3011／3012／3013 的按鈕位置，
   以及 18 張創角 ICON（2002～2009、2038～2047）。ICON 長度改變會連帶更新 `GFFI-2`，建置驗證已允許。
-- **測試**：`python -m pytest tests -q`，目前 247 項全過。
+- **`--intro-scrolls`**：替換 CINE.GFF 的 `BMA 8`／`BMA 9`（片頭羊皮紙），驗證只有這兩個 chunk 不同。
+  需要 Pillow 與系統字型 `C:/Windows/Fonts/msjhbd.ttc`（re_107 §5）。
+- **測試**：`python -m pytest tests -q`，目前 250 項全過。
 - **英文原版參考**：`scratch_test/english_reference` 是 Steam 英文版的副本（設定檔沿用組合包的），要對照原版畫面時用它，不要動 `from Steam`。
 
 ---
@@ -311,6 +311,7 @@ python tools/build_cjk_display_staging.py \
 | 遊標模式、熱鍵分派、左鍵分派、移動指令、智慧遊標、學法術卷軸、除錯模式 | `docs/re/re_104_cursor_mode_hotkeys_investigation.md` |
 | 創角畫面版面表、WIND-3011 按鈕、共用繪製函式、overlay stub `4A41` | `docs/re/re_105_character_creation_layout_survey.md` |
 | 戰鬥資訊卡、效果名稱表 | `docs/re/re_106_combat_info_card.md` |
+| 片頭羊皮紙、CINE 影格格式、執行期調色盤、BMA 不能變長 | `docs/re/re_107_intro_scrolls.md` |
 | 選單換頁／疊影 | `docs/re/re_96`～`re_98` |
 | `%s` 迴圈解碼失敗紀錄 | `docs/re/re_52`、`re_53`、`re_63` |
 | 玩家用操作說明 | `docs/新操作說明.md` |
