@@ -40,6 +40,7 @@ try:
         patch_creation_wind,
     )
     from .exe_text_layer import apply_exe_text_patches
+    from .intro_scroll_layer import build_intro_scrolls
 except ImportError:
     from cjk_localization_pipeline import (
         DEFAULT_GFF_CAT,
@@ -67,6 +68,7 @@ except ImportError:
         patch_creation_wind,
     )
     from exe_text_layer import apply_exe_text_patches
+    from intro_scroll_layer import build_intro_scrolls
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -332,6 +334,11 @@ def main() -> int:
         "--experimental-item-text-fix-v35",
         action="store_true",
         help="rejected v35 stack-preserved %%Fs experiment (build is refused)",
+    )
+    parser.add_argument(
+        "--intro-scrolls",
+        action="store_true",
+        help="Chinese text on the two opening parchment scrolls (CINE.GFF BMA 8/9, intro_scroll_layer.py)",
     )
     parser.add_argument("--window-scale", type=int, choices=(1, 2, 3), default=2)
     parser.add_argument(
@@ -652,11 +659,44 @@ def main() -> int:
             original_chunks, final_chunks, records, allowed_metadata
         )
 
+        cine_verification: dict[str, object] | None = None
+        if args.intro_scrolls:
+            def extract_scroll(bma_id: int) -> bytes:
+                target = work / f"BMA-{bma_id}.original.bin"
+                run(args.gff_cat, "extract", game_dir / "CINE.GFF", "BMA", str(bma_id), "-o", target)
+                return target.read_bytes()
+
+            scrolls = build_intro_scrolls(extract_scroll)
+            current_cine = game_dir / "CINE.GFF"
+            for index, (bma_id, payload) in enumerate(scrolls.items()):
+                patched_chunk = work / f"BMA-{bma_id}.intro-scroll.bin"
+                patched_chunk.write_bytes(payload)
+                next_cine = staged_game / "CINE.GFF" if index == len(scrolls) - 1 else work / f"CINE.scroll{index}.GFF"
+                run(args.gff_cat, "replace", current_cine, "BMA", str(bma_id), patched_chunk, "-o", next_cine)
+                current_cine = next_cine
+            original_cine, final_cine = work / "original-cine", work / "final-cine"
+            run(args.gff_cat, "extract", game_dir / "CINE.GFF", "--all", "-o", original_cine)
+            run(args.gff_cat, "extract", staged_game / "CINE.GFF", "--all", "-o", final_cine)
+            cine_verification = {
+                "source_sha256": sha256((game_dir / "CINE.GFF").read_bytes()),
+                "patched_sha256": sha256((staged_game / "CINE.GFF").read_bytes()),
+                **verify_extracted_gff_chunks(
+                    original_cine,
+                    final_cine,
+                    [
+                        {"kind": "BMA", "chunk_id": bma_id, "sha256": sha256(payload), "encoded_byte_length": len(payload)}
+                        for bma_id, payload in scrolls.items()
+                    ],
+                ),
+            }
+
         unchanged_files = 0
         for source in game_dir.iterdir():
             mutable_files = {"DSUN.EXE", "RESOURCE.GFF"}
             if gpl_payload is not None:
                 mutable_files.add("GPLDATA.GFF")
+            if args.intro_scrolls:
+                mutable_files.add("CINE.GFF")
             if not source.is_file() or source.name in mutable_files:
                 continue
             target = staged_game / source.name
@@ -738,6 +778,7 @@ def main() -> int:
                 if gpl_package is not None
                 else None
             ),
+            "intro_scrolls": cine_verification,
             "banks": [
                 {"file": filename, "bytes": len(payload), "sha256": sha256(payload)}
                 for _, filename, payload in bank_files
