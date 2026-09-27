@@ -1,0 +1,69 @@
+# 浩劫殘陽：破碎大地 繁體中文化 -- DOSBox-X 設定
+# 模擬硬體與 Steam 版附的 DOSBox 設定相同（base.conf）：S3 顯示卡、32 MB、
+# 固定 7000 cycles、Sound Blaster 16（220／IRQ 5／DMA 1／HDMA 5）、MPU-401。
+
+[sdl]
+fullscreen=false
+fullresolution=desktop
+windowresolution=1280x960
+output=opengl
+# 滑鼠不會自動鎖進視窗；要鎖定時在視窗內點一下，Ctrl+F10 釋放。
+autolock=false
+sensitivity=100
+priority=higher,normal
+
+[dosbox]
+machine=svga_s3
+memsize=32
+# 中文鍵盤配置下，DOSBox-X 預設會啟用系統輸入法，Z／X／D 等熱鍵會被輸入法吃掉。
+ime=false
+
+[render]
+aspect=true
+scaler=none
+
+[cpu]
+core=auto
+cputype=auto
+cycles=fixed 7000
+
+[mixer]
+nosound=false
+rate=44100
+blocksize=1024
+prebuffer=35
+
+[midi]
+mpu401=intelligent
+mididevice=default
+
+[sblaster]
+sbtype=sb16
+sbbase=220
+irq=5
+dma=1
+hdma=5
+sbmixer=true
+oplmode=auto
+oplrate=44100
+
+[gus]
+gus=false
+
+[speaker]
+pcspeaker=true
+
+[dos]
+xms=true
+ems=true
+umb=true
+keyboardlayout=auto
+
+[autoexec]
+@echo off
+mount c ..\game_data
+c:
+cd DARKSUN
+cls
+call DARKSUN.BAT
+exit

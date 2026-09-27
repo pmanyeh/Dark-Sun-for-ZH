@@ -1,0 +1,14 @@
+@echo off
+chcp 65001 >nul
+cd /d "%~dp0dosbox-x"
+if not exist dosbox-x.exe (
+    echo 找不到 dosbox-x\dosbox-x.exe，這份整合包可能不完整，請重新下載。
+    pause
+    exit /b 1
+)
+if not exist "..\game_data\DARKSUN\C0" (
+    echo 還沒有安裝中文化：請先把 DARKSUN 資料夾放進 game_data，再執行「安裝中文化.bat」。
+    pause
+    exit /b 1
+)
+".\dosbox-x.exe" -conf zh_darksun.conf

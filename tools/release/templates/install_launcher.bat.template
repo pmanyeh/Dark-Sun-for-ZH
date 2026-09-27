@@ -1,0 +1,10 @@
+@echo off
+chcp 65001 >nul
+cd /d "%~dp0"
+if not exist "python-embed\python.exe" (
+    echo 找不到 python-embed\python.exe，這份整合包可能不完整，請重新下載。
+    pause
+    exit /b 1
+)
+".\python-embed\python.exe" -B installer.py %*
+pause
