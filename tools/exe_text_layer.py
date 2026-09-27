@@ -60,6 +60,10 @@ class TextRegion:
     # (original DGROUP offset, new offset in SPELL_TAIL, Chinese text): strings
     # too long for the region, placed in the free tail of the spell name block.
     spilled: tuple[tuple[int, int, str], ...] = ()
+    # (file offset of one imm16, original DGROUP offset, placed offset): one
+    # reference of a shared string that needs a different translation there.
+    # The string itself must stay where it is, or its other sites would move.
+    site_redirects: tuple[tuple[int, int, int], ...] = ()
 
 
 def _same(*items: tuple[int, str]) -> tuple[tuple[int, int, str], ...]:
@@ -197,12 +201,39 @@ TEXT_REGIONS = (
                ((0x1C58, 0x1C58, "戰鬥中無法存檔"), (0x1C71, 0x1C6E, "音樂:開"), (0x1C7A, 0x1C79, "音樂:關")),
                "music toggle"),
     # 0x7170D/0x71712 load these with mov ax for the 41B4:0025 message box.
+    # The button box shows at most 20 characters of its message (7 CJK = 22
+    # bytes cut 嗎 in half), so the question is six characters.
     # ESC's dialog: SAVE opens the save screen with DS:54FE set, and the save
     # screen then ends the game (0x74D33), so the text has to say it exits.
     TextRegion(0x1CC4, b"EXIT GAME?\0EXIT: SAVE GAME?\0SAVE\0QUIT\0",
-               ((0x1CC4, 0x1CC4, "離開遊戲?"), (0x1CCF, 0x1CD2, "離開前要存檔嗎?")),
+               ((0x1CC4, 0x1CC4, "離開遊戲?"), (0x1CCF, 0x1CD2, "離開前存檔嗎?")),
                "exit game dialog", immediate_prefixes=(b"\xb8",),
                spilled=((0x1CE0, 0x2E00, "存檔並離開"), (0x1CE5, 0x2E10, "直接離開"))),
+    # Party member portrait menu (overlay 0x70CF0, a 04D0:0025 button box
+    # titled with the member's name): EDIT, or EDIT NAME when the member is
+    # not well; DROP (not in combat) takes the member out of the party, so it
+    # is 離隊 rather than the inventory button's 丟棄; DUAL (dual-class, for a
+    # member who may) or CANCEL.
+    TextRegion(0x1BA7, b"EDIT NAME\0EDIT\0DROP\0DUAL\0",
+               ((0x1BA7, 0x1BA7, "改名"), (0x1BB1, 0x1BAE, "修改"), (0x1BB6, 0x1BB5, "離隊")),
+               "portrait menu buttons", immediate_prefixes=(b"\xb8",),
+               spilled=((0x1BBB, 0x2E28, "雙職業"),),
+               # Its CANCEL is a mov ax of 1B7F, which the push-only 1B5D region
+               # left behind when 取消 moved to 1B81 (garbage since v134).
+               site_redirects=((0x70D0A, 0x1B7F, 0x1B81),)),
+    # Game menu dialogs (overlay 0x61727 exit, 0x617E9 load/save), both through
+    # the 04D0:0025 message box. The exit dialog is ESC's (1CC4) in another
+    # copy: its SAVE also saves and then exits, so every string points at the
+    # ESC translations. SAVE (0D0C) is shared with the load/save dialog, where
+    # it only saves: it stays 存檔 and just the exit dialog's load (0x61742)
+    # moves to 存檔並離開. The load/save title LOAD/SAVE GAME (0C7E, the hint
+    # table string) moved to 0C80 in v135 without this mov ax (0x6181D).
+    TextRegion(0x0CF0, b"EXIT GAME?\0EXIT: SAVE GAME?\0SAVE\0QUIT\0CANCEL\0LOAD/RESTART GAME\0LOAD\0RESTART\0",
+               ((0x0D1D, 0x0CF0, "讀取/重新開始"), (0x0D2F, 0x0D04, "讀取"), (0x0D0C, 0x0D0C, "存檔"),
+                (0x0D34, 0x0D13, "重新開始")),
+               "game menu exit and load/save dialogs", immediate_prefixes=(b"\xb8",),
+               redirects=((0x0CF0, 0x1CC4), (0x0CFB, 0x1CD2), (0x0D11, 0x2E10), (0x0D16, 0x3010)),
+               site_redirects=((0x61742, 0x0D0C, 0x2E00), (0x6181D, 0x0C7E, 0x0C80))),
     # The game menu's icon descriptions: 0x7FAD8 stores one in [bp-4] and
     # sets it through 0580:005C, which decodes Base94.
     TextRegion(0x2391, b"MUSIC TOGGLE ON/OFF\0MUSIC VOLUME\0SOUND EFFECTS ON/OFF\0SOUND EFFECT VOLUME\0"
@@ -229,11 +260,20 @@ TEXT_REGIONS = (
     # hint bar.
     TextRegion(0x0C72, b"EXIT TO DOS\0LOAD/SAVE GAME\0SET PREFERENCES\0MOVE CURSOR\0LOOK CURSOR\0"
                        b"ATTACK CURSOR\0COLLAPSE PARTY\0OVERHEAD MAP\0CENTER ON LEADER\0",
-               ((0x0C72, 0x0C72, "離開遊戲"), (0x0C7D, 0x0C7F, ""), (0x0C7E, 0x0C80, "讀取/儲存"),
+               ((0x0C72, 0x0C72, "離開遊戲"), (0x0C7D, 0x0C7F, ""), (0x0C7E, 0x0C80, "讀取/存檔"),
                 (0x0C8D, 0x0C8E, "偏好設定"), (0x0C9D, 0x0C9B, "行走遊標"), (0x0CA9, 0x0CA8, "觀察遊標"),
                 (0x0CB5, 0x0CB5, "攻擊遊標"), (0x0CC3, 0x0CC2, "收合隊伍"), (0x0CD2, 0x0CCF, "俯瞰地圖"),
                 (0x0CDF, 0x0CDC, "以隊長為中心")),
                "game menu icon hints", pointer_tables=((0x0C4A, 10),)),
+    # Cast refusals and the cleric's TURN UNDEAD. The USE screen bar copy
+    # (3214) reaches 0580:005C (0x89197, 0x89542, 0x8967B); the other copy
+    # (0418, 0x55B41..0x55BFB) the one-line message box 0x5536E. Both decode.
+    TextRegion(0x3214, b"CAN'T START THAT PSIONIC\0YOU NEED TO REST\0YOU WERE HIT\0YOU CANNOT CAST SPELLS\0TURN UNDEAD\0",
+               ((0x3214, 0x3214, "無法施展此靈能"), (0x322D, 0x322A, "你需要休息"), (0x323E, 0x323A, "你被擊中了"),
+                (0x324B, 0x324A, "你無法施法"), (0x3262, 0x325A, "退散不死生物")), "USE screen messages"),
+    TextRegion(0x0418, b"CAN'T START THAT PSIONIC\0YOU NEED TO REST\0YOU WERE HIT\0YOU CANNOT CAST SPELLS\0",
+               ((0x0418, 0x0418, "無法施展此靈能"), (0x0431, 0x042E, "你需要休息"), (0x0442, 0x043E, "你被擊中了"),
+                (0x044F, 0x044E, "你無法施法")), "cast refusals in the message box"),
     # USE screen hints: 0x88316.. store these in the hint pointers 4AED/4AF1
     # (mov word es:[4AED/4AF1], imm16); they fit in place.
     TextRegion(0x314F, b"TOGGLE SPELLS & PSIONICS\0SELECT SPELL LEVEL\0SELECT PSIONIC DISCIPLINE\0",
@@ -510,14 +550,23 @@ def code_patches(image: bytes) -> list[tuple[int, bytes, bytes, str]]:
         for old, target in region.redirects:
             if target not in placed:
                 raise ValueError(f"DGROUP:{old:04X} ({region.note}) redirects to an unplaced string")
-            sites = string_push_sites(image, old)
+            # imm16 positions: after push ds; push, or after an immediate prefix.
+            sites = [site + 1 for site in string_push_sites(image, old)]
+            sites += string_immediate_sites(image, old, region.immediate_prefixes)
             if not sites:
-                raise ValueError(f"DGROUP:{old:04X} ({region.note}) has no push ds reference")
+                raise ValueError(f"DGROUP:{old:04X} ({region.note}) has no reference")
             patches += [
-                (site + 1, old.to_bytes(2, "little"), target.to_bytes(2, "little"),
+                (site, old.to_bytes(2, "little"), target.to_bytes(2, "little"),
                  f"{region.note}: DGROUP:{old:04X} -> {target:04X} ({placed[target]})")
                 for site in sites
             ]
+        for site, old, target in region.site_redirects:
+            if target not in placed:
+                raise ValueError(f"site 0x{site:X} ({region.note}) redirects to an unplaced string")
+            if image[site : site + 2] != old.to_bytes(2, "little"):
+                raise ValueError(f"site 0x{site:X} ({region.note}) does not load DGROUP:{old:04X}")
+            patches.append((site, old.to_bytes(2, "little"), target.to_bytes(2, "little"),
+                            f"{region.note}: 0x{site:X} DGROUP:{old:04X} -> {target:04X} ({placed[target]})"))
         for inner in range(region.start, region.start + len(region.original)):
             if inner not in originals and string_push_sites(image, inner):
                 raise ValueError(f"DGROUP:{inner:04X} inside {region.note} is referenced but not placed")

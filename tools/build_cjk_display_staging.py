@@ -31,7 +31,7 @@ try:
     from .font100_tool import Font100
     from .patch_dialogue_menu_wind import patch_dialogue_choice_paging, patch_dialogue_menu_wind
     from .patch_dsun_scratch_cache import patch_executable, patch_introduce_prefix
-    from .creation_icon_layer import CREATION_LIST_WINDS, build_button_texts, build_creation_icons, move_wind_buttons
+    from .creation_icon_layer import CREATION_LIST_WINDS, DUAL_CLASS_WIND, build_button_texts, build_creation_icons, move_wind_buttons
     from .plan_name_slot_consumers import load_fixed_ui_ids
     from .view_ui_layer import (
         apply_smart_cursor_exe_patches,
@@ -61,7 +61,7 @@ except ImportError:
     from font100_tool import Font100
     from patch_dialogue_menu_wind import patch_dialogue_choice_paging, patch_dialogue_menu_wind
     from patch_dsun_scratch_cache import patch_executable, patch_introduce_prefix
-    from creation_icon_layer import CREATION_LIST_WINDS, build_button_texts, build_creation_icons, move_wind_buttons
+    from creation_icon_layer import CREATION_LIST_WINDS, DUAL_CLASS_WIND, build_button_texts, build_creation_icons, move_wind_buttons
     from plan_name_slot_consumers import load_fixed_ui_ids
     from view_ui_layer import (
         apply_smart_cursor_exe_patches,
@@ -637,7 +637,7 @@ def main() -> int:
                 return target.read_bytes()
 
             creation_chunks.append(("WIND", 3011, patch_creation_wind(extract_original("WIND", 3011))))
-            for wind_id, fingerprint, buttons in CREATION_LIST_WINDS:
+            for wind_id, fingerprint, buttons in CREATION_LIST_WINDS + (DUAL_CLASS_WIND,):
                 creation_chunks.append(
                     ("WIND", wind_id, move_wind_buttons(extract_original("WIND", wind_id), fingerprint, f"WIND-{wind_id}", buttons))
                 )

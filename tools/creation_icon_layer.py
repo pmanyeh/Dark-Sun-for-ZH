@@ -63,6 +63,28 @@ CREATION_LIST_WINDS = (
         0x07FF: ((7, 47), (50, 3)),
     }),
 )
+# The dual-class window (WIND-17502, opened at (73, 41) by overlay 0x86779)
+# lists the classes as BUTN 17303..17310, whose images are ICON 17101..17108
+# (only these buttons use them): serif letters 8px tall in a per-state
+# body colour (31 / 47 / 26 for the three frames) with a shadow in 17 one
+# pixel right and down. The Chinese keeps that: 10px glyphs, the same body
+# colours, the shadow, so 11 rows; the buttons move from a 9px to a 10px
+# pitch and 4px right, clear of the wider Chinese ability values (user
+# decision 2026-09-27 to translate this list).
+DUAL_ICON_UNITS = {
+    17102: "UI_class_cleric",
+    17101: "UI_class_druid",
+    17105: "UI_class_fighter",
+    17107: "UI_class_gladiator",
+    17103: "UI_class_preserver",
+    17108: "UI_class_psionicist",
+    17106: "UI_class_ranger",
+    17104: "UI_class_thief",
+}
+DUAL_ICON_SHADOW = 17
+DUAL_CLASS_WIND = (17502, "5435ba077790abf84a13badcbe01b4f291b42e1921a34e878a4c0fc99b646748", {
+    17303 + row: ((89, 25 + 9 * row), (93, 25 + ROW_HEIGHT * row)) for row in range(8)
+})
 CLASS_LIST_BUTTONS = {
     0x07D2 + row: ((217, 10 + 8 * row), (217, 4 + ROW_HEIGHT * row)) for row in range(8)
 }
@@ -219,14 +241,38 @@ def chinese_icon(original: bytes, ids: tuple[int, ...], banks: dict[int, dict[st
     return encode_icon(result)
 
 
+def shadowed_chinese_icon(original: bytes, ids: tuple[int, ...], banks: dict[int, dict[str, object]]) -> bytes:
+    """Redraw a two-colour ICON (body + DUAL_ICON_SHADOW) in Chinese, frame by frame."""
+    frames = decode_icon(original)
+    mask = _text_mask(ids, banks)
+    width, height = len(mask[0]) + 1, ROW_HEIGHT + 1
+    on = lambda x, y: 0 <= y < ROW_HEIGHT and 0 <= x < len(mask[0]) and mask[y][x]  # noqa: E731
+    result = []
+    for _, _, image in frames:
+        colours = {value for row in image for value in row} - {0}
+        if DUAL_ICON_SHADOW not in colours or len(colours) != 2:
+            raise ValueError("dual-class ICON frames are expected to use a body colour and the shadow")
+        (body,) = colours - {DUAL_ICON_SHADOW}
+        result.append((width, height, [
+            [body if on(x, y) else DUAL_ICON_SHADOW if on(x - 1, y - 1) else 0 for x in range(width)]
+            for y in range(height)
+        ]))
+    return encode_icon(result)
+
+
 def build_creation_icons(
     extract, ui_ids: dict[str, tuple[int, ...]], banks: dict[int, dict[str, object]]
 ) -> dict[int, bytes]:
     """extract(kind, id) -> original chunk bytes; returns the new ICON chunks."""
-    return {
+    icons = {
         icon_id: chinese_icon(extract("ICON", icon_id), ui_ids[unit], banks)
         for icon_id, unit in CREATION_ICON_UNITS.items()
     }
+    icons.update({
+        icon_id: shadowed_chinese_icon(extract("ICON", icon_id), ui_ids[unit], banks)
+        for icon_id, unit in DUAL_ICON_UNITS.items()
+    })
+    return icons
 
 
 def move_wind_buttons(source: bytes, sha256: str, label: str, buttons) -> bytes:

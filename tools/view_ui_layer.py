@@ -295,6 +295,21 @@ def _stat_redirect(tag: int) -> str:
 
 
 CREATION_EXE_PATCHES = (
+    # Dual-class window (overlay 0x86779, WIND-17502 at (73, 41)): the six
+    # ability labels and the LEVEL line go through tags FF93 / FF94 (Chinese
+    # via the NAME slots); the rows below move to a 10px grid (re_105 §8).
+    (0x086835, "8B DE C1 E3 02 66 FF B7 F2 0E FF 36 70 32 6A 14 FF 36 6E 32 66 68 FF 00 FE 00 6A 00 1E 68 18 30 8B C6 6B C0 07 05 19 00 50 6A 31",
+     "0E E8 00 00 58 05 27 00 50 B8 93 FF 8C DB 80 EF 10 53 68 14 07 CB 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90", "v152 dual-class ability labels redirect"),
+    (0x0868A9, "07", "0A", "v152 dual-class ability values: 10px rows"),
+    (0x0868AB, "19", "1B", "v152 dual-class ability values: y 25 -> 27"),
+    (0x0868AF, "49", "4D", "v152 dual-class ability values: x 73 -> 77"),
+    (0x0868CD, "51", "4D", "v152/v153 dual-class alignment: y 81 -> 77"),
+    (0x0868F3, "FF 36 70 32 6A 14 FF 36 6E 32 66 68 FF 00 FE 00 6A 00 1E 68 99 30 66 68 04 00 58 00",
+     "0E E8 00 00 58 05 18 00 50 B8 94 FF 8C DB 80 EF 10 53 68 14 07 CB 90 90 90 90 90 90", "v152 dual-class LEVEL label redirect"),
+    (0x086921, "18", "1C", "v152 dual-class LEVEL: the redirect pushes the label pointer too"),
+    (0x086926, "58", "59", "v152/v153 dual-class level numbers: y 88 -> 89"),
+    (0x086950, "5F", "61", "v152/v153 dual-class class names: y 95 -> 97"),
+    (0x0869A7, "66", "6A", "v152/v153 dual-class EXP line: y 102 -> 106"),
     (CREATION_RECTS_OFFSET, _rects_hex(CREATION_RECTS_ORIGINAL), _rects_hex(CREATION_RECTS), "v122 character creation field rectangles"),
     (0x065001, "07", "0A", "v122 character creation ability boxes: 10px rows"),
     (0x065015, "07", "0A", "v122 character creation ability boxes: 10px rows"),

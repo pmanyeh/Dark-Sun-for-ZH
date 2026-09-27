@@ -102,6 +102,7 @@ UI_TEXT_TABLES = {
     "ui_text_creation_titles": ("label", None, None, (
         ("creation_psi_title", "UI_creation_psi_title"),
         ("creation_sphere_title", "UI_creation_sphere_title"),
+        ("dual_level_label", "UI_dual_level"),
     )),
 }
 # name_buffer holds 24 decoded bytes and the pool has ten glyph slots.

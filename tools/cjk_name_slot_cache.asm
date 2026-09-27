@@ -56,6 +56,10 @@
 # Character creation passes its own 8-entry class-name table (Cleric..Thief,
 # IDs 1-8) to the class-name draw; VIEW CHARACTER passes the 17-entry one.
 .equ CREATION_CLASS_TABLE, 0x0ED2
+# Dual-class window: the alignment line, moved from (4, 81) to (4, 77) by
+# the window's own patched push (view_ui_layer DUAL_EXE_PATCHES).
+.equ DUAL_ALIGNMENT_X, 4
+.equ DUAL_ALIGNMENT_Y, 77
 .equ font_pointer, 0xA378
 # Dialogue menu title buffer (DGROUP:5504) and its private decode source id.
 .equ MENU_TITLE_BUFFER, 0x5504
@@ -173,6 +177,10 @@ cjk_name_cache_start:
     je creation_psi_title_entry
     cmp ax, 0xFF8D
     je creation_sphere_title_entry
+    cmp ax, 0xFF93
+    je dual_ability_entry
+    cmp ax, 0xFF94
+    je dual_level_entry
 .endif
 .ifdef fixed_backpack
     # Only the new bottom-label wrapper has this continuation. The four
@@ -296,10 +304,11 @@ ordinary_material_source:
 ordinary_class_source:
 .endif
 .ifdef char_creation
-    # Character creation's PSI DISCIPLINES / CLERICAL SPHERE titles.
+    # Character creation's PSI DISCIPLINES / CLERICAL SPHERE titles and
+    # the dual-class window's LEVEL label.
     cmp ax, 0xFFB8
     jb ordinary_creation_source
-    cmp ax, 0xFFBA
+    cmp ax, 0xFFBB
     jae ordinary_creation_source
     sub ax, 0xFFB8
     shl ax, 1
@@ -2157,12 +2166,13 @@ creation_stat_copied:
 .equ CREATION_TITLE_X, 6
 .equ CREATION_TITLE_Y, 3
 creation_title_surface: .word 0
-creation_title_offsets: .word creation_psi_title, creation_sphere_title
+creation_title_offsets: .word creation_psi_title, creation_sphere_title, dual_level_label
 .ifdef generated_ui_text
     ui_text_creation_titles
 .else
 creation_psi_title: .byte 0
 creation_sphere_title: .byte 0
+dual_level_label: .byte 0
 .endif
 creation_psi_title_entry:
     mov word ptr cs:[creation_title_surface], 0x0EA2
@@ -2204,6 +2214,84 @@ creation_title_decoded:
     push word ptr ds:[bx + 2]
     push word ptr ds:[bx]
     push ax
+    push cx
+    lret
+
+# Dual-class window (WIND-17502 at (73, 41), overlay 0x86779): its own
+# label loop (0x86835, row SI) and LEVEL line (0x868F3) push arguments for
+# 339E:016D, which cannot decode Base94. Both redirects return to the
+# untouched "mov ax, 0418h; mov es, ax; push dword es:[4]; call" that
+# follows. The labels get 10px rows (the values loop was moved to match);
+# LEVEL now goes through "%C%C%C%s" with the decoded label, so its caller's
+# stack cleanup grew by the extra far pointer.
+.equ DUAL_FORMAT_S, 0x3018
+.equ DUAL_ABILITY_X, 49
+.equ DUAL_ABILITY_Y, 24
+.equ DUAL_LEVEL_X, 4
+.equ DUAL_LEVEL_Y, 87
+dual_ability_entry:
+    pop es
+    pop cx
+    pop dx
+    push dx
+    push cx
+    mov ax, si
+    add ax, 0xFFF0
+    push cs
+    push OFFSET dual_ability_decoded
+    push es
+    jmp name_cache_entry
+dual_ability_decoded:
+    pop ax
+    pop dx
+    pop cx
+    pop bx
+    push dx
+    push ax
+    push word ptr ds:[0x3270]
+    push 0x14
+    push word ptr ds:[0x326E]
+    .byte 0x66, 0x68   # push dword 00FE00FFh
+    .long 0x00FE00FF
+    push 0
+    push ds
+    push DUAL_FORMAT_S
+    imul ax, si, 10
+    add ax, DUAL_ABILITY_Y
+    push ax
+    push DUAL_ABILITY_X
+    push bx
+    push cx
+    lret
+dual_level_entry:
+    pop es
+    pop cx
+    pop dx
+    push dx
+    push cx
+    mov ax, 0xFFBA
+    push cs
+    push OFFSET dual_level_decoded
+    push es
+    jmp name_cache_entry
+dual_level_decoded:
+    pop ax
+    pop dx
+    pop cx
+    pop bx
+    push dx
+    push ax
+    push word ptr ds:[0x3270]
+    push 0x14
+    push word ptr ds:[0x326E]
+    .byte 0x66, 0x68   # push dword 00FE00FFh
+    .long 0x00FE00FF
+    push 0
+    push ds
+    push DUAL_FORMAT_S
+    push DUAL_LEVEL_Y
+    push DUAL_LEVEL_X
+    push bx
     push cx
     lret
 .endif
@@ -2443,14 +2531,22 @@ alignment_decoded:
 .ifdef char_creation
     mov ax, word ptr ds:[CREATION_ALIGNMENT]
     cmp ax, word ptr ss:[bp + 0x0E]
-    jne alignment_view_position
+    jne alignment_view_position_check
     mov ax, word ptr ds:[CREATION_ALIGNMENT + 2]
     sub ax, 2
     cmp ax, word ptr ss:[bp + 0x10]
-    jne alignment_view_position
+    jne alignment_view_position_check
     add ax, 2
     push ax
     push word ptr ss:[bp + 0x0E]
+    jmp alignment_push_surface
+alignment_view_position_check:
+    cmp word ptr ss:[bp + 0x0E], DUAL_ALIGNMENT_X
+    jne alignment_view_position
+    cmp word ptr ss:[bp + 0x10], DUAL_ALIGNMENT_Y
+    jne alignment_view_position
+    push DUAL_ALIGNMENT_Y
+    push DUAL_ALIGNMENT_X
     jmp alignment_push_surface
 alignment_view_position:
 .endif
