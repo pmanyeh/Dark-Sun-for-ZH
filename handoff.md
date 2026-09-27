@@ -7,7 +7,9 @@
 
 ## 0. 現況
 
-- **最新版本**：`scratch_test/cjk_display_staging_v147_combat_card`（2026-09-27）：v146 ＋ 戰鬥資訊卡再下移（v146 實測 4 字名字仍與第二行重疊）：生命 y 16、移動 y 14（中文畫在 16～25）、狀態 y 24（26～35，壓到下緣，使用者同意）。名字已貼上緣不能再上移。戰鬥資訊卡已實機確認不再重疊（使用者 2026-09-27）；v141～v146 的其他項目仍待確認（見 1.1）。
+- **最新版本**：`scratch_test/cjk_display_staging_v148_ending_poems`（2026-09-27）：v147 ＋ 片尾兩首詩中文化（CINE.GFF `BMP 10`／`BMP 11`，`--ending-poems`，re_107 §7），譯文、屠龍劍、字型與位置已實機確認（使用者 2026-09-27）。
+  測試用：`scratch_test/cjk_display_staging_v148_ending_poems_PREVIEW` 多加了 `--preview-ending-on-start`，主選單按 START GAME 直接播片尾；**只能測試，不要拿來玩**。
+- v147：`scratch_test/cjk_display_staging_v147_combat_card`（2026-09-27）：v146 ＋ 戰鬥資訊卡再下移（v146 實測 4 字名字仍與第二行重疊）：生命 y 16、移動 y 14（中文畫在 16～25）、狀態 y 24（26～35，壓到下緣，使用者同意）。名字已貼上緣不能再上移。戰鬥資訊卡已實機確認不再重疊（使用者 2026-09-27）；v141～v146 的其他項目仍待確認（見 1.1）。
 - v146：`scratch_test/cjk_display_staging_v146_creature_names2`（2026-09-27）：v145 ＋ 補齊 44 個生物名字（v145 只認 `47 00 3a 00` 標頭，漏掉 `00 00`／`01 00` 的，例如 Slig；共 261 筆、184 個名字）、Magera＝瑪格拉族、女王＝琪斯瑪通克、巴爾卡札影（使用者 2026-09-27 決定），對話另統一 84 條；戰鬥資訊卡生命／移動列 y 12→13、狀態列 22→23（使用者要求，避免與中文名字重疊）。字型 bank v24（新增「皈」）、對話封包 v13，**還沒實機測試**。
 - v145：`scratch_test/cjk_display_staging_v145_creature_names`（2026-09-27）：v144 ＋ 生物／NPC 名字（SEGOBJEX.GFF 186 筆、140 個名字，`--creature-names`，`tools/creature_name_layer.py`），字型 bank v23（新增尉、歐、翠）、對話封包 v12，**還沒實機測試**。存檔已用 `patch_save_creature_names.py` 改好。
 - v144：`scratch_test/cjk_display_staging_v144_unified_terms`（2026-09-26）：v143 ＋ 全資源名詞統一（399 個條目依權威檔 v5.5 改寫，`tools/unify_glossary_terms.py`；對話封包 v11、SPIN 封包 v5），**還沒實機測試**。
@@ -99,9 +101,10 @@
 - **使用者決定不翻（2026-09-26）**：難度名稱（EASY…HIDEOUS）、圖片按鈕（存讀檔的 SAVE／EXIT／DELETE、創角 DONE、職業小圖 17101～17108）、
   主選單火焰藝術字。維持英文當原版美術。
 - **片頭**：兩張羊皮紙已完成（v140）。工作人員名單、SSI、AD&D、公司標誌都**不翻**（使用者 2026-09-26 決定）。
-- **下一步：片尾的兩首詩**（CINE.GFF `BMP 10`／`BMP 11`），做法照 re_107 §6；「龍之剋星」這個譯名使用者已同意。
+- **片尾的兩首詩**：v148 完成並已實機確認（re_107 §7）。Dragonsbane 依權威檔改用「屠龍劍」（取代先前的「龍之剋星」）。
 - 已完成：遊戲選單、商店（未實測）、提示列、離開對話框、頭像選單、裝備欄、背包按鈕文字（v133～v138）。
-- 創角與 VIEW CHARACTER 的 `NAME:`、`EXP`、`DAM` 仍是英文。
+- **使用者決定不翻（2026-09-27）**：創角與 VIEW CHARACTER 的 `NAME:`、`EXP`、`DAM`；DOS 層級的錯誤訊息（manifest 的 `merr` 27 條，記憶體不足、找不到檔案等）。
+- **下一步**：遊戲選單「離開遊戲」圖示的對話框（DGROUP `0CF0`～`0D1C`，`SAVE` 的 `0D0C` 與讀取/儲存對話框共用）和「讀取/儲存」對話框（`0D1D` LOAD/RESTART GAME、`0D2F`、`0D34`），見 1.1 的 v142 註記。
 - 剩下的零星字串：`INACTIVE CHARACTER`（`1AC1`，VIEW 名稱欄那份）、`LOAD` 等，遇到再處理。
 
 ### 1.2.2 生物／NPC 名字（v145 已完成，待實機確認）
@@ -201,7 +204,7 @@ python tools/build_cjk_display_staging.py \
   --spin-package scratch_test/spin_gff_import_title_newline_v5_unified/gff-text-replacements.json \
   --gpl-package scratch_test/gpl_full_v13_name_records/gpl-dialogue-patch.json \
   --ebox-line-gap 2 --menu-line-gap 2 --dialogue-option-pitch 11 --view-ui \
-  --cursor-hotkeys --smart-cursor --intro-scrolls --creature-names \
+  --cursor-hotkeys --smart-cursor --intro-scrolls --creature-names --ending-poems \
   --output scratch_test/cjk_display_staging_vNN_xxx
 ```
 
@@ -223,7 +226,7 @@ python tools/build_cjk_display_staging.py \
   原因：DOSBox-X 的 `ime=auto` 在 Windows 鍵盤配置是中日韓（例如繁中 1028）時會啟用輸入法，`Z`／`X`／`D` 等熱鍵會被輸入法吃掉；`ime=false` 會讓 DOSBox-X 啟動時呼叫 `ImmDisableIME`。
 - **`--intro-scrolls`**：替換 CINE.GFF 的 `BMA 8`／`BMA 9`（片頭羊皮紙），驗證只有這兩個 chunk 不同。
   需要 Pillow 與系統字型 `C:/Windows/Fonts/msjhbd.ttc`（re_107 §5）。
-- **測試**：`python -m pytest tests -q`，目前 256 項全過。
+- **測試**：`python -m pytest tests -q`，目前 259 項全過。
 - **英文原版參考**：`scratch_test/english_reference` 是 Steam 英文版的副本（設定檔沿用組合包的），要對照原版畫面時用它，不要動 `from Steam`。
 
 ---
