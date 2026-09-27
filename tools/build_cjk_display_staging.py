@@ -41,6 +41,7 @@ try:
     )
     from .exe_text_layer import apply_exe_text_patches
     from .intro_scroll_layer import build_intro_scrolls
+    from .ending_poem_layer import build_ending_poems, preview_ending_on_start
     from .creature_name_layer import changed_ranges_are_names, gff_chunks, load_creature_names, patch_segobjex
 except ImportError:
     from cjk_localization_pipeline import (
@@ -70,6 +71,7 @@ except ImportError:
     )
     from exe_text_layer import apply_exe_text_patches
     from intro_scroll_layer import build_intro_scrolls
+    from ending_poem_layer import build_ending_poems, preview_ending_on_start
     from creature_name_layer import changed_ranges_are_names, gff_chunks, load_creature_names, patch_segobjex
 
 
@@ -362,6 +364,16 @@ def main() -> int:
         help="Chinese text on the two opening parchment scrolls (CINE.GFF BMA 8/9, intro_scroll_layer.py)",
     )
     parser.add_argument(
+        "--ending-poems",
+        action="store_true",
+        help="Chinese text on the two ending poems (CINE.GFF BMP 10/11, ending_poem_layer.py)",
+    )
+    parser.add_argument(
+        "--preview-ending-on-start",
+        action="store_true",
+        help="TEST BUILD ONLY: START GAME plays the ending cinematic, to check the poems",
+    )
+    parser.add_argument(
         "--creature-names",
         action="store_true",
         help="Chinese NPC and monster names in SEGOBJEX.GFF (creature_name_layer.py, creature_names.csv)",
@@ -522,6 +534,8 @@ def main() -> int:
             patched_exe = apply_exe_text_patches(patched_exe, mapping)
             if args.smart_cursor:
                 patched_exe = apply_smart_cursor_exe_patches(patched_exe)
+        if args.preview_ending_on_start:
+            patched_exe = preview_ending_on_start(patched_exe)
         (staged_game / "DSUN.EXE").write_bytes(patched_exe)
         for _, filename, payload in bank_files:
             (staged_game / filename).write_bytes(payload)
@@ -688,19 +702,25 @@ def main() -> int:
         )
 
         cine_verification: dict[str, object] | None = None
-        if args.intro_scrolls:
-            def extract_scroll(bma_id: int) -> bytes:
-                target = work / f"BMA-{bma_id}.original.bin"
-                run(args.gff_cat, "extract", game_dir / "CINE.GFF", "BMA", str(bma_id), "-o", target)
+        cine_chunks: list[tuple[str, int, bytes]] = []
+        if args.intro_scrolls or args.ending_poems:
+            def extract_cine(kind: str, chunk_id: int) -> bytes:
+                target = work / f"{kind}-{chunk_id}.original.bin"
+                run(args.gff_cat, "extract", game_dir / "CINE.GFF", kind, str(chunk_id), "-o", target)
                 return target.read_bytes()
 
-            scrolls = build_intro_scrolls(extract_scroll)
+            if args.intro_scrolls:
+                cine_chunks += [("BMA", bma_id, payload)
+                                for bma_id, payload in build_intro_scrolls(lambda i: extract_cine("BMA", i)).items()]
+            if args.ending_poems:
+                cine_chunks += [("BMP", bmp_id, payload)
+                                for bmp_id, payload in build_ending_poems(lambda i: extract_cine("BMP", i)).items()]
             current_cine = game_dir / "CINE.GFF"
-            for index, (bma_id, payload) in enumerate(scrolls.items()):
-                patched_chunk = work / f"BMA-{bma_id}.intro-scroll.bin"
+            for index, (kind, chunk_id, payload) in enumerate(cine_chunks):
+                patched_chunk = work / f"{kind}-{chunk_id}.chinese.bin"
                 patched_chunk.write_bytes(payload)
-                next_cine = staged_game / "CINE.GFF" if index == len(scrolls) - 1 else work / f"CINE.scroll{index}.GFF"
-                run(args.gff_cat, "replace", current_cine, "BMA", str(bma_id), patched_chunk, "-o", next_cine)
+                next_cine = staged_game / "CINE.GFF" if index == len(cine_chunks) - 1 else work / f"CINE.step{index}.GFF"
+                run(args.gff_cat, "replace", current_cine, kind, str(chunk_id), patched_chunk, "-o", next_cine)
                 current_cine = next_cine
             original_cine, final_cine = work / "original-cine", work / "final-cine"
             run(args.gff_cat, "extract", game_dir / "CINE.GFF", "--all", "-o", original_cine)
@@ -708,12 +728,13 @@ def main() -> int:
             cine_verification = {
                 "source_sha256": sha256((game_dir / "CINE.GFF").read_bytes()),
                 "patched_sha256": sha256((staged_game / "CINE.GFF").read_bytes()),
+                "chunks": [f"{kind} {chunk_id}" for kind, chunk_id, _ in cine_chunks],
                 **verify_extracted_gff_chunks(
                     original_cine,
                     final_cine,
                     [
-                        {"kind": "BMA", "chunk_id": bma_id, "sha256": sha256(payload), "encoded_byte_length": len(payload)}
-                        for bma_id, payload in scrolls.items()
+                        {"kind": kind, "chunk_id": chunk_id, "sha256": sha256(payload), "encoded_byte_length": len(payload)}
+                        for kind, chunk_id, payload in cine_chunks
                     ],
                 ),
             }
@@ -740,7 +761,7 @@ def main() -> int:
             mutable_files = {"DSUN.EXE", "RESOURCE.GFF"}
             if gpl_payload is not None:
                 mutable_files.add("GPLDATA.GFF")
-            if args.intro_scrolls:
+            if args.intro_scrolls or args.ending_poems:
                 mutable_files.add("CINE.GFF")
             if args.creature_names:
                 mutable_files.add("SEGOBJEX.GFF")
@@ -826,6 +847,7 @@ def main() -> int:
                 else None
             ),
             "intro_scrolls": cine_verification,
+            "test_only_preview_ending_on_start": args.preview_ending_on_start,
             "creature_names": creature_verification,
             "banks": [
                 {"file": filename, "bytes": len(payload), "sha256": sha256(payload)}
