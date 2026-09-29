@@ -34,6 +34,7 @@ try:
     from .creation_icon_layer import CREATION_LIST_WINDS, DUAL_CLASS_WIND, build_button_texts, build_creation_icons, move_wind_buttons
     from .plan_name_slot_consumers import load_fixed_ui_ids
     from .view_ui_layer import (
+        apply_map_teleport_exe_patches,
         apply_smart_cursor_exe_patches,
         apply_view_ui_exe_patches,
         build_view_ui_font,
@@ -64,6 +65,7 @@ except ImportError:
     from creation_icon_layer import CREATION_LIST_WINDS, DUAL_CLASS_WIND, build_button_texts, build_creation_icons, move_wind_buttons
     from plan_name_slot_consumers import load_fixed_ui_ids
     from view_ui_layer import (
+        apply_map_teleport_exe_patches,
         apply_smart_cursor_exe_patches,
         apply_view_ui_exe_patches,
         build_view_ui_font,
@@ -349,6 +351,11 @@ def main() -> int:
         help="walk clicks on map objects look, too-far looks walk there (re_104 stage A; needs --view-ui)",
     )
     parser.add_argument(
+        "--map-teleport",
+        action="store_true",
+        help="debug mode (-k911) only: Shift + click on the overhead map teleports the party (needs --view-ui)",
+    )
+    parser.add_argument(
         "--experimental-item-text-fix",
         action="store_true",
         help="rejected v34 post-render %%Fs experiment (build is refused)",
@@ -400,6 +407,8 @@ def main() -> int:
 
     if (args.cursor_hotkeys or args.smart_cursor) and not args.view_ui:
         raise ValueError("--cursor-hotkeys/--smart-cursor run in the FONT core that only --view-ui installs")
+    if args.map_teleport and not args.view_ui:
+        raise ValueError("--map-teleport runs in the FONT core that only --view-ui installs")
     if args.cursor_hotkeys and not args.smart_cursor:
         raise ValueError("--cursor-hotkeys reaches the FONT core through --smart-cursor's key handler redirect")
 
@@ -513,6 +522,7 @@ def main() -> int:
                 banks,
                 cursor_hotkeys=args.cursor_hotkeys,
                 smart_cursor=args.smart_cursor,
+                map_teleport=args.map_teleport,
             )
         patched_exe, cache = patch_executable(
             original_exe,
@@ -534,6 +544,8 @@ def main() -> int:
             patched_exe = apply_exe_text_patches(patched_exe, mapping)
             if args.smart_cursor:
                 patched_exe = apply_smart_cursor_exe_patches(patched_exe)
+            if args.map_teleport:
+                patched_exe = apply_map_teleport_exe_patches(patched_exe)
         if args.preview_ending_on_start:
             patched_exe = preview_ending_on_start(patched_exe)
         (staged_game / "DSUN.EXE").write_bytes(patched_exe)

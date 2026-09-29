@@ -168,6 +168,10 @@ cjk_name_cache_start:
     cmp ax, 0xFF88
     je smart_click_entry
 .endif
+.ifdef map_teleport
+    cmp ax, 0xFF95
+    je map_teleport_entry
+.endif
 .ifdef char_creation
     cmp ax, 0xFF8A
     je creation_hp_entry
@@ -1389,6 +1393,10 @@ cursor_hotkey_far: .long 0
 .equ SMART_CHARACTERS, 0x1665
 .equ SMART_KIND_LOOK, 0
 .equ SMART_KIND_ATTACK, 1
+# smart_retarget's outcome in smart_target_ok
+.equ SMART_TARGET_NONE, 0
+.equ SMART_TARGET_FOUND, 1
+.equ SMART_TARGET_CREATURE, 2
 .equ SMART_NO_SIGHT_IP, 0x09FF
 # Borland far functions: only SI, DI, BP and DS survive them.
 .macro smart_far_call segment, offset
@@ -1458,7 +1466,36 @@ smart_click_entry:
     mov word ptr cs:[smart_pending_object], di
     mov word ptr cs:[smart_pending_kind], SMART_KIND_LOOK
     mov word ptr cs:[smart_pending], 1
+    # smart_retarget moves the click (event x/y) onto the free tile; a look
+    # from here needs the original click back, or the look path finds
+    # nothing there (the valve wheel: find_object = FFFFh).
+    mov ax, word ptr ss:[bp+0x12]
+    mov word ptr cs:[smart_click_x], ax
+    mov ax, word ptr ss:[bp+0x14]
+    mov word ptr cs:[smart_click_y], ax
     call smart_retarget
+    # A big or wall-mounted object (the sewer drains) can have no free tile
+    # next to it, or its nearest one is where the walker already stands, yet
+    # the walker is more than 1 from the object's own tile. Nothing would
+    # move and the arrival check would never pass, so look from here as the
+    # look cursor does (range and line-of-sight checks included).
+    cmp word ptr cs:[smart_target_ok], SMART_TARGET_FOUND
+    ja smart_walk
+    jb smart_look_instead
+    call smart_at_target
+    je smart_look_instead
+    # The free tile can still be out of reach (the valve wheel in its wall
+    # niche): the walk would only print "NO PATH FROM HERE". Try the path
+    # first; without one, look from here as the look cursor does.
+    call smart_path_ok
+    jz smart_walk
+smart_look_instead:
+    mov word ptr cs:[smart_pending], 0
+    mov ax, word ptr cs:[smart_click_x]
+    mov word ptr ss:[bp+0x12], ax
+    mov ax, word ptr cs:[smart_click_y]
+    mov word ptr ss:[bp+0x14], ax
+    jmp smart_look
 smart_walk:
     mov cx, SMART_WALK_ENTRY_IP
     jmp smart_exit
@@ -1578,6 +1615,7 @@ smart_retarget:
     # (sarcophagus, straw) made the walker refuse to move. Aim the click
     # at the free tile next to the object nearest to the walker instead:
     # 1A0A:2E99(object, &x, &y, walker) with near pointers (SS == DS).
+    mov word ptr cs:[smart_target_ok], SMART_TARGET_CREATURE
     mov ax, si
     add ax, SMART_ORDER_SEGMENT
     mov es, ax
@@ -1585,6 +1623,7 @@ smart_retarget:
     imul bx, bx, 3
     cmp byte ptr es:[bx+0x0C36], 2
     je smart_retarget_done
+    mov word ptr cs:[smart_target_ok], SMART_TARGET_NONE
     sub sp, 4
     mov bx, sp
     push word ptr [SMART_LEADER]
@@ -1596,8 +1635,12 @@ smart_retarget:
     add sp, 8
     or ax, ax
     jz smart_retarget_drop
+    mov word ptr cs:[smart_target_ok], SMART_TARGET_FOUND
     mov bx, sp
+    mov ax, word ptr ss:[bx+2]
+    mov word ptr cs:[smart_target_y], ax
     mov ax, word ptr ss:[bx]
+    mov word ptr cs:[smart_target_x], ax
     shl ax, 4
     add ax, 8
     sub ax, word ptr [SMART_CAMERA_X]
@@ -1610,6 +1653,77 @@ smart_retarget:
 smart_retarget_drop:
     add sp, 4
 smart_retarget_done:
+    ret
+smart_path_ok:
+    # ZF = the pending walker has a path to the retargeted tile. This is the
+    # walk-to-point routine's own test (1587:0427, 1B1AC..1B226): a move
+    # order (0Fh) to the tile, party marks lifted off the map (142F:026D),
+    # find_path(walker, 1) (1A0A:0B0F), marks back (142F:02B9), and path
+    # byte 3972:0377 + walker*1Ch = FFh when there is none. The walker's
+    # order is restored; the walk that follows recomputes the path. A tile
+    # the routine refuses outright (142F:00DC, map flag 40h: no move and no
+    # message) counts as no path.
+    push word ptr cs:[smart_target_y]
+    push word ptr cs:[smart_target_x]
+    smart_far_call 0x142F, 0x00DC
+    add sp, 4
+    or ax, ax
+    jnz smart_path_refused
+    mov ax, si
+    add ax, SMART_ORDER_SEGMENT
+    mov es, ax
+    mov bx, word ptr cs:[smart_pending_walker]
+    imul bx, bx, 0x13
+    mov ax, word ptr es:[bx+0x8A6]
+    mov word ptr cs:[smart_saved_order], ax
+    mov ax, word ptr es:[bx+0x8A8]
+    mov word ptr cs:[smart_saved_order+2], ax
+    mov ax, word ptr es:[bx+0x8AA]
+    mov word ptr cs:[smart_saved_order+4], ax
+    mov ax, word ptr cs:[smart_target_x]
+    mov word ptr es:[bx+0x8A6], ax
+    mov ax, word ptr cs:[smart_target_y]
+    mov word ptr es:[bx+0x8A8], ax
+    mov word ptr es:[bx+0x8AA], 0x0F
+    smart_far_call 0x142F, 0x026D
+    push 1
+    push word ptr cs:[smart_pending_walker]
+    smart_far_call 0x1A0A, 0x0B0F
+    add sp, 4
+    smart_far_call 0x142F, 0x02B9
+    mov ax, si
+    add ax, SMART_ORDER_SEGMENT
+    mov es, ax
+    mov bx, word ptr cs:[smart_pending_walker]
+    imul bx, bx, 0x13
+    mov ax, word ptr cs:[smart_saved_order]
+    mov word ptr es:[bx+0x8A6], ax
+    mov ax, word ptr cs:[smart_saved_order+2]
+    mov word ptr es:[bx+0x8A8], ax
+    mov ax, word ptr cs:[smart_saved_order+4]
+    mov word ptr es:[bx+0x8AA], ax
+    mov bx, word ptr cs:[smart_pending_walker]
+    imul bx, bx, 0x1C
+    cmp byte ptr es:[bx+0x377], 0xFF
+    je smart_path_none
+    cmp ax, ax
+    ret
+smart_path_none:
+    or bx, 1
+smart_path_refused:
+    ret
+smart_at_target:
+    # ZF = the pending walker stands on the retargeted tile.
+    mov bx, word ptr cs:[smart_pending_walker]
+    shl bx, 5
+    mov ax, word ptr [bx+SMART_OBJECT_TILE_X]
+    shr ax, 4
+    cmp ax, word ptr cs:[smart_target_x]
+    jne smart_at_target_done
+    mov ax, word ptr [bx+SMART_OBJECT_TILE_Y]
+    shr ax, 4
+    cmp ax, word ptr cs:[smart_target_y]
+smart_at_target_done:
     ret
 smart_frame:
     cmp word ptr cs:[smart_pending], 0
@@ -1630,7 +1744,63 @@ smart_frame:
     smart_far_call 0x1A0A, 0x2BA5
     add sp, 4
     cmp ax, 1
+    jle smart_frame_arrived
+    # A look also arrives on the free tile it was aimed at: a big object's
+    # own tile can stay more than 1 away from every tile next to it.
+    cmp word ptr cs:[smart_pending_kind], SMART_KIND_LOOK
+    jne smart_frame_done
+    cmp word ptr cs:[smart_target_ok], SMART_TARGET_FOUND
+    jne smart_frame_reach
+    call smart_at_target
+    je smart_frame_arrived
+smart_frame_reach:
+    # The walk stopped short, or never started (the walk-to routine can
+    # refuse a tile without a word). Look from where the walker stands under
+    # the look cursor's own rules (look path 1B426..1B4FB): clear line of
+    # sight (0898:00A4 == 0) and distance (0898:000C) <= 20.
+    mov bx, di
+    shl bx, 5
+    push 0
+    mov ax, word ptr [bx+SMART_OBJECT_TILE_Y]
+    shr ax, 4
+    push ax
+    mov ax, word ptr [bx+SMART_OBJECT_TILE_X]
+    shr ax, 4
+    push ax
+    push 0
+    mov bx, word ptr cs:[smart_pending_walker]
+    shl bx, 5
+    mov ax, word ptr [bx+SMART_OBJECT_TILE_Y]
+    shr ax, 4
+    push ax
+    mov ax, word ptr [bx+SMART_OBJECT_TILE_X]
+    shr ax, 4
+    push ax
+    smart_far_call 0x0898, 0x00A4
+    add sp, 12
+    or ax, ax
+    jnz smart_frame_done
+    mov bx, di
+    shl bx, 5
+    mov ax, word ptr [bx+SMART_OBJECT_TILE_Y]
+    shr ax, 4
+    push ax
+    mov ax, word ptr [bx+SMART_OBJECT_TILE_X]
+    shr ax, 4
+    push ax
+    mov bx, word ptr cs:[smart_pending_walker]
+    shl bx, 5
+    mov ax, word ptr [bx+SMART_OBJECT_TILE_Y]
+    shr ax, 4
+    push ax
+    mov ax, word ptr [bx+SMART_OBJECT_TILE_X]
+    shr ax, 4
+    push ax
+    smart_far_call 0x0898, 0x000C
+    add sp, 8
+    cmp ax, 0x14
     jg smart_frame_done
+smart_frame_arrived:
     cmp word ptr cs:[smart_pending_kind], SMART_KIND_ATTACK
     je smart_frame_attack
     # the look path's interaction, 1B4FB..1B53A
@@ -1722,7 +1892,104 @@ smart_pending_object: .word 0
 smart_pending_kind: .word 0
 smart_refuse_ip: .word 0
 smart_pass_ip: .word 0
+smart_target_ok: .word 0
+smart_target_x: .word 0
+smart_target_y: .word 0
+smart_saved_order: .word 0, 0, 0
+smart_click_x: .word 0
+smart_click_y: .word 0
 smart_click_far: .long 0
+.endif
+.ifdef map_teleport
+# Debug map teleport. The overhead map's click handler (overlay 35, IP 0219,
+# file 7E3A9) now runs its bounds check and x11 scaling here (tag FF95 at
+# 7E3C6); BP is its frame, pointer x/y at [bp-2]/[bp-4]. Originally a click
+# only moves the camera (191F:0281); with the debug flag [11B0] set (-k911),
+# a Shift key held and no combat, the party first goes there through the
+# GPL tport core 4251:00AC(region, tile x, tile y), the same call the
+# teleport pillars make. That call may swap overlay 35 out, so the teleport
+# path never returns into it: it moves the camera itself and runs the
+# handler's own epilogue.
+.equ MAP_TP_DGROUP_LOAD_SEGMENT, 0x4356
+.equ MAP_TP_COMBAT_SEGMENT, 0x377E
+.equ MAP_TP_DEBUG, 0x11B0
+.equ MAP_TP_REGION, 0x117C
+.equ MAP_TP_CONTINUE_IP, 0x026E
+.equ MAP_TP_IGNORE_IP, 0x027E
+map_teleport_entry:
+    pop es
+    pop bx
+    pop dx
+    mov cx, MAP_TP_IGNORE_IP
+    mov ax, word ptr ss:[bp-2]
+    cmp ax, 0x43
+    jl map_teleport_return
+    cmp ax, 0xFD
+    jg map_teleport_return
+    mov bx, word ptr ss:[bp-4]
+    cmp bx, 0x1E
+    jl map_teleport_return
+    cmp bx, 0xA9
+    jg map_teleport_return
+    sub ax, 0x43
+    imul ax, ax, 11
+    mov word ptr ss:[bp-2], ax
+    sub bx, 0x1E
+    imul bx, bx, 11
+    mov word ptr ss:[bp-4], bx
+    mov cx, MAP_TP_CONTINUE_IP
+    cmp word ptr [MAP_TP_DEBUG], 0
+    je map_teleport_return
+    mov ah, 2
+    int 0x16
+    test al, 3
+    jz map_teleport_return
+    push si
+    push di
+    mov si, ds
+    sub si, MAP_TP_DGROUP_LOAD_SEGMENT
+    mov ax, si
+    add ax, MAP_TP_COMBAT_SEGMENT
+    mov es, ax
+    cmp word ptr es:[0x19], 0
+    jne map_teleport_play
+    mov ax, word ptr ss:[bp-4]
+    shr ax, 4
+    push ax
+    mov ax, word ptr ss:[bp-2]
+    shr ax, 4
+    push ax
+    push word ptr [MAP_TP_REGION]
+    mov ax, si
+    add ax, 0x4251
+    mov word ptr cs:[map_teleport_far+2], ax
+    mov word ptr cs:[map_teleport_far], 0x00AC
+    .byte 0x2E, 0xFF, 0x1E
+    .word map_teleport_far
+    add sp, 6
+    push 1
+    push word ptr ss:[bp-4]
+    push word ptr ss:[bp-2]
+    mov ax, si
+    add ax, 0x191F
+    mov word ptr cs:[map_teleport_far+2], ax
+    mov word ptr cs:[map_teleport_far], 0x0281
+    .byte 0x2E, 0xFF, 0x1E
+    .word map_teleport_far
+    add sp, 6
+    pop di
+    pop si
+    xor ax, ax
+    leave
+    lret
+map_teleport_play:
+    pop di
+    pop si
+map_teleport_return:
+    push dx
+    push cx
+    lret
+map_teleport_far: .long 0
 .endif
 .ifdef fixed_abilities
 # Six fixed eight-byte strings: two Base94 triples, colon, NUL.

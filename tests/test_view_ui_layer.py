@@ -21,9 +21,12 @@ from tools.view_ui_layer import (
     MATERIAL_TABLE,
     MATERIAL_TABLE_OFFSET,
     MATERIAL_UNITS,
+    MAP_TELEPORT_EXE_PATCHES,
     NATURAL_ATTACK_BRACKETS,
     VIEW_ROW_SITES,
     VIEW_UI_EXE_PATCHES,
+    apply_map_teleport_exe_patches,
+    apply_smart_cursor_exe_patches,
     apply_view_ui_exe_patches,
     build_view_ui_font,
     material_table_bytes,
@@ -145,6 +148,19 @@ class ViewUiExePatchTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "found modified bytes"):
             apply_view_ui_exe_patches(patched)
 
+    @unittest.skipUnless(PRISTINE_EXE.exists(), "pristine DSUN.EXE is not present")
+    def test_map_teleport_redirects_the_overhead_map_click(self):
+        image = apply_smart_cursor_exe_patches(apply_view_ui_exe_patches(PRISTINE_EXE.read_bytes()))
+        patched = apply_map_teleport_exe_patches(image)
+        (offset, original, replacement, _), = MAP_TELEPORT_EXE_PATCHES
+        self.assertEqual(len(bytes.fromhex(original)), len(bytes.fromhex(replacement)))
+        # mov ax,FF95h; push cs; push 026Eh (the camera move) ... FONT trampoline
+        self.assertEqual(patched[offset : offset + 7], bytes.fromhex("B8 95 FF 0E 68 6E 02"))
+        changed = [index for index, (a, b) in enumerate(zip(image, patched)) if a != b]
+        self.assertEqual((changed[0], changed[-1] + 1), (offset, offset + len(bytes.fromhex(original))))
+        with self.assertRaisesRegex(ValueError, "found modified bytes"):
+            apply_map_teleport_exe_patches(patched)
+
     def test_material_words_keep_their_table_slots(self):
         table = material_table_bytes()
         self.assertEqual(len(table), len(MATERIAL_TABLE))
@@ -174,6 +190,14 @@ class ViewUiFontTests(unittest.TestCase):
             self.assertEqual(int.from_bytes(result[cursor : cursor + 2], "little"), 10 * len(ids[unit]))
             cursor += 2 + 100 * len(ids[unit])
         self.assertEqual(len(result), cursor)
+
+    def test_map_teleport_adds_its_core_entry(self):
+        plain = assemble_name_slot_cache(**V75_OPTIONS, smart_cursor=True)
+        teleport = assemble_name_slot_cache(**V75_OPTIONS, smart_cursor=True, map_teleport=True)
+        # cmp ax, FF95h; je; the tport core 4251:00AC is only reached from here
+        self.assertNotIn(bytes.fromhex("83 F8 95 0F 84"), plain)
+        self.assertIn(bytes.fromhex("83 F8 95 0F 84"), teleport)
+        self.assertIn(bytes.fromhex("05 51 42"), teleport)
 
     def test_word_glyph_joins_rows_side_by_side(self):
         record = word_glyph_record((3, 7), synthetic_banks(bank_count=1, height=2), 2)

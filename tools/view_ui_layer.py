@@ -435,6 +435,26 @@ def _apply_checked_patches(image: bytes, patches, label: str) -> bytes:
     return bytes(result)
 
 
+# Debug map teleport (-k911, Shift + click on the overhead map). The map's
+# click handler (overlay 35, IP 0219) checks the pointer against the map
+# picture and scales it x11 to world pixels in 56 relocation-free bytes; they
+# become a tag-FF95 redirect to the FONT core, which runs the same check and
+# scaling and returns to the camera move (IP 026E) or the exit (IP 027E), or
+# teleports the party and finishes the handler itself (map_teleport_entry).
+MAP_TELEPORT_EXE_PATCHES = (
+    (0x7E3C6,
+     "83 7E FE 43 7C 42 81 7E FE FD 00 7F 3B 83 7E FC 1E 7C 35 81 7E FC A9 00 7F 2E"
+     " 83 6E FE 43 83 6E FC 1E BA 0B 00 8B 46 FE F7 EA 89 46 FE BA 0B 00 8B 46 FC F7 EA 89 46 FC",
+     "B8 95 FF 0E 68 6E 02 8C DB 80 EF 10 53 68 14 07 CB" + " 90" * 39,
+     "overhead map click bounds and scaling -> tag FF95"),
+)
+
+
+def apply_map_teleport_exe_patches(image: bytes) -> bytes:
+    """Shift-click on the overhead map teleports the party in debug mode."""
+    return _apply_checked_patches(image, MAP_TELEPORT_EXE_PATCHES, "map teleport")
+
+
 def apply_smart_cursor_exe_patches(image: bytes) -> bytes:
     """Walk clicks on map objects look; too-far/no-sight looks walk there.
 
@@ -523,6 +543,7 @@ def build_view_ui_font(
     *,
     cursor_hotkeys: bool = False,
     smart_cursor: bool = False,
+    map_teleport: bool = False,
 ) -> tuple[bytes, dict[str, object]]:
     """Append NAME slots, the decoder and material words to the main FONT-100."""
     bank_count = len(banks)
@@ -554,6 +575,7 @@ def build_view_ui_font(
         scroll_texts=True,
         cursor_hotkeys=cursor_hotkeys,
         smart_cursor=smart_cursor,
+        map_teleport=map_teleport,
         char_creation=True,
     )
     result = bytearray(expanded + core)
@@ -575,4 +597,5 @@ def build_view_ui_font(
         "labels": "localization/catalog/fixed_ui_labels.csv",
         "cursor_hotkeys": cursor_hotkeys,
         "smart_cursor": smart_cursor,
+        "map_teleport": map_teleport,
     }

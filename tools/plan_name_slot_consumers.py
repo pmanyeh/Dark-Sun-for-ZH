@@ -345,6 +345,7 @@ def assemble_name_slot_cache(
     scroll_texts: bool = False,
     cursor_hotkeys: bool = False,
     smart_cursor: bool = False,
+    map_teleport: bool = False,
     char_creation: bool = False,
 ) -> bytes:
     """Assemble the self-contained decoder appended to FONT-100.
@@ -414,6 +415,8 @@ def assemble_name_slot_cache(
         extra_symbols += ["--defsym", "cursor_hotkeys=1"]
     if smart_cursor:
         extra_symbols += ["--defsym", "smart_cursor=1"]
+    if map_teleport:
+        extra_symbols += ["--defsym", "map_teleport=1"]
     if char_creation:
         if label_ids is None or not identity or not class_names:
             raise ValueError("character creation needs the fixed labels, identity and class names")
