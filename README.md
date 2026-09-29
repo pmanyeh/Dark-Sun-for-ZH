@@ -5,33 +5,40 @@
 中文字型顯示與遊戲資源重封裝流程。
 
 > [!IMPORTANT]
-> 本專案仍在開發中，目前不是完整漢化成品，也不是可直接遊玩的遊戲下載。
+> 本專案仍在開發中，目前是公測階段，還不是最終成品；repository 也不提供可直接遊玩的遊戲下載。
 > 使用者必須自行合法持有原版遊戲；repository 不包含 Steam 原始遊戲檔、DOSBox-X
 > 執行檔或專有字型媒體。
 
 ## 目前進度
 
-截至 2026-08-16，專案已完成一個通過實機回歸的繁中顯示 checkpoint（v26）：
+截至 2026-09-30，最新建置為 v158；公測整合包 v0.9.0 以 v153 為基礎。
 
-- 建立 10×10 中文字形顯示與多字庫 bank 載入機制，同時保留 9-row UI 配置。
-- 建立 UTF-8 翻譯目錄到 Base94 runtime transport 的可重現編譯流程。
-- 可安全抽取、修改、重組譯並回封 `GPL`／`MAS` 對話腳本。
-- 可編譯 `SPIN` 法術說明與固定寬度 `NAME-1` 物件名稱。
-- 支援 GPL 分支、同 chunk trigger、外部入口 ABI 與 `GPLI-1` 事件位址的重定位驗證。
-- 已實機確認鬥獸場囚犯對話、出口 Yes/No、場景轉移、戰鬥觸發與中文對話行距。
-- 建置流程以隔離的 staging 副本運作，不會直接修改 Steam 原始安裝。
+- **翻譯**：全部對話 13,295 / 13,295 單元（100%），包括是非選單、對話選單標題與漏抽的短片段。
+  專有名詞依智冠手冊定名，統一整理在 [`docs/名詞權威對照表.md`](docs/名詞權威對照表.md)。
+- **已中文化的畫面**：
+  - 對話框與對話選項、物品名稱與材質字首、法術／靈能名稱與說明（`SPIN`）。
+  - 背包、VIEW CHARACTER、創角畫面、雙職業畫面、頭像選單。
+  - 戰鬥資訊卡與效果名稱、觀察卡與物品卡、生物／NPC 名字。
+  - 遊戲選單、提示列、離開與讀取／存檔對話框、訊息框、USE 畫面與施法訊息。
+  - 片頭兩張羊皮紙與片尾兩首詩（重畫圖片）。
+- **操作改良**（只新增，原版按鍵與 `-k911` 除錯模式的行為都保留）：
+  - 遊標模式熱鍵：`Z` 攻擊、`X` 觀察、`D` 行走。
+  - 智慧遊標：用行走遊標點物件，相鄰就互動，不相鄰就走過去再互動；走不過去的物件
+    （例如牆上的排水口、凹室裡的輪子）改照觀察遊標的規則直接查看。
+  - 除錯模式（`-k911`）的地圖傳送：按 `O` 開俯瞰地圖，按住 Shift 點地圖，全隊傳送過去。
+  - 玩家用說明見 [`docs/新操作說明.md`](docs/新操作說明.md)。
+- **發布**：可建立免安裝的整合包（安裝時逐位元組驗證、可解除安裝還原），流程見
+  [`docs/workflows/release-packaging.md`](docs/workflows/release-packaging.md)。GOG 版尚未驗證。
+- 建置流程一律在隔離的 staging 副本上運作，不會修改 Steam 原始安裝。
 
 目前仍待完成的主要工作：
 
-- 修正物件說明、裝備欄與物品列的 Base94 中文 renderer。
-- UI 文字中文化。
-- 多選項對話的選項文字中文化。
-- 擴充翻譯覆蓋率並進行完整遊戲流程校對與回歸測試。
+- 實機確認 v141～v146 的部分畫面（生物名字、觀察卡、物品卡等）。
+- 少數剩餘英文字串（名稱欄的 INACTIVE CHARACTER 等），以及換行避頭點。
+- 完整遊戲流程的校對與回歸測試；用整合包內附的 DOSBox-X 實際進遊戲。
 
-最新的正式 checkpoint 與後續工作順序請見
-[`docs/re/HANDOFF_NEXT_SESSION_2026-08-16.md`](docs/re/HANDOFF_NEXT_SESSION_2026-08-16.md)，
-技術驗證摘要則見
-[`docs/re/re_45_v26_gpli_event_relocation_official_checkpoint.md`](docs/re/re_45_v26_gpli_event_relocation_official_checkpoint.md)。
+各版本的細節、建置命令與下一步請見 [`handoff.md`](handoff.md)，逆向工程紀錄在
+[`docs/re/`](docs/re/)。
 
 ## Repository 內容
 
@@ -57,7 +64,7 @@ repository。
 - DOSBox-X（僅在建立及執行可玩 staging 時需要）
 - 合法取得的 ETEN 16×15 字型檔（建立正式來源字庫時才需要，不包含於本專案）
 
-大部分 Python 工具只使用標準函式庫；單元測試不需要安裝 `pytest`。
+大部分 Python 工具只使用標準函式庫；執行測試需要 `pytest`，片頭／片尾圖片重畫需要 Pillow。
 
 ## 開始使用
 
@@ -97,8 +104,10 @@ cargo build --release --manifest-path vendor/opends/Cargo.toml
 ### 4. 執行測試
 
 ```powershell
-python -m unittest discover -s tests -v
+python -m pytest tests -q
 ```
+
+目前共 266 項測試。部分測試需要本機的原版遊戲檔或 GNU 工具鏈，缺少時會自動略過。
 
 ### 5. 查看本地化管線
 

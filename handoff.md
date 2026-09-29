@@ -1,13 +1,18 @@
 # 《浩劫殘陽：破碎大地》(Dark Sun: Shattered Lands) 繁中化交接指南 (handoff.md)
 
-> **更新時間**：2026-09-27（v146 補齊漏掉的 44 個生物名字、戰鬥資訊卡下移 1px）
+> **更新時間**：2026-09-29（v154 除錯模式的地圖傳送）
 > **用途**：新 Session 的 AI 助手先讀這份文件，就能接手工作。依序讀第 0、1 節，其餘各節需要時再查。
 
 ---
 
 ## 0. 現況
 
-- **最新版本**：`scratch_test/cjk_display_staging_v153_use_messages`（2026-09-27）：v152 ＋ USE 畫面與施法訊息（`3214` 區域：無法施展此靈能／你需要休息／你被擊中了／你無法施法／退散不死生物，走 `0580:005C`；`0418` 區域是同一組訊息給單行訊息框用的另一份，兩份同步翻）；雙職業畫面左下四行依使用者要求上移（陣營 y 77、等級 87、等級數字 89、職業 97、EXP 106）。權威檔 Turn Undead 統一為「退散不死生物」。v151～v153（頭像選單、雙職業畫面、USE 訊息）已實機確認（使用者 2026-09-27）。
+- **最新版本**：`scratch_test/cjk_display_staging_v158_smart_look_click_restore`（2026-09-30）：v157 ＋ 修正 v155 引入的錯誤：智慧遊標改用觀察時沒有還原被改寫的點擊座標，觀察路徑找不到物件（輪子沒反應的真正原因，用 debugger 確認，re_104 §20）。只改 FONT 核心；存檔從 v157 複製。輪子、排水口已實機確認（使用者 2026-09-30）。
+- v157：`scratch_test/cjk_display_staging_v157_smart_look_fallback`（2026-09-29）：v156 ＋ 沒到達就照觀察遊標的規則看。實測：貼著輪子仍沒反應（v158 修正）。
+- v156：`scratch_test/cjk_display_staging_v156_smart_look_path_check`（2026-09-29）：v155 ＋ 智慧遊標走向物件前先試算路徑，走不到就照原版觀察直接看。實測：站在輪子旁邊點仍沒反應（v157 修正）。
+- v155：`scratch_test/cjk_display_staging_v155_smart_look_big_objects`（2026-09-29）：v154 ＋ 智慧遊標可以看大型／牆上物件了（例如下水道排水口，re_104 §20）：物件旁沒有空格，或隊長已經站在最近的空格上時，直接照原版觀察；走到目標空格也算到達。只改 FONT 核心，EXE 和 v154 相同。排水口已實機確認（使用者 2026-09-29）。
+- v154：`scratch_test/cjk_display_staging_v154_map_teleport`（2026-09-29）：v153 ＋ 除錯模式的地圖傳送（`--map-teleport`，re_104 §19）：用 `launch-debug-k911.cmd` 啟動，按 `O` 開俯瞰地圖，按住 Shift 點地圖就把全隊傳過去。EXE 和 v153 只差 `0x7E3C6～0x7E3FD`。存檔從 v153 複製。已實機確認（使用者 2026-09-29）：Shift＋點會傳送、不按 Shift 只捲動、點到牆或水裡落點正常、戰鬥中不傳送、一般模式不傳送。
+- v153：`scratch_test/cjk_display_staging_v153_use_messages`（2026-09-27）：v152 ＋ USE 畫面與施法訊息（`3214` 區域：無法施展此靈能／你需要休息／你被擊中了／你無法施法／退散不死生物，走 `0580:005C`；`0418` 區域是同一組訊息給單行訊息框用的另一份，兩份同步翻）；雙職業畫面左下四行依使用者要求上移（陣營 y 77、等級 87、等級數字 89、職業 97、EXP 106）。權威檔 Turn Undead 統一為「退散不死生物」。v151～v153（頭像選單、雙職業畫面、USE 訊息）已實機確認（使用者 2026-09-27）。
 - v152：`scratch_test/cjk_display_staging_v152_dual_class`（2026-09-27）：v151 ＋ 雙職業畫面整理（re_105 §8）：職業清單（ICON 17101～17108）改中文（使用者 2026-09-27 決定，推翻先前「職業小圖不翻」）、屬性標籤與「等級」中文化（tag FF93／FF94）、陣營不再跑到 VIEW 的位置、左下四行與屬性改 10px 行距。**還沒實機測試**。
 - v151：`scratch_test/cjk_display_staging_v151_portrait_menu`（2026-09-27）：v150 ＋ 隊員頭像選單的按鈕（`1BA7` 區域：修改／改名／離隊／雙職業；DROP 在這裡是離開隊伍，不是背包的「丟棄」）。另修正 v134 起不能雙職業的角色，第三顆按鈕 `CANCEL` 是亂碼（`0x70D0A` 的 `mov ax,1B7F` 沒跟著「取消」搬到 `1B81`）。全面掃描過：其他被搬動字串的 `mov 暫存器,立即值`／無 `push ds` 的引用只剩數值巧合（`0x6A140`、`0x3C6E7`、`0x13AA4` 一帶）。**還沒實機測試**。
 - v150：`scratch_test/cjk_display_staging_v150_exit_question`（2026-09-27）：v149 ＋ 離開對話框的問句改為「離開前存檔嗎?」（v149 實測「離開前要存檔嗎?」後面出現 ✓+：按鈕框的訊息最多顯示 20 字元，7 個中文字 22 bytes 把「嗎」切成一半，`^` 在 FONT-100 是打勾）。ESC 與遊戲選單的離開對話框共用這個字串，一起修好。兩個離開對話框與讀取/存檔對話框已實機確認（使用者 2026-09-27）。
@@ -86,6 +91,7 @@
 - 上一波的創角畫面（v122～v129）細節見 re_105；使用者常問的「遊俠選不到」是原版規則，見 re_105 §7。
 
 ### 1.1 下次開遊戲先確認
+
 
 - v145：觀察卡上 NPC／敵人的中文名字；戰鬥右上資訊卡的名字；「%Fs被魅惑」等訊息；舊存檔讀進來後，目前區域和去過的區域的生物是否都是中文。入隊角色（Gerakis 等）應維持英文。
   靜態分析：EXE 35 處讀名字的地方，一般生物只會經過觀察卡、戰鬥資訊卡、訊息框（都會解碼）；其餘都是隊員專用（`[0x25B]`、`[0x369]`，背包／VIEW／提示列／升級），入隊角色不翻所以不受影響。`191F:1547`（依物件編號取名字）找不到呼叫者。若出現亂碼，先查是哪個畫面。
@@ -170,6 +176,12 @@
 
 - **避頭點**：換行偶爾會讓「，」「。」出現在行首。
 - 右側直排的 `MORE` 是圖片，使用者說先不處理。
+- ~~開啟地圖的熱鍵~~：**結案**（2026-09-29）。原版已有：手冊 `HotKey_in_Game.txt` 寫「O Brings up overhead map」，程式上是 overlay 熱鍵分派第二層（`0x7177D`，`cs:1E13` 表）的 `o`，指向 `19C9`（re_104 §18）。v121 起的改動沒有碰到 `O`。
+- ~~地圖傳送（只在 `-k911` 除錯模式可用）~~：**結案**（v154，2026-09-29 使用者實機確認 5 項都正常）。使用者 2026-09-29 定案：按住 Shift 點俯瞰地圖才傳送，不按 Shift 照原版捲動畫面。調查與實作細節見 re_104 §19。
+  - 原版點俯瞰地圖只會捲動畫面（`191F:0281`），原版的除錯功能裡也沒有傳送。
+  - 做法：點地圖的範圍檢查（`0x7E3C6`，overlay 第 35 段）改成 tag `FF95` 進核心。除錯模式＋Shift＋非戰鬥時，呼叫 GPL `tport` 用的全隊傳送核心 `4251:00AC(區域, 格x, 格y)`，和傳送石柱（GPL-113）同一條路。
+  - 靜態換算的新發現：overlay 程式裡 far call 的段值＝`0x4B8`＋段編號×8；常駐段 `191F` 基底 `0x1E5F0`、`1587` 基底 `0x1AC70`；GPL 主分派在 `0x999A`（DGROUP `00C0` 表）。
+  - 可能的後續：補上石柱的特效（`request 17`）與音效（`sound 72`）。
 
 ---
 
@@ -209,7 +221,7 @@ python tools/build_cjk_display_staging.py \
   --spin-package scratch_test/spin_gff_import_title_newline_v5_unified/gff-text-replacements.json \
   --gpl-package scratch_test/gpl_full_v13_name_records/gpl-dialogue-patch.json \
   --ebox-line-gap 2 --menu-line-gap 2 --dialogue-option-pitch 11 --view-ui \
-  --cursor-hotkeys --smart-cursor --intro-scrolls --creature-names --ending-poems \
+  --cursor-hotkeys --smart-cursor --intro-scrolls --creature-names --ending-poems --map-teleport \
   --output scratch_test/cjk_display_staging_vNN_xxx
 ```
 
@@ -231,7 +243,8 @@ python tools/build_cjk_display_staging.py \
   原因：DOSBox-X 的 `ime=auto` 在 Windows 鍵盤配置是中日韓（例如繁中 1028）時會啟用輸入法，`Z`／`X`／`D` 等熱鍵會被輸入法吃掉；`ime=false` 會讓 DOSBox-X 啟動時呼叫 `ImmDisableIME`。
 - **`--intro-scrolls`**：替換 CINE.GFF 的 `BMA 8`／`BMA 9`（片頭羊皮紙），驗證只有這兩個 chunk 不同。
   需要 Pillow 與系統字型 `C:/Windows/Fonts/msjhbd.ttc`（re_107 §5）。
-- **測試**：`python -m pytest tests -q`，目前 259 項全過。
+- **測試**：`python -m pytest tests -q`，目前 266 項全過。
+- **除錯啟動檔**：建置程式不會產生 `-k911` 的啟動檔。需要時從 `scratch_test/cjk_display_staging_v121_original_keys` 複製 `launch-debug-k911.cmd` 和 `game-debug.conf`（`DARKSUN.BAT -k911`）到組合包根目錄。
 - **英文原版參考**：`scratch_test/english_reference` 是 Steam 英文版的副本（設定檔沿用組合包的），要對照原版畫面時用它，不要動 `from Steam`。
 
 ---
