@@ -5,8 +5,8 @@ from __future__ import annotations
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
-RELEASE_VERSION = "0.9.1"
-RELEASE_LABEL = f"v{RELEASE_VERSION} 公測版"
+RELEASE_VERSION = "1.0.0"
+RELEASE_LABEL = f"v{RELEASE_VERSION} 正式版"
 RELEASE_DIR = REPO_ROOT / "dist" / f"darksun_zh_release_v{RELEASE_VERSION}"
 BUILD_DIR = REPO_ROOT / "dist" / "_release_build"
 TEMPLATES = Path(__file__).resolve().parent / "templates"
