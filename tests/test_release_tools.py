@@ -106,5 +106,27 @@ class ReleaseToolTests(unittest.TestCase):
             self.assertEqual({path.name: path.read_bytes() for path in game.iterdir()}, before)
 
 
+    @unittest.skipUnless(STEAM.is_dir() and (BUILD / "release_manifest.json").is_file(),
+                         "requires the Steam files and build_release_patches.py output")
+    def test_installer_asks_to_uninstall_an_older_version_first(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            release = Path(temporary)
+            for name in ("installer.py", "bspatch_apply.py", "darksun_gff.py", "darksun_saves.py"):
+                shutil.copy2(ROOT / "tools/release" / name, release / name)
+            for name in ("release_manifest.json", "save_migration.json"):
+                shutil.copy2(BUILD / name, release / name)
+            game = release / "game_data" / "DARKSUN"
+            game.mkdir(parents=True)
+            manifest = json.loads((BUILD / "release_manifest.json").read_text(encoding="utf-8"))
+            for name in manifest["editions"]["steam"]:
+                shutil.copy2(STEAM / name, game / name)
+            (game / "zh_install_record.json").write_text('{"version": "0.0.1"}', encoding="utf-8")
+            before = {path.name: path.read_bytes() for path in game.iterdir()}
+            result = subprocess.run([sys.executable, str(release / "installer.py")], capture_output=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("0.0.1", (result.stdout + result.stderr).decode("utf-8", "replace"))
+            self.assertEqual({path.name: path.read_bytes() for path in game.iterdir()}, before)
+
+
 if __name__ == "__main__":
     unittest.main()

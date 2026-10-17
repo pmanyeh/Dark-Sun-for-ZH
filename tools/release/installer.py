@@ -122,6 +122,13 @@ def migrate_saves(game: Path, backup: Path, migration: dict) -> list[dict]:
 def install(game: Path) -> None:
     manifest = json.loads((HERE / "release_manifest.json").read_text(encoding="utf-8"))
     migration = json.loads((HERE / "save_migration.json").read_text(encoding="utf-8"))
+    record_path = game / INSTALL_RECORD
+    if record_path.is_file():
+        old = json.loads(record_path.read_text(encoding="utf-8")).get("version")
+        if old != manifest["version"]:
+            fail(f"這份遊戲已經安裝了中文化 {old}。請先執行「解除中文化.bat」還原成英文原版，"
+                 f"再執行「安裝中文化.bat」安裝 {manifest['version']}。\n"
+                 "        本程式沒有改動任何檔案。")
     edition, state = identify(game, manifest)
     if state == "installed":
         print("這份遊戲已經安裝過中文化了，不需要再安裝。")

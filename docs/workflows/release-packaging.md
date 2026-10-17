@@ -41,6 +41,9 @@ python -m pytest tests -q
 - 5 個補丁的結果與全部字型檔都驗證通過後才開始寫入；原檔備份在 `game_data\DARKSUN\_zh_backup\`。
 - 舊存檔（`SAVE*.SAV`、`DARKRUN.GFF`）先備份再修補；重跑不會重複修改。
 - `--uninstall` 還原 5 個檔、移除字型檔；存檔只在安裝後沒再存過時才還原。
+- 安裝紀錄（`zh_install_record.json`）的版本和整合包不同時（已安裝舊版），直接中止並提示先解除安裝。
+  解除安裝只依安裝紀錄與 `_zh_backup` 還原，所以新版整合包的「解除中文化.bat」也能還原舊版。
+- 升級測試：用舊版整合包的 `installer.py --game-dir <新整合包>\game_data` 裝上舊版，再用新版解除、安裝，結果要和 `STAGING` 相同。
 
 ## 手動端到端測試（每次出包後）
 
