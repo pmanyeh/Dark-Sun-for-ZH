@@ -32,7 +32,10 @@ LAUNCHERS = {
     "play_launcher.bat.template": "玩遊戲.bat",
     "uninstall_launcher.bat.template": "解除中文化.bat",
 }
-GAME_DATA_NOTE = "把DARKSUN資料夾放在這裡.txt"
+DEBUG_LAUNCHER = "玩遊戲（除錯模式）.bat"
+DEBUG_CONF = "zh_darksun_debug.conf"
+DEBUG_GUIDE = HERE.parent.parent / "docs" / "除錯模式說明.md"
+GAME_DATA_NOTE ="把DARKSUN資料夾放在這裡.txt"
 GAME_DATA_TEXT = (
     "請把 Steam 版遊戲的整個 DARKSUN 資料夾複製到這個 game_data 資料夾裡，\r\n"
     "完成後應該是：game_data\\DARKSUN\\DSUN.EXE\r\n"
@@ -69,11 +72,20 @@ def main() -> int:
 
     for template, target in LAUNCHERS.items():
         write_text(RELEASE_DIR / target, (TEMPLATES / template).read_text(encoding="utf-8"), bom=False)
-    write_text(RELEASE_DIR / "dosbox-x" / "zh_darksun.conf",
-               (TEMPLATES / "dosbox_darksun.conf.template").read_text(encoding="utf-8"), bom=False)
+    conf = (TEMPLATES / "dosbox_darksun.conf.template").read_text(encoding="utf-8")
+    write_text(RELEASE_DIR / "dosbox-x" / "zh_darksun.conf", conf, bom=False)
+    # Debug mode: the same setup, with the original -k911 switch passed to the game.
+    if conf.count("call DARKSUN.BAT\n") != 1:
+        raise SystemExit("dosbox_darksun.conf.template 找不到唯一的 call DARKSUN.BAT")
+    write_text(RELEASE_DIR / "dosbox-x" / DEBUG_CONF, conf.replace("call DARKSUN.BAT\n", "call DARKSUN.BAT -k911\n"), bom=False)
+    play = (TEMPLATES / "play_launcher.bat.template").read_text(encoding="utf-8")
+    if play.count("-conf zh_darksun.conf") != 1:
+        raise SystemExit("play_launcher.bat.template 找不到唯一的 -conf zh_darksun.conf")
+    write_text(RELEASE_DIR / DEBUG_LAUNCHER, play.replace("-conf zh_darksun.conf", f"-conf {DEBUG_CONF}"), bom=False)
     readme = (TEMPLATES / "README_安裝說明.txt.template").read_text(encoding="utf-8").format(label=RELEASE_LABEL)
     write_text(RELEASE_DIR / "README_安裝說明.txt", readme, bom=True)
     write_text(RELEASE_DIR / "新操作說明.txt", player_guide_text(PLAYER_GUIDE.read_text(encoding="utf-8")), bom=True)
+    write_text(RELEASE_DIR / "除錯模式說明.txt", player_guide_text(DEBUG_GUIDE.read_text(encoding="utf-8")), bom=True)
     shutil.copy2(TEMPLATES / "LICENSE_Fusion_Pixel_Font.txt", RELEASE_DIR / "LICENSE_Fusion_Pixel_Font.txt")
 
     game_data = RELEASE_DIR / "game_data"

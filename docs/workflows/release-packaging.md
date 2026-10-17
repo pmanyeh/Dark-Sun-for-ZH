@@ -8,14 +8,15 @@
 
 | 項目 | 內容 |
 |---|---|
-| `安裝中文化.bat`／`解除中文化.bat`／`玩遊戲.bat` | CRLF；用內附的 Python 與 DOSBox-X，路徑一律明確寫出 |
+| `安裝中文化.bat`／`解除中文化.bat`／`玩遊戲.bat`／`玩遊戲（除錯模式）.bat` | CRLF；用內附的 Python 與 DOSBox-X，路徑一律明確寫出 |
 | `installer.py`、`bspatch_apply.py`、`darksun_gff.py`、`darksun_saves.py` | 只用標準函式庫 |
 | `patches/<版本>_<檔名>.bsdiff`、`release_manifest.json` | 5 個檔（DSUN.EXE、RESOURCE／GPLDATA／CINE／SEGOBJEX.GFF）的差異補丁與來源／成品雜湊 |
 | `resources/C0～C11` | 中文字型檔（新檔案，直接複製） |
 | `save_migration.json` | 舊存檔的 GSTR 標題與生物名字中文位元組（預先算好） |
 | `dosbox-x/`、`python-embed/` | 官方固定版本（DOSBox-X 2026.08.02、Python 3.12.10），附授權檔 |
 | `dosbox-x/zh_darksun.conf` | 硬體設定同 Steam 版（S3、32 MB、7000 cycles、SB16 220/5/1/5），加 `ime=false`；掛載 `..\game_data`、`cd DARKSUN`、`call DARKSUN.BAT` |
-| `README_安裝說明.txt`、`新操作說明.txt`、`LICENSE_Fusion_Pixel_Font.txt` | UTF-8 BOM＋CRLF |
+| `dosbox-x/zh_darksun_debug.conf` | 由同一份範本產生，只把最後一行改成 `call DARKSUN.BAT -k911`（原版除錯模式），給「玩遊戲（除錯模式）.bat」用 |
+| `README_安裝說明.txt`、`新操作說明.txt`、`除錯模式說明.txt`、`LICENSE_Fusion_Pixel_Font.txt` | UTF-8 BOM＋CRLF；新操作說明與除錯模式說明由 `docs/新操作說明.md`、`docs/除錯模式說明.md` 轉成純文字 |
 | `game_data/` | 只有一個說明檔 |
 
 ## 什麼時候要重跑
