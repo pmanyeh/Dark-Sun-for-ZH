@@ -26,15 +26,28 @@ import vendor_python_embed  # noqa: E402
 from release_config import BUILD_DIR, RELEASE_DIR, RELEASE_LABEL, RELEASE_VERSION, STAGING, TEMPLATES  # noqa: E402
 from tools.build_cjk_display_staging import PLAYER_GUIDE, player_guide_text  # noqa: E402
 
-RUNTIME_SCRIPTS = ("installer.py", "bspatch_apply.py", "darksun_gff.py", "darksun_saves.py")
+RUNTIME_SCRIPTS = ("installer.py", "bspatch_apply.py", "darksun_gff.py", "darksun_saves.py", "midi_select.py")
 LAUNCHERS = {
     "install_launcher.bat.template": "安裝中文化.bat",
     "play_launcher.bat.template": "玩遊戲.bat",
+    "sound_setup_launcher.bat.template": "音效設定.bat",
     "uninstall_launcher.bat.template": "解除中文化.bat",
 }
 DEBUG_LAUNCHER = "玩遊戲（除錯模式）.bat"
 DEBUG_CONF = "zh_darksun_debug.conf"
 DEBUG_GUIDE = HERE.parent.parent / "docs" / "除錯模式說明.md"
+SOUND_CONF = "zh_darksun_sound.conf"
+MUSIC_GUIDE = HERE.parent.parent / "docs" / "音源設定說明.md"
+# Folders the player fills with their own files; only the note may ship in them.
+PLAYER_FOLDERS = {
+    "mt32-roms": ("把MT-32的ROM放在這裡.txt",
+                  "請把 Roland MT-32 的 ROM（MT32_CONTROL.ROM 和 MT32_PCM.ROM，\r\n"
+                  "或 CM32L_CONTROL.ROM 和 CM32L_PCM.ROM）放在這個資料夾裡。\r\n"
+                  "ROM 有版權，本整合包不附。詳見上一層的「音源設定說明.txt」。\r\n"),
+    "soundfonts": ("把SoundFont放在這裡.txt",
+                   "想用 FluidSynth 播放 General MIDI 音樂時，把一個 SoundFont（.sf2 或 .sf3）\r\n"
+                   "放在這個資料夾裡，檔名請用英文。詳見上一層的「音源設定說明.txt」。\r\n"),
+}
 GAME_DATA_NOTE ="把DARKSUN資料夾放在這裡.txt"
 GAME_DATA_TEXT = (
     "請把 Steam 版遊戲的整個 DARKSUN 資料夾複製到這個 game_data 資料夾裡，\r\n"
@@ -74,18 +87,28 @@ def main() -> int:
         write_text(RELEASE_DIR / target, (TEMPLATES / template).read_text(encoding="utf-8"), bom=False)
     conf = (TEMPLATES / "dosbox_darksun.conf.template").read_text(encoding="utf-8")
     write_text(RELEASE_DIR / "dosbox-x" / "zh_darksun.conf", conf, bom=False)
-    # Debug mode: the same setup, with the original -k911 switch passed to the game.
+    # Debug mode and the original sound setup: the same hardware, a different last command.
     if conf.count("call DARKSUN.BAT\n") != 1:
         raise SystemExit("dosbox_darksun.conf.template 找不到唯一的 call DARKSUN.BAT")
     write_text(RELEASE_DIR / "dosbox-x" / DEBUG_CONF, conf.replace("call DARKSUN.BAT\n", "call DARKSUN.BAT -k911\n"), bom=False)
+    # The setup program runs in text mode: on a Chinese Windows, keyboardlayout=auto picks code page
+    # 950 and its frame lines turn into Chinese characters, so it gets the US layout (code page 437).
+    if conf.count("keyboardlayout=auto\n") != 1:
+        raise SystemExit("dosbox_darksun.conf.template 找不到唯一的 keyboardlayout=auto")
+    sound_conf = conf.replace("call DARKSUN.BAT\n", "call SOUND.BAT\n").replace("keyboardlayout=auto\n", "keyboardlayout=us\n")
+    write_text(RELEASE_DIR / "dosbox-x" / SOUND_CONF, sound_conf, bom=False)
     play = (TEMPLATES / "play_launcher.bat.template").read_text(encoding="utf-8")
-    if play.count("-conf zh_darksun.conf") != 1:
-        raise SystemExit("play_launcher.bat.template 找不到唯一的 -conf zh_darksun.conf")
+    if play.count("-conf zh_darksun.conf") != 2:
+        raise SystemExit("play_launcher.bat.template 應該有兩處 -conf zh_darksun.conf")
     write_text(RELEASE_DIR / DEBUG_LAUNCHER, play.replace("-conf zh_darksun.conf", f"-conf {DEBUG_CONF}"), bom=False)
     readme = (TEMPLATES / "README_安裝說明.txt.template").read_text(encoding="utf-8").format(label=RELEASE_LABEL)
     write_text(RELEASE_DIR / "README_安裝說明.txt", readme, bom=True)
     write_text(RELEASE_DIR / "新操作說明.txt", player_guide_text(PLAYER_GUIDE.read_text(encoding="utf-8")), bom=True)
     write_text(RELEASE_DIR / "除錯模式說明.txt", player_guide_text(DEBUG_GUIDE.read_text(encoding="utf-8")), bom=True)
+    write_text(RELEASE_DIR / "音源設定說明.txt", player_guide_text(MUSIC_GUIDE.read_text(encoding="utf-8")), bom=True)
+    for folder, (note, text) in PLAYER_FOLDERS.items():
+        (RELEASE_DIR / folder).mkdir()
+        write_text(RELEASE_DIR / folder / note, text, bom=True)
     shutil.copy2(TEMPLATES / "LICENSE_Fusion_Pixel_Font.txt", RELEASE_DIR / "LICENSE_Fusion_Pixel_Font.txt")
 
     game_data = RELEASE_DIR / "game_data"
@@ -93,6 +116,8 @@ def main() -> int:
     write_text(game_data / GAME_DATA_NOTE, GAME_DATA_TEXT, bom=True)
     # Safety: nothing but the note may ever ship in game_data.
     stray = [path.name for path in game_data.iterdir() if path.name != GAME_DATA_NOTE]
+    stray += [path.name for folder, (note, _) in PLAYER_FOLDERS.items()
+              for path in (RELEASE_DIR / folder).iterdir() if path.name != note]
     if stray:
         raise SystemExit(f"game_data 裡有不該發布的檔案：{stray}")
     for path in RELEASE_DIR.rglob("*"):

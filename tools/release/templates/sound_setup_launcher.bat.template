@@ -1,0 +1,15 @@
+@echo off
+chcp 65001 >nul
+cd /d "%~dp0dosbox-x"
+if not exist dosbox-x.exe (
+    echo 找不到 dosbox-x\dosbox-x.exe，這份整合包可能不完整，請重新下載。
+    pause
+    exit /b 1
+)
+if not exist "..\game_data\DARKSUN\SOUND.BAT" (
+    echo 找不到遊戲檔案：請先把 DARKSUN 資料夾放進 game_data。
+    pause
+    exit /b 1
+)
+rem Runs the game's original sound setup (SOUND.BAT / SOUND_DS.EXE); it writes SOUND.CFG.
+".\dosbox-x.exe" -conf zh_darksun_sound.conf

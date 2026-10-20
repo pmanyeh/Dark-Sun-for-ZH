@@ -11,4 +11,11 @@ if not exist "..\game_data\DARKSUN\C0" (
     pause
     exit /b 1
 )
-".\dosbox-x.exe" -conf zh_darksun.conf
+rem Match the MIDI device to the music source chosen in 音效設定.bat (writes zh_midi.conf).
+if exist zh_midi.conf del zh_midi.conf
+"..\python-embed\python.exe" "..\midi_select.py"
+if exist zh_midi.conf (
+    ".\dosbox-x.exe" -conf zh_darksun.conf -conf zh_midi.conf
+) else (
+    ".\dosbox-x.exe" -conf zh_darksun.conf
+)

@@ -8,15 +8,17 @@
 
 | 項目 | 內容 |
 |---|---|
-| `安裝中文化.bat`／`解除中文化.bat`／`玩遊戲.bat`／`玩遊戲（除錯模式）.bat` | CRLF；用內附的 Python 與 DOSBox-X，路徑一律明確寫出 |
-| `installer.py`、`bspatch_apply.py`、`darksun_gff.py`、`darksun_saves.py` | 只用標準函式庫 |
+| `安裝中文化.bat`／`解除中文化.bat`／`玩遊戲.bat`／`玩遊戲（除錯模式）.bat`／`音效設定.bat` | CRLF；用內附的 Python 與 DOSBox-X，路徑一律明確寫出 |
+| `installer.py`、`bspatch_apply.py`、`darksun_gff.py`、`darksun_saves.py`、`midi_select.py` | 只用標準函式庫 |
 | `patches/<版本>_<檔名>.bsdiff`、`release_manifest.json` | 5 個檔（DSUN.EXE、RESOURCE／GPLDATA／CINE／SEGOBJEX.GFF）的差異補丁與來源／成品雜湊 |
 | `resources/C0～C11` | 中文字型檔（新檔案，直接複製） |
 | `save_migration.json` | 舊存檔的 GSTR 標題與生物名字中文位元組（預先算好） |
 | `dosbox-x/`、`python-embed/` | 官方固定版本（DOSBox-X 2026.08.02、Python 3.12.10），附授權檔 |
 | `dosbox-x/zh_darksun.conf` | 硬體設定同 Steam 版（S3、32 MB、7000 cycles、SB16 220/5/1/5），加 `ime=false`；掛載 `..\game_data`、`cd DARKSUN`、`call DARKSUN.BAT` |
 | `dosbox-x/zh_darksun_debug.conf` | 由同一份範本產生，只把最後一行改成 `call DARKSUN.BAT -k911`（原版除錯模式），給「玩遊戲（除錯模式）.bat」用 |
-| `README_安裝說明.txt`、`新操作說明.txt`、`除錯模式說明.txt`、`LICENSE_Fusion_Pixel_Font.txt` | UTF-8 BOM＋CRLF；新操作說明與除錯模式說明由 `docs/新操作說明.md`、`docs/除錯模式說明.md` 轉成純文字 |
+| `dosbox-x/zh_darksun_sound.conf` | 同一份範本，最後一行改成 `call SOUND.BAT`（原版音效設定程式），並把 `keyboardlayout` 改成 `us`：中文 Windows 上 `auto` 會選 950 字碼頁，文字模式的框線會變成中文字 |
+| `mt32-roms/`、`soundfonts/` | 只有一個說明檔，玩家自己放 MT-32 ROM 或 SoundFont（`package_release.py` 會拒絕其他檔案） |
+| `README_安裝說明.txt`、`新操作說明.txt`、`除錯模式說明.txt`、`LICENSE_Fusion_Pixel_Font.txt` | UTF-8 BOM＋CRLF；新操作說明與除錯模式說明由 `docs/新操作說明.md`、`docs/除錯模式說明.md` 轉成純文字；`音源設定說明.txt` 同理（`docs/音源設定說明.md`） |
 | `game_data/` | 只有一個說明檔 |
 
 ## 什麼時候要重跑
@@ -52,6 +54,16 @@ python -m pytest tests -q
 2. 執行「安裝中文化.bat」，確認 5 個檔和 `STAGING` 的相同。
 3. 執行「玩遊戲.bat」（官方 DOSBox-X，不是開發用的 DOSBox-X-AI），確認能進遊戲、中文正常、沒有設定值警告。
 4. 執行「解除中文化.bat」，確認還原成 Steam 原檔。
+
+## 音樂音源（`midi_select.py`）
+
+兩個「玩遊戲」啟動檔在開 DOSBox-X 之前先執行 `midi_select.py`，寫出 `dosbox-x/zh_midi.conf`（`[midi]` 一節），再用第二個 `-conf` 疊上去。
+它讀 `game_data/DARKSUN/SOUND.CFG`（59 bytes，原版 `SOUND_DS.EXE` 寫的）：`0x16` 起是音樂驅動檔名，`0x32` 是音樂來源（4＝General MIDI、3＝MT-32、2＝聲霸卡 FM）。
+Steam 版預設就是 General MIDI ＋ SoundBlaster Pro III。三份實際的 SOUND.CFG 寫在 `tests/test_midi_select.py`。
+
+- MT-32 ＋ `mt32-roms` 有 ROM → `mididevice=mt32`；General MIDI ＋ `soundfonts` 有 .sf2／.sf3 → `fluidsynth`；其他 → `default`（Windows MIDI）。
+- 路徑一律寫成相對 `dosbox-x` 資料夾，整合包路徑有中文也能用；SoundFont 檔名含非 ASCII 字元時改用 `default` 並提示。
+- 已用內附的官方 DOSBox-X 確認（log）：`MT32: Found ROM pair`、`fluidsynth: Loaded SoundFont`、第二個 `-conf` 會覆蓋 `mididevice`。
 
 ## 版本支援
 

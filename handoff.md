@@ -49,6 +49,7 @@
 - **正式版整合包 v1.0.0（2026-10-17 發布）**：`dist/darksun_zh_release_v1.0.0.zip`（基於 v158），內容與 v0.9.1 相同，只把版本號與標籤改成正式版（使用者決定，尚未通關）。GitHub Release `v1.0.0`（Latest）。
   端到端測試（`scratch_test/release_e2e_v1.0.0/`）：乾淨 Steam 版安裝後 5 個檔＋12 個字型檔和 v158 逐位元組相同；解除安裝還原；裝著 0.9.1 時會擋下，解除後再裝 1.0.0 正確。
   同日補充（版本號不變，重新上傳 zip）：加入「玩遊戲（除錯模式）.bat」（`zh_darksun_debug.conf`，`call DARKSUN.BAT -k911`）與 `除錯模式說明.txt`（來源 `docs/除錯模式說明.md`），安裝說明加上新增功能一覽。Alt+F1／F2／F4、`M`／`?`／`=` 只有靜態分析，文件標為未實機確認。
+  2026-10-20 再補充（版本號不變，重新上傳 zip）：音樂音源。加入「音效設定.bat」（原版 SOUND.BAT，`keyboardlayout=us` 避免 950 字碼頁把框線變中文字）、`音源設定說明.txt`（`docs/音源設定說明.md`）、`mt32-roms/`、`soundfonts/`；兩個「玩遊戲」啟動檔先跑 `midi_select.py` 依 SOUND.CFG 寫 `zh_midi.conf`（MT-32＋ROM→mt32、GM＋SoundFont→fluidsynth、其他→default）。Steam 版預設＝General MIDI＋SB Pro III。SOUND.CFG 格式與實測見 `docs/workflows/release-packaging.md`「音樂音源」。
 - 發布整合包 v0.9.1（2026-09-30）：`dist/darksun_zh_release_v0.9.1.zip`（基於 v158）。和 0.9.0 的差別：智慧遊標修正（v155～v158；除錯模式地圖傳送也在 EXE 裡，但整合包只用一般模式啟動）；安裝程式遇到已安裝的舊版會提示先執行「解除中文化.bat」、不改任何檔案；安裝說明加了升級步驟與版本紀錄。
   端到端測試（`scratch_test/release_e2e_v0.9.1/`）：乾淨 Steam 版安裝後 5 個檔＋12 個字型檔和 v158 逐位元組相同、解除安裝還原；從 0.9.0 升級（先解除再安裝）也正確。使用者已用整合包（內附官方 DOSBox-X）實際遊玩，尚未通關。2026-10-17 公開發布為 GitHub Release `v0.9.1`（Pre-release）。
 - 發布整合包 v0.9.0（2026-09-27 建立）：`dist/darksun_zh_release_v0.9.0.zip`（v0.9.0 公測版，基於 v153），仿叛變克朗多的免安裝整合包；流程與保證見 `docs/workflows/release-packaging.md`，工具在 `tools/release/`。端到端測試（乾淨 Steam 版 → 安裝 → 逐位元組同 v153 → 解除安裝還原）已通過；**還沒用整合包內附的官方 DOSBox-X 實際進遊戲**，測試環境在 `scratch_test/release_e2e/`。GOG 版尚未驗證。
