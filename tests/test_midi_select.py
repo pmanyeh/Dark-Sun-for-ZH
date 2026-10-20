@@ -21,7 +21,7 @@ class MidiSelectTests(unittest.TestCase):
     def test_music_source_from_the_setup_program(self):
         self.assertEqual(music_source(CFG_GM), "gm")
         self.assertEqual(music_source(CFG_MT32), "mt32")
-        self.assertEqual(music_source(CFG_SB16), "other")
+        self.assertEqual(music_source(CFG_SB16), "fm")
         self.assertEqual(music_source(b""), "unknown")
 
     def test_steam_default_is_general_midi(self):
@@ -39,6 +39,7 @@ class MidiSelectTests(unittest.TestCase):
                          ["mididevice=fluidsynth", "fluid.soundfont=..\\soundfonts\\GeneralUser GS.sf2"])
         self.assertEqual(choose("gm", True, None)[0], ["mididevice=default"])
         self.assertEqual(choose("gm", False, Path("音色.sf2"))[0], ["mididevice=default"])
+        self.assertEqual(choose("fm", True, font), (["mididevice=default"], "音樂：聲霸卡（FM 合成）"))
         self.assertEqual(choose("other", True, font), (["mididevice=default"], ""))
 
     def test_player_folders(self):

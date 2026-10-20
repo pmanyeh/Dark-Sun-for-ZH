@@ -13,3 +13,11 @@ if not exist "..\game_data\DARKSUN\SOUND.BAT" (
 )
 rem Runs the game's original sound setup (SOUND.BAT / SOUND_DS.EXE); it writes SOUND.CFG.
 ".\dosbox-x.exe" -conf zh_darksun_sound.conf
+rem Show the player what the play launchers will now use.
+echo.
+echo 目前的音樂設定（「玩遊戲.bat」會這樣播放）：
+"..\python-embed\python.exe" "..\midi_select.py"
+echo.
+echo 如果和你剛才選的不一樣，請再執行一次「音效設定.bat」，
+echo 並等到出現「Sound Init Saved...」再按 Enter。
+pause

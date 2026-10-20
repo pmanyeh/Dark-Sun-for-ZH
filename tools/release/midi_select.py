@@ -38,7 +38,7 @@ def music_source(cfg: bytes) -> str:
         return "unknown"
     driver = cfg[DRIVER_OFFSET:DRIVER_OFFSET + 13].split(b"\0", 1)[0].lower()
     if driver != b"mt32mpu.adv":
-        return "other"
+        return "fm" if b"fm" in driver or b"adlib" in driver else "other"
     return {MUSIC_GM: "gm", MUSIC_MT32: "mt32"}.get(cfg[TYPE_OFFSET], "unknown")
 
 
@@ -69,6 +69,8 @@ def choose(source: str, roms: bool, soundfont: Path | None) -> tuple[list[str], 
             return (["mididevice=fluidsynth", f"fluid.soundfont=..\\soundfonts\\{soundfont.name}"],
                     f"音樂：General MIDI（FluidSynth，{soundfont.name}）")
         return ["mididevice=default"], "音樂：General MIDI（Windows 內建音源）"
+    if source == "fm":
+        return ["mididevice=default"], "音樂：聲霸卡（FM 合成）"
     return ["mididevice=default"], ""
 
 
